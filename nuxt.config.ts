@@ -23,8 +23,8 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  routeRules: {
-    '/decks/**': { isr: 3600 },
+  nitro: {
+    preset: 'netlify-static',
   },
 
   app: {
