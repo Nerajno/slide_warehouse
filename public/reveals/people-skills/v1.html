@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>People Skills Are Technical Skills</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" />
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section><h1>People Skills Are Technical Skills</h1><p>@Nerajno · Connect.Tech 2025</p></section>
+      <section><h2>The Problem</h2><p>We debug code. Who debugs people?</p></section>
+      <section><h2>Empathy is an API</h2><p>Learn to read the spec before you write the response.</p></section>
+      <section><h2>Communication Loops</h2><p>Feedback cycles exist in teams, not just CI pipelines.</p></section>
+      <section><h2>Thank You</h2><p>@Nerajno · github.com/Nerajno</p></section>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({ hash: true, center: true });
+    Reveal.on('slidechanged', e => {
+      window.parent.postMessage({ type: 'slidechanged', indexh: e.indexh, indexv: e.indexv, totalSlides: Reveal.getTotalSlides() }, '*');
+    });
+  </script>
+</body>
+</html>

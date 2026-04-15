@@ -1,0 +1,731 @@
+# Product Requirements Document: Slide Repository
+
+**Product:** DevelopingDvlpr Slide Repository
+**Owner:** Nerando (TechTile LLC / @Nerajno)
+**Version:** 1.0
+**Last Updated:** April 14, 2026
+**Status:** Draft
+**Deploy Target:** Netlify
+**Stack:** Nuxt 3 · Vue 3 · Reveal.js · Tailwind CSS · Pinia
+
+---
+
+## 1. Problem Statement
+
+Conference speakers and technical content creators accumulate dozens of Reveal.js presentations across topics, durations, and events. Without a centralized, searchable repository, finding, previewing, and sharing the right deck for an upcoming CFP, meetup, or workshop requires digging through file systems and GitHub repos. This friction slows preparation and limits content reuse.
+
+---
+
+## 2. Product Vision
+
+A lightweight, self-hosted slide repository deployed on Netlify that lets Nerando (and eventually other speakers) browse, search, filter, preview, and share Reveal.js presentations from a single responsive web interface. The repository doubles as a portfolio piece — demonstrating Nuxt 3 proficiency, WCAG 2.2 compliance, and the "Progress over Perfection" philosophy.
+
+---
+
+## 3. Target Users
+
+### Primary Persona: "Presenter Pat" (Self — Speaker & Content Creator)
+
+- **Goal:** Quickly locate the right deck for an upcoming talk, CFP submission, or content link.
+- **Pain point:** 55+ project ideas, 66-talk catalog, and multiple Reveal.js decks scattered across repos.
+- **Behavior:** Searches by topic/tag, browses by category, wants to see slide count, duration, and event history at a glance.
+
+### Secondary Persona: "Curious Cal" (Conference Organizer / Attendee)
+
+- **Goal:** Preview a speaker's available talks before extending an invitation or after attending a session.
+- **Pain point:** Speaker websites rarely surface presentation content in a browsable format.
+- **Behavior:** Arrives via shared link, browses deck catalog, views a specific presentation in fullscreen.
+
+---
+
+## 4. Design System
+
+| Token | Value |
+|---|---|
+| Primary | Emerald `#059669` |
+| Accent | Amber `#d97706` |
+| Heading Font | Plus Jakarta Sans |
+| Mono Font | JetBrains Mono |
+| Body Font | Plus Jakarta Sans (400/500/600) |
+| Border Radius | 8px (cards), 6px (tags), 4px (buttons) |
+| Grid Spacing | 8px base unit |
+| Dark Mode | System preference via `prefers-color-scheme` |
+
+---
+
+## 5. Information Architecture
+
+```
+/                                    → Home (Deck Grid + Search + Filters)
+/decks/:id                           → Individual Deck Viewer
+/reveals/:id/v{n}.html               → Raw Reveal.js HTML (iframe source, versioned)
+content/decks/*.md                   → Deck metadata (Nuxt Content, not a route)
+```
+
+### Sitemap
+
+```
+Home
+├── Search Bar (autocomplete, real-time)
+├── Filter Tags (toggleable categories)
+├── Deck Grid (responsive card layout)
+│   └── Deck Card → links to /decks/:id
+└── Sort Controls (date, title, duration)
+
+Deck Viewer (/decks/:id)
+├── Breadcrumb: Home > Deck Title
+├── Reveal.js iframe (embedded presentation)
+├── Navigation Controls (prev/next/fullscreen)
+├── Version Selector (dropdown, shown when versions > 1)
+└── Metadata Sidebar
+    ├── Description
+    ├── Tags
+    ├── Statistics (slides, duration, created, modified)
+    └── Actions (share link, download PDF)
+```
+
+---
+
+## 6. User Stories & Acceptance Criteria
+
+### Epic 1: Deck Discovery
+
+**US-1.1 — Browse All Decks**
+*As a visitor, I want to see all available presentations on the home page so I can discover what's available.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Home page renders a responsive grid: 1 col (mobile), 2 col (tablet), 3 col (desktop). |
+| AC-2 | Each card displays: thumbnail/color swatch, title, 2-line description, tag chips, slide count. |
+| AC-3 | Cards are keyboard-navigable (Tab to focus, Enter to open). |
+| AC-4 | Page loads in < 2s on 3G (Lighthouse Performance ≥ 90). |
+| AC-5 | Grid uses `NuxtLink` for client-side navigation (no full page reload). |
+
+**US-1.2 — Search Decks**
+*As a visitor, I want to search by title, description, or tag so I can quickly find a specific presentation.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Search input is above the fold with placeholder: "Search by title, description, or tags..." |
+| AC-2 | Results filter in real-time (debounced 300ms, no page reload). |
+| AC-3 | Search uses `queryContent` with `$icontains` for full-text matching across title, description, and tags. |
+| AC-4 | Empty results show a friendly message: "No decks match your search." |
+| AC-5 | Search input has `role="search"`, associated `<label>`, and visible focus ring (2px solid Emerald). |
+
+**US-1.3 — Filter by Tag**
+*As a visitor, I want to filter decks by category tag so I can narrow results by topic.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Tags render as horizontally scrollable chips below the search bar. |
+| AC-2 | "All" tag is selected by default; tapping a tag toggles its active state. |
+| AC-3 | Active tag has Emerald background with white text; inactive has `bg-gray-100` with `text-gray-700`. |
+| AC-4 | Each tag shows a badge count of matching decks. |
+| AC-5 | "Clear filters" link appears when any filter is active. |
+| AC-6 | Filter state persists in URL query params (deep-linkable). |
+
+**US-1.4 — Sort Decks**
+*As a visitor, I want to sort decks by date or title so I can find the most recent or alphabetically ordered presentations.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Sort dropdown with options: "Newest First" (default), "Oldest First", "A → Z", "Z → A". |
+| AC-2 | Sort selection persists across filter changes within the same session. |
+| AC-3 | Dropdown is keyboard-accessible (arrow keys to navigate, Enter to select). |
+
+---
+
+### Epic 2: Deck Viewing
+
+**US-2.1 — View Presentation**
+*As a visitor, I want to view a Reveal.js presentation inline so I can preview slides without downloading.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Presentation renders in an `<iframe>` with `src="/reveals/:id.html"`. |
+| AC-2 | iframe is responsive: min-height 400px (mobile), 500px+ (desktop), 16:9 aspect ratio preserved. |
+| AC-3 | Slide counter displays "Slide X of Y" below the viewer. |
+| AC-4 | Arrow keys navigate slides when iframe is focused. |
+| AC-5 | `sandbox` attribute on iframe allows scripts but prevents top navigation. |
+
+**US-2.2 — Fullscreen Mode**
+*As a presenter, I want to enter fullscreen so I can use the deck in a live presentation.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | "Fullscreen" button (44×44px min touch target) is visible near the viewer. |
+| AC-2 | Uses the Fullscreen API; falls back gracefully on unsupported browsers. |
+| AC-3 | ESC key exits fullscreen; an explicit "Exit Fullscreen" button is also available. |
+| AC-4 | Fullscreen button has `aria-label="Enter fullscreen mode"` that updates to "Exit fullscreen mode". |
+
+**US-2.3 — View Deck Metadata**
+*As a visitor, I want to see metadata (description, tags, stats) alongside the presentation so I understand the deck's context.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Desktop: 2-column layout — viewer (70%) + sticky sidebar (30%, 280–320px). |
+| AC-2 | Mobile: sidebar stacks below the viewer. |
+| AC-3 | Sidebar displays: description, tags, slide count, estimated duration, created date, last modified, event history, and current version label. |
+| AC-4 | Tags in sidebar are clickable and navigate back to home with that tag pre-filtered. |
+
+**US-2.5 — Switch Deck Versions**
+*As a visitor, I want to switch between versions of a presentation so I can see how a talk evolved across events.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | `VersionSelector` dropdown appears below the viewer when `versions.length > 1`. |
+| AC-2 | Each option shows: version label + date (e.g., "v2 — OrlandoCodeCamp26 Update · Mar 2026"). |
+| AC-3 | Selecting a version reloads the iframe `src` to the corresponding `revealFile` without a page reload. |
+| AC-4 | If a version has a `changes` field, a brief changelog appears below the selector. |
+| AC-5 | The `currentVersion` loads by default; URL does not change on version switch (version state is ephemeral). |
+| AC-6 | Dropdown is hidden (not disabled) when only one version exists. |
+
+**US-2.4 — Navigate Back to Home**
+*As a visitor, I want a clear way to return to the deck listing so I can browse other presentations.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Breadcrumb "Home > Deck Title" is sticky at the top of the deck page. |
+| AC-2 | "Home" link preserves scroll position and active filters via browser history API. |
+| AC-3 | Browser back button returns to previous scroll position on home page. |
+
+---
+
+### Epic 3: Sharing & Export
+
+**US-3.1 — Share Deck Link**
+*As a speaker, I want to copy a shareable link to a specific deck so I can include it in CFP submissions or social posts.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | "Copy Link" button copies the full URL (`/decks/:id`) to clipboard. |
+| AC-2 | Visual confirmation: button text changes to "Copied!" for 2 seconds. |
+| AC-3 | Each deck page has unique `<title>` and Open Graph meta tags for social sharing. |
+
+**US-3.2 — Download PDF (Future)**
+*As a speaker, I want to download a deck as PDF so I can attach it to CFP submissions.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | "Download PDF" button triggers server-side PDF generation via Decktape. |
+| AC-2 | Loading state shown during generation. |
+| AC-3 | Downloaded file is named `{deck-title}.pdf`. |
+
+---
+
+### Epic 4: Accessibility (WCAG 2.2 AA)
+
+**US-4.1 — Keyboard Navigation**
+*As a keyboard user, I want full tab-order navigation so I can use the site without a mouse.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Tab order: skip link → search → filters → sort → deck cards → footer. [WCAG 2.4.3] |
+| AC-2 | All interactive elements have visible focus rings (2–4px, Emerald). [WCAG 2.4.7, 2.4.11] |
+| AC-3 | Minimum touch/click target size: 24×24px (Level AA). [WCAG 2.5.8] |
+| AC-4 | Deck cards are focusable and activate on Enter/Space. |
+
+**US-4.2 — Screen Reader Support**
+*As a screen reader user, I want semantic markup so I can understand the page structure.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Home page uses `<main>`, `<nav>`, `<section>`, `<h1>`–`<h3>` hierarchy. [WCAG 1.3.1] |
+| AC-2 | Deck cards use `role="article"` or semantic `<article>` elements. |
+| AC-3 | Search input has visible `<label>` or `aria-label`. [WCAG 1.3.1] |
+| AC-4 | Filter tags use `aria-pressed` to indicate active state. [WCAG 4.1.2] |
+| AC-5 | Deck thumbnails have `alt="Preview of {Deck Title}"`. [WCAG 1.1.1] |
+
+**US-4.3 — Color & Contrast**
+*As a low-vision user, I want sufficient contrast so I can read all text.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | All body text meets 4.5:1 contrast ratio. [WCAG 1.4.3] |
+| AC-2 | All UI components (borders, icons) meet 3:1 contrast ratio. [WCAG 1.4.11] |
+| AC-3 | Color is never the sole indicator of active state (text/icon supplement required). [WCAG 1.4.1] |
+| AC-4 | Dark mode maintains equivalent contrast ratios. |
+
+**US-4.4 — Reduced Motion**
+*As a motion-sensitive user, I want animations to respect my OS settings.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | All CSS transitions/animations are wrapped in `@media (prefers-reduced-motion: no-preference)`. [WCAG 2.3.3] |
+| AC-2 | Card hover effects degrade to instant state change when reduced motion is active. |
+
+---
+
+## 7. Technical Specification
+
+### 7.1 Stack
+
+| Layer | Technology | Rationale |
+|---|---|---|
+| Framework | Nuxt 3 (latest) | File-based routing, auto-imports, Nitro server engine, SSR/SSG |
+| UI Layer | Vue 3 Composition API | Cleaner state, `<script setup>`, composables |
+| Styling | Tailwind CSS 3 | Utility-first, design token integration, dark mode |
+| Content | Nuxt Content v3 | Markdown + frontmatter for deck metadata, `queryContent` API |
+| State | Pinia | SSR-safe global state for search/filter |
+| Presentations | Reveal.js 5.x (iframe) | Isolated rendering, no CSS conflicts, native fullscreen |
+| Deployment | Netlify | Auto-deploy from Git, Nitro preset `netlify`, edge functions |
+| TypeScript | Strict mode | Type safety for deck data, API responses, composables |
+
+### 7.2 Directory Structure (Nuxt 3 Conventions)
+
+```
+nuxt-slides/
+├── .nuxt/                     # Generated (gitignored)
+├── assets/
+│   └── css/
+│       └── main.css           # Tailwind + design tokens
+├── components/
+│   ├── DeckCard.vue           # Card component
+│   ├── DeckGrid.vue           # Responsive grid
+│   ├── SearchBar.vue          # Search input + autocomplete
+│   ├── FilterTags.vue         # Tag filter chips
+│   ├── SortDropdown.vue       # Sort control
+│   ├── DeckViewer.vue         # Reveal.js iframe wrapper
+│   ├── DeckSidebar.vue        # Metadata sidebar
+│   ├── VersionSelector.vue    # Dropdown to switch deck versions
+│   ├── SkipLink.vue           # Accessibility skip-to-content
+│   └── ShareButton.vue        # Copy link button
+├── composables/
+│   ├── useDecks.ts            # queryContent wrapper + filtering
+│   ├── useSearch.ts           # Debounced search composable
+│   └── useFullscreen.ts       # Fullscreen API wrapper
+├── content/
+│   └── decks/                 # Nuxt Content — one .md per deck
+│       ├── vue-router-deep-dive.md
+│       ├── people-skills-technical-skills.md
+│       ├── skills-to-bills.md
+│       └── ...
+├── layouts/
+│   └── default.vue            # Base layout with header/footer
+├── pages/
+│   ├── index.vue              # Home (deck grid)
+│   └── decks/
+│       └── [id].vue           # Deck viewer
+├── public/
+│   └── reveals/               # Static Reveal.js HTML files (versioned)
+│       ├── vue-router-deep-dive/
+│       │   ├── v1.html        # Original version
+│       │   └── v2.html        # Updated for DevNexus 2026
+│       ├── people-skills/
+│       │   ├── v1.html
+│       │   └── v2.html        # OrlandoCodeCamp26 branding
+│       └── skills-to-bills/
+│           └── v1.html
+├── stores/
+│   └── deckStore.ts           # Pinia store (filter state, sort)
+├── types/
+│   └── index.ts               # Deck, Tag, SearchResult types
+├── nuxt.config.ts
+├── tailwind.config.ts
+├── netlify.toml
+├── package.json
+└── tsconfig.json
+```
+
+### 7.3 Key Type Definitions
+
+```typescript
+// Frontmatter schema for content/decks/*.md
+interface DeckFrontmatter {
+  id: string;                    // URL slug: "vue-router-deep-dive"
+  title: string;
+  description: string;
+  tags: Tag[];
+  slideCount: number;
+  durationMinutes: number;       // Estimated talk duration
+  createdAt: string;             // ISO date
+  updatedAt: string;             // ISO date
+  revealBasePath: string;        // "/reveals/vue-router-deep-dive"
+  currentVersion: number;        // Latest version number (e.g., 2)
+  versions: DeckVersion[];       // Version history
+  events?: string[];             // ["DevNexus 2026", "Connect.Tech 2025"]
+  thumbnail?: string;            // Optional preview image path
+  tier?: "30min" | "45min" | "60min";
+}
+
+interface DeckVersion {
+  version: number;               // 1, 2, 3...
+  label: string;                 // "Original", "OrlandoCodeCamp26 Update"
+  date: string;                  // ISO date of this version
+  revealFile: string;            // "v1.html", "v2.html"
+  changes?: string;              // Brief changelog: "Added speaker notes, updated branding"
+}
+
+// Resolved at runtime — combines frontmatter + computed revealPath
+interface Deck extends DeckFrontmatter {
+  revealPath: string;            // Computed: `${revealBasePath}/v${currentVersion}.html`
+}
+
+type Tag =
+  | "vue"
+  | "nuxt"
+  | "javascript"
+  | "typescript"
+  | "career"
+  | "soft-skills"
+  | "fundamentals"
+  | "architecture"
+  | "accessibility"
+  | "community";
+
+interface SearchParams {
+  q?: string;
+  tags?: string;                 // Comma-separated
+  sort?: "newest" | "oldest" | "az" | "za";
+}
+```
+
+**Example Markdown file** (`content/decks/people-skills-technical-skills.md`):
+
+```markdown
+---
+id: "people-skills-technical-skills"
+title: "People Skills Are Technical Skills"
+description: "Why soft skills are the hardest engineering problems — and how to debug them."
+tags: ["career", "soft-skills", "community"]
+slideCount: 28
+durationMinutes: 45
+createdAt: "2025-06-15"
+updatedAt: "2026-03-20"
+revealBasePath: "/reveals/people-skills"
+currentVersion: 2
+versions:
+  - version: 1
+    label: "Original — Connect.Tech 2025"
+    date: "2025-06-15"
+    revealFile: "v1.html"
+  - version: 2
+    label: "OrlandoCodeCamp26 Update"
+    date: "2026-03-20"
+    revealFile: "v2.html"
+    changes: "Updated branding, added speaker notes, new closing slide"
+events: ["Connect.Tech 2025", "Orlando Code Camp 2026"]
+tier: "45min"
+---
+
+A talk exploring why empathy, communication, and collaboration are
+the most complex systems engineers will ever debug.
+```
+
+### 7.4 Data Layer (Nuxt Content)
+
+Deck metadata lives in `content/decks/*.md` as Markdown with frontmatter. Nuxt Content provides `queryContent()` for type-safe querying at build time and runtime.
+
+**Listing all decks (home page):**
+
+```typescript
+// composables/useDecks.ts
+const decks = await queryContent<DeckFrontmatter>('decks')
+  .sort({ updatedAt: -1 })
+  .find()
+```
+
+**Searching and filtering:**
+
+```typescript
+// composables/useSearch.ts
+const results = await queryContent<DeckFrontmatter>('decks')
+  .where({
+    $or: [
+      { title: { $icontains: query } },
+      { description: { $icontains: query } },
+      { tags: { $in: selectedTags } }
+    ]
+  })
+  .sort({ [sortField]: sortDirection })
+  .find()
+```
+
+**Fetching a single deck (viewer page):**
+
+```typescript
+// pages/decks/[id].vue
+const deck = await queryContent<DeckFrontmatter>('decks')
+  .where({ id: route.params.id })
+  .findOne()
+```
+
+**Nuxt config addition:**
+
+```typescript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  modules: ['@nuxt/content'],
+  content: {
+    highlight: false,            // No code highlighting needed
+    navigation: { fields: ['tags', 'tier', 'currentVersion'] }
+  }
+})
+```
+
+### 7.5 Reveal.js Integration & Versioning
+
+- **Approach:** iframe with `sandbox="allow-scripts allow-same-origin"`
+- **Communication:** `postMessage` API for slide-change events (updates "Slide X of Y")
+- **Fullscreen:** Fullscreen API on the iframe container div (not the iframe itself)
+- **Styling:** Each Reveal.js HTML uses its own CSS file — no style leakage into the Nuxt app
+
+**Versioning scheme:**
+
+```
+public/reveals/
+├── {deck-id}/
+│   ├── v1.html          # Original version
+│   ├── v1-styles.css    # Styles for v1
+│   ├── v2.html          # Updated version
+│   └── v2-styles.css    # Styles for v2
+```
+
+- Each deck gets a directory under `/public/reveals/` matching its `id` slug.
+- Versions are numbered sequentially: `v1.html`, `v2.html`, `v3.html`.
+- The `currentVersion` frontmatter field determines which version loads by default.
+- A `VersionSelector` dropdown on the deck viewer page lets visitors switch between versions.
+- The `versions[]` array in frontmatter provides labels, dates, and changelogs for each version.
+- **iframe src** is computed: `${deck.revealBasePath}/v${selectedVersion}.html`
+- Old versions are never deleted — they serve as a historical record of talk evolution across events.
+
+### 7.6 Deployment (Netlify)
+
+```toml
+# netlify.toml
+[build]
+  command = "npm run build"
+  publish = ".output/public"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NUXT_PRESET = "netlify"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/reveals/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+```
+
+### 7.7 Performance Budget
+
+| Metric | Target |
+|---|---|
+| Lighthouse Performance | ≥ 90 |
+| Lighthouse Accessibility | 100 |
+| First Contentful Paint | < 1.5s |
+| Largest Contentful Paint | < 2.5s |
+| Cumulative Layout Shift | < 0.1 |
+| Total Bundle Size (gzipped) | < 150KB |
+| Deck Card Images | Solid color/gradient (no raster images) |
+
+---
+
+## 8. UI Component Specifications
+
+### 8.1 DeckCard
+
+- Dimensions: 280–320px width, auto height
+- Thumbnail area: Solid color gradient using deck's primary tag color
+- Content padding: 16px
+- Title: Plus Jakarta Sans 600, 15px, `text-gray-900` / `text-gray-100` (dark)
+- Description: Plus Jakarta Sans 400, 13px, `text-gray-600`, 2-line clamp
+- Tags: 11px, `bg-emerald-50 text-emerald-700` / `bg-emerald-900/20 text-emerald-300` (dark)
+- Hover: `border-color` transition 150ms to `border-gray-300`
+- Focus: 2px solid Emerald ring
+- Click target: Entire card is the `<NuxtLink>` (not just the title)
+
+### 8.2 SearchBar
+
+- Height: 44px (meets WCAG 2.5.8 target size)
+- Border-radius: 8px
+- Placeholder: "Search by title, description, or tags..."
+- Focus: 2px solid Emerald outline
+- Debounce: 300ms before triggering filter
+- Clear button (×): Appears when input has value
+
+### 8.3 FilterTags
+
+- Chip height: 32px, padding: 4px 12px
+- Active: `bg-emerald-600 text-white`
+- Inactive: `bg-gray-100 text-gray-700` / `bg-gray-800 text-gray-300` (dark)
+- Badge count: `bg-emerald-100 text-emerald-800` pill, 11px
+- Overflow: Horizontal scroll on mobile, wrap on desktop
+- `aria-pressed="true|false"` on each chip
+
+### 8.4 DeckViewer (iframe)
+
+- Aspect ratio: 16:9, clamped at min-height 400px
+- Border: 1px solid `border-gray-200`
+- Border-radius: 8px (with `overflow: hidden`)
+- Controls below: Prev / Slide Counter / Next / Fullscreen
+- Button size: 44×44px minimum
+
+### 8.5 DeckSidebar
+
+- Width: 280–320px (desktop), full-width (mobile)
+- Position: `sticky`, top: 80px
+- Sections: Description → Tags → Version History → Statistics → Actions
+- Section dividers: 1px `border-gray-200`
+- Event history: Comma-separated list of event names from `events[]`
+
+### 8.6 VersionSelector
+
+- Visibility: Hidden when `versions.length === 1`; rendered below the viewer controls when `versions.length > 1`
+- Dropdown label: "Version" with current selection shown
+- Option format: `"v{n} — {label} · {date}"` (e.g., "v2 — OrlandoCodeCamp26 Update · Mar 2026")
+- Default selection: `currentVersion` from frontmatter
+- Changelog: If selected version has `changes` field, render as muted text (13px, `text-gray-500`) below dropdown
+- Height: 44px (WCAG 2.5.8 target size)
+- Focus: 2px solid Emerald ring
+- `aria-label="Select presentation version"`
+
+---
+
+## 9. Accessibility Compliance Matrix (WCAG 2.2 AA)
+
+| SC # | Criterion | Component | Implementation |
+|---|---|---|---|
+| 1.1.1 | Non-text Content | DeckCard thumbnail | `alt="Preview of {title}"` |
+| 1.3.1 | Info and Relationships | All pages | Semantic HTML: `<main>`, `<nav>`, `<article>`, heading hierarchy |
+| 1.3.5 | Identify Input Purpose | SearchBar | `autocomplete="off"`, `type="search"` |
+| 1.4.1 | Use of Color | FilterTags | Active state uses background + text change + `aria-pressed` |
+| 1.4.3 | Contrast (Min) | All text | 4.5:1 verified for both light and dark themes |
+| 1.4.11 | Non-text Contrast | Buttons, inputs | 3:1 for borders, focus rings, icons |
+| 2.1.1 | Keyboard | All interactive | Full tab order, Enter/Space activation |
+| 2.4.1 | Bypass Blocks | Layout | SkipLink component: "Skip to main content" |
+| 2.4.3 | Focus Order | Home page | Logical tab sequence: skip → search → filters → cards |
+| 2.4.4 | Link Purpose | DeckCard | Link text = deck title (not "Click here") |
+| 2.4.7 | Focus Visible | All interactive | 2px Emerald focus ring |
+| 2.4.11 | Focus Not Obscured | Sidebar | Sticky sidebar does not overlap focused elements |
+| 2.5.8 | Target Size | Buttons, cards | ≥ 24×24px (AA), 44×44px recommended |
+| 3.2.3 | Consistent Navigation | All pages | Same header/nav on every page |
+| 4.1.2 | Name, Role, Value | FilterTags | `aria-pressed`, `role="button"` |
+
+---
+
+## 10. Responsive Breakpoints
+
+| Breakpoint | Width | Grid Cols | Layout |
+|---|---|---|---|
+| Mobile | < 640px | 1 | Stacked, horizontal scroll filters, viewer full-width |
+| Tablet | 640–1024px | 2 | 2-col grid, narrow sidebar on deck page |
+| Desktop | > 1024px | 3 | 3-col grid, full 70/30 split on deck page |
+
+---
+
+## 11. Milestones & Phases
+
+### Phase 1: MVP (2 weeks)
+
+- Home page with static deck data (JSON)
+- Deck viewer with iframe Reveal.js integration
+- Real-time client-side search and tag filtering
+- Responsive grid layout
+- Dark mode (system preference)
+- WCAG 2.2 AA compliance
+- Netlify deployment with `netlify.toml`
+
+### Phase 2: Enhanced (2 weeks)
+
+- Server API routes (`/api/search`, `/api/decks`)
+- Sort controls
+- Share link (copy to clipboard)
+- Open Graph meta tags per deck
+- Breadcrumb navigation
+- Scroll position preservation on back navigation
+
+### Phase 3: Polish (1 week)
+
+- Autocomplete search suggestions
+- "Recently Updated" quick filter
+- Keyboard shortcut hints (tooltip on hover)
+- Lighthouse audit pass (Performance ≥ 90, Accessibility = 100)
+- Cross-browser testing (Chrome, Firefox, Safari, Edge)
+
+### Phase 4: Future (Backlog)
+
+- PDF download via Decktape
+- Analytics (view counts per deck)
+- CMS integration (Nuxt Content or Supabase)
+- User accounts for external speakers
+- Deck comparison view (side-by-side)
+- Event history timeline per deck
+
+---
+
+## 12. Recommendations
+
+### From Frontend Design Skill
+
+- **Aesthetic direction:** Editorial minimalist — the decks are the content; the UI stays invisible. Plus Jakarta Sans provides character without competing. Emerald + Amber is distinctive and avoids generic purple/blue gradients.
+- **Card thumbnails:** Use CSS gradients mapped to primary tag color (no raster images). Fast, lightweight, and visually consistent.
+- **Micro-interactions:** 150ms border transition on card hover, 200ms fade on search results. Respect `prefers-reduced-motion`.
+
+### From Nuxt Skill
+
+- **Use `queryContent` (not `useFetch`)** for deck data — Nuxt Content handles SSR hydration, caching, and hot-reload of Markdown files during development.
+- **Leverage Nuxt auto-imports** — no manual import statements for Vue APIs, composables, or `queryContent`.
+- **Use `definePageMeta`** on deck pages for dynamic SEO titles and OG tags.
+- **Set `routeRules`** in `nuxt.config.ts` for ISR on deck pages: `'/decks/**': { isr: 3600 }`.
+- **Nuxt Content navigation** — configure `navigation.fields` to include `tags`, `tier`, and `currentVersion` so the home page can filter without loading full document bodies.
+- **Adding a new deck** is just creating a new `.md` file in `content/decks/` — no code changes, no API updates, no redeployment needed (Netlify rebuilds on Git push).
+
+### From Reveal.js Skill
+
+- **iframe isolation is correct** — prevents Reveal.js CSS from leaking into Nuxt layout.
+- **Use `postMessage` to get slide index** from iframe for the "Slide X of Y" counter.
+- **Each Reveal.js HTML should be self-contained** with CDN dependencies and its own CSS file.
+- **Use `center: false`** in Reveal config for content-heavy talks; `center: true` for minimal/creative decks.
+- **Versioning convention:** Each version gets its own HTML + CSS pair (`v1.html` / `v1-styles.css`). Never modify a published version in-place — always create a new version. This preserves event-specific branding and slide content as a historical record.
+
+### From WCAG 2.2 Skill
+
+- **Skip link is mandatory** — the site has repeated navigation. Place visually hidden, reveal on focus.
+- **iframe needs `title` attribute** — `<iframe title="Presentation: {deck title}">` for screen readers.
+- **`aria-live="polite"` on search results** region so screen readers announce when results update.
+- **Focus trapping in fullscreen** — ensure focus stays within the viewer when fullscreen is active.
+
+### From UX Designer Skill
+
+- **Back navigation is the #1 usability risk** — use `keepalive` on the home page component and restore scroll position via `scrollBehavior` in the router.
+- **Don't overload the home page** — progressive disclosure: show 9 cards initially, load more on scroll or "Show All" button.
+- **URL state is critical** — search query and active tags must sync to URL params for bookmarking and sharing.
+
+---
+
+## 13. Success Metrics
+
+| Metric | Target | Measurement |
+|---|---|---|
+| Time to find a deck | < 15 seconds | User testing (self) |
+| Lighthouse Accessibility | 100 | Automated audit |
+| Lighthouse Performance | ≥ 90 | Automated audit |
+| WCAG 2.2 AA Conformance | Full | Manual + axe-core audit |
+| Build time (Netlify) | < 90 seconds | Netlify dashboard |
+| Mobile usability | 0 errors | Google Mobile-Friendly Test |
+
+---
+
+## 14. Decisions Log
+
+| # | Question | Decision | Rationale |
+|---|---|---|---|
+| 1 | Data source for deck metadata | **Nuxt Content** (Markdown + frontmatter) | Git-native, no external DB, hot-reload in dev, `queryContent` API for search/filter, new decks added by creating a `.md` file. |
+| 2 | Multi-speaker support | **Single-user MVP** | Scope control. Multi-speaker is a Phase 4 backlog item — the data model (frontmatter) can be extended with an `author` field later without migration. |
+| 3 | Presentation versioning | **Yes — versioned (`v1`, `v2`, etc.)** | Talks evolve across events (e.g., People Skills updated for OrlandoCodeCamp26). Each version is a separate HTML file in `/public/reveals/{deck-id}/`. Frontmatter tracks version history with labels, dates, and changelogs. |
+
+## 15. Open Questions
+
+1. Is PDF export (Decktape) a Phase 2 or Phase 4 feature given the server-side dependency on Netlify?
+
+---
+
+*Progress over perfection. Let's go.*

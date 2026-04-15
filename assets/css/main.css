@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens */
+:root {
+  --color-primary: #059669;   /* Emerald */
+  --color-accent:  #d97706;   /* Amber */
+  --radius-card:   8px;
+  --radius-tag:    6px;
+  --radius-btn:    4px;
+  --spacing-base:  8px;
+}
+
+/* Focus ring — Emerald, 2px */
+@layer base {
+  *:focus-visible {
+    @apply outline-none ring-2 ring-emerald-600 ring-offset-2;
+  }
+
+  body {
+    @apply font-sans antialiased bg-white text-gray-900;
+  }
+
+  .dark body {
+    @apply bg-gray-950 text-gray-100;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  .transition-card {
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .fade-results {
+    transition: opacity 200ms ease;
+  }
+}

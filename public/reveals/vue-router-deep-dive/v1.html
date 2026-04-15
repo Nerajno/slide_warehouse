@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Vue Router Deep Dive — VueConf 2025</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" />
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section><h1>Vue Router Deep Dive</h1><p>@Nerajno · VueConf US 2025</p></section>
+      <section><h2>Basic Routes</h2><pre><code>{ path: '/about', component: About }</code></pre></section>
+      <section><h2>Dynamic Segments</h2><pre><code>{ path: '/decks/:id', component: DeckViewer }</code></pre></section>
+      <section><h2>Navigation Guards</h2><p>beforeEach, afterEach, per-route guards</p></section>
+      <section><h2>Nested Views</h2><p>&lt;RouterView&gt; inside components</p></section>
+      <section><h2>Thank You</h2><p>@Nerajno · github.com/Nerajno</p></section>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({ hash: true, center: false });
+    Reveal.on('slidechanged', e => {
+      window.parent.postMessage({ type: 'slidechanged', indexh: e.indexh, indexv: e.indexv, totalSlides: Reveal.getTotalSlides() }, '*');
+    });
+  </script>
+</body>
+</html>

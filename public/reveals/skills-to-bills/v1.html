@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Skills to Bills</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/night.css" />
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section><h1>Skills to Bills</h1><p>Landing Your First Dev Job · @Nerajno · TechBridge 2025</p></section>
+      <section><h2>The Gap</h2><p>Skills alone don't get jobs. Visibility does.</p></section>
+      <section><h2>Your Portfolio</h2><p>3 projects > 30 tutorials. Ship something real.</p></section>
+      <section><h2>Networking</h2><p>Conferences, meetups, open source — pick two.</p></section>
+      <section><h2>The Resume</h2><p>One page. Outcomes over duties. Quantify everything.</p></section>
+      <section><h2>Negotiation</h2><p>Always negotiate. Silence is an answer.</p></section>
+      <section><h2>Thank You</h2><p>@Nerajno · github.com/Nerajno</p></section>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({ hash: true, center: true });
+    Reveal.on('slidechanged', e => {
+      window.parent.postMessage({ type: 'slidechanged', indexh: e.indexh, indexv: e.indexv, totalSlides: Reveal.getTotalSlides() }, '*');
+    });
+  </script>
+</body>
+</html>

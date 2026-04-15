@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Vue Router Deep Dive — DevNexus 2026</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" />
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section><h1>Vue Router Deep Dive</h1><p>@Nerajno · DevNexus 2026</p></section>
+      <section><h2>Basic Routes</h2><pre><code>{ path: '/about', component: About }</code></pre></section>
+      <section><h2>Dynamic Segments</h2><pre><code>{ path: '/decks/:id', component: DeckViewer }</code></pre></section>
+      <section><h2>Navigation Guards</h2><p>beforeEach, afterEach, per-route guards</p></section>
+      <section><h2>Nested Views</h2><p>&lt;RouterView&gt; inside components</p></section>
+      <section><h2>New: Composition API Router</h2><pre><code>const route = useRoute()\nconst router = useRouter()</code></pre></section>
+      <section><h2>New: Typed Routes</h2><p>defineTypedRoutes — end-to-end type safety</p></section>
+      <section><h2>Thank You</h2><p>@Nerajno · DevNexus 2026 · Feb 2026</p></section>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({ hash: true, center: false });
+    Reveal.on('slidechanged', e => {
+      window.parent.postMessage({ type: 'slidechanged', indexh: e.indexh, indexv: e.indexv, totalSlides: Reveal.getTotalSlides() }, '*');
+    });
+  </script>
+</body>
+</html>
