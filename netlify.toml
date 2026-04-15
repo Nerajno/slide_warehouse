@@ -4,7 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  NUXT_PRESET = "netlify"
+  NITRO_PRESET = "netlify"
 
 [[headers]]
   for = "/*"
