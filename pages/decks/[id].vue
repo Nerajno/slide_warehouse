@@ -2,6 +2,7 @@
 import type { DeckFrontmatter } from '~/types'
 
 const route = useRoute()
+const { addRecent } = useRecentDecks()
 
 const { data: deck } = await useAsyncData(
   `deck-${route.params.id}`,
@@ -17,6 +18,7 @@ const revealSrc = computed(
 )
 
 definePageMeta({ keepalive: true })
+onMounted(() => addRecent(route.params.id as string))
 
 useSeoMeta({
   title: () => `${deck.value?.title ?? 'Deck'} — Slide Warehouse`,
