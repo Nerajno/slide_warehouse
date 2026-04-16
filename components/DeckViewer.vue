@@ -7,6 +7,7 @@ const { isFullscreen, toggle } = useFullscreen(container)
 
 const slideIndex = ref(1)
 const slideTotal = ref(0)
+const copiedSlide = ref(false)
 
 onMounted(() => {
   window.addEventListener('message', (e) => {
@@ -19,6 +20,15 @@ onMounted(() => {
     }
   })
 })
+
+async function copySlideLink() {
+  const url = new URL(window.location.href)
+  url.search = ''
+  url.searchParams.set('slide', String(slideIndex.value - 1))
+  await navigator.clipboard.writeText(url.toString())
+  copiedSlide.value = true
+  setTimeout(() => (copiedSlide.value = false), 2000)
+}
 
 function prevSlide() {
   iframe.value?.contentWindow?.postMessage({ method: 'prev' }, '*')
@@ -44,6 +54,11 @@ function nextSlide() {
         class="w-full h-full border-0"
         allow="fullscreen"
       />
+    </div>
+
+    <!-- Progress bar -->
+    <div v-if="slideTotal > 0" class="w-full h-1 bg-gray-200 dark:bg-gray-700">
+      <div class="h-1 bg-emerald-500 transition-all duration-150" :style="{ width: `${(slideIndex / slideTotal) * 100}%` }" />
     </div>
 
     <!-- Controls -->
