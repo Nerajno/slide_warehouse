@@ -9,6 +9,12 @@ const slideIndex = ref(1)
 const slideTotal = ref(0)
 const copiedSlide = ref(false)
 
+function handleKeydown(e: KeyboardEvent) {
+  if (e.key === 'ArrowLeft') prevSlide()
+  else if (e.key === 'ArrowRight') nextSlide()
+  else if (e.key === 'f' || e.key === 'F') toggle()
+}
+
 onMounted(() => {
   window.addEventListener('message', (e) => {
     if (e.data?.namespace === 'reveal') {
@@ -19,6 +25,11 @@ onMounted(() => {
       }
     }
   })
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
 })
 
 async function copySlideLink() {
