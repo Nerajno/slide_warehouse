@@ -14,6 +14,11 @@ versions:
     label: "Original — TechBridge 2025"
     date: "2025-03-01"
     revealFile: "v1.html"
+resources:
+  - label: "Blog post"
+    url: ""
+  - label: "Recording"
+    url: ""
 events: ["TechBridge Spring 2025", "Orlando Devs 2025"]
 tier: "30min"
 ---

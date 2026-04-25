@@ -19,6 +19,12 @@ versions:
     date: "2026-03-20"
     revealFile: "v2.html"
     changes: "Updated branding, added speaker notes, new closing slide"
+featured: true
+resources:
+  - label: "Blog post"
+    url: ""
+  - label: "Recording"
+    url: ""
 events: ["Connect.Tech 2025", "Orlando Code Camp 2026"]
 tier: "45min"
 ---
