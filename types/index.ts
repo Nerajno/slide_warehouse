@@ -30,6 +30,8 @@ export interface DeckFrontmatter {
   revealBasePath: string
   currentVersion: number
   versions: DeckVersion[]
+  featured?: boolean
+  resources?: Resource[]
   events?: string[]
   thumbnail?: string
   tier?: '30min' | '45min' | '60min'
@@ -43,6 +45,36 @@ export interface SearchParams {
   q?: string
   tags?: string
   sort?: 'newest' | 'oldest' | 'az' | 'za'
+}
+
+export type TalkStatus = 'delivered' | 'confirmed' | 'cfp-open' | 'submitted'
+
+export interface Resource { label: string; url: string }
+export interface TopicStat { tag: string; count: number }
+
+export interface ConferencePipelineItem {
+  name: string
+  location: string
+  date: string
+  status: TalkStatus
+}
+
+export interface SpeakerData {
+  bio: string
+  socialHandles: { x: string; github: string; devto: string }
+  links: Resource[]
+  stats: { totalTalks: number; conferencesCount: number; since: number }
+  recentTalk: {
+    title: string
+    conference: string
+    hashtag: string
+    location: string
+    date: string
+    durationMinutes: number
+    deckSlug: string
+    recordingUrl: string | null
+  }
+  pipeline: ConferencePipelineItem[]
 }
 
 /** Tag → Tailwind gradient classes for card thumbnails */
