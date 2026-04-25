@@ -12,6 +12,13 @@ const { isDark, toggle } = useTheme()
         </NuxtLink>
         <div class="flex items-center gap-4">
           <span class="text-xs text-gray-400 font-mono">@Nerajno</span>
+          <NuxtLink
+            to="/about"
+            class="text-xs text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+            active-class="text-emerald-600 dark:text-emerald-400"
+          >
+            About
+          </NuxtLink>
           <button
             class="w-9 h-9 flex items-center justify-center rounded-btn text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-colors"
             :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
