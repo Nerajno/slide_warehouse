@@ -126,18 +126,10 @@ const { data: decks } = await useAsyncData(`topic-${tag}`, () =>
 ## Modified Files
 
 ### `components/DeckSidebar.vue`
-Add props:
-```ts
-resources?: Resource[]
-versions?: DeckVersion[]  // already on deck, passed explicitly for clarity
-```
-After existing sections, render `<ResourceLinks :resources="resources" />` and `<VersionChangelog :versions="versions" />` with `<hr>` separators (conditional on presence).
+No new props. `DeckFrontmatter` already arrives via the existing `deck` prop. After extending the interface with `resources?: Resource[]`, DeckSidebar renders `<ResourceLinks :resources="deck.resources" />` and `<VersionChangelog :versions="deck.versions" />` with conditional `<hr>` separators.
 
 ### `pages/decks/[id].vue`
-Pass new props to DeckSidebar:
-```html
-<DeckSidebar :deck="deck" :resources="deck.resources" :versions="deck.versions" />
-```
+No change needed — already passes `:deck="deck"`. New fields flow automatically.
 
 ### `pages/index.vue`
 Add above the existing hero div:
