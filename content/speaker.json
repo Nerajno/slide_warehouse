@@ -1,0 +1,35 @@
+{
+  "name": "Nerando Johnson",
+  "bio": "Nerando Johnson is a software developer, international conference speaker, and community builder. He has spoken at conferences across the US since 2019, focusing on career development, soft skills, and frontend engineering. When he's not on stage, he's writing at developingdvlpr.com or contributing to open source.",
+  "socialHandles": {
+    "x": "nerajno",
+    "github": "Nerajno",
+    "devto": "nerajno"
+  },
+  "links": [
+    { "label": "Blog", "url": "https://developingdvlpr.com" },
+    { "label": "GitHub", "url": "https://github.com/Nerajno" }
+  ],
+  "stats": {
+    "totalTalks": 12,
+    "conferencesCount": 9,
+    "since": 2019
+  },
+  "recentTalk": {
+    "title": "People Skills Are Technical Skills",
+    "conference": "Orlando Code Camp 2026",
+    "hashtag": "#OrlandoCodeCamp26",
+    "location": "Orlando, FL",
+    "date": "2026-04-01",
+    "durationMinutes": 45,
+    "deckSlug": "people-skills-are-technical-skills",
+    "recordingUrl": null
+  },
+  "pipeline": [
+    { "name": "Orlando Code Camp 2026", "location": "Orlando, FL", "date": "2026-04-01", "status": "delivered" },
+    { "name": "DevNexus 2026", "location": "Atlanta, GA", "date": "2026-03-01", "status": "delivered" },
+    { "name": "Connect.Tech 2025", "location": "Atlanta, GA", "date": "2025-10-01", "status": "delivered" },
+    { "name": "Nebraska.Code() 2026", "location": "Lincoln, NE", "date": "2026-07-17", "status": "confirmed" },
+    { "name": "Connect.Tech 2026", "location": "Atlanta, GA", "date": "2026-10-01", "status": "cfp-open" }
+  ]
+}
