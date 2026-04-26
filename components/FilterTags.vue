@@ -39,14 +39,16 @@ function clearAll() {
     </button>
 
     <button
-      v-for="tag in ALL_TAGS"
+      v-for="tag in ALL_TAGS.filter(t => tagCount(t) > 0)"
       :key="tag"
       role="button"
       :aria-pressed="store.activeTags.includes(tag)"
       class="h-8 px-3 rounded-tag text-xs font-medium flex items-center gap-1.5 transition-colors"
-      :class="store.activeTags.includes(tag)
-        ? 'bg-emerald-600 text-white'
-        : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
+      :class="[
+        store.activeTags.includes(tag)
+          ? 'bg-emerald-600 text-white'
+          : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700',
+      ]"
       @click="toggle(tag)"
     >
       {{ tag }}
