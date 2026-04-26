@@ -64,6 +64,16 @@ function formatDate(iso: string) {
       </section>
     </template>
 
+    <template v-if="deck.resources?.some(r => r.url)">
+      <hr class="border-gray-200 dark:border-gray-700" />
+      <ResourceLinks :resources="deck.resources" />
+    </template>
+
+    <template v-if="deck.versions?.length">
+      <hr class="border-gray-200 dark:border-gray-700" />
+      <VersionChangelog :versions="deck.versions" />
+    </template>
+
     <hr class="border-gray-200 dark:border-gray-700" />
 
     <!-- Actions -->
