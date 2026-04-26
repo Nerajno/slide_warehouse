@@ -10,7 +10,12 @@ const recentDecks = computed(() =>
 </script>
 
 <template>
-  <div class="max-w-6xl mx-auto px-4 py-8">
+  <div>
+    <FeaturedDeck />
+    <TopicsExplorer />
+    <SpeakerOverview />
+    <div class="border-t border-gray-200 dark:border-gray-800" />
+    <div class="max-w-6xl mx-auto px-4 py-8">
     <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Presentations</h1>
     <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Browse, search, and share Reveal.js decks.</p>
 
@@ -39,5 +44,7 @@ const recentDecks = computed(() =>
 
     <!-- Grid -->
     <DeckGrid :decks="allDecks" :pending="pending" />
+    </div>
   </div>
+
 </template>

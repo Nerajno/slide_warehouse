@@ -21,6 +21,24 @@ export default defineNuxtConfig({
     },
   },
 
+  nitro: {
+    prerender: {
+      routes: [
+        '/about',
+        '/topics/vue',
+        '/topics/nuxt',
+        '/topics/javascript',
+        '/topics/typescript',
+        '/topics/career',
+        '/topics/soft-skills',
+        '/topics/fundamentals',
+        '/topics/architecture',
+        '/topics/accessibility',
+        '/topics/community',
+      ],
+    },
+  },
+
   css: ['~/assets/css/main.css'],
 
 
@@ -43,7 +61,7 @@ export default defineNuxtConfig({
         },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
         },
       ],
     },
