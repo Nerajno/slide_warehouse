@@ -14,7 +14,11 @@ const displayTag = computed(() =>
 
 useSeoMeta({
   title: () => `${displayTag.value} Decks — Slide Warehouse`,
-  description: () => `All presentation decks tagged with ${tag}.`,
+  description: () => `All presentation decks by Nerando Johnson tagged with "${displayTag.value}". Browse Reveal.js slides at Slide Warehouse.`,
+  ogTitle: () => `${displayTag.value} Decks`,
+  ogDescription: () => `Browse all "${displayTag.value}" presentation decks at Slide Warehouse.`,
+  ogSiteName: 'Slide Warehouse',
+  twitterCard: 'summary',
 })
 </script>
 
