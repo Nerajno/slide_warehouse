@@ -1,6 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
+
+  routeRules: {
+    '/': { prerender: true },
+    '/about': { prerender: true },
+    '/decks/**': { ssr: true },
+    '/topics/**': { ssr: true },
+  },
+
   devtools: { enabled: true },
 
   modules: [
