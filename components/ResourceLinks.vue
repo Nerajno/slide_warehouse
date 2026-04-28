@@ -14,12 +14,13 @@ const hasLinks = computed(() =>
     <button
       class="flex items-center justify-between w-full text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2"
       :aria-expanded="open"
+      aria-controls="resource-links-list"
       @click="open = !open"
     >
       Resources
       <span class="text-gray-500 transition-transform" :class="open ? 'rotate-180' : ''">▾</span>
     </button>
-    <ul v-if="open" class="space-y-1.5">
+    <ul v-if="open" id="resource-links-list" class="space-y-1.5">
       <li v-for="resource in resources?.filter(r => r.url)" :key="resource.label">
         <a
           :href="resource.url"

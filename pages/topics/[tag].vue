@@ -2,19 +2,20 @@
 import type { DeckFrontmatter } from '~/types'
 
 const route = useRoute()
-const tag = route.params.tag as string
+const tag = computed(() => route.params.tag as string)
 
-const { data: decks } = await useAsyncData(`topic-${tag}`, () =>
-  queryContent('decks').where({ tags: { $contains: tag } }).find() as unknown as Promise<DeckFrontmatter[]>
+const { data: decks } = await useAsyncData(
+  () => `topic-${tag.value}`,
+  () => queryContent<DeckFrontmatter>('decks').where({ tags: { $contains: tag.value } }).find()
 )
 
 const displayTag = computed(() =>
-  tag.charAt(0).toUpperCase() + tag.slice(1)
+  tag.value.charAt(0).toUpperCase() + tag.value.slice(1)
 )
 
 useSeoMeta({
   title: () => `${displayTag.value} Decks — Slide Warehouse`,
-  description: () => `All presentation decks tagged with ${tag}.`,
+  description: () => `All presentation decks tagged with ${tag.value}.`,
 })
 </script>
 

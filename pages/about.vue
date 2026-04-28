@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { SpeakerData } from '~/types'
+import type { SpeakerData, DeckFrontmatter } from '~/types'
 
 const { data: speaker } = await useAsyncData('about-speaker', () =>
   queryContent<SpeakerData>('speaker').findOne()
 )
 
 const { data: allDecks } = await useAsyncData('about-decks', () =>
-  queryContent('decks').find()
+  queryContent<DeckFrontmatter>('decks').find()
 )
 
 const totalDecks = computed(() => allDecks.value?.length ?? 0)
 const totalSlides = computed(() =>
-  allDecks.value?.reduce((sum: number, d: any) => sum + (d.slideCount ?? 0), 0) ?? 0
+  allDecks.value?.reduce((sum, d) => sum + (d.slideCount ?? 0), 0) ?? 0
 )
 
 useSeoMeta({
