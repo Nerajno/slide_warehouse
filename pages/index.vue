@@ -22,11 +22,6 @@ useSeoMeta({
   <div>
     <!-- Dark editorial hero -->
     <section class="relative bg-zinc-950 overflow-hidden">
-      <div
-        class="absolute inset-0 opacity-[0.04] pointer-events-none"
-        aria-hidden="true"
-        style="background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E\")"
-      />
       <div class="absolute top-0 inset-x-0 h-px bg-emerald-500" aria-hidden="true" />
       <div class="relative max-w-6xl mx-auto px-4 py-16 sm:py-24">
         <p class="font-mono text-[0.65rem] uppercase tracking-widest text-amber-400 mb-5">
