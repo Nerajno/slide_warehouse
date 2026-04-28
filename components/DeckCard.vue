@@ -30,7 +30,6 @@ const latestEvent = computed(() => props.deck.events?.at(-1) ?? '')
     <NuxtLink
       :to="`/decks/${deck.id}`"
       class="block focus:outline-none focus:ring-2 focus:ring-emerald-600 rounded-card"
-      :aria-label="deck.title"
     >
       <div
         class="h-32 rounded-t-card bg-gradient-to-br"

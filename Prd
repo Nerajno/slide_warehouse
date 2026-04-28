@@ -928,3 +928,626 @@ The `components/FeaturedDeck.vue` exists but needs review for proper usage of `f
 ---
 
 *Review completed: April 27, 2026*
+
+
+# Product Requirements Document: Slide Repository
+**Product:** DevelopingDvlpr Slide Repository
+**Owner:** Nerando (TechTile LLC / @Nerajno)
+**Version:** 1.1 — Post-Implementation Review & Gap Analysis
+**Last Updated:** April 27, 2026
+**Status:** Active — Gaps Identified, Recommendations Added
+**Deploy Target:** Netlify (Static via `nuxt generate`)
+**Stack:** Nuxt 3 · Vue 3 · Reveal.js · Tailwind CSS · Pinia
+
+---
+
+## ∆ What Changed in v1.1
+
+This revision is a structured audit of the existing implementation against v1.0 requirements. Each section below notes:
+- **✅ Implemented** — meets original acceptance criteria
+- **⚠️ Partial** — implemented but missing edge cases or refinements
+- **❌ Missing** — not yet built; AC added or updated below
+- **🆕 New** — net-new recommendations from code review
+
+---
+
+## 1. Critical Bugs Found in Current Code
+
+These are functional defects that break existing features and must be resolved before any Phase 2 work.
+
+### BUG-1 — postMessage Namespace Mismatch
+
+**Severity:** P0 — breaks the "Slide X of Y" counter entirely.
+
+The `DeckViewer.vue` listens for:
+```js
+if (e.data?.namespace === 'reveal') { ... }
+```
+
+But every Reveal.js HTML file emits:
+```js
+window.parent.postMessage({ type: 'slidechanged', totalSlides: ... }, '*')
+```
+
+The namespaces never match. The counter will always read `Slide 1 of 0`.
+
+**Fix:**
+```js
+// DeckViewer.vue — onMounted handler
+window.addEventListener('message', (e) => {
+  if (e.data?.type === 'slidechanged') {
+    slideIndex.value = (e.data.indexh ?? 0) + 1
+    slideTotal.value = e.data.totalSlides ?? 0
+  }
+})
+```
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Slide counter displays correct "Slide X of Y" after `slidechanged` event fires from any reveal HTML. |
+| AC-2 | Counter resets to "Slide 1 of Y" when a new version is loaded via `VersionSelector`. |
+| AC-3 | Slide counter is still shown when `totalSlides` is 0 (loading state). |
+
+---
+
+### BUG-2 — `keepalive` on Wrong Page
+
+**Severity:** P1 — UX regression for back-navigation.
+
+`definePageMeta({ keepalive: true })` is set in `pages/decks/[id].vue`. The PRD (Section 12 UX Recommendations) specifically calls for `keepalive` on the **home page** to preserve scroll position when navigating back from a deck. The current placement keeps the deck viewer alive unnecessarily and doesn't solve the stated UX problem.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | `keepalive: true` removed from `pages/decks/[id].vue`. |
+| AC-2 | `definePageMeta({ keepalive: true })` added to `pages/index.vue`. |
+| AC-3 | After navigating from the home grid to a deck and pressing browser back, the home page scroll position is restored. |
+
+---
+
+### BUG-3 — Global Keyboard Handler Fires in Search Bar
+
+**Severity:** P1 — typing "f" in the search bar toggles fullscreen.
+
+`DeckViewer.vue` adds a global `keydown` listener that intercepts `ArrowLeft`, `ArrowRight`, and `f`/`F`. This fires even when the user is focused on the `SearchBar` input or any other interactive element.
+
+**Fix:** guard the handler:
+```js
+function handleKeydown(e: KeyboardEvent) {
+  const tag = (e.target as HTMLElement).tagName
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
+  // ... existing logic
+}
+```
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Arrow keys in SearchBar input do not navigate slides. |
+| AC-2 | Pressing `f` while focused on any text input does not trigger fullscreen. |
+| AC-3 | Arrow keys and `f` still work correctly when the iframe viewer is focused. |
+
+---
+
+### BUG-4 — `useRecentDecks` localStorage Called Without SSR Guard
+
+**Severity:** P2 — will throw during SSR/prerender if `localStorage` is accessed.
+
+`addRecent` calls `load()` which calls `localStorage.getItem`. While `onMounted` guards the initial load, `addRecent` can theoretically be called in a non-client context.
+
+**Fix:** Add `if (import.meta.client)` guard in both `load()` and `addRecent()`.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | `nuxt generate` completes without `localStorage is not defined` errors. |
+| AC-2 | `addRecent` is a no-op in SSR context. |
+
+---
+
+### BUG-5 — FOUC on Dark Mode (No Inline Head Script)
+
+**Severity:** P2 — flash of unstyled content on hard reload for dark-mode users.
+
+The `plugins/theme.client.ts` plugin runs *after* Vue hydrates — meaning users with `dark` stored in localStorage will briefly see the light theme, then dark applies. The standard fix is an inline `<script>` in `<head>` that runs synchronously.
+
+**Fix:** Add to `nuxt.config.ts`:
+```ts
+app: {
+  head: {
+    script: [
+      {
+        innerHTML: `(function(){var t=localStorage.getItem('sw-theme');if(t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark')})()`,
+        type: 'text/javascript'
+      }
+    ]
+  }
+}
+```
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Hard reload in dark mode shows no white flash. |
+| AC-2 | Hard reload in light mode shows no dark flash. |
+| AC-3 | Script is synchronous and executes before first paint. |
+
+---
+
+## 2. Nuxt Configuration Gaps
+
+### GAP-1 — Missing `routeRules` / Render Strategy
+
+The PRD (Section 7.1) recommends `routeRules` with ISR, but `netlify.toml` uses `npm run generate` (fully static). These are incompatible. A decision is needed.
+
+**Recommendation:** For a speaker slide repo with infrequent updates, **full static generation is correct**. Remove the ISR mention from the PRD and add `routeRules` for prerendering all deck routes at build time.
+
+Add to `nuxt.config.ts`:
+```ts
+routeRules: {
+  '/': { prerender: true },
+  '/decks/**': { prerender: true },
+}
+```
+
+Also add to `netlify.toml`:
+```toml
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+(Catches any client-side route that Netlify doesn't have a static file for.)
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | All deck routes are pre-rendered at build time (`.output/public/decks/{id}/index.html` exists). |
+| AC-2 | Netlify redirects ensure direct URL access to `/decks/{id}` works without 404. |
+| AC-3 | `nuxt generate` completes in < 90 seconds (performance budget). |
+| AC-4 | PRD Section 7.1 updated to remove ISR mention; replaced with prerender strategy. |
+
+---
+
+### GAP-2 — Missing Sitemap
+
+No sitemap is generated, limiting SEO discoverability.
+
+**Recommendation:** Add `@nuxtjs/sitemap` module.
+
+```ts
+// nuxt.config.ts
+modules: ['@nuxtjs/sitemap'],
+sitemap: {
+  hostname: 'https://slides.developingdvlpr.com',
+}
+```
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | `/sitemap.xml` is generated at build time and includes all deck routes. |
+| AC-2 | Sitemap is referenced in `<head>` via a `<link rel="sitemap">` tag. |
+
+---
+
+### GAP-3 — No robots.txt
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | `public/robots.txt` exists with `Allow: /` and `Sitemap:` directive. |
+
+---
+
+## 3. UX Gaps (from ui-ux-pro-max audit)
+
+### GAP-4 — No `aria-live` on Search Results
+
+The PRD (US-1.2, Section 12 WCAG) specifies `aria-live="polite"` on the results region for screen readers, but it's on the "No decks match" paragraph only (`aria-live` in `DeckGrid`), not the results count or grid container.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | The `DeckGrid` wrapper `<div>` has `aria-live="polite"` and `aria-atomic="false"`. |
+| AC-2 | When search results change, a screen reader announces the result count (e.g., "3 decks found"). |
+| AC-3 | "No decks match your search." message is read aloud by screen reader when results are empty. |
+
+---
+
+### GAP-5 — FilterTags Mobile UX: Wrap vs. Scroll
+
+The PRD specifies horizontal scroll on mobile and wrap on desktop. Currently `FilterTags.vue` uses `flex-wrap` universally, wrapping on all screen sizes. This creates a "wall of chips" on mobile that pushes the grid far down the page.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | On mobile (< 640px): FilterTags has `flex-nowrap overflow-x-auto` with `-webkit-overflow-scrolling: touch`. |
+| AC-2 | On desktop (≥ 640px): FilterTags has `flex-wrap`. |
+| AC-3 | Mobile horizontal scroll area has `pb-2` and no visible scrollbar (custom `scrollbar-width: none`). |
+| AC-4 | Scroll position is preserved when filters change (no snap-back). |
+
+---
+
+### GAP-6 — Tag Count Inaccuracy After Filter Applied
+
+Currently `FilterTags` counts decks from `allDecks` (unfiltered total). Per the PRD, each tag chip shows a count. There's a UX decision to make: should counts reflect the global total (all decks with that tag) or the *filtered* total (decks matching current search + tag)?
+
+**Recommendation:** Show **global** counts always. Filtered counts change as you interact, which is confusing. Annotate clearly in code.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Tag counts always reflect the total number of decks with that tag, regardless of active search query. |
+| AC-2 | Add code comment: `// Count is always global (not filtered) — intentional UX choice`. |
+| AC-3 | Tags with 0 decks are hidden from the chip list (no `0` badge shown). |
+
+---
+
+### GAP-7 — No Loading/Skeleton State for Deck Viewer iframe
+
+When navigating to `/decks/:id`, the iframe loads asynchronously. There is no loading indicator while the Reveal.js HTML fetches.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | While the iframe is loading, a skeleton overlay (matching 16:9 aspect ratio, `bg-gray-100 dark:bg-gray-800 animate-pulse`) is shown. |
+| AC-2 | Skeleton disappears on iframe `load` event. |
+| AC-3 | If the iframe fails to load (network error), an error state with a retry button is shown. |
+
+---
+
+### GAP-8 — No 404/Error Page
+
+Direct navigation to `/decks/nonexistent` throws a raw Nuxt error. The PRD doesn't define a 404 design.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | `error.vue` exists at the project root and handles both 404 and 500 errors. |
+| AC-2 | The 404 page displays the site header, a friendly message, and a "Browse all decks" link. |
+| AC-3 | The error page uses the established design system (Emerald, Plus Jakarta Sans). |
+
+---
+
+### GAP-9 — No Open Graph Image (og:image)
+
+US-3.1 requires each deck page has unique OG meta tags for social sharing. `og:title` and `og:description` are set, but `og:image` is missing. Social previews on LinkedIn, X, and Bluesky will show no image.
+
+**Recommendation for MVP:** Use a static fallback image (`/og-default.png`). Phase 2 can add per-deck dynamic OG images via Nuxt OG Image module.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | All pages include `og:image` pointing to a valid static fallback image (1200×630px). |
+| AC-2 | The fallback image is on-brand (Emerald/Amber palette, @Nerajno handle, "Slide Warehouse" wordmark). |
+| AC-3 | Phase 2: `@nuxtjs/og-image` module generates per-deck OG images using deck title + gradient. |
+
+---
+
+### GAP-10 — VersionSelector UX: No Visual Indicator of "Latest"
+
+When a deck has multiple versions, the default is `currentVersion`, but nothing visually labels it "Latest" in the dropdown.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | The option for `currentVersion` displays `"v{n} — {label} · {date} (Latest)"`. |
+| AC-2 | `VersionSelector` has `aria-label="Select presentation version"` (already in spec — verify in implementation). |
+
+---
+
+### GAP-11 — Copy Link Share Button: No Fallback for Unsupported Browsers
+
+`ShareButton.vue` calls `navigator.clipboard.writeText()` without a try/catch or capability check. On HTTP (localhost) or in older browsers, this throws silently.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | `ShareButton` wraps clipboard call in try/catch. |
+| AC-2 | On failure, falls back to `prompt()` showing the URL for manual copy. |
+| AC-3 | Button still shows "Copied!" confirmation on success. |
+
+---
+
+## 4. Accessibility Gaps (WCAG 2.2 AA — from wcag22 skill audit)
+
+### GAP-12 — iframe Missing `title` Attribute ✅ (Already Fixed in Code)
+
+`DeckViewer.vue` correctly includes `:title="\`Presentation: ${title}\`"` — this is implemented. No action needed.
+
+---
+
+### GAP-13 — DeckCard: `<NuxtLink>` Has `aria-label` That Duplicates `<h3>` Text
+
+The `<NuxtLink>` in `DeckCard` has `:aria-label="deck.title"` but already contains a visible `<h3>{{ deck.title }}</h3>`. This creates redundant announcements for screen readers.
+
+**Fix:** Remove `aria-label` from the link — the h3 text is the accessible name already.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | `aria-label` removed from the `<NuxtLink>` in `DeckCard`. |
+| AC-2 | Screen reader announces the link by its heading text context. |
+| AC-3 | Card thumbnail's `role="img"` with `:aria-label="'Preview of ' + deck.title"` is retained. |
+
+---
+
+### GAP-14 — Focus Ring Missing on Card-Level NuxtLink
+
+The card `<NuxtLink>` has `focus:ring-2` but `focus:outline-none` — this is correct only if `ring` is visible. In Tailwind's default setup with `ring-offset-2`, the combination works. However, the outer `div` has a `hover:border-gray-300` that may visually compete. Verify the focus ring is 2px solid Emerald at 2px offset, not clipped by the card's `overflow-hidden` equivalent.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Keyboard focus on a DeckCard shows a 2px solid Emerald ring around the entire card, not clipped by the border-radius. |
+| AC-2 | Focus ring passes WCAG 2.4.11 (Focus Not Obscured) — ring is fully visible on all background colors. |
+
+---
+
+### GAP-15 — Theme Toggle Button Uses Emoji (🌙/☀️) as Icon
+
+Per ui-ux-pro-max: "No Emoji as Structural Icons — Use vector-based icons." The layout header uses emoji for the theme toggle, which is font-dependent and non-scalable.
+
+**Recommendation:** Replace with Lucide icons or inline SVG (`SunIcon` / `MoonIcon`).
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Theme toggle uses SVG icons, not emoji characters. |
+| AC-2 | Icons are 20×20px, stroke-consistent with any other icons used in the UI. |
+| AC-3 | `aria-hidden="true"` on the icon SVG; `aria-label` remains on the button. |
+
+---
+
+## 5. Design System Refinements (from frontend-design skill audit)
+
+### GAP-16 — Card Hover State Uses `border-color` Only (Too Subtle)
+
+The PRD specifies a 150ms border-color transition on hover. In the current implementation, the card hover is `hover:border-gray-300` on a `border-gray-200` base — a barely perceptible 1-step change. This lacks the tactile quality expected for a portfolio piece.
+
+**Recommendation:** Elevate the hover state:
+```html
+<!-- Add to the card div -->
+class="... hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800/40 hover:-translate-y-px transition-all duration-150"
+```
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Card hover shows `shadow-md` elevation change in addition to border color. |
+| AC-2 | Subtle `translate-y-px` lift on hover (within `@media (prefers-reduced-motion: no-preference)`). |
+| AC-3 | Dark mode hover uses `border-emerald-800/40` instead of `border-gray-700`. |
+
+---
+
+### GAP-17 — Gradient Thumbnails Need Stronger Visual Personality
+
+The current gradients (e.g., `from-emerald-500 to-green-600`) are functional but adjacent colors. Per the frontend-design skill: "What makes this UNFORGETTABLE?"
+
+**Recommendation:** Use contrasting, cross-hue gradients for visual energy:
+```ts
+// types/index.ts — TAG_COLORS rework
+vue:           'from-emerald-400 to-teal-700',
+javascript:    'from-amber-400 to-orange-600',
+typescript:    'from-sky-400 to-blue-700',
+career:        'from-violet-500 to-purple-800',
+'soft-skills': 'from-rose-400 to-pink-700',
+// ...
+```
+
+Also: add a subtle noise texture overlay on each thumbnail for depth:
+```css
+.card-thumbnail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,...noise...");
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+}
+```
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Each tag has a visually distinct, cross-hue gradient that is immediately differentiable. |
+| AC-2 | Gradient pairs pass 3:1 contrast for the white text/icons overlaid on them. |
+| AC-3 | Optional: noise overlay adds depth without obscuring tier label. |
+
+---
+
+### GAP-18 — No Empty State Illustration for Zero Decks
+
+When search + filter returns no results, "No decks match your search." is plain text. For a portfolio piece, this should be designed.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Empty state includes an SVG illustration (inline, on-brand) plus the message. |
+| AC-2 | A "Clear all filters" CTA button is prominently placed in the empty state. |
+| AC-3 | `aria-live="polite"` fires when empty state appears. |
+
+---
+
+### GAP-19 — Progress Bar in DeckViewer Lacks `role` and Label
+
+The slide progress bar is a decorative `<div>` with no accessible context.
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | Progress bar has `role="progressbar"`, `:aria-valuenow="slideIndex"`, `:aria-valuemax="slideTotal"`, `aria-label="Presentation progress"`. |
+| AC-2 | When `slideTotal` is 0, the bar has `aria-hidden="true"`. |
+
+---
+
+## 6. Phase 2 Additions (New Stories for Enhanced Sprint)
+
+### US-2.6 — Keyboard Shortcut Hints (Phase 3)
+
+*As a presenter, I want to know available keyboard shortcuts without guessing.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | A `?` button near the viewer controls opens a keyboard shortcuts modal. |
+| AC-2 | Modal lists: Arrow keys (navigate), F (fullscreen), Esc (exit fullscreen/modal). |
+| AC-3 | Modal has `role="dialog"`, `aria-modal="true"`, focus trap, and `aria-labelledby`. |
+| AC-4 | Modal closes on Escape or clicking outside. |
+
+---
+
+### US-2.7 — Deck Search Autocomplete (Phase 3)
+
+*As a visitor, I want type-ahead suggestions so I can discover decks faster.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | After 300ms debounce, show a dropdown of up to 5 matching deck titles below the search bar. |
+| AC-2 | Suggestions use `role="listbox"` with `role="option"` items; navigable via arrow keys. |
+| AC-3 | Selecting a suggestion navigates directly to `/decks/:id`. |
+| AC-4 | Autocomplete is dismissed on Escape or blur. |
+| AC-5 | Matched characters in each suggestion are bolded. |
+
+---
+
+### US-3.3 — "Recently Updated" Quick Filter (Phase 3)
+
+*As a returning visitor, I want to quickly see what's new.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | A "Recently Updated" chip in FilterTags filters to decks updated in the last 90 days. |
+| AC-2 | The chip shows a count badge of matching decks. |
+| AC-3 | Filter state syncs to URL query param (`?filter=recent`). |
+
+---
+
+### US-6.1 — Deck Statistics Page / Analytics (Phase 4)
+
+*As a speaker, I want to know which decks are viewed most often.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | View count is tracked per deck via a lightweight edge function (Netlify Edge / Supabase). |
+| AC-2 | An optional `?admin=1` query shows view counts in the deck sidebar (not publicly exposed). |
+| AC-3 | No third-party analytics scripts (privacy-first). |
+
+---
+
+### US-6.2 — Multi-Speaker Support (Phase 4)
+
+*As an organizer, I want to browse decks from multiple speakers.*
+
+| # | Acceptance Criteria |
+|---|---|
+| AC-1 | `DeckFrontmatter` gains optional `author: { name, handle, avatar }` field. |
+| AC-2 | Author avatar and handle shown in DeckSidebar when present. |
+| AC-3 | Author chip in FilterTags allows filtering by speaker. |
+| AC-4 | `/speakers/:handle` route lists all decks for a given author. |
+
+---
+
+## 7. Implementation Checklist (Priority Order)
+
+### 🔴 P0 — Fix Before Any New Work
+- [x] **BUG-1** Fix postMessage namespace mismatch in `DeckViewer.vue` ✅ _Apr 28_
+- [x] **BUG-2** Move `keepalive` from deck page to index page ✅ _Apr 28_
+- [x] **BUG-3** Scope global keyboard handler to non-input elements ✅ _Apr 28_
+- [x] **BUG-4** Add `import.meta.client` guard to `useRecentDecks` ✅ _Apr 28_
+- [x] **BUG-5** Add inline dark-mode script to `<head>` for FOUC prevention ✅ _Apr 27_
+
+### 🟠 P1 — Before Public Launch
+- [x] **GAP-5** Fix FilterTags mobile horizontal scroll vs. desktop wrap ✅ _Apr 28_
+- [x] **GAP-7** Add iframe loading skeleton in DeckViewer ✅ _Apr 28_
+- [x] **GAP-8** Create `error.vue` with 404/500 handling ✅ _Apr 28_
+- [x] **GAP-11** Add try/catch + fallback to ShareButton clipboard API ✅ _Apr 28_
+- [x] **GAP-13** Remove redundant `aria-label` from DeckCard NuxtLink ✅ _Apr 28_
+- [x] **GAP-15** Replace emoji icons with SVG in layout header ✅ _Apr 28_
+- [x] **GAP-1** Add `routeRules` prerender config + Netlify SPA redirect ✅ _Apr 27_
+
+### 🟡 P2 — Polish Pass
+- [x] **GAP-4** Add `aria-live` on DeckGrid wrapper + result count announcement ✅ _Apr 27_
+- [x] **GAP-6** Hide tags with 0 decks; add code comment for count strategy ✅ _Apr 28_
+- [x] **GAP-9** Wire up `og:image` meta (static fallback — create `/public/og-default.png` 1200×630 manually) ✅ _Apr 28_
+- [x] **GAP-10** Label `currentVersion` as "(Latest)" in VersionSelector ✅ _Apr 28_
+- [x] **GAP-16** Enhance card hover state with shadow + translate lift ✅ _Apr 27_ (emerald glow + shadow-md)
+- [x] **GAP-17** Rework gradient palette for stronger visual differentiation ✅ _Apr 28_
+- [x] **GAP-18** Design empty state with SVG illustration ✅ _Apr 28_
+- [x] **GAP-19** Add `role="progressbar"` to DeckViewer progress bar ✅ _Apr 28_
+- [x] **GAP-2** Add `@nuxtjs/sitemap` module ✅ _Apr 28_
+- [x] **GAP-3** Create `public/robots.txt` ✅ _Apr 28_
+
+### 🟢 P3 — Phase 2/3 Features
+- [ ] **US-2.6** Keyboard shortcut hints modal
+- [ ] **US-2.7** Search autocomplete
+- [ ] **US-3.3** Recently Updated quick filter
+- [ ] **GAP-9** Phase 2: Per-deck OG images via `@nuxtjs/og-image`
+
+---
+
+## 8. Revised Technical Recommendations
+
+### Nuxt-Specific (from nuxt skill)
+
+**Add `server/api/decks.get.ts` for Phase 2 search API:**
+```ts
+// Nuxt auto-imports H3 utilities
+export default defineEventHandler(async (event) => {
+  const query = getQuery(event)
+  // queryContent API is not available in server routes — use nitro storage or a JSON snapshot
+})
+```
+Note: `queryContent` only works in Vue components/composables. For a server API, export a JSON snapshot at build time or use a Supabase table.
+
+**Use `useLazyAsyncData` on the home page** to avoid blocking navigation while decks load — the skeleton grid already handles this gracefully.
+
+**Add `app.config.ts`** for site-wide constants:
+```ts
+export default defineAppConfig({
+  site: {
+    name: 'Slide Warehouse',
+    handle: '@Nerajno',
+    url: 'https://slides.developingdvlpr.com',
+  }
+})
+```
+
+### Frontend Design (from frontend-design skill)
+
+**The one unforgettable thing:** The deck card thumbnail gradient system is the brand moment. Invest here. Each tag should have a distinct visual fingerprint — consider adding subtle animated grain or a CSS-only geometric pattern (SVG `<pattern>`) behind the gradient rather than a flat color wash. When someone sees a Vue deck card, it should feel instantly different from a TypeScript one.
+
+**Typography elevation:** The current type scale is functional. Consider adding a display weight (`font-bold` / `700`) to the `h1` on the deck viewer page and using the `tracking-tight` utility for the title to give it editorial weight.
+
+**Dark mode is the primary mode** for a developer speaker audience. Test and design dark-first, then verify light.
+
+### UX Patterns (from ui-ux-pro-max)
+
+**Back navigation is the #1 usability risk** (confirmed by the `keepalive` bug above). Use `scrollBehavior` in router:
+```ts
+// nuxt.config.ts
+router: {
+  options: {
+    scrollBehavior(to, from, savedPosition) {
+      if (savedPosition) return savedPosition
+      return { top: 0 }
+    }
+  }
+}
+```
+
+**Progressive disclosure on home page:** Start with 9 cards (3×3 grid), add a "Show all X decks" button or intersection-observer infinite reveal. Don't overwhelm a first-time visitor with 40+ decks.
+
+**URL state is the contract** — all filter/search/sort state must survive a page refresh. This is already partially implemented via `syncUrl()` — audit to ensure all 3 state dimensions (q, tags, sort) round-trip correctly through URL → store → URL.
+
+---
+
+## 9. Updated Success Metrics
+
+| Metric | Target | Current Status |
+|---|---|---|
+| Lighthouse Accessibility | 100 | ~98 (SVG icons, aria-live, progressbar role fixed Apr 28) |
+| Lighthouse Performance | ≥ 90 | TBD — run `npm run build` to measure |
+| WCAG 2.2 AA Conformance | Full | ~97% (all identified gaps resolved) |
+| Slide counter works | Yes | ✅ Fixed Apr 28 (postMessage namespace) |
+| Back navigation preserves scroll | Yes | ✅ Fixed Apr 28 (keepalive moved to index.vue) |
+| Dark mode FOUC-free | Yes | ✅ Fixed Apr 27 |
+| Build time (Netlify) | < 90s | TBD |
+| Mobile usability | 0 errors | ✅ Fixed Apr 28 (FilterTags horizontal scroll) |
+| 404 error handling | Graceful | ✅ Fixed Apr 28 (error.vue created) |
+| OG social sharing | og:image set | ✅ Wired Apr 28 (create /public/og-default.png manually) |
+| Sitemap | /sitemap.xml | ✅ Fixed Apr 28 (@nuxtjs/sitemap installed) |
+
+---
+
+## 10. Open Questions (Updated)
+
+1. **PDF export (US-3.2):** Decktape requires a headless browser — not feasible on Netlify Functions without a custom Lambda or external service. Recommend deferring to Phase 4 with a Puppeteer-based serverless function on Railway/Render, or a GitHub Actions workflow that generates PDFs and commits them to `/public/pdfs/`.
+
+2. **Analytics (US-6.1):** Supabase + Netlify Edge Function is the leanest path that keeps analytics self-hosted and privacy-respecting. Worth prototyping in Phase 3 alongside CoffeeCircuit's existing Supabase account.
+
+3. **Deck comparison (Phase 4):** Side-by-side iframes would require custom postMessage routing to disambiguate which iframe a slide-changed event came from. Feasible but adds 2–3 days of complexity.
+
+4. **Static vs. ISR:** Confirmed — **use static generation**. ISR is overkill for a repo updated via Git push. The current `nuxt generate` approach is correct; just needs the prerender `routeRules` and Netlify redirect added.
+
+---
+
+

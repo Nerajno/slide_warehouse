@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const store = useDeckStore()
 const { onInput } = useSearch()
+const route = useRoute()
+const inputEl = ref<HTMLInputElement | null>(null)
 
 let timer: ReturnType<typeof setTimeout>
 function handleInput(e: Event) {
@@ -11,6 +13,10 @@ function handleInput(e: Event) {
 function clear() {
   onInput('')
 }
+
+onMounted(() => {
+  if (route.query.focus === 'search') inputEl.value?.focus()
+})
 </script>
 
 <template>
@@ -18,6 +24,7 @@ function clear() {
     <label for="deck-search" class="sr-only">Search presentations</label>
     <input
       id="deck-search"
+      ref="inputEl"
       type="search"
       autocomplete="off"
       :value="store.searchQuery"

@@ -15,7 +15,13 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxt/content',
     '@pinia/nuxt',
+    '@nuxtjs/sitemap',
   ],
+
+  site: {
+    url: 'https://slides.developingdvlpr.com',
+    name: 'Slide Warehouse',
+  },
 
   typescript: {
     strict: true,
@@ -33,6 +39,7 @@ export default defineNuxtConfig({
     prerender: {
       routes: [
         '/about',
+        '/topics',
         '/topics/vue',
         '/topics/nuxt',
         '/topics/javascript',
@@ -56,6 +63,9 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Browse, search, and share Reveal.js presentations by @Nerajno' },
         { property: 'og:site_name', content: 'Slide Warehouse' },
+        { property: 'og:image', content: 'https://slides.developingdvlpr.com/og-default.png' },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: 'https://slides.developingdvlpr.com/og-default.png' },
       ],
       script: [
         {

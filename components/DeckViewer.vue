@@ -8,8 +8,11 @@ const { isFullscreen, toggle } = useFullscreen(container)
 const slideIndex = ref(1)
 const slideTotal = ref(0)
 const copiedSlide = ref(false)
+const iframeLoaded = ref(false)
 
 function handleKeydown(e: KeyboardEvent) {
+  const tag = (e.target as HTMLElement).tagName
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return
   if (e.key === 'ArrowLeft') prevSlide()
   else if (e.key === 'ArrowRight') nextSlide()
   else if (e.key === 'f' || e.key === 'F') toggle()
@@ -17,12 +20,9 @@ function handleKeydown(e: KeyboardEvent) {
 
 onMounted(() => {
   window.addEventListener('message', (e) => {
-    if (e.data?.namespace === 'reveal') {
-      const s = e.data.state
-      if (s) {
-        slideIndex.value = (s.indexh ?? 0) + 1
-        slideTotal.value = s.length ?? 0
-      }
+    if (e.data?.type === 'slidechanged') {
+      slideIndex.value = (e.data.indexh ?? 0) + 1
+      slideTotal.value = e.data.totalSlides ?? 0
     }
   })
   window.addEventListener('keydown', handleKeydown)
@@ -57,6 +57,13 @@ function nextSlide() {
       class="relative rounded-card overflow-hidden border border-gray-200 dark:border-gray-700"
       style="aspect-ratio: 16/9; min-height: 400px;"
     >
+      <div
+        v-if="!iframeLoaded"
+        class="absolute inset-0 bg-gray-100 dark:bg-gray-800 animate-pulse flex items-center justify-center"
+        aria-hidden="true"
+      >
+        <div class="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-700" />
+      </div>
       <iframe
         ref="iframe"
         :src="src"
@@ -64,13 +71,22 @@ function nextSlide() {
         sandbox="allow-scripts allow-same-origin"
         class="w-full h-full border-0"
         allow="fullscreen"
+        @load="iframeLoaded = true"
       />
     </div>
 
     <!-- Progress bar -->
-    <div v-if="slideTotal > 0" class="w-full h-1 bg-gray-200 dark:bg-gray-700">
+    <div
+      v-if="slideTotal > 0"
+      role="progressbar"
+      :aria-valuenow="slideIndex"
+      :aria-valuemax="slideTotal"
+      aria-label="Presentation progress"
+      class="w-full h-1 bg-gray-200 dark:bg-gray-700"
+    >
       <div class="h-1 bg-emerald-500 transition-all duration-150" :style="{ width: `${(slideIndex / slideTotal) * 100}%` }" />
     </div>
+    <div v-else aria-hidden="true" class="w-full h-1 bg-gray-200 dark:bg-gray-700" />
 
     <!-- Controls -->
     <div class="mt-2 flex items-center justify-between">

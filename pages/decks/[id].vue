@@ -23,7 +23,7 @@ const revealSrc = computed(
 
 const lastEvent = computed(() => deck.value?.events?.at(-1) ?? '')
 
-definePageMeta({ keepalive: true })
+definePageMeta({})
 onMounted(() => addRecent(route.params.id as string))
 
 useSeoMeta({

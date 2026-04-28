@@ -10,7 +10,12 @@ async function copy() {
   const target = props.url
     ? new URL(props.url, window.location.origin).href
     : window.location.href
-  await navigator.clipboard.writeText(target)
+  try {
+    await navigator.clipboard.writeText(target)
+  } catch {
+    prompt('Copy this link:', target)
+    return
+  }
   copied.value = true
   setTimeout(() => (copied.value = false), 2000)
 }

@@ -37,7 +37,8 @@ function clearAll() {
         : '' }}
     </span>
 
-    <div class="flex items-center gap-2 flex-wrap">
+    <!-- Count is always global (not filtered) — intentional UX choice -->
+    <div class="flex items-center gap-2 flex-nowrap overflow-x-auto sm:flex-wrap pb-1 scrollbar-none -webkit-overflow-scrolling-touch">
       <button
         :aria-pressed="store.activeTags.length === 0"
         class="h-8 px-3 rounded-tag text-xs font-medium transition-colors"

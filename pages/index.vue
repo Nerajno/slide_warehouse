@@ -1,4 +1,5 @@
 <script setup lang="ts">
+definePageMeta({ keepalive: true })
 const { decks, pending } = useDecks()
 const allDecks = computed(() => decks.value ?? [])
 const { recent } = useRecentDecks()

@@ -80,14 +80,14 @@ export interface SpeakerData {
 
 /** Tag → Tailwind gradient classes for card thumbnails */
 export const TAG_COLORS: Record<Tag, string> = {
-  vue:           'from-emerald-500 to-green-600',
-  nuxt:          'from-green-600 to-teal-600',
-  javascript:    'from-yellow-400 to-amber-500',
-  typescript:    'from-blue-500 to-indigo-600',
-  career:        'from-purple-500 to-violet-600',
-  'soft-skills': 'from-pink-500 to-rose-500',
-  fundamentals:  'from-gray-500 to-slate-600',
-  architecture:  'from-cyan-500 to-sky-600',
-  accessibility: 'from-teal-500 to-emerald-600',
-  community:     'from-orange-400 to-amber-500',
+  vue:           'from-emerald-400 to-teal-700',
+  nuxt:          'from-green-500 to-emerald-800',
+  javascript:    'from-amber-400 to-orange-600',
+  typescript:    'from-sky-400 to-blue-700',
+  career:        'from-violet-500 to-purple-800',
+  'soft-skills': 'from-rose-400 to-pink-700',
+  fundamentals:  'from-slate-400 to-gray-700',
+  architecture:  'from-cyan-400 to-indigo-700',
+  accessibility: 'from-teal-400 to-cyan-700',
+  community:     'from-orange-400 to-red-600',
 }

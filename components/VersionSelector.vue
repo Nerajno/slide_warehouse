@@ -27,7 +27,7 @@ function formatDate(iso: string) {
         class="h-11 pl-3 pr-8 border border-gray-200 dark:border-gray-700 rounded-btn text-xs bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-600"
       >
         <option v-for="v in versions" :key="v.version" :value="v.version">
-          v{{ v.version }} — {{ v.label }} · {{ formatDate(v.date) }}
+          v{{ v.version }} — {{ v.label }} · {{ formatDate(v.date) }}{{ v.version === modelValue ? ' (Latest)' : '' }}
         </option>
       </select>
     </div>
