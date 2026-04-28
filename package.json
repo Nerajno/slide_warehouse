@@ -22,5 +22,9 @@
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@types/node": "^22.10.7",
     "typescript": "^5.7.3"
+  },
+  "overrides": {
+    "unhead": "^2.1.13",
+    "@nuxtjs/mdc": "^0.18.0"
   }
 }

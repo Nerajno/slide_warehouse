@@ -14,7 +14,11 @@ const displayTag = computed(() =>
 
 useSeoMeta({
   title: () => `${displayTag.value} Decks — Slide Warehouse`,
-  description: () => `All presentation decks tagged with ${tag}.`,
+  description: () => `All presentation decks by Nerando Johnson tagged with "${displayTag.value}". Browse Reveal.js slides at Slide Warehouse.`,
+  ogTitle: () => `${displayTag.value} Decks`,
+  ogDescription: () => `Browse all "${displayTag.value}" presentation decks at Slide Warehouse.`,
+  ogSiteName: 'Slide Warehouse',
+  twitterCard: 'summary',
 })
 </script>
 
@@ -27,7 +31,11 @@ useSeoMeta({
     </nav>
 
     <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-1">{{ displayTag }}</h1>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+    <p
+      class="text-sm text-gray-500 dark:text-gray-400 mb-6"
+      aria-live="polite"
+      aria-atomic="true"
+    >
       {{ decks?.length ?? 0 }} {{ (decks?.length ?? 0) === 1 ? 'deck' : 'decks' }} tagged
       <span class="font-mono text-emerald-600 dark:text-emerald-400">{{ tag }}</span>
     </p>

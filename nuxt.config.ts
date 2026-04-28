@@ -1,6 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
+
+  routeRules: {
+    '/': { prerender: true },
+    '/about': { prerender: true },
+    '/decks/**': { ssr: true },
+    '/topics/**': { ssr: true },
+  },
+
   devtools: { enabled: true },
 
   modules: [
@@ -48,6 +56,11 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Browse, search, and share Reveal.js presentations by @Nerajno' },
         { property: 'og:site_name', content: 'Slide Warehouse' },
+      ],
+      script: [
+        {
+          children: `(function(){try{var t=localStorage.getItem('sw-theme')||'system';var d=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})()`,
+        },
       ],
       link: [
         {

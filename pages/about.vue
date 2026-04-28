@@ -15,8 +15,17 @@ const totalSlides = computed(() =>
 )
 
 useSeoMeta({
-  title: 'About — Slide Warehouse',
-  description: 'Nerando Johnson — software developer and international conference speaker.',
+  title: 'About Nerando Johnson — Slide Warehouse',
+  description: 'Nerando Johnson is a software developer, international conference speaker, and community builder. Speaker since 2019.',
+  ogTitle: 'About Nerando Johnson',
+  ogDescription: 'Software developer, conference speaker, and community builder. Browse all presentation decks at Slide Warehouse.',
+  ogSiteName: 'Slide Warehouse',
+  twitterCard: 'summary',
+  twitterSite: '@nerajno',
+})
+
+useHead({
+  meta: [{ property: 'og:type', content: 'profile' }],
 })
 </script>
 
