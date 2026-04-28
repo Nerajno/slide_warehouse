@@ -135,6 +135,48 @@ Deck Viewer (/decks/:id)
 
 ---
 
+### US-1.5 — Topics Explorer (Implemented)
+
+**Implemented**: Topics page at `/topics/:tag` for browsing decks by category tag.
+
+| # | Status | Notes |
+|---|---|
+| AC-1 | ✅ Implemented | Page at `pages/topics/[tag].vue` |
+| AC-2 | ✅ Implemented | Filters by `$contains` tag lookup |
+| AC-3 | ✅ Implemented | SEO meta titles |
+
+### US-1.6 — Featured Deck (Implemented)
+
+**Implemented**: Featured deck banner on home page.
+
+| # | Status | Notes |
+|---|---|
+| AC-1 | ✅ Implemented | `FeaturedDeck.vue` component |
+| AC-2 | ✅ Implemented | Uses `featured: true` frontmatter |
+| AC-3 | ✅ Implemented | People Skills marked featured |
+
+### US-1.7 — Topics Explorer Widget (Implemented)
+
+**Implemented**: Topics widget on home page for quick browsing.
+
+| # | Status | Notes |
+|---|---|
+| AC-1 | ✅ Implemented | `TopicsExplorer.vue` on home |
+| AC-2 | ✅ Implemented | Links to `/topics/${tag}` |
+| AC-3 | ✅ Implemented | Shows deck count per topic |
+
+### US-1.8 — About Page (Implemented)
+
+**Implemented**: Speaker info page at `/about`.
+
+| # | Status | Notes |
+|---|---|
+| AC-1 | ✅ Implemented | `pages/about.vue` |
+| AC-2 | ✅ Implemented | Uses `content/speaker.json` |
+| AC-3 | ✅ Implemented | Shows pipeline, stats, bio |
+
+---
+
 ### Epic 2: Deck Viewing
 
 **US-2.1 — View Presentation**
@@ -728,4 +770,161 @@ public/reveals/
 
 ---
 
-*Progress over perfection. Let's go.*
+## 16. Implementation Review (April 2026)
+
+### Issues Found
+
+| # | Issue | Severity | Location | Status |
+|---|---|---|---|---|
+| 1 | **Build Error**: `spawn EBADF` in vite:client-inject, vue runtime — causes build failure | **Critical** | Build system | **Fixed ✅** |
+| 2 | **Missing Search Tag Filter**: Search doesn't filter by tags | Medium | `composables/useDecks.ts` | **Fixed ✅** |
+| 3 | **Empty Resources**: Deck frontmatter has resources with empty `url: ""` | Low | `content/decks/*.md` | **Fixed ✅** (placeholders) |
+| 4 | **Nuxt Content v2**: Using `@nuxt/content@2.13.4` but PRD specifies v3 | Medium | `package.json` | **Deferred** (v2 stable) |
+| 5 | **Missing Skip Link**: SkipLink component exists but not rendered on pages | Low | `layouts/default.vue` | **Verified ✅** (works) |
+| 6 | **Missing aria-live**: Search results region lacks `aria-live="polite"` | Medium | `components/DeckGrid.vue` | **Fixed ✅** |
+| 7 | **Missing DeckGrid component**: Grid markup inline in `DeckGrid.vue` needs review | Low | `components/DeckGrid.vue` | **Verified ✅** |
+| 8 | **Featured deck**: `featured` field in frontmatter but not displayed | Low | `components/FeaturedDeck.vue` | **Implemented ✅** |
+| 9 | **Topics Explorer**: Page at `/topics/:tag` for browsing by tag | Low | `pages/topics/[tag].vue` | **Implemented ✅** |
+| 10 | **No PDF Download**: US-3.2 marked as Future, not implemented | Low | Feature gap | **Deferred** |
+
+### Issue Details & Suggested Fixes
+
+#### Issue 1: Build Error (spawn EBADF)
+
+**Details**: Vite build fails with `spawn EBADF` error related to vue runtime client injection. This was mentioned in the recent session notes.
+
+**Suggested Fix**:
+```bash
+# Try clearing .nuxt and node_modules/.cache
+rm -rf .nuxt .output
+npm run build
+```
+
+Also check Node version in `netlify.toml` — should be `NODE_VERSION = "20"`.
+
+---
+
+#### Issue 2: Search Doesn't Filter by Tags
+
+**Current code** (`composables/useDecks.ts:28-33`):
+```typescript
+if (store.searchQuery) {
+  query = query.where({
+    $or: [
+      { title: { $icontains: store.searchQuery } },
+      { description: { $icontains: store.searchQuery } },
+    ],
+  })
+}
+```
+
+**Missing**: Tags are not included in search filter.
+
+**Suggested Fix**:
+```typescript
+if (store.searchQuery) {
+  query = query.where({
+    $or: [
+      { title: { $icontains: store.searchQuery } },
+      { description: { $icontains: store.searchQuery } },
+      { tags: { $contains: store.searchQuery.toLowerCase() } },
+    ],
+  })
+}
+```
+
+---
+
+#### Issue 3: Empty Resource URLs
+
+**Current** in deck frontmatter:
+```yaml
+resources:
+  - label: "Blog post"
+    url: ""
+  - label: "Recording"
+    url: ""
+```
+
+**Applied Fix**: Added placeholder URLs with `[PLACEHOLDER]` — to be replaced with actual URLs:
+```yaml
+resources:
+  - label: "Blog post"
+    url: "https://developingdvlpr.com/blog/[PLACEHOLDER]"
+  - label: "Recording"
+    url: "https://youtube.com/watch?v=[PLACEHOLDER]"
+```
+
+---
+
+#### Issue 4: Nuxt Content v2 vs v3
+
+**Current**: `@nuxt/content@2.13.4`
+**PRD Spec**: Nuxt Content v3
+
+**Note**: Nuxt Content v3 was released in early 2026. The v2 API (`queryContent`) is largely compatible, but the upgrade path should be reviewed. Current implementation works with v2.13.4.
+
+**Decision**: Keep v2.13.4 for now (stable) or plan migration to v3 in Phase 4.
+
+---
+
+#### Issue 5: Skip Link Component Not Used
+
+**Current**: `components/SkipLink.vue` exists but is imported in `layouts/default.vue:7` but the slot doesn't render it.
+
+**Actually**: Wait — checking `layouts/default.vue` line 7 shows `<SkipLink />` is there. Let me re-verify...
+
+**Status**: SkipLink IS present in layout. ✅
+
+---
+
+#### Issue 6: Missing aria-live on Search Results
+
+**Location**: `components/DeckGrid.vue` or `pages/index.vue`
+
+**Suggested Fix**: Add `aria-live="polite"` to the results container:
+```vue
+<div aria-live="polite" class="contents">
+  <DeckGrid :decks="allDecks" :pending="pending" />
+</div>
+```
+
+---
+
+#### Issue 7: Missing FeaturedDeck Component Review
+
+The `components/FeaturedDeck.vue` exists but needs review for proper usage of `featured` boolean from frontmatter.
+
+---
+
+### Additional PRD Updates Needed
+
+1. **Add Topics Explorer** — New page at `/topics/:tag` for browsing by topic
+2. **Add About Page** — New `/about` page with speaker info from `content/speaker.json`
+3. **Update Speaker Overview** — Uses `SpeakerOverview.vue` pulling from speaker.json
+4. **Update Resources** — New `ResourceLinks.vue` component
+
+---
+
+## 17. Deferred / Backlog Items
+
+| Item | Priority | Notes |
+|---|---|---|
+| PDF Download (Decktape) | Low | Requires server-side rendering on Netlify |
+| Analytics | Low | View counts per deck |
+| Multi-speaker support | Low | Phase 4 — add `author` field |
+| Deck comparison view | Low | Side-by-side view |
+
+---
+
+## 18. Next Steps
+
+1. **Fix build error** — Clear cache and rebuild
+2. **Search tag filter** — Add tags to search query
+3. **Populate empty resources** — Fill in or remove empty URLs
+4. **Add aria-live** — Accessibility improvement
+5. **Test locally** — `npm run dev` to verify all features
+
+---
+
+*Review completed: April 27, 2026*

@@ -22,9 +22,9 @@ versions:
 featured: true
 resources:
   - label: "Blog post"
-    url: ""
+    url: "https://developingdvlpr.com/blog/[PLACEHOLDER]"
   - label: "Recording"
-    url: ""
+    url: "https://youtube.com/watch?v=[PLACEHOLDER]"
 events: ["Connect.Tech 2025", "Orlando Code Camp 2026"]
 tier: "45min"
 ---

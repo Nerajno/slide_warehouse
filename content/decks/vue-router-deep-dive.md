@@ -21,9 +21,9 @@ versions:
     changes: "Added Composition API examples, updated to Vue Router 4.x, new live-code demos"
 resources:
   - label: "Blog post"
-    url: ""
+    url: "https://developingdvlpr.com/blog/[PLACEHOLDER]"
   - label: "Recording"
-    url: ""
+    url: "https://youtube.com/watch?v=[PLACEHOLDER]"
 events: ["VueConf US 2025", "DevNexus 2026"]
 tier: "60min"
 ---

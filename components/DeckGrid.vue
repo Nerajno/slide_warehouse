@@ -5,7 +5,7 @@ defineProps<{ decks: DeckFrontmatter[] | null; pending: boolean }>()
 </script>
 
 <template>
-  <div>
+  <div aria-live="polite">
     <div v-if="pending" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <div
         v-for="n in 6"
@@ -24,7 +24,6 @@ defineProps<{ decks: DeckFrontmatter[] | null; pending: boolean }>()
     <p
       v-else
       class="text-sm text-gray-500 dark:text-gray-400 text-center py-16"
-      aria-live="polite"
     >
       No decks match your search.
     </p>
