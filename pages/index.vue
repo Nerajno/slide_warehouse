@@ -32,7 +32,7 @@ useSeoMeta({
           Talks that<br><em class="text-emerald-400 italic">connect.</em>
         </h1>
         <p class="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
-          Browse, search, and share Reveal.js presentation decks — from conference stages to your screen.
+          Browse, search, and share Reveal.js presentation decks — from meetups, conference stages to your screen.
         </p>
       </div>
     </section>
