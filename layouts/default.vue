@@ -21,32 +21,41 @@ function openSearch() {
           Slide Warehouse
         </NuxtLink>
 
-        <nav aria-label="Main navigation" class="flex items-center gap-1 sm:gap-2">
+        <nav aria-label="Main navigation" class="flex items-center gap-0.5 sm:gap-1">
           <NuxtLink
-            to="/topics"
-            class="text-xs text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors px-2 py-1 rounded"
-            active-class="text-emerald-600 dark:text-emerald-400"
+            to="/"
+            class="inline-flex items-center justify-center min-h-[44px] px-3 text-xs text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 motion-safe:transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+            exact-active-class="!text-emerald-600 dark:!text-emerald-400"
+            :aria-current="route.path === '/' ? 'page' : undefined"
           >
-            Topics
+            Presentations
           </NuxtLink>
+
           <NuxtLink
             to="/about"
-            class="text-xs text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors px-2 py-1 rounded"
-            active-class="text-emerald-600 dark:text-emerald-400"
+            class="inline-flex items-center justify-center min-h-[44px] px-3 text-xs text-gray-500 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 motion-safe:transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+            active-class="!text-emerald-600 dark:!text-emerald-400"
+            :aria-current="route.path.startsWith('/about') ? 'page' : undefined"
           >
             About
           </NuxtLink>
+
           <a
             href="https://developingdvlpr.com"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-xs text-gray-400 font-mono hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors px-2 py-1 rounded hidden sm:block"
-            aria-label="Portfolio — developingdvlpr.com (opens in new tab)"
-          >@Nerajno</a>
+            class="hidden sm:inline-flex items-center gap-1 min-h-[44px] px-3 text-xs text-gray-400 dark:text-gray-500 hover:text-emerald-600 dark:hover:text-emerald-400 motion-safe:transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600"
+          >
+            Portfolio
+            <svg aria-hidden="true" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1.5 8.5L8.5 1.5M8.5 1.5H4M8.5 1.5V6"/>
+            </svg>
+            <span class="sr-only">(opens in new tab)</span>
+          </a>
 
           <!-- Search -->
           <button
-            class="w-9 h-9 flex items-center justify-center rounded-btn text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-colors"
+            class="inline-flex items-center justify-center min-w-[44px] min-h-[44px] rounded text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 motion-safe:transition-colors"
             aria-label="Search presentations"
             @click="openSearch"
           >
@@ -57,7 +66,7 @@ function openSearch() {
 
           <!-- Theme toggle -->
           <button
-            class="w-9 h-9 flex items-center justify-center rounded-btn text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-colors"
+            class="inline-flex items-center justify-center min-w-[44px] min-h-[44px] rounded text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 motion-safe:transition-colors"
             :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
             @click="toggle"
           >

@@ -15,7 +15,7 @@ const totalSlides = computed(() =>
 )
 
 useSeoMeta({
-  title: 'About Nerando Johnson — Slide Warehouse',
+  title: 'About + Purpose — Slide Warehouse',
   description: 'Nerando Johnson is a software developer, international conference speaker, and community builder. Speaker since 2019.',
   ogTitle: 'About Nerando Johnson',
   ogDescription: 'Software developer, conference speaker, and community builder. Browse all presentation decks at Slide Warehouse.',
@@ -32,13 +32,17 @@ useHead({
 <template>
   <div class="max-w-3xl mx-auto px-4 py-12 space-y-12">
 
-    <section>
+    <h1 class="font-display text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-gray-100 tracking-tight leading-tight">
+      About + Purpose
+    </h1>
+
+    <section aria-label="Speaker bio">
       <SpeakerBio />
     </section>
 
     <hr class="border-gray-200 dark:border-gray-800" />
 
-    <section v-if="speaker">
+    <section v-if="speaker" aria-label="By the numbers">
       <p class="font-mono text-[0.65rem] uppercase tracking-widest text-gray-500 mb-6">By the numbers</p>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
         <div class="text-center">
@@ -56,6 +60,39 @@ useHead({
         <div class="text-center">
           <p class="font-mono text-[0.65rem] uppercase tracking-widest text-gray-500 mb-1">Conferences</p>
           <p class="font-display text-[2rem] font-semibold text-amber-600 dark:text-amber-400 leading-none">{{ speaker.stats.conferencesCount }}</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="border-gray-200 dark:border-gray-800" />
+
+    <!-- Case Study -->
+    <section aria-labelledby="case-study-heading">
+      <div class="bg-zinc-950 dark:bg-zinc-900 border border-zinc-800 rounded-card p-8 space-y-8">
+        <h2
+          id="case-study-heading"
+          class="font-mono text-[0.65rem] uppercase tracking-widest text-amber-400"
+        >Case Study</h2>
+
+        <div class="border-l-2 border-emerald-600 pl-4">
+          <h3 class="font-display font-semibold text-white mb-2">The Problem</h3>
+          <p class="text-zinc-400 text-sm leading-relaxed">
+            Speakers accumulate decks across repos and events with no shareable home. Finding decks for CFPs means digging through GitHub, limiting reuse and reach.
+          </p>
+        </div>
+
+        <div class="border-l-2 border-emerald-600 pl-4">
+          <h3 class="font-display font-semibold text-white mb-2">The Approach</h3>
+          <p class="text-zinc-400 text-sm leading-relaxed">
+            Self-hosted, Git-driven repo treating every Reveal.js deck as versioned and searchable. One Markdown file adds a talk. Versioning preserves event branding. An iframe viewer delivers the deck as presented.
+          </p>
+        </div>
+
+        <div class="border-l-2 border-emerald-600 pl-4">
+          <h3 class="font-display font-semibold text-white mb-2">The Result</h3>
+          <p class="text-zinc-400 text-sm leading-relaxed">
+            Portfolio-grade tool demonstrating Nuxt 3 mastery, WCAG 2.2 AA compliance, and "Progress over Perfection" in production.
+          </p>
         </div>
       </div>
     </section>

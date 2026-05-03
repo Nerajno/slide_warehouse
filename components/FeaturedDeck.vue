@@ -13,10 +13,7 @@ const gradientClass = computed(() => {
 </script>
 
 <template>
-  <div v-if="deck" class="border-b border-[#2a3347] bg-[#161b22]">
-    <div class="max-w-6xl mx-auto px-4 py-8">
-      <p class="font-mono text-[0.65rem] uppercase tracking-widest text-emerald-400 mb-4">Featured deck</p>
-      <div class="rounded-card border border-emerald-800 overflow-hidden flex flex-col sm:flex-row">
+  <div v-if="deck" class="rounded-card border border-emerald-800 overflow-hidden flex flex-col sm:flex-row">
         <div
           :class="`bg-gradient-to-br ${gradientClass} sm:w-48 h-36 sm:h-auto shrink-0 relative`"
           style="background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.08) 39px, rgba(0,0,0,0.08) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,0,0,0.08) 39px, rgba(0,0,0,0.08) 40px);"
@@ -41,13 +38,11 @@ const gradientClass = computed(() => {
           <div class="mt-auto">
             <NuxtLink
               :to="`/decks/${deck.id}`"
-              class="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-colors"
+              class="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 motion-safe:transition-colors"
             >
               Open deck <span aria-hidden="true">→</span>
             </NuxtLink>
           </div>
         </div>
-      </div>
-    </div>
   </div>
 </template>

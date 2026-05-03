@@ -30,6 +30,10 @@ function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 }
 
+function getYear(dateStr: string) {
+  return new Date(dateStr).getFullYear()
+}
+
 const STATUS_STYLES: Record<string, { dot: string; badge: string }> = {
   'delivered': {
     dot: 'bg-emerald-500',
@@ -136,7 +140,7 @@ const STATUS_STYLES: Record<string, { dot: string; badge: string }> = {
         <!-- Header -->
         <div class="p-4 border-b border-gray-800 flex items-center justify-between shrink-0">
           <div>
-            <p class="font-mono text-[0.65rem] uppercase tracking-widest text-gray-500 mb-0.5">Conference history</p>
+            <h2 class="font-mono text-[0.65rem] uppercase tracking-widest text-gray-500 mb-0.5">Speaker History</h2>
             <p class="text-xs text-gray-500">2025–2026 circuit</p>
           </div>
           <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-full">
@@ -146,27 +150,43 @@ const STATUS_STYLES: Record<string, { dot: string; badge: string }> = {
 
         <!-- Pipeline list -->
         <ul class="divide-y divide-gray-800 flex-1">
-          <li
-            v-for="item in sortedPipeline"
-            :key="item.name"
-            class="flex items-center gap-3 px-4 py-3"
-          >
-            <span
-              :class="[STATUS_STYLES[item.status]?.dot ?? 'bg-gray-500', 'w-2 h-2 rounded-full shrink-0']"
-            />
-            <div class="flex-1 min-w-0">
-              <p class="text-sm text-gray-200 truncate">{{ item.name }}</p>
-              <p class="text-xs text-gray-500">{{ formatDate(item.date) }} · {{ item.location }}</p>
-            </div>
-            <span
-              :class="[
-                'text-[0.65rem] font-mono uppercase px-2 py-0.5 rounded shrink-0',
-                STATUS_STYLES[item.status]?.badge ?? 'bg-gray-800 text-gray-400 border border-gray-700',
-              ]"
+          <template v-for="(item, idx) in sortedPipeline" :key="item.name">
+            <!-- Year group separator -->
+            <li
+              v-if="idx === 0 || getYear(sortedPipeline[idx - 1].date) !== getYear(item.date)"
+              class="px-4 py-1.5 bg-zinc-950/60 border-b border-gray-800"
+              aria-hidden="true"
             >
-              {{ item.status }}
-            </span>
-          </li>
+              <span class="font-mono text-[0.6rem] uppercase tracking-widest text-gray-600">
+                {{ getYear(item.date) }}
+              </span>
+            </li>
+            <li class="flex items-center gap-3 px-4 py-3">
+              <span
+                :class="[STATUS_STYLES[item.status]?.dot ?? 'bg-gray-500', 'w-2 h-2 rounded-full shrink-0']"
+              />
+              <div class="flex-1 min-w-0">
+                <p class="text-sm text-gray-200 truncate">{{ item.name }}</p>
+                <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                  <span class="text-xs text-gray-500">{{ formatDate(item.date) }}</span>
+                  <span class="inline-flex items-center gap-1 text-xs bg-gray-800 text-gray-400 border border-gray-700 px-1.5 py-0.5 rounded">
+                    <svg aria-hidden="true" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    {{ item.location }}
+                  </span>
+                </div>
+              </div>
+              <span
+                :class="[
+                  'text-[0.65rem] font-mono uppercase px-2 py-0.5 rounded shrink-0',
+                  STATUS_STYLES[item.status]?.badge ?? 'bg-gray-800 text-gray-400 border border-gray-700',
+                ]"
+              >
+                {{ item.status }}
+              </span>
+            </li>
+          </template>
         </ul>
       </div>
     </div>

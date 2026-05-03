@@ -21,7 +21,7 @@ useSeoMeta({
 
 <template>
   <div>
-    <!-- Dark editorial hero -->
+    <!-- Hero + Featured Deck — single above-the-fold section -->
     <section class="relative bg-zinc-950 overflow-hidden">
       <div class="absolute top-0 inset-x-0 h-px bg-emerald-500" aria-hidden="true" />
       <div class="relative max-w-6xl mx-auto px-4 py-16 sm:py-24">
@@ -31,14 +31,14 @@ useSeoMeta({
         <h1 class="font-display text-5xl sm:text-7xl font-semibold text-white leading-[0.95] tracking-tight mb-6">
           Talks that<br><em class="text-emerald-400 italic">connect.</em>
         </h1>
-        <p class="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
+        <p class="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed mb-10">
           Browse, search, and share Reveal.js presentation decks — from meetups, conference stages to your screen.
         </p>
+        <p class="font-mono text-[0.65rem] uppercase tracking-widest text-emerald-400 mb-4">Featured deck</p>
+        <FeaturedDeck />
       </div>
     </section>
 
-    <FeaturedDeck />
-    <TopicsExplorer />
     <SpeakerOverview />
     <div class="border-t border-gray-200 dark:border-gray-800" />
     <div class="max-w-6xl mx-auto px-4 py-8">
