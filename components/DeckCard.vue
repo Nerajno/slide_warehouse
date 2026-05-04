@@ -64,7 +64,7 @@ const latestEvent = computed(() => props.deck.events?.at(-1) ?? '')
           >{{ tag }}</span>
         </div>
 
-        <div class="flex items-center gap-3 text-[11px] text-gray-400 font-mono">
+        <div class="flex items-center gap-3 text-[11px] text-gray-600 dark:text-gray-400 font-mono">
           <span>{{ deck.slideCount }} slides</span>
           <span>{{ deck.durationMinutes }}min</span>
           <span v-if="deck.versions?.length > 1">v{{ deck.currentVersion }}</span>
