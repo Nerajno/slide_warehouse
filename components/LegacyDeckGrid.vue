@@ -111,6 +111,7 @@ const formatColor = (format: string) => {
           </div>
         </div>
       </div>
+    </section>
   </div>
 </template>
 

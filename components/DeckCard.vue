@@ -38,13 +38,13 @@ const latestEvent = computed(() => props.deck.events?.at(-1) ?? '')
         role="img"
       >
         <div class="h-full flex items-end p-3">
-          <NuxtLink
-            :to="`/?tier=${deck.tier ?? deck.durationMinutes + 'min'}`"
+          <button
+            type="button"
             class="text-[10px] font-mono text-white/80 uppercase tracking-widest hover:text-white transition-colors"
-            @click.stop
+            @click.stop="navigateTo(`/?tier=${deck.tier ?? deck.durationMinutes + 'min'}`)"
           >
             {{ deck.tier ?? deck.durationMinutes + 'min' }}
-          </NuxtLink>
+          </button>
         </div>
       </div>
 
