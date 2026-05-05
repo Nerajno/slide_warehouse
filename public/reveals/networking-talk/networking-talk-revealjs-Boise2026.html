@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer's Guide to Networking — Nerando Johnson</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --background-color: #0F2035;
+  --heading-font: "Fraunces", Georgia, serif;
+  --body-font: "Plus Jakarta Sans", Helvetica, sans-serif;
+  --code-font: "JetBrains Mono", "Courier New", monospace;
+  --base-font-size: 32px;
+  --text-size:   16pt;
+  --h1-size:     52pt;
+  --h2-size:     34pt;
+  --h3-size:     22pt;
+  --small-size:  12pt;
+  --tiny-size:   10pt;
+  --navy:    #1E3A5F;
+  --deep:    #0A2540;
+  --blue:    #2E86AB;
+  --gold:    #C9A84C;
+  --violet:  #A23B72;
+  --green:   #2D6A4F;
+  --teal:    #0D9488;
+  --white:   #FFFFFF;
+  --off:     #F5F8FC;
+  --light:   #EAF4FB;
+  --gray:    #94A3B8;
+  --code-bg: #101827;
+  --code-edge:#2A3A50;
+  --primary-color:   #C9A84C;
+  --secondary-color: #2E86AB;
+  --text-color:      #F5F8FC;
+  --muted-color:     #94A3B8;
+}
+
+.reveal { font-family: var(--body-font); font-size: var(--base-font-size); background: var(--background-color); }
+.reveal .slides section { padding: 40px 56px; text-align: left; box-sizing: border-box; height: 100%; }
+
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: var(--heading-font); text-transform: none;
+  letter-spacing: -0.01em; line-height: 1.15; margin: 0 0 16px 0;
+  color: var(--white); font-weight: 700;
+}
+.reveal h1 { font-size: var(--h1-size); }
+.reveal h2 { font-size: var(--h2-size); }
+.reveal h3 { font-size: var(--h3-size); color: var(--gold); }
+.reveal p, .reveal li { font-size: var(--text-size); color: var(--text-color); line-height: 1.55; margin: 0 0 10px 0; }
+.reveal ul, .reveal ol { margin: 0 0 14px 1.2em; }
+.reveal ul li, .reveal ol li { margin-bottom: 8px; }
+
+.reveal blockquote {
+  border-left: 4px solid var(--gold); padding: 12px 20px; margin: 20px 0;
+  font-style: italic; background: rgba(201,168,76,0.08); box-shadow: none;
+  width: 100%; border-radius: 0 6px 6px 0;
+}
+.reveal blockquote p { color: var(--gold); font-size: var(--text-size); }
+
+.reveal code {
+  font-family: var(--code-font); background: rgba(46,134,171,0.18);
+  color: #93C5FD; padding: 2px 7px; border-radius: 4px; font-size: 0.88em;
+}
+.reveal pre {
+  background: var(--code-bg); border: 1px solid var(--code-edge); border-radius: 8px;
+  padding: 18px 22px; margin: 14px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  width: 100%; box-sizing: border-box;
+}
+.reveal pre code { background: none; padding: 0; color: var(--off); font-size: 13pt; line-height: 1.6; }
+
+.reveal .progress { background: rgba(201,168,76,0.2); }
+.reveal .progress span { background: var(--gold); }
+.reveal .controls button { color: var(--gold); }
+.reveal .slide-number {
+  background: rgba(10,37,64,0.7); color: var(--gray);
+  font-size: 11pt; font-family: var(--code-font); padding: 3px 8px; border-radius: 4px;
+}
+.reveal a { color: var(--gold); text-decoration: none; }
+.reveal a:hover { text-decoration: underline; }
+.reveal table { width: 100%; border-collapse: collapse; font-size: 12pt; margin-top: 10px; }
+.reveal table thead th {
+  background: var(--navy); color: var(--white); padding: 8px 12px;
+  text-align: left; font-weight: 700; font-size: 11pt;
+}
+.reveal table tbody tr:nth-child(even) { background: rgba(46,134,171,0.08); }
+.reveal table tbody tr:nth-child(odd)  { background: rgba(255,255,255,0.03); }
+.reveal table tbody td {
+  padding: 9px 12px; color: var(--text-color);
+  border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: middle;
+}
+.reveal table tbody td:first-child { color: var(--gold); font-weight: 700; }
+.reveal table tbody td code { font-size: 10pt; background: rgba(46,134,171,0.2); color: #93C5FD; }
+
+/* DIVIDER SLIDES */
+.reveal .slides section.divider {
+  display: flex !important; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 48px 64px; background: var(--deep);
+  border-left: 8px solid var(--gold);
+}
+.reveal .slides section.divider.blue-div   { border-color: var(--blue);   background: #0A2035; }
+.reveal .slides section.divider.violet-div { border-color: var(--violet); background: #200D1E; }
+.reveal .slides section.divider.green-div  { border-color: var(--green);  background: #0A1810; }
+.reveal .slides section.divider.teal-div   { border-color: var(--teal);   background: #041514; }
+.reveal .slides section.divider.gold-div   { border-color: var(--gold);   background: #100E00; }
+.reveal .slides section.divider .assoc-num {
+  font-size: 11pt; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin: 0 0 10px 0;
+}
+.reveal .slides section.divider.blue-div   .assoc-num { color: #7DB8D4; }
+.reveal .slides section.divider.violet-div .assoc-num { color: #D8A8D0; }
+.reveal .slides section.divider.green-div  .assoc-num { color: #A8D5B5; }
+.reveal .slides section.divider.teal-div   .assoc-num { color: var(--gold); }
+.reveal .slides section.divider.gold-div   .assoc-num { color: var(--gold); }
+.reveal .slides section.divider h1 {
+  font-family: var(--code-font); font-size: 52pt; color: var(--white); margin: 0 0 12px 0; line-height: 1.1;
+}
+.reveal .slides section.divider h2 {
+  font-size: 22pt; font-style: italic; font-weight: 400; margin: 0;
+}
+.reveal .slides section.divider.blue-div   h2 { color: #A8CDE0; }
+.reveal .slides section.divider.violet-div h2 { color: #D8A8D0; }
+.reveal .slides section.divider.green-div  h2 { color: #A8D5B5; }
+.reveal .slides section.divider.teal-div   h2 { color: var(--light); }
+.reveal .slides section.divider.gold-div   h2 { color: #E8D08A; }
+.reveal .slides section.divider .divider-sub {
+  margin-top: 14px; font-size: 14pt; color: var(--muted-color); font-style: italic;
+}
+
+/* PILLS */
+.pill {
+  display: inline-block; background: var(--gold); color: var(--navy);
+  font-size: 9pt; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  padding: 3px 12px; border-radius: 4px; margin-bottom: 12px;
+}
+.pill.blue   { background: var(--blue);   color: var(--white); }
+.pill.violet { background: var(--violet); color: var(--white); }
+.pill.green  { background: var(--green);  color: var(--white); }
+.pill.teal   { background: var(--teal);   color: var(--white); }
+
+/* INSIGHT BAR */
+.insight-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(46,134,171,0.12); border-top: 2px solid rgba(46,134,171,0.35);
+  padding: 10px 56px;
+}
+.insight-bar p { font-size: 12pt; color: var(--light); font-style: italic; margin: 0; }
+.insight-bar.gold-bar { background: rgba(201,168,76,0.1); border-top-color: rgba(201,168,76,0.35); }
+.insight-bar.gold-bar p { color: var(--gold); }
+
+/* CARDS */
+.card-grid { display: grid; gap: 14px; margin-top: 8px; }
+.card-grid.two-col   { grid-template-columns: 1fr 1fr; }
+.card-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+.card {
+  background: rgba(46,134,171,0.08); border: 1px solid rgba(46,134,171,0.25);
+  border-radius: 8px; padding: 14px 16px; border-left: 4px solid var(--gold);
+}
+.card.blue-card   { border-left-color: var(--blue);   background: rgba(46,134,171,0.1); }
+.card.violet-card { border-left-color: var(--violet); background: rgba(162,59,114,0.1); }
+.card.green-card  { border-left-color: var(--green);  background: rgba(45,106,79,0.1); }
+.card.teal-card   { border-left-color: var(--teal);   background: rgba(13,148,136,0.1); }
+.card .card-label {
+  font-size: 9pt; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin: 0 0 5px 0;
+}
+.card.blue-card   .card-label { color: var(--blue); }
+.card.violet-card .card-label { color: var(--violet); }
+.card.green-card  .card-label { color: #6FCF97; }
+.card.teal-card   .card-label { color: var(--teal); }
+.card h3 { font-size: 15pt; color: var(--white); margin: 0 0 6px 0; }
+.card p  { font-size: 12pt; color: var(--gray); margin: 0; }
+
+/* ICON ROWS */
+.icon-row {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 12px; padding: 10px 14px; border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+}
+.icon-row .icon-emoji { font-size: 20pt; line-height: 1; flex-shrink: 0; margin-top: 2px; }
+.icon-row .icon-text p { margin: 0; font-size: 13pt; }
+.icon-row .icon-text .icon-title { font-weight: 700; color: var(--white); margin-bottom: 3px; }
+.icon-row .icon-text .icon-sub   { color: var(--gray); font-size: 11pt; }
+
+/* ACTION CARDS */
+.action-card {
+  display: flex; align-items: stretch; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 14px; overflow: hidden;
+}
+.action-card .action-num {
+  background: var(--blue); color: var(--white); font-size: 26pt; font-weight: 700;
+  font-family: var(--heading-font); display: flex; align-items: center;
+  justify-content: center; min-width: 60px; padding: 0 10px; flex-shrink: 0;
+}
+.action-card.violet-action .action-num { background: var(--violet); }
+.action-card.green-action  .action-num { background: var(--green); }
+.action-card .action-content { padding: 10px 16px; }
+.action-card .action-content .action-title { font-size: 15pt; font-weight: 700; color: var(--white); margin: 0 0 4px 0; }
+.action-card .action-content p { font-size: 11pt; color: var(--gray); margin: 0; }
+
+/* DB DIAGRAM */
+.db-diagram {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin: 18px auto; max-width: 700px;
+}
+.db-table { background: var(--navy); border: 2px solid var(--blue); border-radius: 6px; min-width: 145px; overflow: hidden; }
+.db-table .db-header { background: var(--blue); padding: 8px 14px; font-family: var(--code-font); font-size: 13pt; font-weight: 700; color: var(--white); }
+.db-table.gold-border   { border-color: var(--gold); }
+.db-table.gold-border   .db-header { background: var(--gold); color: var(--navy); }
+.db-table.violet-border { border-color: var(--violet); }
+.db-table.violet-border .db-header { background: var(--violet); }
+.db-table.green-border  { border-color: var(--green); }
+.db-table.green-border  .db-header { background: var(--green); }
+.db-table .db-body { padding: 10px 14px; font-family: var(--code-font); font-size: 11pt; color: var(--light); line-height: 1.8; }
+.db-arrow { font-size: 22pt; color: var(--gold); padding: 0 14px; flex-shrink: 0; }
+
+/* THROUGH FLOW */
+.through-flow { display: flex; align-items: stretch; gap: 0; margin: 18px 0; }
+.through-node { flex: 1; border-radius: 6px; padding: 14px 16px; text-align: center; }
+.through-node .node-title { font-size: 18pt; font-weight: 700; color: var(--white); margin: 0 0 6px 0; }
+.through-node .node-sub   { font-size: 10pt; color: rgba(255,255,255,0.7); margin: 0; }
+.through-arrow { display: flex; align-items: center; padding: 0 10px; color: var(--gold); font-size: 22pt; flex-shrink: 0; }
+
+/* COMPARE */
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px; }
+.compare-panel { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 16px 18px; }
+.compare-panel.warm { border-color: rgba(201,168,76,0.5); background: rgba(201,168,76,0.06); }
+.compare-panel .panel-title { font-size: 15pt; font-weight: 700; color: var(--white); margin: 0 0 10px 0; }
+.compare-panel.warm .panel-title { color: var(--gold); }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 12px; }
+.stat-box { background: rgba(45,106,79,0.12); border: 1px solid rgba(45,106,79,0.4); border-radius: 8px; padding: 14px; text-align: center; }
+.stat-box .stat-num   { font-size: 40pt; font-weight: 700; font-family: var(--heading-font); color: var(--green); line-height: 1; margin: 0 0 6px 0; }
+.stat-box .stat-label { font-size: 12pt; font-weight: 700; color: var(--white); margin: 0 0 4px 0; }
+.stat-box .stat-sub   { font-size: 10pt; color: var(--gray); font-style: italic; margin: 0; }
+
+/* BIG STATEMENT */
+.big-statement { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+.big-statement h1 { font-size: 46pt; line-height: 1.15; color: var(--white); margin-bottom: 16px; }
+.big-statement .lead { font-size: 18pt; color: var(--light); font-style: italic; margin: 0 0 16px 0; }
+.big-statement .sub { font-size: 13pt; color: var(--gold); font-style: italic; padding: 12px 18px; background: rgba(201,168,76,0.1); border-left: 3px solid var(--gold); border-radius: 0 6px 6px 0; margin: 0; }
+
+/* SCHEMA DIAGRAM */
+.schema-diagram { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 8px; }
+.schema-center { background: var(--gold); color: var(--navy); font-size: 18pt; font-weight: 700; padding: 10px 28px; border-radius: 6px; }
+.schema-row { display: flex; gap: 8px; }
+.schema-node { border-radius: 6px; padding: 8px 12px; text-align: center; min-width: 120px; }
+.schema-node .sn-label { font-family: var(--code-font); font-size: 9pt; font-weight: 700; margin: 0 0 2px 0; }
+.schema-node .sn-sub   { font-size: 8pt; color: rgba(255,255,255,0.7); margin: 0; }
+
+/* RESOURCE GRID */
+.resource-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.resource-item { background: rgba(255,255,255,0.04); border-left: 3px solid var(--blue); border-radius: 0 6px 6px 0; padding: 8px 12px; }
+.resource-item .res-cat { font-size: 9pt; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--blue); margin: 0 0 3px 0; }
+.resource-item p { font-size: 11pt; color: var(--gray); margin: 0; line-height: 1.4; }
+
+/* CONTACT LIST */
+.contact-list { list-style: none; margin: 20px 0 0 0; padding: 0; }
+.contact-list li { font-size: 15pt; color: var(--light); margin-bottom: 10px; }
+
+/* TIGHT LIST */
+.tight-list li { margin-bottom: 5px; font-size: 13pt; }
+
+/* DECISION TABLE */
+.decision-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12pt; }
+.decision-table thead th { background: var(--navy); color: var(--white); padding: 8px 12px; font-size: 11pt; text-align: left; }
+.decision-table tbody tr:nth-child(even) { background: rgba(46,134,171,0.07); }
+.decision-table tbody tr:nth-child(odd)  { background: rgba(0,0,0,0.2); }
+.decision-table tbody td { padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); color: var(--text-color); }
+.decision-table tbody td:first-child { color: var(--off); font-size: 11pt; }
+.yes { color: #6FCF97; font-weight: 700; }
+.no  { color: #F87171; font-weight: 700; }
+
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- 01 TITLE -->
+<section style="background:#0A2540;padding:0;display:flex;flex-direction:column;justify-content:center;height:100%;border-left:8px solid #C9A84C;">
+  <div style="padding:48px 64px;">
+    <p style="font-size:11pt;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#C9A84C;margin:0 0 14px 0;">BOISE CODE CAMP 2026</p>
+    <h1 style="font-size:56pt;margin:0 0 10px 0;line-height:1.05;">Developer's Guide<br>to Networking</h1>
+    <h2 style="font-size:20pt;font-style:italic;font-weight:400;color:#A8CDE0;margin:0 0 28px 0;">Modeling Human Connections with Database Associations</h2>
+    <p style="font-size:13pt;color:#C9A84C;margin:0 0 6px 0;">Rails · TypeORM · Sequelize · Prisma · JPA/Hibernate</p>
+    <p style="font-size:12pt;color:#64748B;margin:0;">@nerajno · developingdvlpr.com</p>
+  </div>
+  <aside class="notes">Welcome. I'm Nerando Johnson — frontend engineer, Atlanta freeCodeCamp organizer, Vue Mastery content creator. 47 minutes. One concept per slide. Let's go.</aside>
+</section>
+
+<section>
+  <span class="pill">Tonight's Schema</span>
+  <h2>What We're Building in 47 Minutes</h2>
+  <div class="card-grid two-col">
+    <div class="card blue-card"><p class="card-label">0 – 8 min</p><h3>The Setup + Core Insight</h3><p>Why developers struggle — and the mental model that changes everything</p></div>
+    <div class="card blue-card"><p class="card-label">8 – 32 min</p><h3>The 5 Association Types</h3><p>belongs_to · has_one · has_many · :through · habtm — code + real life</p></div>
+    <div class="card blue-card"><p class="card-label">32 – 42 min</p><h3>Your Career Schema</h3><p>Cross-ORM reference · mapping your network · key options</p></div>
+    <div class="card blue-card"><p class="card-label">42 – 47 min</p><h3>Action Plan + Q&amp;A</h3><p>3 concrete things to do before you leave this room</p></div>
+  </div>
+  <aside class="notes">Quick roadmap. We spend most time in the five association types. Everything else wraps around them.</aside>
+</section>
+
+<section class="divider">
+  <p class="assoc-num">The Setup · 0 – 8 min</p>
+  <h1 style="font-family:'Fraunces',Georgia,serif;font-size:46pt;">Why Networking<br>Feels Broken</h1>
+  <h2>And why you already know how to fix it</h2>
+</section>
+
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;">
+  <div style="padding:48px 64px;">
+    <h1 style="font-size:52pt;font-style:italic;font-family:'Fraunces',Georgia,serif;margin:0 0 24px 0;line-height:1.1;">"I'm bad<br>at networking."</h1>
+    <p style="font-size:18pt;color:#EAF4FB;">Raise your hand if you've said this.</p>
+  </div>
+  <aside class="notes">Pause. Let hands go up. Most of the room. Including me, not too long ago. The pandemic hollowed out the casual compounding conversations that used to build careers without us noticing.</aside>
+</section>
+
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;">
+  <div style="padding:48px 64px;">
+    <p style="font-size:18pt;color:#EAF4FB;margin:0 0 20px 0;">Most developers think networking is schmoozing.</p>
+    <h1 style="font-size:62pt;color:#C9A84C;margin:0 0 14px 0;">It's not.</h1>
+    <h2 style="font-size:28pt;font-style:italic;color:#F5F8FC;margin:0;">It's system design.</h2>
+  </div>
+  <aside class="notes">And if you've ever written a belongs_to or a @ManyToOne, you already know the patterns. You just haven't applied them IRL yet.</aside>
+</section>
+
+<section>
+  <span class="pill">Who's Talking</span>
+  <h2>Nerando Johnson</h2>
+  <div class="card-grid two-col">
+    <div class="card"><p class="card-label">Day Job</p><h3>Jnr Frontend Engineer @ Hygiena</h3><p>Vue 3 · TypeScript · Nuxt · Supabase · Tailwind</p></div>
+    <div class="card"><p class="card-label">Community</p><h3>Former Atlanta freeCodeCamp Organizer</h3><p>600+ members · built &amp; grew the community</p></div>
+    
+    <div class="card"><p class="card-label">Speaking</p><h3>DevNexus · Connect.Tech · Carolina Codes</h3><p>ADC · Nebraska.Code() · and more</p></div>
+  </div>
+  <p style="margin-top:12px;font-size:13pt;color:#C9A84C;font-style:italic;"></p>
+  <aside class="notes">I am not a networking guru. I'm a developer who figured out the patterns — and I want to share the map.</aside>
+</section>
+
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;">
+  <div style="padding:48px 64px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
+    <div>
+      <p style="font-size:11pt;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#C9A84C;margin:0 0 14px 0;">Disclaimer</p>
+      <h2 style="font-size:34pt;margin:0 0 20px 0;line-height:1.2;">Opinions are<br>my own.</h2>
+      <p style="font-size:15pt;color:#EAF4FB;margin:0 0 14px 0;">Everything I share today reflects my personal experience and perspective as a developer — not the views of my employer, clients, or any organization I'm affiliated with.</p>
+      <p style="font-size:14pt;color:#94A3B8;margin:0 0 14px 0;">Code examples are for educational purposes. Your production mileage may vary.</p>
+      <p style="font-size:13pt;color:#C9A84C;font-style:italic;margin:0;">Questions, pushback, and hot takes welcome. Scan to find me after the talk →</p>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;flex-shrink:0;">
+      <div style="background:#FFFFFF;padding:14px;border-radius:10px;width:150px;height:150px;display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 100 100" width="122" height="122" xmlns="http://www.w3.org/2000/svg">
+          <!-- QR code placeholder pattern — different from CoC -->
+          <rect width="100" height="100" fill="white"/>
+          <rect x="5" y="5" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="10" y="10" width="25" height="25" fill="#0A2540"/>
+          <rect x="60" y="5" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="65" y="10" width="25" height="25" fill="#0A2540"/>
+          <rect x="5" y="60" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="10" y="65" width="25" height="25" fill="#0A2540"/>
+          <rect x="50" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="62" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="62" y="86" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="86" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="86" width="8" height="8" fill="#0A2540"/>
+        </svg>
+      </div>
+      <p style="font-size:10pt;color:#94A3B8;margin:0;text-align:center;">developingdvlpr.com</p>
+    </div>
+  </div>
+  <aside class="notes">Standard disclaimer. Light touch — one sentence is enough verbally. The QR links to your site so people can find you after.</aside>
+</section>
+
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;">
+  <div style="padding:48px 64px;">
+    <p style="font-size:11pt;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#C9A84C;margin:0 0 12px 0;">The Core Insight</p>
+    <h1 style="font-size:54pt;line-height:1.1;margin:0 0 20px 0;">Your network<br>is a schema.</h1>
+    <p style="font-size:16pt;color:#EAF4FB;">Every person you know is a record.<br>Every relationship has a type.<br>The foreign key tells you who carries the responsibility.</p>
+  </div>
+  <aside class="notes">This is the mental model. Once you see your network as a data model, you can design it like one. The FK is the key insight — who holds it, does the work.</aside>
+</section>
+
+<section>
+  <span class="pill">The Schema</span>
+  <h2>5 Association Types. 5 Network Patterns.</h2>
+  <table>
+    <thead><tr><th>Association</th><th>Cardinality</th><th>Career Translation</th><th>FK Lives On</th></tr></thead>
+    <tbody>
+      <tr><td><code>belongs_to</code></td><td>1 : 1</td><td>Intentional 1-on-1 connections</td><td>Your table</td></tr>
+      <tr><td><code>has_one</code></td><td>1 : 1</td><td>Mentorship — you are the anchor</td><td>Their table</td></tr>
+      <tr><td><code>has_many</code></td><td>1 : N</td><td>Groups, audiences, communities</td><td>Their table (many)</td></tr>
+      <tr><td><code>has_many :through</code></td><td>M : N</td><td>Warm introductions via join model</td><td>Join model</td></tr>
+      <tr><td><code>habtm</code></td><td>M : N</td><td>Community membership — mutual</td><td>Join table (no model)</td></tr>
+    </tbody>
+  </table>
+  <aside class="notes">Language doesn't matter — Rails, TypeORM, Sequelize, Prisma, JPA all have these. The concept is identical. Let's walk through each one. ~1 min per slide from here.</aside>
+</section>
+
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;">
+  <div style="padding:48px 64px;">
+    <p style="font-size:11pt;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#C9A84C;margin:0 0 28px 0;">Thank You to Our Sponsors</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;align-items:center;margin-bottom:36px;">
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;">
+        <p style="color:#94A3B8;font-size:13pt;font-style:italic;margin:0;">Sponsor Logo</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;">
+        <p style="color:#94A3B8;font-size:13pt;font-style:italic;margin:0;">Sponsor Logo</p>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;">
+        <p style="color:#94A3B8;font-size:13pt;font-style:italic;margin:0;">Sponsor Logo</p>
+      </div>
+    </div>
+    <p style="font-size:14pt;color:#EAF4FB;margin:0;">Boise Code Camp 2026 would not be possible without the support of our sponsors.<br>Please take a moment to connect with them and show them some love.</p>
+  </div>
+  <aside class="notes">Take a moment to acknowledge sponsors. Encourage the room to visit booths during breaks.</aside>
+</section>
+
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;">
+  <div style="padding:48px 64px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
+    <div>
+      <p style="font-size:11pt;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:#C9A84C;margin:0 0 14px 0;">Code of Conduct</p>
+      <h2 style="font-size:30pt;margin:0 0 20px 0;line-height:1.2;">Everyone deserves<br>a safe space to learn.</h2>
+      <ul style="margin:0 0 0 1.2em;padding:0;">
+        <li style="font-size:14pt;color:#EAF4FB;margin-bottom:10px;">Be kind, respectful, and inclusive</li>
+        <li style="font-size:14pt;color:#EAF4FB;margin-bottom:10px;">Harassment of any kind will not be tolerated</li>
+        <li style="font-size:14pt;color:#EAF4FB;margin-bottom:10px;">If you see something, say something</li>
+        <li style="font-size:14pt;color:#EAF4FB;margin-bottom:10px;">Report incidents to conference staff immediately</li>
+      </ul>
+      <p style="font-size:13pt;color:#C9A84C;margin-top:18px;font-style:italic;">Scan to read the full Boise Code Camp Code of Conduct →</p>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;flex-shrink:0;">
+      <div style="background:#FFFFFF;padding:14px;border-radius:10px;width:150px;height:150px;display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 100 100" width="122" height="122" xmlns="http://www.w3.org/2000/svg">
+          <!-- QR code placeholder pattern -->
+          <rect width="100" height="100" fill="white"/>
+          <rect x="5" y="5" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="10" y="10" width="25" height="25" fill="#0A2540"/>
+          <rect x="60" y="5" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="65" y="10" width="25" height="25" fill="#0A2540"/>
+          <rect x="5" y="60" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="10" y="65" width="25" height="25" fill="#0A2540"/>
+          <rect x="50" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="62" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="62" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="86" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="86" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="86" width="8" height="8" fill="#0A2540"/>
+        </svg>
+      </div>
+      <p style="font-size:10pt;color:#94A3B8;margin:0;text-align:center;">boisecodecamp.org/code-of-conduct</p>
+    </div>
+  </div>
+  <aside class="notes">Read the code of conduct. Point to the QR code. Make it clear: everyone is welcome here, and there are staff to help if anything comes up.</aside>
+</section>
+
+<section class="divider blue-div">
+  <p class="assoc-num">Association 1 of 5</p>
+  <h1>belongs_to</h1>
+  <h2>One-to-One Connections</h2>
+  <p class="divider-sub">You hold the foreign key. You carry the responsibility.</p>
+</section>
+
+<section>
+  <span class="pill blue">belongs_to</span>
+  <h2>The FK Lives on Your Table</h2>
+  <p style="font-size:15pt;font-weight:700;color:#2E86AB;margin-bottom:18px;">You chose this relationship. You carry it.</p>
+  <div class="db-diagram">
+    <div class="db-table gold-border">
+      <div class="db-header">posts</div>
+      <div class="db-body">id<br>title<br><span style="color:#C9A84C;font-weight:700;">user_id ◀</span></div>
+    </div>
+    <div class="db-arrow">→</div>
+    <div class="db-table">
+      <div class="db-header">users</div>
+      <div class="db-body">id<br>name</div>
+    </div>
+  </div>
+  <div class="card-grid two-col" style="margin-top:14px;">
+    <div class="icon-row"><div class="icon-emoji">👔</div><div class="icon-text"><p class="icon-title">Your direct manager</p><p class="icon-sub">You report to one person. You hold that link.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">🎯</div><div class="icon-text"><p class="icon-title">Your assigned mentor</p><p class="icon-sub">One official mentor at a time.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">🤝</div><div class="icon-text"><p class="icon-title">Accountability partner</p><p class="icon-sub">Intentional, singular, committed.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">☕</div><div class="icon-text"><p class="icon-title">Coffee chat you scheduled</p><p class="icon-sub">You reached out. The FK is on your table.</p></div></div>
+  </div>
+  <div class="insight-bar"><p>You made the commitment. You carry it. Send the message — actual ask, actual day, actual time.</p></div>
+  <aside class="notes">Most developers underinvest here because asking for a 1:1 feels awkward. It shouldn't. The awkwardness is in your head, not in the actual dynamics of the relationship.</aside>
+</section>
+
+<section>
+  <span class="pill blue">belongs_to · Code</span>
+  <h2>belongs_to — All 5 ORMs</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+    <pre><code class="language-ruby"># Rails
+class Post &lt; ApplicationRecord
+  belongs_to :user
+  # user_id on posts table
+end
+
+# Sequelize
+Post.belongsTo(User, {
+  foreignKey: 'userId'
+});</code></pre>
+    <pre><code class="language-typescript">// TypeORM
+@ManyToOne(() =&gt; User)
+@JoinColumn()
+author: User;
+
+// Prisma
+model Post {
+  author   User
+  authorId Int
+  @relation(fields:[authorId],
+            references:[id])
+}
+
+// JPA
+@ManyToOne
+@JoinColumn(name="user_id")
+private User author;</code></pre>
+  </div>
+  <aside class="notes">Same pattern, every language. The FK is on the posts/entity side. You hold it, you maintain it.</aside>
+</section>
+
+<section class="divider violet-div">
+  <p class="assoc-num">Association 2 of 5</p>
+  <h1>has_one</h1>
+  <h2>Mentorship Relationships</h2>
+  <p class="divider-sub">They hold the FK back to you. You are the anchor.</p>
+</section>
+
+<section>
+  <span class="pill violet">has_one</span>
+  <h2>The FK Flips — They Point to You</h2>
+  <p style="font-size:15pt;font-weight:700;color:#A23B72;margin-bottom:14px;">You created the seat. They reference you.</p>
+  <div class="db-diagram">
+    <div class="db-table" style="border-color:#A23B72;">
+      <div class="db-header" style="background:#A23B72;">users</div>
+      <div class="db-body">id<br>name</div>
+    </div>
+    <div class="db-arrow">→</div>
+    <div class="db-table">
+      <div class="db-header">profiles</div>
+      <div class="db-body">id · bio<br><span style="color:#C9A84C;font-weight:700;">▶ user_id</span></div>
+    </div>
+  </div>
+  <div class="card-grid two-col" style="margin-top:12px;">
+    <div class="icon-row"><div class="icon-emoji">🧑‍💼</div><div class="icon-text"><p class="icon-title">Senior dev has_one mentee</p><p class="icon-sub">They reference you. You created the seat.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">📈</div><div class="icon-text"><p class="icon-title">Team lead sponsoring one report</p><p class="icon-sub">Their FK points to your reputation.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">🎙️</div><div class="icon-text"><p class="icon-title">Conference has_one keynote speaker</p><p class="icon-sub">One anchor per event. High trust, high signal.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">🏆</div><div class="icon-text"><p class="icon-title">Your flagship project</p><p class="icon-sub">The work that defines your brand references you.</p></div></div>
+  </div>
+  <div class="insight-bar" style="background:rgba(162,59,114,0.12);border-top-color:rgba(162,59,114,0.4);"><p>Good mentorship is structured — goals, check-ins, honest feedback. Not just vibes. Refactor if the match is wrong.</p></div>
+  <aside class="notes">Check out ADPList or MentorCruise. Or reach out to someone in your company whose career trajectory you admire.</aside>
+</section>
+
+<section>
+  <span class="pill violet">has_one · Code</span>
+  <h2>has_one — All 5 ORMs</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+    <pre><code class="language-ruby"># Rails
+class User &lt; ApplicationRecord
+  has_one :profile
+  # profile.user_id → users.id
+end
+
+# Sequelize
+User.hasOne(Profile, {
+  foreignKey: 'userId'
+});</code></pre>
+    <pre><code class="language-typescript">// TypeORM
+@OneToOne(() =&gt; Profile)
+profile: Profile;
+
+// Prisma
+model User {
+  profile  Profile?
+}
+
+// JPA
+@OneToOne(cascade = CascadeType.ALL)
+@JoinColumn
+private Profile profile;</code></pre>
+  </div>
+  <aside class="notes">Note the ? in Prisma — optional has_one. Not every user needs a profile immediately. Same for mentees — the relationship is optional until it exists.</aside>
+</section>
+
+<section class="divider green-div">
+  <p class="assoc-num">Association 3 of 5</p>
+  <h1>has_many</h1>
+  <h2>One-to-Many Groups</h2>
+  <p class="divider-sub">You are the hub. The collection grows every time you show up.</p>
+</section>
+
+<section>
+  <span class="pill green">has_many</span>
+  <h2>One Event. Many FKs Pointing Back to You.</h2>
+  <div class="stat-grid">
+    <div class="stat-box"><p class="stat-num">1</p><p class="stat-label">Conference talk</p><p class="stat-sub">= dozens of new FKs pointing to you</p></div>
+    <div class="stat-box"><p class="stat-num">1</p><p class="stat-label">Meetup you run</p><p class="stat-sub">= 30–80 people in your has_many</p></div>
+    <div class="stat-box"><p class="stat-num">1</p><p class="stat-label">Blog post that lands</p><p class="stat-sub">= thousands of records referencing you</p></div>
+  </div>
+  <div class="card-grid two-col" style="margin-top:14px;">
+    <div class="icon-row"><div class="icon-emoji">🗓️</div><div class="icon-text"><p class="icon-title">Atlanta freeCodeCamp</p><p class="icon-sub">Built it. 600+ records. They all FK to the community.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">📢</div><div class="icon-text"><p class="icon-title">This room, right now</p><p class="icon-sub">One talk → many audience records created.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">✍️</div><div class="icon-text"><p class="icon-title">Vue Mastery content</p><p class="icon-sub">Students worldwide referencing your work.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">⭐</div><div class="icon-text"><p class="icon-title">Open source projects</p><p class="icon-sub">Every contributor has a FK to your repo.</p></div></div>
+  </div>
+  <div class="insight-bar" style="background:rgba(45,106,79,0.12);border-top-color:rgba(45,106,79,0.4);"><p>The collection only grows if you keep showing up. No passive has_many relationships exist.</p></div>
+  <aside class="notes">You don't need DevNexus to start a has_many. Show up consistently to one Discord server. Answer questions. Three times in a row. Let the collection grow.</aside>
+</section>
+
+<section>
+  <span class="pill green">has_many · Code</span>
+  <h2>has_many — All 5 ORMs</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+    <pre><code class="language-ruby"># Rails
+class User &lt; ApplicationRecord
+  has_many :posts
+  has_many :mentees,
+    class_name: "Developer"
+end
+
+# Sequelize
+User.hasMany(Post, {
+  foreignKey: 'userId'
+});</code></pre>
+    <pre><code class="language-typescript">// TypeORM
+@OneToMany(() =&gt; Post, p =&gt; p.author)
+posts: Post[];
+
+// Prisma
+model User {
+  posts  Post[]
+}
+
+// JPA
+@OneToMany(mappedBy = "author")
+private List&lt;Post&gt; posts;</code></pre>
+  </div>
+  <aside class="notes">Note: TypeORM requires the inverse relationship defined on Post — p =&gt; p.author. Both sides need to know about each other. Same in networking.</aside>
+</section>
+
+<section class="divider teal-div">
+  <p class="assoc-num">Association 4 of 5 — The Most Powerful</p>
+  <h1>has_many :through</h1>
+  <h2>Leveraging Existing Networks</h2>
+  <p class="divider-sub">You reach new people through an existing relationship. The join model is the warm introduction.</p>
+</section>
+
+<section style="background:#0A2540;padding:40px 56px;">
+  <span class="pill teal">has_many :through</span>
+  <h2>Cold Connection vs Warm Introduction</h2>
+  <div class="compare-grid">
+    <div class="compare-panel cold">
+      <p class="panel-title">❄️ Cold Connection</p>
+      <ul class="tight-list">
+        <li>No context. No trust. No history.</li>
+        <li>Hit rate: ~2%</li>
+        <li>Feels transactional</li>
+        <li>LinkedIn request #4,289</li>
+        <li>No join model — just a raw record</li>
+      </ul>
+    </div>
+    <div class="compare-panel warm">
+      <p class="panel-title">🔥 Warm Introduction</p>
+      <ul class="tight-list">
+        <li>Context + trust transferred + shared history</li>
+        <li>Hit rate: ~60%</li>
+        <li>Feels like a gift</li>
+        <li>"You two should meet"</li>
+        <li>Join model carries the story</li>
+      </ul>
+    </div>
+  </div>
+  <div class="insight-bar gold-bar"><p>The :through model is the warm introduction. It carries the data cold connections never have.</p></div>
+  <aside class="notes">This is the core argument. The join model has FIELDS — context, trust_level, shared_interests. That's what makes a warm intro completely different.</aside>
+</section>
+
+<section>
+  <span class="pill teal">has_many :through</span>
+  <h2>The Join Model Carries the Story</h2>
+  <pre><code class="language-ruby"># Rails — Introduction (your join model)
+class Introduction &lt; ApplicationRecord
+  belongs_to :introducer, class_name: "Developer"
+  belongs_to :new_contact
+
+  # Data a cold LinkedIn request NEVER carries:
+  # context:          "Met at Connect.Tech 2024, Vue.js talk"
+  # trust_level:      :warm_intro
+  # shared_interests: ["Vue.js", "frontend", "community"]
+end
+
+class Developer &lt; ApplicationRecord
+  has_many :introductions, foreign_key: :introducer_id
+  has_many :new_contacts, through: :introductions
+end</code></pre>
+  <div class="insight-bar gold-bar"><p>habtm has no story. :through HAS a story. Choose based on whether the introduction matters.</p></div>
+  <aside class="notes">This is why :through beats habtm every time trust matters. Invest in the middle relationships — the ones that become join models for you.</aside>
+</section>
+
+<section>
+  <span class="pill teal">has_many :through</span>
+  <h2>Your Real :through Models</h2>
+  <table>
+    <thead><tr><th>The :through model (the warm intro)</th><th>→ You can now reach</th></tr></thead>
+    <tbody>
+      <tr><td>Co-organizer role @ Connect.Tech</td><td>New conference speakers &amp; sponsors</td></tr>
+      <tr><td>Former colleagues</td><td>Referrals, job leads, insider info</td></tr>
+      <tr><td>Vue Mastery content</td><td>Students &amp; developers worldwide</td></tr>
+      <tr><td>Conference talk appearances</td><td>Hiring managers &amp; senior peers</td></tr>
+      <tr><td>Open source PRs</td><td>International dev community</td></tr>
+      <tr><td>Meetup organization</td><td>Every speaker you've ever invited</td></tr>
+    </tbody>
+  </table>
+  <blockquote><p>List one person you want to meet. Who could introduce you? Have you given them enough reason to do it?</p></blockquote>
+  <aside class="notes">Invest in that middle relationship first. Then make the ask. That's has_many :through in practice.</aside>
+</section>
+
+<section>
+  <span class="pill teal">has_many :through · Code</span>
+  <h2>has_many :through — All 5 ORMs</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;">
+    <pre><code class="language-ruby"># Rails
+class Doctor &lt; ApplicationRecord
+  has_many :appointments
+  has_many :patients,
+    through: :appointments
+end
+
+# Sequelize
+Doctor.belongsToMany(Patient, {
+  through: 'Appointment'
+});</code></pre>
+    <pre><code class="language-typescript">// TypeORM
+@ManyToMany(() =&gt; Patient)
+@JoinTable() // custom entity for data
+patients: Patient[];
+
+// Prisma (explicit join model)
+model Appointment {
+  doctor   Doctor
+  patient  Patient
+  at       DateTime
+  @@id([doctorId, patientId])
+}
+
+// JPA
+@ManyToMany
+@JoinTable(name="appointments")
+List&lt;Patient&gt; patients;</code></pre>
+  </div>
+  <aside class="notes">When you need data on the join — use an explicit join entity/model. TypeORM and Prisma both support this. That's your warm introduction with fields.</aside>
+</section>
+
+<section class="divider gold-div">
+  <p class="assoc-num">Association 5 of 5</p>
+  <h1>has_and_belongs_<br>to_many</h1>
+  <h2>Community Engagement</h2>
+  <p class="divider-sub">Mutual membership. No join model. No story needed. Just presence.</p>
+</section>
+
+<!-- THREE CUPS OF JAVA — CREDIT / BRIDGE SLIDE -->
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;border-left:8px solid #B07D1A;">
+  <div style="padding:48px 64px;">
+    <p style="font-size:11pt;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#B07D1A;margin:0 0 12px 0;">Where This Idea Comes From</p>
+    <h2 style="font-size:34pt;margin:0 0 20px 0;line-height:1.2;color:#FFFFFF;">Three Cups of Java</h2>
+    <p style="font-size:15pt;color:#EAF4FB;margin:0 0 20px 0;line-height:1.55;">Vincent Mayers gave a talk at DevBCN 2023 that I keep coming back to.</p>
+    <blockquote style="border-left:4px solid #B07D1A;padding:12px 20px;margin:0 0 24px 0;background:rgba(176,125,26,0.1);border-radius:0 6px 6px 0;">
+      <p style="color:#E8D08A;font-size:15pt;margin:0;">"Communities affect our lives from an early age. It could be a church group, a book club, or a sports team. The fundamentals are the same worldwide, regardless of your involvement."</p>
+      <p style="color:#94A3B8;font-size:11pt;margin:8px 0 0 0;">— Vincent Mayers (@vrm) · DevBCN 2023</p>
+    </blockquote>
+    <p style="font-size:14pt;color:#94A3B8;margin:0 0 8px 0;">His framing of community as a universal, cross-cultural pattern is the foundation of the <code style="background:rgba(176,125,26,0.2);color:#E8D08A;padding:2px 8px;border-radius:4px;">habtm</code> section you're about to see.</p>
+    <p style="font-size:13pt;color:#B07D1A;font-style:italic;margin:0;">👉 mayers.io/blog/f/three-cups-of-java---devbcn-2023</p>
+  </div>
+  <aside class="notes">Credit where it's due. Vincent Mayers gave this talk at DevBCN 2023 — I came across it while building this talk and it crystallized the habtm metaphor for me. Communities are universal. The fundamentals are the same whether you're in a book club in Boise or a Java user group in Barcelona. That's exactly what habtm models — mutual presence without needing to track the why or how. Go watch the talk after this one.</aside>
+</section>
+
+
+
+<section>
+  <span class="pill" style="background:#B07D1A;color:#fff;">habtm</span>
+  <h2>Mutual Membership — Both Sides Are Equal</h2>
+  <div class="db-diagram" style="margin:12px auto;">
+    <div class="db-table gold-border"><div class="db-header">developers</div><div class="db-body" style="font-size:10pt;">id · name</div></div>
+    <div class="db-arrow">⇔</div>
+    <div class="db-table" style="border-color:#B07D1A;min-width:170px;">
+      <div class="db-header" style="background:#B07D1A;color:#fff;font-size:10pt;">developers_communities<br><em style="font-size:8pt;color:rgba(255,255,255,0.7);">join table — no model</em></div>
+      <div class="db-body" style="font-size:9pt;">developer_id<br>community_id</div>
+    </div>
+    <div class="db-arrow">⇔</div>
+    <div class="db-table" style="border-color:#B07D1A;"><div class="db-header" style="background:#B07D1A;color:#fff;">communities</div><div class="db-body" style="font-size:10pt;">id · name</div></div>
+  </div>
+  <div class="card-grid two-col" style="margin-top:10px;">
+    <div class="icon-row"><div class="icon-emoji">⬡</div><div class="icon-text"><p class="icon-title">Atlanta freeCodeCamp</p><p class="icon-sub">You're a member. That's the whole record.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">⬡</div><div class="icon-text"><p class="icon-title">Conference speaker circuit</p><p class="icon-sub">You speak at many. They have many speakers.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">⬡</div><div class="icon-text"><p class="icon-title">Dev Discord servers</p><p class="icon-sub">You joined. That's the entire relationship.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">⬡</div><div class="icon-text"><p class="icon-title">Vue / React dev community</p><p class="icon-sub">Mutual presence. Shared tech identity.</p></div></div>
+  </div>
+  <div class="insight-bar"><p>Pick 3–5 communities and actually show up. You can't be present in 40.</p></div>
+  <aside class="notes">Go from lurker to participant. Answer a question. Comment on someone's post. That's your habtm — go add a record.</aside>
+</section>
+
+<section>
+  <span class="pill">habtm vs :through</span>
+  <h2>One Question Decides It</h2>
+  <p style="font-size:15pt;color:#C9A84C;font-weight:700;margin-bottom:10px;">Does the connection itself have a story?</p>
+  <table class="decision-table">
+    <thead><tr><th>Question</th><th>habtm</th><th>has_many :through</th></tr></thead>
+    <tbody>
+      <tr><td>How did they meet?</td><td class="no">❌ No record</td><td class="yes">✅ context field</td></tr>
+      <tr><td>When was trust established?</td><td class="no">❌ Unknown</td><td class="yes">✅ timestamps</td></tr>
+      <tr><td>Who made the introduction?</td><td class="no">❌ No attribution</td><td class="yes">✅ introducer FK</td></tr>
+      <tr><td>Any shared experience?</td><td class="no">❌ Just overlap</td><td class="yes">✅ shared_interests</td></tr>
+      <tr><td>Need more data later?</td><td class="no">❌ Locked out</td><td class="yes">✅ just add columns</td></tr>
+    </tbody>
+  </table>
+  <div class="insight-bar gold-bar"><p>YES to any row → use has_many :through. Default to :through when trust matters.</p></div>
+  <aside class="notes">The decision is simple. If the HOW and WHO matters — you need a join model. Community membership? habtm is fine.</aside>
+</section>
+
+<section class="divider">
+  <p class="assoc-num">Putting It Together · 32 – 42 min</p>
+  <h1 style="font-family:'Fraunces',Georgia,serif;font-size:46pt;">Your Career<br>Schema</h1>
+  <h2>Mapping the whole picture</h2>
+</section>
+
+<section>
+  <span class="pill">Cross-ORM</span>
+  <h2>Same Pattern. Every Ecosystem.</h2>
+  <table>
+    <thead><tr><th>Concept</th><th>Rails</th><th>TypeORM</th><th>Sequelize</th><th>Prisma</th><th>JPA</th></tr></thead>
+    <tbody>
+      <tr><td>Many-to-one</td><td><code>belongs_to</code></td><td><code>@ManyToOne</code></td><td><code>belongsTo</code></td><td><code>@relation</code></td><td><code>@ManyToOne</code></td></tr>
+      <tr><td>One-to-many</td><td><code>has_many</code></td><td><code>@OneToMany</code></td><td><code>hasMany</code></td><td>array field</td><td><code>@OneToMany</code></td></tr>
+      <tr><td>One-to-one</td><td><code>has_one</code></td><td><code>@OneToOne</code></td><td><code>hasOne</code></td><td><code>@relation + ?</code></td><td><code>@OneToOne</code></td></tr>
+      <tr><td>Many-to-many</td><td><code>habtm / :through</code></td><td><code>@ManyToMany</code></td><td><code>belongsToMany</code></td><td>implicit/explicit</td><td><code>@ManyToMany</code></td></tr>
+    </tbody>
+  </table>
+  <blockquote><p>Master the pattern — not the syntax. The concept is identical across every ecosystem.</p></blockquote>
+  <aside class="notes">If you know the pattern, you can apply it in any language. The networking metaphor holds everywhere.</aside>
+</section>
+
+<section>
+  <span class="pill">Career Schema</span>
+  <h2>Your Network as a Data Model</h2>
+  <div class="schema-diagram">
+    <div class="schema-center">You (Developer)</div>
+    <div class="schema-row">
+      <div class="schema-node" style="background:#1E3A5F;">
+        <p class="sn-label" style="color:#7DB8D4;">belongs_to</p>
+        <p class="sn-sub">Direct Manager · Mentor</p>
+      </div>
+      <div class="schema-node" style="background:#2D1B40;">
+        <p class="sn-label" style="color:#D8A8D0;">has_one</p>
+        <p class="sn-sub">Mentee · Sponsoree</p>
+      </div>
+      <div class="schema-node" style="background:#1A3828;">
+        <p class="sn-label" style="color:#A8D5B5;">has_many</p>
+        <p class="sn-sub">Readers · Attendees · Students</p>
+      </div>
+    </div>
+    <div class="schema-row">
+      <div class="schema-node" style="background:#041514;">
+        <p class="sn-label" style="color:#2DD4BF;">:through</p>
+        <p class="sn-sub">Hiring Mgrs · New Speakers · Leads</p>
+      </div>
+      <div class="schema-node" style="background:#1C1600;">
+        <p class="sn-label" style="color:#C9A84C;">habtm</p>
+        <p class="sn-sub">Communities · Conferences · Stacks</p>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:12pt;color:#C9A84C;font-style:italic;text-align:center;margin-top:8px;">Every node has a type. Every edge has a direction. Design with intention.</p>
+  <aside class="notes">This is your whole career graph. Each node type requires a different strategy. Missing a type isn't failure — it's a backlog item.</aside>
+</section>
+
+<section>
+  <span class="pill">Key Options</span>
+  <h2>Options That Change How Relationships Behave</h2>
+  <div class="card-grid two-col">
+    <div class="card blue-card"><p class="card-label"><code>dependent: :destroy</code></p><h3>What happens when you leave?</h3><p>What happens to your mentees when you exit a company or community?</p></div>
+    <div class="card blue-card"><p class="card-label"><code>through: :join_model</code></p><h3>The warm intro</h3><p>The colleague who made the introduction — that IS your :through model.</p></div>
+    <div class="card blue-card"><p class="card-label"><code>counter_cache: true</code></p><h3>Your signal metrics</h3><p>Talk count, mentee count, blog count — tracked automatically as you grow.</p></div>
+    <div class="card blue-card"><p class="card-label"><code>scope: -&gt; { active }</code></p><h3>Quality over quantity</h3><p>Only count people who are still engaged, still in your active network.</p></div>
+  </div>
+  <aside class="notes">These options matter in code AND in networking. Scope your network. Maintain the active relationships. Know what happens when someone leaves.</aside>
+</section>
+
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;">
+  <div style="padding:48px 64px;border-left:6px solid #C9A84C;">
+    <p style="font-size:11pt;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#C9A84C;margin:0 0 12px 0;">The Big Takeaway</p>
+    <h1 style="font-size:42pt;line-height:1.2;margin:0 0 16px 0;"><code style="background:none;color:#F5F8FC;font-family:'JetBrains Mono',monospace;font-size:38pt;">has_many :through</code><br>is the most<br>powerful pattern.</h1>
+    <p style="font-size:16pt;color:#EAF4FB;font-style:italic;margin:0 0 18px 0;">Because real career growth comes through existing relationships — not from scratch.</p>
+    <p style="font-size:13pt;color:#C9A84C;padding:12px 18px;background:rgba(201,168,76,0.1);border-left:3px solid #C9A84C;margin:0;">Warm introductions carry trust. Cold connections carry nothing.</p>
+  </div>
+  <aside class="notes">Let this land. The :through model is the warm introduction. Invest in the middle relationships first. Then make the ask.</aside>
+</section>
+
+<section class="divider">
+  <p class="assoc-num">Action Plan · 42 – 47 min</p>
+  <h1 style="font-family:'Fraunces',Georgia,serif;font-size:46pt;">3 Things.<br>Before You Leave.</h1>
+  <h2>Not "someday." This week.</h2>
+</section>
+
+<section>
+  <span class="pill blue">Action 01 of 03</span>
+  <h2>Audit Your <code style="font-size:24pt;">belongs_to</code></h2>
+  <div class="action-card" style="margin-bottom:16px;">
+    <div class="action-num">01</div>
+    <div class="action-content">
+      <p class="action-title">Who do you intentionally belongs_to right now?</p>
+      <p>Manager, mentor, accountability partner — did you choose them, or did they happen by default?</p>
+    </div>
+  </div>
+  <ul>
+    <li>Are those relationships healthy — or are they N+1 problems?</li>
+    <li>Send the message this week. Actual ask, actual day, actual time.</li>
+    <li>Not "let's connect sometime." A real ask with a topic.</li>
+  </ul>
+  <blockquote><p>A default belongs_to is the most expensive N+1 in your career.</p></blockquote>
+  <aside class="notes">One message. Today if possible. One real ask to one person you've been meaning to reach out to.</aside>
+</section>
+
+<section>
+  <span class="pill violet">Action 02 of 03</span>
+  <h2>Map Your <code style="font-size:24pt;">:through</code> Models</h2>
+  <div class="action-card violet-action" style="margin-bottom:16px;">
+    <div class="action-num">02</div>
+    <div class="action-content">
+      <p class="action-title">List 3 people you want to meet.</p>
+      <p>For each one — who in your current network could make the warm introduction?</p>
+    </div>
+  </div>
+  <ul>
+    <li>Have you given your :through model enough reason to vouch for you?</li>
+    <li>Invest in the middle relationship <em>first</em> — then make the ask.</li>
+    <li>If you can't think of a :through model — that IS the gap. Build it first.</li>
+  </ul>
+  <blockquote><p>Earn the right to the ask. That's has_many :through.</p></blockquote>
+  <aside class="notes">Write down 3 names right now. In your notes app. The homework starts here.</aside>
+</section>
+
+<section>
+  <span class="pill green">Action 03 of 03</span>
+  <h2>Show Up to a <code style="font-size:24pt;">habtm</code> Community</h2>
+  <div class="action-card green-action" style="margin-bottom:14px;">
+    <div class="action-num">03</div>
+    <div class="action-content">
+      <p class="action-title">Pick one community you've been lurking in.</p>
+      <p>Go from lurker to participant. This week.</p>
+    </div>
+  </div>
+  <div class="card-grid two-col">
+    <div class="icon-row"><div class="icon-emoji">1️⃣</div><div class="icon-text"><p class="icon-title">Attend</p><p class="icon-sub">Show up. Being there adds a record.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">2️⃣</div><div class="icon-text"><p class="icon-title">Contribute</p><p class="icon-sub">Answer a question. Comment. Help someone.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">3️⃣</div><div class="icon-text"><p class="icon-title">Ship something</p><p class="icon-sub">Share a project. Write a post. Give a talk.</p></div></div>
+    <div class="icon-row"><div class="icon-emoji">4️⃣</div><div class="icon-text"><p class="icon-title">Connect</p><p class="icon-sub">Exchange info. Start building :through potential.</p></div></div>
+  </div>
+  <aside class="notes">Atlanta freeCodeCamp is right here. Come through. There's always room for one more record in the collection.</aside>
+</section>
+
+<section>
+  <span class="pill">Resources</span>
+  <h2>Go Deeper</h2>
+  <div class="resource-grid">
+    <div class="resource-item"><p class="res-cat">This talk + blog</p><p>developingdvlpr.com/blog<br><em>Slide deck · companion doc · full post</em></p></div>
+    <div class="resource-item"><p class="res-cat">Find a has_one</p><p>ADPList.org · MentorCruise.com<br><em>Free and paid mentorship platforms</em></p></div>
+    <div class="resource-item"><p class="res-cat">Rails Associations</p><p>guides.rubyonrails.org/<br>association_basics.html</p></div>
+    <div class="resource-item"><p class="res-cat">Community (habtm)</p><p>Atlanta freeCodeCamp meetups<br>Connect.Tech conference</p></div>
+    <div class="resource-item"><p class="res-cat">Related posts</p><p>"How !To Be Mentored V2"<br>"Developer Networking Tools: IRL"</p></div>
+    <div class="resource-item"><p class="res-cat">Build the habit</p><p>Atomic Habits — James Clear<br><em>Consistent showing up is everything</em></p></div>
+  </div>
+  <aside class="notes">Everything is at developingdvlpr.com. Slides posted after the talk.</aside>
+</section>
+
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;border-left:8px solid #C9A84C;">
+  <div style="padding:48px 64px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
+    <div>
+      <h1 style="font-size:66pt;margin:0 0 16px 0;">Questions?</h1>
+      <p style="font-size:17pt;color:#C9A84C;font-style:italic;margin:0 0 28px 0;">What association type is your biggest gap right now?</p>
+      <ul class="contact-list">
+        <li>🌐 developingdvlpr.com</li>
+        <li>🐦 @nerajno (Twitter/X · Bluesky)</li>
+        <li>💼 linkedin.com/in/nerajno</li>
+        <li>🐙 github.com/Nerajno</li>
+      </ul>
+      <p style="font-size:12pt;color:#64748B;margin-top:20px;font-style:italic;">DMs open. Always.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;">
+      <div style="background:#FFFFFF;padding:14px;border-radius:10px;width:150px;height:150px;display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 100 100" width="122" height="122" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="100" fill="white"/>
+          <rect x="5" y="5" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="10" y="10" width="25" height="25" fill="#0A2540"/>
+          <rect x="60" y="5" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="65" y="10" width="25" height="25" fill="#0A2540"/>
+          <rect x="5" y="60" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="10" y="65" width="25" height="25" fill="#0A2540"/>
+          <rect x="50" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="62" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="62" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="86" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="86" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="86" width="8" height="8" fill="#0A2540"/>
+        </svg>
+      </div>
+      <p style="font-size:10pt;color:#94A3B8;margin:0;text-align:center;">developingdvlpr.com</p>
+    </div>
+  </div>
+  <aside class="notes">Open it up. Ask specifically: what relationship type do you feel you're missing the most? Get the room talking. QR links to your site.</aside>
+</section>
+
+<section style="background:#0A2540;display:flex;flex-direction:column;justify-content:center;height:100%;border-left:8px solid #C9A84C;">
+  <div style="padding:48px 64px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;">
+    <div>
+      <h1 style="font-size:66pt;margin:0 0 24px 0;">Thank You.</h1>
+      <blockquote style="margin:0 0 24px 0;">
+        <p>"Build your schema intentionally.<br>Know which side of each relationship you're on.<br>And show up accordingly."</p>
+      </blockquote>
+      <p style="font-size:13pt;color:#C9A84C;margin:0;">@nerajno · developingdvlpr.com</p>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0;">
+      <div style="background:#FFFFFF;padding:14px;border-radius:10px;width:150px;height:150px;display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 100 100" width="122" height="122" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100" height="100" fill="white"/>
+          <rect x="5" y="5" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="10" y="10" width="25" height="25" fill="#0A2540"/>
+          <rect x="60" y="5" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="65" y="10" width="25" height="25" fill="#0A2540"/>
+          <rect x="5" y="60" width="35" height="35" fill="none" stroke="#0A2540" stroke-width="4"/>
+          <rect x="10" y="65" width="25" height="25" fill="#0A2540"/>
+          <rect x="86" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="62" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="74" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="86" width="8" height="8" fill="#0A2540"/>
+          <rect x="62" y="86" width="8" height="8" fill="#0A2540"/>
+          <rect x="74" y="50" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="62" width="8" height="8" fill="#0A2540"/>
+          <rect x="86" y="86" width="8" height="8" fill="#0A2540"/>
+          <rect x="50" y="86" width="8" height="8" fill="#0A2540"/>
+        </svg>
+      </div>
+      <p style="font-size:10pt;color:#94A3B8;margin:0;text-align:center;">Leave feedback →</p>
+    </div>
+  </div>
+  <aside class="notes">You are your own developer advocate. Build the network that advocates for you when you're not in the room. Thank you.</aside>
+</section></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/monokai.min.css">
+<script>
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'fast',
+    center: false,
+    autoSlide: 0,
+    loop: false,
+    plugins: [ RevealNotes, RevealHighlight ],
+    pdfMaxPagesPerSlide: 1,
+    pdfSeparateFragments: false,
+  });
+</script>
+</body>
+</html>

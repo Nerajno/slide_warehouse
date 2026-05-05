@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Back to Basics — VueVerse April 2026</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg:      #0B0F1A;
+      --card:    #111827;
+      --raised:  #1A2235;
+      --vue:     #42B883;
+      --vue2:    #35495E;
+      --yellow:  #F7DF1E;
+      --amber:   #F59E0B;
+      --rose:    #F43F5E;
+      --text:    #F9FAFB;
+      --muted:   #94A3B8;
+      --dim:     #64748B;
+      --border:  rgba(66,184,131,0.18);
+      --subtle:  rgba(255,255,255,0.06);
+      --ff-h:    'Syne', sans-serif;
+      --ff-b:    'DM Sans', sans-serif;
+      --ff-c:    'JetBrains Mono', monospace;
+    }
+
+    .reveal-viewport, .reveal, .reveal .slides { background: var(--bg); }
+
+    .reveal .slides section {
+      text-align: left; padding: 44px 60px;
+      height: 100%; box-sizing: border-box;
+    }
+
+    .reveal h1,.reveal h2,.reveal h3,.reveal h4 {
+      font-family: var(--ff-h); text-transform: none;
+      letter-spacing: -0.02em; color: var(--text); margin: 0 0 14px; line-height: 1.1;
+    }
+    .reveal h1 { font-size: 50pt; font-weight: 800; }
+    .reveal h2 { font-size: 32pt; font-weight: 700; }
+    .reveal h3 { font-size: 20pt; font-weight: 600; }
+
+    .reveal p,.reveal li {
+      font-family: var(--ff-b); font-size: 15pt;
+      color: var(--text); line-height: 1.65; margin: 0 0 8px;
+    }
+    .reveal ul { list-style: none; padding: 0; margin: 0; }
+    .reveal ul li::before { content: '▸'; color: var(--vue); margin-right: 10px; font-size: 11pt; }
+    .reveal a { color: var(--vue); text-decoration: none; }
+    .reveal code {
+      font-family: var(--ff-c);
+      background: rgba(66,184,131,0.1); border: 1px solid rgba(66,184,131,0.25);
+      border-radius: 4px; padding: 2px 8px; font-size: 0.85em; color: var(--vue);
+    }
+    .reveal pre {
+      background: #0D1117; border: 1px solid var(--subtle);
+      border-radius: 10px; margin: 14px 0; box-shadow: 0 8px 32px rgba(0,0,0,.4); width: 100%;
+    }
+    .reveal pre code {
+      background: none; border: none; padding: 18px 22px;
+      font-size: 12pt; color: var(--text); border-radius: 10px;
+    }
+    .reveal blockquote {
+      border-left: 4px solid var(--vue); background: rgba(66,184,131,.07);
+      border-radius: 0 8px 8px 0; padding: 14px 22px; margin: 14px 0;
+      font-style: italic; width: 100%; box-shadow: none;
+    }
+    .reveal .progress { color: var(--vue); height: 3px; }
+    .reveal .controls { color: var(--vue); }
+    .reveal .slide-number { font-family: var(--ff-c); font-size: 10pt; color: var(--dim); background: transparent; }
+
+    /* Layout */
+    .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 14px; }
+    .cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 14px; }
+
+    /* Cards */
+    .card {
+      background: var(--card); border: 1px solid var(--subtle);
+      border-radius: 12px; padding: 20px;
+    }
+    .card.vue-card { border-color: var(--border); background: rgba(66,184,131,.05); }
+    .card h3 { font-size: 15pt; margin-bottom: 10px; }
+    .card p,.card li { font-size: 13pt; }
+
+    .badge {
+      display: inline-block; font-family: var(--ff-c); font-size: 9pt;
+      font-weight: 600; padding: 3px 11px; border-radius: 20px; margin-bottom: 8px;
+    }
+    .bv { background: rgba(66,184,131,.15); color: var(--vue); border: 1px solid rgba(66,184,131,.4); }
+    .by { background: rgba(247,223,30,.1); color: var(--yellow); border: 1px solid rgba(247,223,30,.3); }
+
+    /* Accent colors */
+    .av { color: var(--vue); }
+    .ay { color: var(--yellow); }
+    .am { color: var(--muted); }
+
+    /* Title slide */
+    .title-wrap { display: flex; flex-direction: column; justify-content: center; height: 100%; position: relative; overflow: hidden; }
+    .title-wrap::before {
+      content: 'JS'; position: absolute; right: -40px; bottom: -60px;
+      font-family: var(--ff-h); font-size: 260pt; font-weight: 800;
+      color: rgba(66,184,131,.04); line-height: 1; pointer-events: none;
+    }
+    .eyebrow { font-family: var(--ff-c); font-size: 11pt; color: var(--vue); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px; }
+    .handle  { font-family: var(--ff-c); font-size: 12pt; color: var(--dim); margin-top: 28px; }
+
+    /* Divider slides */
+    .divider { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+    .divider .num { font-family: var(--ff-c); font-size: 72pt; font-weight: 800; color: rgba(66,184,131,.08); line-height: 1; margin-bottom: -18px; }
+    .divider h2 { font-size: 40pt; }
+
+    /* Center slides */
+    .center-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; }
+    .center-slide h2,.center-slide p { text-align: center; }
+
+    /* Concept header */
+    .ch { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .ct { font-family: var(--ff-c); font-size: 9pt; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; padding: 3px 11px; border-radius: 20px; background: rgba(66,184,131,.12); color: var(--vue); border: 1px solid rgba(66,184,131,.3); white-space: nowrap; }
+    .cl { flex: 1; height: 1px; background: var(--subtle); }
+    .cs { font-family: var(--ff-c); font-size: 10pt; color: var(--dim); }
+
+    /* Definition box */
+    .def { background: rgba(66,184,131,.05); border: 1px solid rgba(66,184,131,.2); border-radius: 10px; padding: 16px 20px; margin: 12px 0; }
+    .def p { font-size: 14pt; margin: 0; }
+
+    /* Code panel */
+    .cp { background: #0D1117; border-radius: 10px; border: 1px solid var(--subtle); overflow: hidden; margin-top: 12px; }
+    .cp-header { padding: 7px 14px; border-bottom: 1px solid var(--subtle); font-family: var(--ff-c); font-size: 9pt; color: var(--dim); display: flex; align-items: center; gap: 8px; }
+    .cp pre { margin: 0; border: none; border-radius: 0; box-shadow: none; background: transparent; }
+    .cp pre code { font-size: 11pt; padding: 12px 16px; }
+
+    /* Agenda */
+    .agenda-item { display: flex; align-items: center; gap: 18px; padding: 12px 18px; border-radius: 10px; border: 1px solid var(--subtle); background: var(--card); margin-bottom: 8px; }
+    .agenda-item .n { font-family: var(--ff-c); font-size: 12pt; color: var(--vue); font-weight: 600; width: 24px; }
+    .agenda-item p { font-size: 14pt; margin: 0; }
+
+    /* Fundie grid */
+    .fg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+    .fi { display: flex; align-items: center; gap: 10px; padding: 11px 14px; background: var(--card); border: 1px solid var(--subtle); border-radius: 8px; font-family: var(--ff-b); font-size: 12pt; color: var(--text); }
+    .fi i { color: var(--vue); font-size: 12pt; width: 16px; text-align: center; }
+
+    /* Bio */
+    .bio-grid { display: grid; grid-template-columns: 180px 1fr; gap: 28px; align-items: start; margin-top: 8px; }
+    .bio-avatar { background: linear-gradient(135deg,rgba(66,184,131,.2),rgba(53,73,94,.4)); border: 2px solid rgba(66,184,131,.3); border-radius: 14px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; }
+    .bio-avatar i { font-size: 44pt; color: var(--vue); }
+    .bio-avatar p { font-size: 10pt; color: var(--muted); text-align:center; margin:0; }
+    .bio-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+    .bio-tag { font-family: var(--ff-c); font-size: 9pt; padding: 3px 9px; border-radius: 6px; background: var(--raised); border: 1px solid var(--subtle); color: var(--muted); }
+
+    /* Learning stack */
+    .ls { border-radius: 12px; overflow: hidden; border: 1px solid var(--subtle); margin-top: 16px; }
+    .ll { padding: 14px 22px; display: flex; align-items: center; gap: 14px; }
+    .ll p { margin: 0; font-size: 13pt; }
+    .l1 { background: rgba(66,184,131,.15); border-bottom: 1px solid rgba(66,184,131,.1); }
+    .l2 { background: rgba(66,184,131,.09); border-bottom: 1px solid var(--subtle); }
+    .l3 { background: rgba(66,184,131,.05); border-bottom: 1px solid var(--subtle); }
+    .l4 { background: var(--card); }
+
+    /* Stats */
+    .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 18px; }
+    .stat { background: var(--card); border: 1px solid var(--subtle); border-radius: 12px; padding: 18px; text-align: center; }
+    .stat .sn { font-family: var(--ff-h); font-size: 28pt; font-weight: 800; color: var(--vue); line-height: 1; }
+    .stat p { font-size: 10pt; color: var(--muted); margin: 5px 0 0; }
+
+    /* Problem */
+    .prob { background: rgba(244,63,94,.07); border: 1px solid rgba(244,63,94,.22); border-radius: 12px; padding: 20px; margin-top: 14px; }
+    .prob p { font-size: 14pt; margin: 0 0 10px; }
+    .prob p:last-child { margin: 0; }
+
+    /* Callout */
+    .callout { background: var(--card); border-left: 4px solid var(--amber); border-radius: 0 8px 8px 0; padding: 12px 18px; margin: 10px 0; }
+    .callout p { font-size: 13pt; margin: 0; }
+    .callout.vc { border-color: var(--vue); }
+
+    /* Clap */
+    .clap { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center; }
+    .clap .big { font-size: 76pt; line-height: 1.1; }
+
+    /* Summary pills */
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .pill { font-family: var(--ff-c); font-size: 10pt; padding: 7px 14px; border-radius: 24px; background: var(--card); border: 1px solid rgba(66,184,131,.22); color: var(--vue); }
+
+    /* Recommend grid */
+    .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .rec { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+    .rec .ri { font-size: 20pt; margin-bottom: 8px; }
+    .rec h4 { font-family: var(--ff-h); font-size: 14pt; color: var(--vue); margin: 0 0 6px; }
+    .rec p { font-size: 12pt; color: var(--muted); margin: 0; }
+
+    .hr-v { border: none; border-top: 2px solid var(--vue); width: 50px; margin: 14px 0; }
+    .sh { position: absolute; bottom: 18px; right: 60px; font-family: var(--ff-c); font-size: 9pt; color: var(--dim); }
+
+    /* Comparison table */
+    .cmp-table { width: 100%; border-collapse: collapse; font-family: var(--ff-b); margin-top: 4px; }
+    .cmp-table th { font-family: var(--ff-h); font-size: 11pt; font-weight: 700; color: var(--vue); text-align: left; padding: 8px 14px; border-bottom: 2px solid rgba(66,184,131,.3); background: rgba(66,184,131,.06); }
+    .cmp-table td { font-size: 11pt; color: var(--text); padding: 7px 14px; border-bottom: 1px solid var(--subtle); vertical-align: middle; }
+    .cmp-table tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+    .cmp-table tr:hover td { background: rgba(66,184,131,.05); }
+    .cmp-table td:first-child { color: var(--yellow); font-weight: 500; }
+    .cmp-table td:last-child { font-family: var(--ff-c); font-size: 10pt; color: var(--vue); }
+  </style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ═══════════════════════════════
+  1. TITLE
+═══════════════════════════════ -->
+<section>
+  <div class="title-wrap">
+    <p class="eyebrow"><i class="fa-brands fa-vuejs"></i> &nbsp;VueVerse Meetup · April 2026</p>
+    <h1>Back to Basics</h1>
+    <h2 style="color:var(--muted); font-size:24pt; font-weight:500; margin-top:6px;">Essential JavaScript Foundations<br/>for Modern Vue 3 Development</h2>
+    <hr class="hr-v" style="margin-top:24px;" />
+    <p class="handle">Nerando Johnson &nbsp;·&nbsp; @Nerajno</p>
+  </div>
+  <aside class="notes">
+    Welcome the room. Ask how many people shipped Vue 3 in the last 6 months. Ask how many started with a framework before feeling solid on JS fundamentals. Use the gap as the thesis setup.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  2. ABOUT
+═══════════════════════════════ -->
+<section>
+  <h2>Hi, I'm Nerando <span class="av">~</span></h2>
+  <div class="bio-grid">
+    <div class="bio-avatar">
+      <i class="fa-solid fa-code"></i>
+      <p>@Nerajno</p>
+    </div>
+    <div>
+      <ul>
+        <li style="margin-bottom:10px;">Junior Frontend Dev at <strong class="av">Hygiena</strong> — food safety tech software</li>
+        <li style="margin-bottom:10px;"><strong>former freeCodeCamp Atlanta</strong> organizer — 600+ members since 2018</li>
+        <li style="margin-bottom:10px;">Conference speaker · Tech Community Organizer</li>
+        <li>Bootcamp grad and self-taught developer · "Progress over Perfection" </li>
+      </ul>
+      <div class="bio-tags">
+        <span class="bio-tag">Vue 3</span>
+        <span class="bio-tag">TypeScript</span>
+        <span class="bio-tag">Pinia</span>
+        <span class="bio-tag">Supabase</span>
+        <span class="bio-tag">Nuxt</span>
+        <span class="bio-tag">ATL Dev Community</span>
+      </div>
+    </div>
+  </div>
+  <span class="sh">@Nerajno</span>
+  <aside class="notes">
+    Keep this brief — 60 seconds max. VueVerse is a community crowd so mention the freeCodeCamp ATL meetup — some may already know it. The "Progress over Perfection" line always lands; use it.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  3. HOUSEKEEPING
+═══════════════════════════════ -->
+<section>
+  <h2>Housekeeping</h2>
+  <hr class="hr-v" />
+  <div class="cols-2" style="margin-top:18px;">
+    <div class="card">
+      <span class="badge by"><i class="fa-solid fa-triangle-exclamation"></i> Disclaimer</span>
+      <p>Opinions are mine. Examples simplified for clarity. Vue 3 Composition API throughout.</p>
+    </div>
+    <div class="card">
+      <span class="badge bv"><i class="fa-solid fa-handshake"></i> CoC</span>
+      <p>Welcoming space. Be kind, curious, constructive. Questions welcome at any time.</p>
+    </div>
+  </div>
+  <div class="agenda-item" style="margin-top:14px;">
+    <span class="n"><i class="fa-solid fa-network-wired" style="color:var(--vue);"></i></span>
+    <p><strong>Sponsors &amp; Networking</strong> — <em style="color:var(--muted);">"Links run di world"</em> 🇯🇲</p>
+  </div>
+  <aside class="notes">
+    Shout out VueVerse organizers and sponsors by name here. If there's a post-talk networking block, mention it now so people stay.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  4. NOTE TO SELF
+═══════════════════════════════ -->
+<section>
+  <div class="center-slide" style="height:100%;">
+    <p style="font-family:var(--ff-c); font-size:10pt; color:var(--dim); letter-spacing:.12em; text-transform:uppercase; margin-bottom:14px;">Note to Self</p>
+    <blockquote style="text-align:left; max-width:640px;">
+      <p style="font-size:22pt; font-family:var(--ff-h); font-weight:700; color:var(--vue); font-style:normal;">"May your console errors be zero<br/>and your reactivity be perfect."</p>
+    </blockquote>
+    <p style="font-size:13pt; color:var(--muted); margin-top:18px;">Inspired by Shepard's Prayer · May 5, 1961</p>
+  </div>
+  <aside class="notes">
+    This is a beat — take a breath. The original Shepard prayer was for the first American in space. Frame it: stepping into Vue 3 Composition API felt like that for a lot of us. New territory, new risks, but the fundamentals of physics (JS) still applied.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  5. STATE OF JS 2025
+═══════════════════════════════ -->
+<section>
+  <h2>State of JS <span class="av">~ 2025</span></h2>
+  <p style="font-size:13pt; color:var(--muted); margin-bottom:0;">Source: State of JavaScript 2024 survey · State of Vue.js Report 2025</p>
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="sn">62%</div>
+      <p>of all devs use JavaScript — #1 language 12+ years running (Stack Overflow 2024)</p>
+    </div>
+    <div class="stat">
+      <div class="sn">#2</div>
+      <p>Vue.js at ~45% usage — firmly the #2 frontend framework globally behind React</p>
+    </div>
+    <div class="stat">
+      <div class="sn">3.3M+</div>
+      <p>live sites built with Vue — doubled in two years, still growing</p>
+    </div>
+  </div>
+  <blockquote style="margin-top:14px;">
+    <p style="font-size:13pt;">Vite: 69% adoption · Most loved build tool. Nuxt: #2 meta-framework. Vue sentiment steady at 65–75% positive.</p>
+  </blockquote>
+  <aside class="notes">
+    Nuxt is the #2 meta-framework behind Next.js with 1,883 professional users in State of JS 2024. Vue 3 migration is well underway — most enterprise teams still running Vue 2 EOL codebases. This is your audience's daily reality. Acknowledge it.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  6. PROBLEM STATEMENT
+═══════════════════════════════ -->
+<section>
+  <h2>The <span style="color:var(--rose);">Problem</span></h2>
+  <div class="prob">
+    <p><i class="fa-solid fa-circle-xmark" style="color:var(--rose); margin-right:8px;"></i>Devs jump into Vue before understanding the JavaScript powering it</p>
+    <p><i class="fa-solid fa-circle-xmark" style="color:var(--rose); margin-right:8px;"></i>Reactivity bugs feel like "Vue bugs" — they're JS bugs in a costume</p>
+    <p><i class="fa-solid fa-circle-xmark" style="color:var(--rose); margin-right:8px;"></i><code>npm create vue@latest</code> is line 1 of too many tutorials</p>
+  </div>
+  <div class="callout" style="margin-top:14px;">
+    <p><i class="fa-solid fa-lightbulb" style="color:var(--amber); margin-right:8px;"></i>The issue isn't Vue — it's the <strong>missing JS foundation underneath it</strong></p>
+  </div>
+  <aside class="notes">
+    Pause and ask: "How many of you have debugged something in Vue that turned out to be an async/await misunderstanding?" Most hands will go up. This is the core argument — make it personal, not preachy.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  7. PROBLEM ~ !JAVASCRIPT
+═══════════════════════════════ -->
+<section>
+  <div class="center-slide" style="height:100%;">
+    <p style="font-family:var(--ff-c); font-size:10pt; color:var(--dim); letter-spacing:.12em; text-transform:uppercase; margin-bottom:14px;">The Real Problem</p>
+    <div class="cp" style="max-width:600px; margin:0 auto;">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> misconception.js</div>
+      <pre><code class="language-javascript">// What tutorials start with:
+import { createApp } from 'vue'
+
+// What you actually need first:
+const foundation = {
+  variables:     '✓ understand scope & types',
+  arrowFns:      '✓ lexical this binding',
+  asyncAwait:    '✓ promises under the hood',
+  destructuring: '✓ props & composable returns',
+  modules:       '✓ every import you write',
+}
+
+// Vue = JavaScript + opinions ✨
+</code></pre>
+    </div>
+    <p style="font-size:15pt; color:var(--muted); margin-top:20px;">Framework ≠ JavaScript.&nbsp; Framework <strong class="av">=</strong> JavaScript + opinions.</p>
+  </div>
+  <aside class="notes">
+    This slide is a mic-drop moment — let it breathe. Follow up: "Vue's Composition API is just functions. Functions are just JavaScript. So if functions feel weird to you, we need to fix that first."
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  8. AGENDA
+═══════════════════════════════ -->
+<section>
+  <h2>Agenda</h2>
+  <div style="margin-top:14px;">
+    <div class="agenda-item"><span class="n">01</span><p><strong>JS Fundamentals</strong> — the 11 concepts you need</p></div>
+    <div class="agenda-item"><span class="n">02</span><p><strong>Learning Bottom Up</strong> — why order matters</p></div>
+    <div class="agenda-item"><span class="n">03</span><p><strong>Fundamental → Vue 3</strong> — every concept applied</p></div>
+    <div class="agenda-item"><span class="n">04</span><p><strong>Examples</strong> — real code, real patterns</p></div>
+    <div class="agenda-item"><span class="n">05</span><p><strong>Recommendations</strong> — what to do after this talk</p></div>
+  </div>
+  <aside class="notes">
+    Tell the room: "We're going fast. I want you to walk out with 11 clear connections — one JS concept to one Vue 3 pattern. Screenshot the summary slide at the end."
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  9. FUNDAMENTALS OVERVIEW
+═══════════════════════════════ -->
+<section>
+  <h2>The 11 Fundamentals</h2>
+  <p style="color:var(--muted); font-size:13pt; margin-bottom:14px;">Non-negotiable before you go deep on Vue 3</p>
+  <div class="fg">
+    <div class="fi"><i class="fa-solid fa-box"></i> Variables &amp; Data Types</div>
+    <div class="fi"><i class="fa-solid fa-quote-left"></i> Template Literals</div>
+    <div class="fi"><i class="fa-solid fa-arrow-right"></i> Arrow Functions</div>
+    <div class="fi"><i class="fa-solid fa-object-group"></i> Objects &amp; Destructuring</div>
+    <div class="fi"><i class="fa-solid fa-list"></i> Arrays &amp; Array Methods</div>
+    <div class="fi"><i class="fa-solid fa-clock"></i> Promises &amp; Async/Await</div>
+    <div class="fi"><i class="fa-solid fa-puzzle-piece"></i> Modules &amp; Exports</div>
+    <div class="fi"><i class="fa-solid fa-cubes"></i> Classes &amp; OOP</div>
+    <div class="fi"><i class="fa-solid fa-link-slash"></i> Optional Chaining</div>
+    <div class="fi"><i class="fa-solid fa-hand-pointer"></i> Event Handling</div>
+    <div class="fi"><i class="fa-solid fa-shield-halved"></i> Error Handling</div>
+    <div class="fi" style="border-color:var(--border);"><i class="fa-brands fa-vuejs" style="color:var(--vue);"></i> <strong>JS first. Vue second.</strong></div>
+  </div>
+  <aside class="notes">
+    Quick scan slide — don't read every item aloud. Ask: "Which of these feels shaky for you?" That energy carries you through the concept slides.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  10. LEARNING BOTTOM UP
+═══════════════════════════════ -->
+<section>
+  <h2>Learning Happens <span class="av">Bottom Up</span></h2>
+  <div class="ls">
+    <div class="ll l1"><i class="fa-brands fa-js" style="color:var(--yellow); font-size:16pt;"></i><p><strong>JavaScript Fundamentals</strong> — scope, closures, async, modules</p></div>
+    <div class="ll l2"><i class="fa-brands fa-vuejs" style="color:var(--vue); font-size:16pt;"></i><p><strong>Vue 3 Primitives</strong> — ref, reactive, computed, watch</p></div>
+    <div class="ll l3"><i class="fa-solid fa-layer-group" style="color:var(--vue); font-size:16pt;"></i><p><strong>Vue 3 Patterns</strong> — composables, Pinia, Vue Router, lifecycle</p></div>
+    <div class="ll l4"><i class="fa-solid fa-rocket" style="color:var(--amber); font-size:16pt;"></i><p><strong>Production Apps</strong> — Nuxt, SSR, performance, scale</p></div>
+  </div>
+  <p style="font-size:12pt; color:var(--dim); margin-top:14px;">Skip the base, shake the tower. Every Composition API pattern traces back to vanilla JS.</p>
+  <aside class="notes">
+    This is the core mental model. Point to each layer: "ref() wraps a JS variable. computed() is a derived function. watch() is a callback on a closure. None of it is magic — it's all JS."
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 01 Variables
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">01</div>
+    <h2>Variables &amp;<br/><span class="av">Data Types</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">The atoms of every JS program — and every Vue component</p>
+  </div>
+  <aside class="notes">Section intro. Ask: "Who's comfortable with the difference between let, const, and var right now — not in Vue, just in JS?"</aside>
+</section>
+
+<!-- SLIDE: Variables Concept + Vue -->
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Variables &amp; Data Types</span></div>
+  <h3>Declarations map directly to reactivity APIs</h3>
+  <div class="cols-2" style="margin-top:0;">
+    <div>
+      <div class="def"><p><code>let</code> = reassignable · <code>const</code> = fixed reference · Know your primitives: string, number, boolean, null, undefined, symbol, bigint</p></div>
+      <pre><code class="language-javascript">const name = "Nerando"; // string
+let score = 42;          // number
+let isActive = true;     // boolean
+const user = { id: 1 }; // object
+const tags = ["vue"];    // array
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 — ref() &amp; reactive()</div>
+      <pre><code class="language-javascript">import { ref, reactive } from 'vue'
+
+// ref wraps primitives
+const name = ref("Nerando")
+const score = ref(42)
+const isActive = ref(true)
+
+// reactive wraps objects
+const user = reactive({
+  id: 1,
+  role: "developer"
+})
+// .value for ref, direct for reactive
+console.log(name.value) // "Nerando"
+console.log(user.role)  // "developer"
+</code></pre>
+    </div>
+  </div>
+  <aside class="notes">
+    Key insight: "ref() under the hood is just a JS object with a .value property and a getter/setter. It's not magic — it's a class instance." If you know object property descriptors, you already understand ref().
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 02 Template Literals
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">02</div>
+    <h2>Template<br/><span class="av">Literals</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">Backticks that power your bindings</p>
+  </div>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Template Literals</span></div>
+  <h3>Embedded expressions — used daily in Vue bindings</h3>
+  <div class="cols-2">
+    <div>
+      <div class="def"><p>Backticks (<code>`</code>) embed expressions: <code>`Hello, ${name}!`</code>. Multiline, expression-aware, composable.</p></div>
+      <pre><code class="language-javascript">const role = "developer"
+const msg = `Hello, ${name}!
+You are a ${role}.`
+
+// Expression inside
+const total =
+  `$${(qty * 9.99).toFixed(2)}`
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 usage</div>
+      <pre><code class="language-javascript">// Computed string
+const greeting = computed(() =>
+  `Welcome back, ${user.name}!`
+)
+
+// Dynamic :class binding
+// in template
+// :class="`btn ${isActive
+//   ? 'btn--active'
+//   : 'btn--idle'}`"
+
+// Dynamic route path
+const path = computed(() =>
+  `/users/${userId.value}/profile`
+)
+</code></pre>
+    </div>
+  </div>
+  <aside class="notes">Template literals are so common in Vue that devs often use them without realizing it's a core JS feature. Point out the :class binding pattern — this trips up beginners constantly.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 03 Arrow Functions
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">03</div>
+    <h2>Arrow<br/><span class="av">Functions</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">The backbone of the Composition API</p>
+  </div>
+  <aside class="notes">Arrow functions are everywhere in Vue 3 Composition API. If someone is still defaulting to function() inside computed(), they're working harder than needed.</aside>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Arrow Functions</span></div>
+  <h3>Concise syntax + lexical <code>this</code> — critical for Composition API</h3>
+  <div class="cols-2">
+    <div>
+      <pre><code class="language-javascript">// Traditional
+function add(a, b) { return a+b }
+
+// Arrow — implicit return
+const add = (a, b) => a + b
+
+// Arrow with body
+const greet = (name) => {
+  return `Hello, ${name}`
+}
+
+// In array methods
+const evens =
+  [1,2,3,4].filter(n => n%2===0)
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 Composition API</div>
+      <pre><code class="language-javascript">const count = ref(0)
+
+// computed uses arrow callback
+const doubled = computed(
+  () => count.value * 2
+)
+
+// watch uses arrow callback
+watch(count, (newVal, oldVal) => {
+  console.log(`${oldVal} → ${newVal}`)
+})
+
+// event handler in &lt;script setup&gt;
+const handleClick = () => {
+  count.value++
+}
+</code></pre>
+    </div>
+  </div>
+  <aside class="notes">The "lexical this" point is critical for Options API migrants. In Composition API this isn't used at all — which is why arrow functions fit so naturally. Mention this if the audience has Vue 2 background.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 04 Destructuring
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">04</div>
+    <h2>Objects &amp;<br/><span class="av">Destructuring</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">How composables return values to you</p>
+  </div>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Objects &amp; Destructuring</span></div>
+  <h3>Extract exactly what you need — composables depend on this</h3>
+  <div class="cols-2">
+    <div>
+      <pre><code class="language-javascript">const user = {
+  name: "Nerando",
+  role: "dev",
+  city: "Atlanta"
+}
+// Destructure
+const { name, role } = user
+// Rename
+const { name: devName } = user
+// Default value
+const { theme = "dark" } = user
+// Array destructure
+const [first,,third] = ["a","b","c"]
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 — composable returns</div>
+      <pre><code class="language-javascript">// defineProps destructuring
+const { title, count } =
+  defineProps(['title', 'count'])
+
+// Composable return destructure
+const { data, error, pending } =
+  useFetch('/api/users')
+
+// Route params
+const { params, query } = useRoute()
+
+// Pinia store destructure
+// (use storeToRefs to keep reactivity!)
+const { user, isAuth } =
+  storeToRefs(useAuthStore())
+</code></pre>
+    </div>
+  </div>
+  <div class="callout vc" style="margin-top:10px;">
+    <p><i class="fa-solid fa-triangle-exclamation" style="color:var(--amber);"></i> <strong>Vue 3 gotcha:</strong> destructuring a <code>reactive()</code> object breaks reactivity — use <code>toRefs()</code> or <code>storeToRefs()</code></p>
+  </div>
+  <aside class="notes">The storeToRefs gotcha is a real pain point. If you have time, live-demo breaking reactivity by destructuring reactive() directly, then fixing it with toRefs(). Audience members who've hit this will immediately recognize it.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  CLAP BREAK 1
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="clap">
+    <div class="big">👏</div>
+    <h2 style="text-align:center; margin-top:14px;">Halfway Point</h2>
+    <p style="color:var(--muted); font-size:14pt;">4 of 11 done. Questions before we continue?</p>
+    <span class="badge bv" style="margin-top:14px;">@Nerajno</span>
+  </div>
+  <aside class="notes">Genuine pause. Take 2–3 questions. If someone asks about Vue 2 vs Vue 3 differences, acknowledge it but redirect: "That's a great follow-up — core JS patterns are the same in both."</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 05 Arrays
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">05</div>
+    <h2>Arrays &amp;<br/><span class="av">Array Methods</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">.map() .filter() .reduce() — your v-for fuel</p>
+  </div>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Arrays &amp; Array Methods</span></div>
+  <h3>Data transformation — the engine behind v-for</h3>
+  <div class="cols-2">
+    <div>
+      <pre><code class="language-javascript">const nums = [1, 2, 3, 4, 5]
+
+// transform each item
+const doubled =
+  nums.map(n => n * 2)
+// [2, 4, 6, 8, 10]
+
+// keep matching items
+const evens =
+  nums.filter(n => n % 2 === 0)
+// [2, 4]
+
+// accumulate
+const sum =
+  nums.reduce((acc,n) => acc+n, 0)
+// 15
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 — v-for + computed</div>
+      <pre><code class="language-html">&lt;!-- template --&gt;
+&lt;li
+  v-for="item in activeItems"
+  :key="item.id"
+&gt;
+  {{ item.name }}
+&lt;/li&gt;
+
+&lt;!-- script setup --&gt;
+&lt;script setup&gt;
+const items = ref([...])
+
+const activeItems = computed(() =>
+  items.value
+    .filter(i => i.active)
+    .sort((a, b) =>
+      a.name.localeCompare(b.name))
+)
+&lt;/script&gt;
+</code></pre>
+    </div>
+  </div>
+  <aside class="notes">Emphasize: computed + array methods is one of the most common Vue 3 patterns in the wild. If they're mutating arrays directly in templates, that's a red flag. Filter in computed, iterate in v-for.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 06 Async
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">06</div>
+    <h2>Promises &amp;<br/><span class="av">Async/Await</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">onMounted, useAsyncData, and every API call you'll ever write</p>
+  </div>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Promises &amp; Async/Await</span></div>
+  <h3>Async operations — the foundation of data fetching in Vue</h3>
+  <div class="cols-2">
+    <div>
+      <pre><code class="language-javascript">// Promise chain
+fetch('/api/user')
+  .then(r => r.json())
+  .then(d => console.log(d))
+  .catch(e => console.error(e))
+
+// async/await — cleaner
+async function getUser() {
+  try {
+    const res = await fetch('/api/user')
+    return await res.json()
+  } catch (err) {
+    console.error('Failed:', err)
+  }
+}
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 — onMounted + async</div>
+      <pre><code class="language-javascript">const data = ref(null)
+const error = ref(null)
+const loading = ref(false)
+
+onMounted(async () => {
+  loading.value = true
+  try {
+    const res = await fetch('/api/data')
+    data.value = await res.json()
+  } catch (e) {
+    error.value = e.message
+  } finally {
+    loading.value = false
+  }
+})
+</code></pre>
+    </div>
+  </div>
+  <div class="callout vc" style="margin-top:10px;">
+    <p><i class="fa-brands fa-vuejs" style="color:var(--vue);"></i> <strong>Nuxt users:</strong> <code>useAsyncData()</code> and <code>useFetch()</code> are built on this exact pattern</p>
+  </div>
+  <aside class="notes">This is where most Vue 3 bugs live. Ask: "Who's used async inside a computed and wondered why it didn't work?" — computed cannot be async in Vue 3. That's a JS + Vue constraint worth calling out explicitly.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 07 Modules
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">07</div>
+    <h2>Modules &amp;<br/><span class="av">Exports</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">Every composable is a module. Every import is this.</p>
+  </div>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Modules &amp; Exports</span></div>
+  <h3>ES Modules → Composables</h3>
+  <div class="cols-2">
+    <div>
+      <pre><code class="language-javascript">// math.js — named exports
+export const add = (a, b) => a + b
+export const PI = 3.14159
+
+// user.js — default export
+export default function createUser(n) {
+  return { name: n, active: true }
+}
+
+// app.js
+import createUser from './user.js'
+import { add } from './math.js'
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 — composables as modules</div>
+      <pre><code class="language-javascript">// composables/useCounter.js
+import { ref } from 'vue'
+
+export function useCounter(initial = 0) {
+  const count = ref(initial)
+  const inc = () => count.value++
+  const dec = () => count.value--
+  const reset = () =>
+    count.value = initial
+
+  return { count, inc, dec, reset }
+}
+
+// MyComponent.vue &lt;script setup&gt;
+import { useCounter }
+  from '@/composables/useCounter'
+
+const { count, inc } = useCounter(10)
+</code></pre>
+    </div>
+  </div>
+  <aside class="notes">Composables ARE the module pattern. If they understand import/export, they already understand composables structurally. The only Vue-specific part is that the functions inside can use Vue's reactivity APIs.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 08 Classes
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">08</div>
+    <h2>Classes &amp;<br/><span class="av">OOP</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">Blueprints for custom directives &amp; plugins</p>
+  </div>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Classes &amp; OOP</span></div>
+  <h3>Useful for Vue plugins, directives &amp; complex state models</h3>
+  <div class="cols-2">
+    <div>
+      <pre><code class="language-javascript">class ApiClient {
+  constructor(baseURL) {
+    this.baseURL = baseURL
+    this.headers = {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  async get(path) {
+    const res = await fetch(
+      `${this.baseURL}${path}`,
+      { headers: this.headers }
+    )
+    return res.json()
+  }
+}
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 — Plugin pattern</div>
+      <pre><code class="language-javascript">// plugins/apiClient.js
+class ApiClient { /* ... */ }
+
+export default {
+  install(app, options) {
+    const client =
+      new ApiClient(options.baseURL)
+
+    // Available via inject()
+    app.provide('api', client)
+
+    // Or as global property
+    app.config.globalProperties.$api =
+      client
+  }
+}
+// main.js
+app.use(ApiClientPlugin, {
+  baseURL: 'https://api.example.com'
+})
+</code></pre>
+    </div>
+  </div>
+  <aside class="notes">Most Vue 3 devs rarely write classes directly — but they interact with class-based APIs constantly (Pinia, Vue Router internals, plugins). Understanding OOP helps you read library source code and write robust plugins.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 09 Optional Chaining
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">09</div>
+    <h2>Optional<br/><span class="av">Chaining</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">Navigate API responses safely — every time</p>
+  </div>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Optional Chaining &amp; Nullish Coalescing</span></div>
+  <h3>Safe access — most adopted JS feature in State of JS 2024</h3>
+  <div class="cols-2">
+    <div>
+      <pre><code class="language-javascript">// Without optional chaining
+const city =
+  user && user.address
+    ? user.address.city
+    : undefined
+
+// With optional chaining ✨
+const city = user?.address?.city
+
+// Call functions safely
+const str = name?.toUpperCase()
+
+// Nullish coalescing fallback
+const display = city ?? "Atlanta"
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 — templates &amp; computed</div>
+      <pre><code class="language-html">&lt;!-- Template — safe access --&gt;
+&lt;p&gt;{{ user?.profile?.bio }}&lt;/p&gt;
+&lt;p&gt;{{ post?.author?.name ?? 'Anonymous' }}&lt;/p&gt;
+
+&lt;!-- Script setup --&gt;
+const city = computed(() =>
+  store.user?.address?.city ?? 'N/A'
+)
+
+// In watch — handle undefined initial
+watch(user, (u) => {
+  if (u?.isAdmin) enableAdminMenu()
+})
+</code></pre>
+    </div>
+  </div>
+  <aside class="notes">State of JS 2024: nullish coalescing (??) was the most adopted JS syntax feature. Your audience is already using this — call it out. Great opportunity to mention that Vue templates support the full JS expression syntax.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 10 Event Handling
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">10</div>
+    <h2>Event<br/><span class="av">Handling</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">@click is just addEventListener with Vue superpowers</p>
+  </div>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Event Handling</span></div>
+  <h3>Vue's event system is native JS events + directive sugar</h3>
+  <div class="cols-2">
+    <div>
+      <pre><code class="language-javascript">// Native JS
+el.addEventListener('click', (e) => {
+  console.log(e.target)
+  e.preventDefault()
+  e.stopPropagation()
+})
+
+// Event object properties
+// e.target — element clicked
+// e.currentTarget — listener element
+// e.key — for keyboard events
+// e.detail — for custom events
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 — v-on / @ directives</div>
+      <pre><code class="language-html">&lt;!-- Basic --&gt;
+&lt;button @click="handleClick"&gt;Go&lt;/button&gt;
+
+&lt;!-- .prevent modifier --&gt;
+&lt;form @submit.prevent="onSubmit"&gt;
+
+&lt;!-- .stop modifier --&gt;
+&lt;div @click.stop="doSomething"&gt;
+
+&lt;!-- Emit custom events --&gt;
+&lt;!-- child component --&gt;
+const emit = defineEmits(['update'])
+emit('update', { value: 42 })
+
+&lt;!-- parent --&gt;
+&lt;Child @update="handleUpdate" /&gt;
+</code></pre>
+    </div>
+  </div>
+  <aside class="notes">Vue's event modifiers (.prevent, .stop, .once, .self) are quality-of-life wrappers around native JS event methods. Understanding the native API means you'll know exactly when modifiers aren't enough and you need the event object directly.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  DIVIDER: 11 Error Handling
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="divider">
+    <div class="num">11</div>
+    <h2>Error<br/><span class="av">Handling</span></h2>
+    <p style="font-size:14pt; color:var(--muted);">Fail gracefully. Your users deserve it.</p>
+  </div>
+</section>
+
+<section>
+  <div class="ch"><span class="ct"><i class="fa-solid fa-book"></i> Concept → Vue 3</span><div class="cl"></div><span class="cs">Error Handling</span></div>
+  <h3>try/catch in JS → onErrorCaptured in Vue 3</h3>
+  <div class="cols-2">
+    <div>
+      <pre><code class="language-javascript">// Synchronous
+try {
+  riskyOperation()
+} catch (err) {
+  console.error(err.message)
+} finally {
+  cleanup()
+}
+
+// Async
+async function load() {
+  try {
+    const data = await fetchData()
+    return data
+  } catch (err) {
+    // Handle fetch errors
+    notifyUser(err.message)
+  }
+}
+</code></pre>
+    </div>
+    <div class="cp">
+      <div class="cp-header"><span style="color:var(--vue);">●</span> Vue 3 — error lifecycle hooks</div>
+      <pre><code class="language-javascript">// In a parent/layout component
+onErrorCaptured((err, instance, info) => {
+  console.error('Vue caught:', err)
+  errorLog.value = {
+    message: err.message,
+    component: info
+  }
+  return false // stop propagation
+})
+
+// Global handler in main.js
+app.config.errorHandler = (err, vm, info) => {
+  // Send to Sentry, Datadog, etc.
+  trackError(err, info)
+}
+</code></pre>
+    </div>
+  </div>
+  <aside class="notes">onErrorCaptured is Vue's equivalent of a try/catch at the component tree level. If they understand try/catch, this is intuitive. Mention app.config.errorHandler for production error tracking — most teams skip this and regret it.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  CLAP BREAK 2
+═══════════════════════════════ -->
+<section data-background-color="#0B0F1A">
+  <div class="clap">
+    <div class="big">🎉</div>
+    <h2 style="text-align:center; margin-top:14px;">All 11 Concepts — Done!</h2>
+    <p style="color:var(--muted); font-size:14pt; max-width:480px; text-align:center;">Every one of those is JavaScript. Every one shows up in your Vue 3 code today.</p>
+    <span class="badge bv" style="margin-top:14px;">@Nerajno</span>
+  </div>
+  <aside class="notes">Take a genuine pause here. Ask: "Which of those 11 surprised you the most in terms of its Vue connection?" Use the answer to transition into examples.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  EXAMPLES
+═══════════════════════════════ -->
+<section>
+  <h2>Examples <span class="av">~</span> In Practice</h2>
+  <p style="color:var(--muted); font-size:13pt; margin-bottom:14px;">Build these in vanilla JS first — then translate to Vue 3. See the 1:1 map.</p>
+  <div class="cols-3">
+    <div class="card vue-card" style="text-align:center;">
+      <p style="font-size:26pt; margin-bottom:6px;">🌤️</p>
+      <h3 style="font-size:14pt; text-align:center;">Weather App</h3>
+      <p style="font-size:11pt; color:var(--muted);">async/await · optional chaining · template literals · ref()</p>
+    </div>
+    <div class="card vue-card" style="text-align:center;">
+      <p style="font-size:26pt; margin-bottom:6px;">🎨</p>
+      <h3 style="font-size:14pt; text-align:center;">BG Color Picker</h3>
+      <p style="font-size:11pt; color:var(--muted);">event handling · template literals · reactive() · v-model</p>
+    </div>
+    <div class="card vue-card" style="text-align:center;">
+      <p style="font-size:26pt; margin-bottom:6px;">✅</p>
+      <h3 style="font-size:14pt; text-align:center;">Todo App</h3>
+      <p style="font-size:11pt; color:var(--muted);">.map() .filter() · modules · composables · Pinia</p>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:14px;">
+    <p><i class="fa-solid fa-code-branch" style="color:var(--amber);"></i> All three available on GitHub — links in the comments after the talk.</p>
+  </div>
+  <aside class="notes">
+    If time allows, do a live 5-minute demo of the Weather App — show vanilla JS fetch first, then the same logic inside onMounted with ref() and optional chaining on the API response. The parallel is immediately obvious.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  RECOMMENDATIONS
+═══════════════════════════════ -->
+<section>
+  <h2>Recommendations <span class="av">~</span> What's Next</h2>
+  <p style="color:var(--muted); font-size:13pt; margin-bottom:12px;">Leave with a plan, not just slides</p>
+  <div class="rec-grid">
+    <div class="rec">
+      <div class="ri">📚</div>
+      <h4>Solidify JS First</h4>
+      <p>javascript.info is the best free resource for fundamentals. Read the "JavaScript Fundamentals" and "Advanced" sections before your next Vue project.</p>
+    </div>
+    <div class="rec">
+      <div class="ri">🔬</div>
+      <h4>Read Vue Source</h4>
+      <p>Open node_modules/vue/dist/vue.esm-browser.js — find ref() and read 20 lines. You'll see a plain JS class. Demystify the magic.</p>
+    </div>
+    <div class="rec">
+      <div class="ri">🧪</div>
+      <h4>Build the Trio</h4>
+      <p>Weather app → Color Picker → Todo. Vanilla JS first, Vue 3 second. Document every connection you find. Share it on dev.to or your blog.</p>
+    </div>
+    <div class="rec">
+      <div class="ri">🏗️</div>
+      <h4>Write a Composable</h4>
+      <p>Take one thing you've done in a component and extract it as a useX() composable. You'll immediately see which JS concepts power it.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    These are actionable, not aspirational. If someone asks "where do I start?" point them to javascript.info and the Weather App. Mention VueVerse as a place to share what they build — community learning loop.
+
+    Suggested additions for the organizers:
+    1. Add a "JS Foundations" workshop as a pre-event primer before the next VueVerse.
+    2. Consider a "Build &amp; Share" challenge around the three starter apps.
+    3. Pair this talk with a follow-up talk on Composables patterns — it's the natural next step.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  SUMMARY
+═══════════════════════════════ -->
+<section>
+  <h2>Summary</h2>
+  <div class="def" style="margin-bottom:14px;">
+    <p>Vue 3's Composition API is JavaScript. <code>ref()</code> is a class. <code>computed()</code> is a derived function. <code>watch()</code> is a callback on a closure. Composables are modules. Master the JS, and Vue becomes obvious.</p>
+  </div>
+  <div class="pills">
+    <span class="pill">Variables → ref()</span>
+    <span class="pill">Literals → :class bindings</span>
+    <span class="pill">Arrows → computed()</span>
+    <span class="pill">Destructuring → composables</span>
+    <span class="pill">.filter() → v-for computed</span>
+    <span class="pill">async/await → onMounted</span>
+    <span class="pill">Modules → composables</span>
+    <span class="pill">Classes → plugins</span>
+    <span class="pill">?. → template safety</span>
+    <span class="pill">Events → @click</span>
+    <span class="pill">try/catch → onErrorCaptured</span>
+  </div>
+  <aside class="notes">
+    Ask the room to take a photo of this slide. Each pill is a cheat sheet entry: "When I see X in Vue, I know it maps to Y in JS." Progress over Perfection — knowing 5 of 11 deeply beats knowing 11 shallowly.
+  </aside>
+</section>
+
+<!-- ═══════════════════════════════
+  COMPARISON TABLE
+═══════════════════════════════ -->
+<section>
+  <h2>JS <span class="ay">Concept</span> → Vue 3 <span class="av">Application</span></h2>
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th>JavaScript Concept</th>
+        <th>Vue 3 Usage</th>
+        <th>Key API / Pattern</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Variables &amp; Data Types</td><td>Reactive state primitives</td><td><code>ref()</code> / <code>reactive()</code></td></tr>
+      <tr><td>Template Literals</td><td>Dynamic class &amp; route binding</td><td><code>:class</code> / <code>computed()</code></td></tr>
+      <tr><td>Arrow Functions</td><td>Composition API callbacks</td><td><code>computed()</code> / <code>watch()</code></td></tr>
+      <tr><td>Destructuring</td><td>Composable &amp; store returns</td><td><code>storeToRefs()</code> / <code>toRefs()</code></td></tr>
+      <tr><td>Array Methods</td><td>Filtered &amp; sorted list rendering</td><td><code>v-for</code> + <code>computed()</code></td></tr>
+      <tr><td>Promises &amp; Async/Await</td><td>Data fetching lifecycle</td><td><code>onMounted()</code> / <code>useFetch()</code></td></tr>
+      <tr><td>Modules &amp; Exports</td><td>Composable architecture</td><td><code>useX()</code> pattern</td></tr>
+      <tr><td>Classes &amp; OOP</td><td>Plugins &amp; provide/inject</td><td><code>app.use()</code> / <code>provide()</code></td></tr>
+      <tr><td>Optional Chaining</td><td>Safe template &amp; store access</td><td><code>user?.profile?.bio</code></td></tr>
+      <tr><td>Event Handling</td><td>DOM &amp; component events</td><td><code>@click</code> / <code>defineEmits()</code></td></tr>
+      <tr><td>try / catch / finally</td><td>Component error boundaries</td><td><code>onErrorCaptured()</code></td></tr>
+    </tbody>
+  </table>
+  <aside class="notes">Screenshot slide. Each row is a flashcard — left column is what you learn in JS, right column is where you'll see it in Vue 3. The middle column is the mental model that connects them.</aside>
+</section>
+
+<!-- ═══════════════════════════════
+  FIN
+═══════════════════════════════ -->
+<section>
+  <div class="center-slide" style="height:100%;">
+    <p style="font-family:var(--ff-c); font-size:10pt; color:var(--dim); letter-spacing:.12em; text-transform:uppercase; margin-bottom:14px;">Questions / Fin</p>
+    <h1 style="font-size:52pt; text-align:center;">Let's Talk. <span class="av">🗣️</span></h1>
+    <hr class="hr-v" style="margin:20px auto;" />
+    <p style="font-size:16pt; color:var(--muted); text-align:center;">Nerando Johnson</p>
+    <p style="font-family:var(--ff-c); font-size:13pt; color:var(--vue); text-align:center; margin-top:2px;">@Nerajno &nbsp;·&nbsp; VueVerse Atlanta · April 2026</p>
+    <div class="cols-3" style="margin-top:24px; max-width:480px;">
+      <div style="text-align:center; padding:12px; background:var(--card); border-radius:10px; border:1px solid var(--subtle);">
+        <i class="fa-brands fa-bluesky" style="font-size:18pt; color:var(--vue);"></i>
+        <p style="font-size:10pt; color:var(--dim); margin-top:5px;">Bluesky</p>
+        <p style="font-family:var(--ff-c); font-size:9pt; color:var(--vue); margin-top:2px;">@nerajno.bsky.social</p>
+      </div>
+      <div style="text-align:center; padding:12px; background:var(--card); border-radius:10px; border:1px solid var(--subtle);">
+        <i class="fa-brands fa-linkedin" style="font-size:18pt; color:var(--vue);"></i>
+        <p style="font-size:10pt; color:var(--dim); margin-top:5px;">LinkedIn</p>
+      </div>
+      <div style="text-align:center; padding:12px; background:var(--card); border-radius:10px; border:1px solid var(--subtle);">
+        <i class="fa-brands fa-github" style="font-size:18pt; color:var(--muted);"></i>
+        <p style="font-size:10pt; color:var(--dim); margin-top:5px;">GitHub</p>
+      </div>
+    </div>
+    <p style="font-size:12pt; color:var(--dim); margin-top:20px; font-style:italic;">Progress over Perfection. Let's go. 💚</p>
+  </div>
+  <aside class="notes">
+    Close with: "The link to the example repos and these slides will be in the VueVerse channel. Build something this week. Share it. That's the only homework." Leave time for hallway conversation — this talk tends to generate a lot of "wait, so THAT'S why..." moments.
+  </aside>
+</section>
+
+</div><!-- /.slides -->
+</div><!-- /.reveal -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/highlight/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/notes/notes.min.js"></script>
+<script>
+  Reveal.initialize({
+    controls: true, progress: true, slideNumber: true,
+    hash: true, transition: 'slide', center: false,
+    width: 1067, height: 600, margin: 0,
+    minScale: 0.2, maxScale: 2.0,
+    plugins: [ RevealHighlight, RevealNotes ]
+  });
+</script>
+</body>
+</html>
