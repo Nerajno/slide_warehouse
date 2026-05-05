@@ -25,3 +25,11 @@ Thumbs.db
 # Worktrees
 .worktrees
 .remember
+<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/.gitignore
+=======
+
+# Claude
+.claude
+
+
+>>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/.gitignore
