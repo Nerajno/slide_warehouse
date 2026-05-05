@@ -165,6 +165,7 @@ versions:
 3. Add an entry to the metadata array in `LegacyDeckGrid.vue`
 4. Push to Git — Netlify rebuilds automatically
 
+<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
 
 > **Note:** Legacy deck metadata is hardcoded in the component for now. Moving it to Nuxt Content is on the roadmap — see [Known Issues](#known-issues--todo).
 | Token   | Value                                     |
@@ -177,6 +178,9 @@ versions:
 
 Lighthouse Performance ≥ 90 · Accessibility = 100 · LCP < 2.5s · Bundle < 150KB
 
+=======
+> **Note:** Legacy deck metadata is hardcoded in the component for now. Moving it to Nuxt Content is on the roadmap — see [Known Issues](#known-issues--todo).
+>>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 
 ---
 
