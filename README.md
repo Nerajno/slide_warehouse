@@ -3,6 +3,12 @@
 A self-hosted Reveal.js presentation repository for browsing, searching, and sharing conference talks.
 
 <<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
+<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
+=======
+> **Demo:** _add link once deployed_
+> **Status:** In active development — see [Known Issues](#known-issues--todo)
+
+>>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 =======
 > **Demo:** _add link once deployed_
 > **Status:** In active development — see [Known Issues](#known-issues--todo)
@@ -114,6 +120,7 @@ slide-warehouse/
 ## Routes
 
 <<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
+<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
 | Path                     | Description                                            |
 | ------------------------ | ------------------------------------------------------ |
 | `/`                      | Deck grid + search + filters                           |
@@ -121,6 +128,8 @@ slide-warehouse/
 | `/legacy`                | Legacy presentation archive (PowerPoint, PDF, Keynote) |
 | `/reveals/:id/v{n}.html` | Raw Reveal.js HTML (iframe source)                     |
 =======
+=======
+>>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 | Path                      | Description                                             |
 | ------------------------- | ------------------------------------------------------- |
 | `/`                       | Deck grid + search + filters                            |
@@ -129,6 +138,9 @@ slide-warehouse/
 | `/reveals/:id/v{n}.html`  | Raw Reveal.js HTML (iframe source)                      |
 
 ---
+<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
+>>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
+=======
 >>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 
 ## Adding a Deck
@@ -136,7 +148,11 @@ slide-warehouse/
 ### Reveal.js Presentations
 
 <<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
+<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
 1. Create `content/decks/{slug}.md` with frontmatter
+=======
+1. Create `content/decks/{slug}.md` with frontmatter (see template below)
+>>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 =======
 1. Create `content/decks/{slug}.md` with frontmatter (see template below)
 >>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
@@ -200,12 +216,15 @@ If you add analytics or a CMS integration later, document variables here:
 ## Design Tokens
 
 <<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
+<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
 | Token   | Value                                     |
 | ------- | ----------------------------------------- |
 | Accent  | Amber `#d97706`                           |
 | Font    | Plus Jakarta Sans · JetBrains Mono (mono) |
 | Primary | Emerald `#059669`                         |
 =======
+=======
+>>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 | Token   | Value                                      |
 | ------- | ------------------------------------------ |
 | Accent  | Amber `#d97706`                            |
@@ -213,6 +232,9 @@ If you add analytics or a CMS integration later, document variables here:
 | Font    | Plus Jakarta Sans · JetBrains Mono (mono)  |
 
 ---
+<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
+>>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
+=======
 >>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 
 ## Performance Targets

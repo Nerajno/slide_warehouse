@@ -30,6 +30,11 @@ Thumbs.db
 
 # Claude
 .claude
+<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/.gitignore
 
+
+>>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/.gitignore
+=======
+CLAUDE.local.md
 
 >>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/.gitignore
