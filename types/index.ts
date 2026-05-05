@@ -39,7 +39,7 @@ export interface DeckFrontmatter {
   location?: string;
   conferenceUrl?: string;
   videoUrl?: string;
-  status: 'upcoming' | 'delivered' | 'archived';
+  status?: 'upcoming' | 'delivered' | 'archived';
   downloadable?: boolean;
 }
 

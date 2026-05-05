@@ -51,16 +51,13 @@ const formatColor = (format: string) => {
     <section aria-label="Legacy presentation deck">
       <div v-if="legacyDecks?.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div v-for="deck in legacyDecks" :key="deck.id"
-          class="bg-white dark:bg-gray-800 border border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200">
+          class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200">
           <!-- Thumbnail -->
           <div class="aspect-video bg-gray-100 dark:bg-gray-700 relative">
             <img v-if="deck.thumbnailUrl" :src="deck.thumbnailUrl" :alt="`${deck.title} thumbnail`"
               class="w-full h-full object-cover" loading="lazy" />
             <div v-else class="w-full h-full flex items-center justify-center">
               <span class="text-6xl mb-4">{{ formatIcon(deck.format) }}</span>
-            </div>
-            <div v-else class="w-full h-full flex items-center justify-center">
-              <span class="text-4xl">{{ formatIcon(deck.format) }}</span>
             </div>
 
             <!-- Format badge -->

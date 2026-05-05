@@ -26,7 +26,7 @@ export function useDecks() {
 
       // Update URL without full page reload
       const newQuery = new URLSearchParams(query).toString();
-      if (newQuery !== route.query.toString()) {
+      if (newQuery !== new URLSearchParams(route.query as Record<string, string>).toString()) {
         navigateTo({ query, replace: true });
       }
     },

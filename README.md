@@ -5,16 +5,6 @@ A self-hosted Reveal.js presentation repository for browsing, searching, and sha
 > **Demo:** _add link once deployed_
 > **Status:** In active development — see [Known Issues](#known-issues--todo)
 
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 **Stack:** Nuxt 3 · Vue 3 · Reveal.js · Tailwind CSS · Pinia · Nuxt Content
 **Deploy:** Netlify
 
@@ -120,33 +110,12 @@ slide-warehouse/
 
 ## Routes
 
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
 | Path                     | Description                                            |
 | ------------------------ | ------------------------------------------------------ |
 | `/`                      | Deck grid + search + filters                           |
 | `/decks/:id`             | Deck viewer + metadata sidebar                         |
 | `/legacy`                | Legacy presentation archive (PowerPoint, PDF, Keynote) |
 | `/reveals/:id/v{n}.html` | Raw Reveal.js HTML (iframe source)                     |
-=======
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-| Path                      | Description                                             |
-| ------------------------- | ------------------------------------------------------- |
-| `/`                       | Deck grid + search + filters                            |
-| `/decks/:id`              | Deck viewer + metadata sidebar                          |
-| `/legacy`                 | Legacy presentation archive (PowerPoint, PDF, Keynote)  |
-| `/reveals/:id/v{n}.html`  | Raw Reveal.js HTML (iframe source)                      |
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 
 ---
 
@@ -188,41 +157,7 @@ versions:
 
 > **Adding a new version?** Increment `currentVersion`, add the new entry to `versions`, and drop `v2.html` into the same folder. The viewer picks it up automatically.
 
-### Legacy Presentations
-
-1. Add the file to `public/legacy-files/` (PPTX, PDF, KEY, etc.)
-2. Add a thumbnail to `public/legacy-thumbnails/`
-3. Add an entry to the metadata array in `LegacyDeckGrid.vue`
-4. Push to Git — Netlify rebuilds automatically
-
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-
 > **Note:** Legacy deck metadata is hardcoded in the component for now. Moving it to Nuxt Content is on the roadmap — see [Known Issues](#known-issues--todo).
-| Token   | Value                                     |
-| ------- | ----------------------------------------- |
-| Accent  | Amber `#d97706`                           |
-| Font    | Plus Jakarta Sans · JetBrains Mono (mono) |
-| Primary | Emerald `#059669`                         |
-
-## Performance Targets
-
-Lighthouse Performance ≥ 90 · Accessibility = 100 · LCP < 2.5s · Bundle < 150KB
-
-=======
-> **Note:** Legacy deck metadata is hardcoded in the component for now. Moving it to Nuxt Content is on the roadmap — see [Known Issues](#known-issues--todo).
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
-> **Note:** Legacy deck metadata is hardcoded in the component for now. Moving it to Nuxt Content is on the roadmap — see [Known Issues](#known-issues--todo).
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
-> **Note:** Legacy deck metadata is hardcoded in the component for now. Moving it to Nuxt Content is on the roadmap — see [Known Issues](#known-issues--todo).
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
-> **Note:** Legacy deck metadata is hardcoded in the component for now. Moving it to Nuxt Content is on the roadmap — see [Known Issues](#known-issues--todo).
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 
 ---
 

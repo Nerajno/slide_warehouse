@@ -79,7 +79,7 @@ useHead({
             {{ deck.conference }}
             <svg aria-hidden="true" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-6-6m2-2a2 2 0 012.79A2 2 0 002.79 0 012.79z" />
+                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
           </a>
           <span v-else
@@ -108,9 +108,7 @@ useHead({
           class="inline-flex items-center gap-2 px-3 py-2 rounded-md border border-emerald-200 dark:border-emerald-700 text-emerald-700 dark:text-emerald-400 hover:border-emerald-500 dark:hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-300 text-sm font-medium transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M21 21l-6-6m2-2a2 2 0 012.79A2 2 0 002.79 0 012.79z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M8 12h.01M4 12a4 4 0 01-4 4-4.01M4 12z" />
+              d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.9L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
           </svg>
           Watch Recording
           <svg aria-hidden="true" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -149,7 +147,7 @@ useHead({
         </p>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div v-for="relatedDeck in relatedTalks" :key="relatedDeck.id"
-            class="group bg-white dark:bg-gray-800 border border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200">
+            class="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200">
             <NuxtLink :to="`/decks/${relatedDeck.id}`" class="block">
               <div class="aspect-video bg-gray-100 dark:bg-gray-700 relative">
                 <img v-if="relatedDeck.thumbnail" :src="relatedDeck.thumbnail" :alt="`${relatedDeck.title} thumbnail`"
