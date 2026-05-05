@@ -1,0 +1,168 @@
+<script setup lang="ts">
+// Sample legacy presentations data - in a real app this would come from a CMS or static data
+const legacyDecks = ref([
+  {
+    id: 'intro-to-javascript-2018',
+    title: 'Introduction to JavaScript',
+    description: 'A beginner-friendly introduction to JavaScript programming concepts and modern ES6+ features.',
+    format: 'PowerPoint',
+    fileSize: '2.4 MB',
+    year: 2018,
+    event: 'Local Meetup',
+    tags: ['javascript', 'beginner', 'workshop'],
+    downloadUrl: '/legacy-files/intro-to-javascript-2018.pptx',
+    thumbnailUrl: '/legacy-thumbnails/intro-to-javascript-2018.jpg'
+  },
+  {
+    id: 'react-patterns-2019',
+    title: 'Advanced React Patterns',
+    description: 'Exploring advanced React patterns including render props, compound components, and custom hooks.',
+    format: 'PDF',
+    fileSize: '1.8 MB',
+    year: 2019,
+    event: 'Regional Conference',
+    tags: ['react', 'patterns', 'advanced'],
+    downloadUrl: '/legacy-files/react-patterns-2019.pdf',
+    thumbnailUrl: '/legacy-thumbnails/react-patterns-2019.jpg'
+  },
+  {
+    id: 'css-mastery-2020',
+    title: 'CSS Mastery Workshop',
+    description: 'Deep dive into modern CSS including Grid, Flexbox, and custom properties.',
+    format: 'Keynote',
+    fileSize: '3.1 MB',
+    year: 2020,
+    event: 'Frontend Summit',
+    tags: ['css', 'workshop', 'design'],
+    downloadUrl: '/legacy-files/css-mastery-2020.key',
+    thumbnailUrl: '/legacy-thumbnails/css-mastery-2020.jpg'
+  }
+])
+
+const formatIcon = (format: string) => {
+  switch (format.toLowerCase()) {
+    case 'powerpoint':
+    case 'pptx':
+      return '📊'
+    case 'pdf':
+      return '📄'
+    case 'keynote':
+    case 'key':
+      return '🎯'
+    default:
+      return '📁'
+  }
+}
+
+const formatColor = (format: string) => {
+  switch (format.toLowerCase()) {
+    case 'powerpoint':
+    case 'pptx':
+      return 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300'
+    case 'pdf':
+      return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+    case 'keynote':
+    case 'key':
+      return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+    default:
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300'
+  }
+}
+</script>
+
+<template>
+  <div class="space-y-6">
+    <div v-if="legacyDecks.length === 0" class="text-center py-12">
+      <div class="text-6xl mb-4">📚</div>
+      <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No legacy presentations yet</h3>
+      <p class="text-gray-600 dark:text-gray-400">
+        Legacy presentations will appear here once they're added to the collection.
+      </p>
+    </div>
+
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        v-for="deck in legacyDecks"
+        :key="deck.id"
+        class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200"
+      >
+        <!-- Thumbnail -->
+        <div class="aspect-video bg-gray-100 dark:bg-gray-700 relative">
+          <img
+            v-if="deck.thumbnailUrl"
+            :src="deck.thumbnailUrl"
+            :alt="`${deck.title} thumbnail`"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div v-else class="w-full h-full flex items-center justify-center">
+            <span class="text-4xl">{{ formatIcon(deck.format) }}</span>
+          </div>
+          
+          <!-- Format badge -->
+          <div class="absolute top-3 right-3">
+            <span :class="`px-2 py-1 text-xs font-medium rounded-full ${formatColor(deck.format)}`">
+              {{ deck.format }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-5 space-y-3">
+          <div>
+            <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-lg leading-tight mb-1">
+              {{ deck.title }}
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+              {{ deck.description }}
+            </p>
+          </div>
+
+          <!-- Metadata -->
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-500 dark:text-gray-400">
+                {{ deck.year }} • {{ deck.event }}
+              </span>
+              <span class="text-gray-500 dark:text-gray-400">
+                {{ deck.fileSize }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div v-if="deck.tags?.length" class="flex flex-wrap gap-1">
+            <span
+              v-for="tag in deck.tags"
+              :key="tag"
+              class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded"
+            >
+              {{ tag }}
+            </span>
+          </div>
+
+          <!-- Download button -->
+          <a
+            :href="deck.downloadUrl"
+            download
+            class="inline-flex items-center justify-center w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-md transition-colors duration-200"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download {{ deck.format }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>

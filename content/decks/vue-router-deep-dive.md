@@ -19,11 +19,6 @@ versions:
     date: "2026-02-15"
     revealFile: "v2.html"
     changes: "Added Composition API examples, updated to Vue Router 4.x, new live-code demos"
-resources:
-  - label: "Blog post"
-    url: "https://developingdvlpr.com/blog/[PLACEHOLDER]"
-  - label: "Recording"
-    url: "https://youtube.com/watch?v=[PLACEHOLDER]"
 events: ["VueConf US 2025", "DevNexus 2026"]
 tier: "60min"
 ---
