@@ -20,11 +20,6 @@ versions:
     revealFile: "v2.html"
     changes: "Updated branding, added speaker notes, new closing slide"
 featured: true
-resources:
-  - label: "Blog post"
-    url: "https://developingdvlpr.com/blog/[PLACEHOLDER]"
-  - label: "Recording"
-    url: "https://youtube.com/watch?v=[PLACEHOLDER]"
 events: ["Connect.Tech 2025", "Orlando Code Camp 2026"]
 tier: "45min"
 ---
