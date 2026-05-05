@@ -15,6 +15,12 @@ versions:
     date: "2026-05-03"
     revealFile: "v1.html"
 tier: "30min"
+conference: ""
+location: ""
+conferenceUrl: ""
+videoUrl: ""
+status: "delivered"
+downloadable: true
 ---
 
 Practical reframe on developer networking — why it feels broken, why it isn't, and how to build genuine connections that compound over a career.

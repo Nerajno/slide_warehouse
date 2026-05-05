@@ -21,6 +21,12 @@ versions:
     changes: "Added Composition API examples, updated to Vue Router 4.x, new live-code demos"
 events: ["VueConf US 2025", "DevNexus 2026"]
 tier: "60min"
+conference: ""
+location: ""
+conferenceUrl: ""
+videoUrl: ""
+status: "delivered"
+downloadable: true
 ---
 
 A comprehensive walkthrough of Vue Router 4: dynamic routing, nested views,

@@ -22,6 +22,12 @@ versions:
 featured: true
 events: ["Connect.Tech 2025", "Orlando Code Camp 2026"]
 tier: "45min"
+conference: ""
+location: ""
+conferenceUrl: ""
+videoUrl: ""
+status: "delivered"
+downloadable: true
 ---
 
 A talk exploring why empathy, communication, and collaboration are

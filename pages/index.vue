@@ -13,8 +13,9 @@ useSeoMeta({
   title: 'Slide Warehouse — Conference Presentations by @Nerajno',
   description: 'Browse, search, and share Reveal.js presentation decks by Nerando Johnson — software developer and international conference speaker.',
   ogTitle: 'Slide Warehouse',
-  ogDescription: 'Conference presentation decks by @Nerajno — browse, search, and share.',
-  ogSiteName: 'Slide Warehouse',
+  ogDescription: 'A searchable portfolio of conference talks.',
+  ogUrl: 'https://slides.developingdvlpr.com',
+  ogImage: '/og-default.png',
   twitterCard: 'summary_large_image',
 })
 </script>

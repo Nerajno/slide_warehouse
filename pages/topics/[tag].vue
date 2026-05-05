@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import type { DeckFrontmatter } from '~/types'
+
 const route = useRoute()
 const tag = computed(() => route.params.tag as string)
 
 const { data: decks } = await useAsyncData(
   () => `topic-${tag.value}`,
-  () => queryContent('decks').where({ tags: { $contains: tag.value } }).find(),
+  () => queryContent<DeckFrontmatter>('decks').where({ tags: { $contains: tag.value } }).find(),
   { watch: [tag] }
 )
 
@@ -31,11 +33,7 @@ useSeoMeta({
     </nav>
 
     <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-1">{{ displayTag }}</h1>
-    <p
-      class="text-sm text-gray-500 dark:text-gray-400 mb-6"
-      aria-live="polite"
-      aria-atomic="true"
-    >
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6" aria-live="polite" aria-atomic="true">
       {{ decks?.length ?? 0 }} {{ (decks?.length ?? 0) === 1 ? 'deck' : 'decks' }} tagged
       <span class="font-mono text-emerald-600 dark:text-emerald-400">{{ tag }}</span>
     </p>
