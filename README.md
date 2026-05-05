@@ -2,18 +2,10 @@
 
 A self-hosted Reveal.js presentation repository for browsing, searching, and sharing conference talks.
 
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-=======
 > **Demo:** _add link once deployed_
 > **Status:** In active development — see [Known Issues](#known-issues--todo)
 
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
-> **Demo:** _add link once deployed_
-> **Status:** In active development — see [Known Issues](#known-issues--todo)
 
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 **Stack:** Nuxt 3 · Vue 3 · Reveal.js · Tailwind CSS · Pinia · Nuxt Content
 **Deploy:** Netlify
 
@@ -119,43 +111,20 @@ slide-warehouse/
 
 ## Routes
 
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
 | Path                     | Description                                            |
 | ------------------------ | ------------------------------------------------------ |
 | `/`                      | Deck grid + search + filters                           |
 | `/decks/:id`             | Deck viewer + metadata sidebar                         |
 | `/legacy`                | Legacy presentation archive (PowerPoint, PDF, Keynote) |
 | `/reveals/:id/v{n}.html` | Raw Reveal.js HTML (iframe source)                     |
-=======
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-| Path                      | Description                                             |
-| ------------------------- | ------------------------------------------------------- |
-| `/`                       | Deck grid + search + filters                            |
-| `/decks/:id`              | Deck viewer + metadata sidebar                          |
-| `/legacy`                 | Legacy presentation archive (PowerPoint, PDF, Keynote)  |
-| `/reveals/:id/v{n}.html`  | Raw Reveal.js HTML (iframe source)                      |
 
 ---
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 
 ## Adding a Deck
 
 ### Reveal.js Presentations
 
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-1. Create `content/decks/{slug}.md` with frontmatter
-=======
 1. Create `content/decks/{slug}.md` with frontmatter (see template below)
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
-1. Create `content/decks/{slug}.md` with frontmatter (see template below)
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 2. Add `public/reveals/{slug}/v1.html`
 3. Push to Git — Netlify rebuilds automatically
 
@@ -196,7 +165,18 @@ versions:
 3. Add an entry to the metadata array in `LegacyDeckGrid.vue`
 4. Push to Git — Netlify rebuilds automatically
 
+
 > **Note:** Legacy deck metadata is hardcoded in the component for now. Moving it to Nuxt Content is on the roadmap — see [Known Issues](#known-issues--todo).
+| Token   | Value                                     |
+| ------- | ----------------------------------------- |
+| Accent  | Amber `#d97706`                           |
+| Font    | Plus Jakarta Sans · JetBrains Mono (mono) |
+| Primary | Emerald `#059669`                         |
+
+## Performance Targets
+
+Lighthouse Performance ≥ 90 · Accessibility = 100 · LCP < 2.5s · Bundle < 150KB
+
 
 ---
 
@@ -215,16 +195,6 @@ If you add analytics or a CMS integration later, document variables here:
 
 ## Design Tokens
 
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
-| Token   | Value                                     |
-| ------- | ----------------------------------------- |
-| Accent  | Amber `#d97706`                           |
-| Font    | Plus Jakarta Sans · JetBrains Mono (mono) |
-| Primary | Emerald `#059669`                         |
-=======
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 | Token   | Value                                      |
 | ------- | ------------------------------------------ |
 | Accent  | Amber `#d97706`                            |
@@ -232,10 +202,6 @@ If you add analytics or a CMS integration later, document variables here:
 | Font    | Plus Jakarta Sans · JetBrains Mono (mono)  |
 
 ---
-<<<<<<< /Users/nerandojohnson/Documents/Dev/Projects/slide_warehouse/README.md
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
-=======
->>>>>>> /Users/nerandojohnson/.windsurf/worktrees/slide_warehouse/slide_warehouse-5d497154/README.md
 
 ## Performance Targets
 
