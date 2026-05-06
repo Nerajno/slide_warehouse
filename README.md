@@ -70,7 +70,7 @@ npm run build
 | Command             | Description                          |
 | ------------------- | ------------------------------------ |
 | `npm run dev`       | Start local dev server on port 3000  |
-| `npm run build`     | Production build → `.output/public`  |
+| `npm run build`     | Production build → `dist`            |
 | `npm run preview`   | Preview production build locally     |
 | `npm run lint`      | Run ESLint across the project        |
 | `npm run typecheck` | Run `vue-tsc` type checking          |
@@ -81,29 +81,64 @@ npm run build
 
 ```
 slide-warehouse/
+├── assets/
+│   └── css/
+│       └── main.css          # Global styles, design tokens, focus rings
 ├── components/
-│   ├── DeckCard.vue          # Single deck card with share button
+│   ├── SiteNav.vue           # Fixed nav — logo, links, mobile hamburger
+│   ├── SkipLink.vue          # Skip-to-content accessibility link
+│   ├── DeckCard.vue          # Single deck card with share + copy button
 │   ├── DeckGrid.vue          # Filterable/sortable deck grid
 │   ├── DeckViewer.vue        # Reveal.js iframe viewer
-│   ├── LegacyDeckGrid.vue    # Legacy archive grid (manually maintained)
-│   └── ThemeToggle.vue       # Light / dark / system toggle
+│   ├── DeckSidebar.vue       # Deck metadata sidebar
+│   ├── FeaturedDeck.vue      # Featured deck highlight banner
+│   ├── FilterTags.vue        # Tag filter chip row
+│   ├── SortDropdown.vue      # Sort select (newest/oldest/a-z/z-a)
+│   ├── SearchBar.vue         # Deck search input
+│   ├── ShareButton.vue       # Copy-link-to-clipboard button
+│   ├── VersionSelector.vue   # Deck version picker
+│   ├── VersionChangelog.vue  # Version history list
+│   ├── LegacyDeckGrid.vue    # Legacy archive grid
+│   ├── SpeakerBio.vue        # Speaker bio card
+│   ├── SpeakerOverview.vue   # Speaker history / circuit timeline
+│   ├── ResourceLinks.vue     # External resource links
+│   └── TopicsExplorer.vue    # Tag/topic browsing grid
+├── composables/
+│   ├── useDecks.ts           # Deck data fetching + filtering logic
+│   └── useTheme.ts           # Dark/light/system theme toggle
 ├── content/
-│   └── decks/                # Markdown files — one per deck
-│       └── my-talk.md
+│   ├── speaker.json          # Speaker bio, social links, pipeline
+│   └── decks/                # One .md file per deck (Nuxt Content)
+│       ├── back-to-basics.md
+│       ├── networking-talk.md
+│       ├── people-skills-technical-skills.md
+│       ├── skills-to-bills.md
+│       └── vue-router-deep-dive.md
+├── data/                     # Static typed data (supplements content/)
+├── layouts/
+│   └── default.vue           # App shell — SkipLink, SiteNav, main, footer
 ├── pages/
-│   ├── index.vue             # / — deck grid + search
-│   ├── decks/[id].vue        # /decks/:id — viewer + metadata
+│   ├── index.vue             # / — hero, deck grid, search + filters
+│   ├── about.vue             # /about — speaker bio + case study
+│   ├── decks/[id].vue        # /decks/:id — viewer + sidebar
 │   └── legacy.vue            # /legacy — legacy archive
 ├── public/
-│   ├── reveals/              # Raw Reveal.js HTML files
-│   │   └── my-talk/
-│   │       └── v1.html
-│   ├── legacy-files/         # PPTX, PDF, KEY originals
-│   └── legacy-thumbnails/    # Thumbnail images for legacy decks
+│   └── reveals/              # Reveal.js HTML files (per deck, per version)
+│       ├── back-to-basics/
+│       │   ├── back-to-basics-vueverse.html        # v1
+│       │   └── back-to-basics-boisecodecamp.html   # v2
+│       ├── networking-talk/
+│       │   ├── v1.html
+│       │   └── networking-talk-revealjs-Boise2026.html
+│       ├── people-skills/
+│       ├── skills-to-bills/
+│       └── vue-router-deep-dive/
 ├── stores/
 │   └── decks.ts              # Pinia store — search, filter, sort state
+├── types/                    # Shared TypeScript interfaces
+├── netlify.toml              # Build command + publish dir (dist) + headers
 ├── nuxt.config.ts
-└── tailwind.config.ts
+└── tailwind.config.ts        # Semantic color tokens + font config
 ```
 
 ---
@@ -112,10 +147,11 @@ slide-warehouse/
 
 | Path                     | Description                                            |
 | ------------------------ | ------------------------------------------------------ |
-| `/`                      | Deck grid + search + filters                           |
+| `/`                      | Hero section + deck grid + search + filters            |
+| `/about`                 | Speaker bio, case study, speaking history              |
 | `/decks/:id`             | Deck viewer + metadata sidebar                         |
 | `/legacy`                | Legacy presentation archive (PowerPoint, PDF, Keynote) |
-| `/reveals/:id/v{n}.html` | Raw Reveal.js HTML (iframe source)                     |
+| `/reveals/:slug/*.html`  | Raw Reveal.js HTML (iframe source, versioned)          |
 
 ---
 
