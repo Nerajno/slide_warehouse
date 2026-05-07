@@ -22,51 +22,8 @@ useSeoMeta({
 
 <template>
   <div>
-    <!-- Hero + Featured Deck — single above-the-fold section -->
-    <section class="relative bg-zinc-950 overflow-hidden">
-      <div class="absolute top-0 inset-x-0 h-px bg-emerald-500" aria-hidden="true" />
-      <div class="relative max-w-6xl mx-auto px-4 py-16 sm:py-24">
-        <p class="font-mono text-[0.65rem] uppercase tracking-widest text-amber-400 mb-5">
-          Conference Presentations · slides.developingdvlpr.com
-        </p>
-        <h1 class="font-display text-5xl sm:text-7xl font-semibold text-white leading-[0.95] tracking-tight mb-6">
-          Talks that<br><em class="text-emerald-400 italic">connect.</em>
-        </h1>
-        <p class="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed mb-10">
-          Browse, search, and share Reveal.js presentation decks — from meetups, conference stages to your screen.
-        </p>
-        <p class="font-mono text-[0.65rem] uppercase tracking-widest text-emerald-400 mb-4">Featured deck</p>
-        <FeaturedDeck />
-      </div>
-    </section>
-
-    <SpeakerOverview />
-    <div class="border-t border-gray-200 dark:border-gray-800" />
-    <div class="max-w-6xl mx-auto px-4 py-8">
-      <h2 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-1">Presentations</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Browse, search, and share Reveal.js decks.</p>
-
-      <div v-if="recentDecks.length" class="mb-6">
-        <p class="text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">Recently Viewed</p>
-        <div class="flex gap-3 overflow-x-auto pb-2">
-          <div v-for="deck in recentDecks" :key="deck.id" class="w-48 shrink-0">
-            <DeckCard :deck="deck" />
-          </div>
-        </div>
-      </div>
-
-      <div class="flex flex-col sm:flex-row gap-3 mb-4">
-        <div class="flex-1">
-          <SearchBar />
-        </div>
-        <SortDropdown />
-      </div>
-
-      <div class="mb-6 overflow-x-auto">
-        <FilterTags :decks="allDecks" />
-      </div>
-
-      <DeckGrid :decks="allDecks" :pending="pending" />
-    </div>
+    <HeroSection />
+    <DecksSection />
+    <HistorySection />
   </div>
 </template>

@@ -31,6 +31,7 @@ export interface DeckFrontmatter {
   currentVersion: number;
   versions: DeckVersion[];
   featured?: boolean;
+  mostRecent?: boolean;
   resources?: Resource[];
   events?: string[];
   thumbnail?: string;

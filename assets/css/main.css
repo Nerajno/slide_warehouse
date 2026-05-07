@@ -10,19 +10,47 @@
   --radius-tag:    6px;
   --radius-btn:    4px;
   --spacing-base:  8px;
+
   /* Ring offset matches page bg in each mode */
   --ring-offset-color: #ffffff;
+
+  /* Semantic color tokens (HSL channels — used with Tailwind opacity modifier) */
+  --background:         0 0% 100%;
+  --foreground:         222 47% 11%;
+  --primary:            38 92% 50%;
+  --primary-foreground: 0 0% 100%;
+  --muted:              220 14% 96%;
+  --muted-foreground:   220 9% 46%;
+  --border:             220 13% 91%;
+  --card:               0 0% 100%;
+  --card-foreground:    222 47% 11%;
+  --ring:               38 92% 50%;   /* amber — matches primary */
 }
 
 .dark {
-  --ring-offset-color: #030712; /* gray-950 */
+  --ring-offset-color:  #030712; /* gray-950 */
+  --background:         222 84% 5%;
+  --foreground:         210 40% 98%;
+  --muted:              215 28% 12%;
+  --muted-foreground:   218 11% 65%;
+  --border:             215 28% 17%;
+  --card:               222 47% 11%;
+  --card-foreground:    210 40% 98%;
 }
 
-/* Focus ring — Emerald 2px, offset matches page bg so ring isn't swallowed */
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  /* Focus ring — amber, 2px offset matches page bg */
   *:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--ring-offset-color), 0 0 0 4px #059669;
+    box-shadow: 0 0 0 2px var(--ring-offset-color), 0 0 0 4px hsl(var(--ring));
   }
 
   body {
