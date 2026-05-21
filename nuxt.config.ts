@@ -2,6 +2,12 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
 
+  runtimeConfig: {
+    public: {
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://stellular-duckanoo-18bf92.netlify.app',
+    },
+  },
+
   routeRules: {
     '/': { prerender: true },
     '/about': { prerender: true },
@@ -64,7 +70,7 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Browse, search, and share Reveal.js presentations by @Nerajno' },
         { property: 'og:site_name', content: 'Slide Warehouse' },
-        { property: 'og:image', content: 'https://slides.developingdvlpr.com/og-default.png' },
+        { property: 'og:image', content: `${process.env.NUXT_PUBLIC_SITE_URL || 'https://stellular-duckanoo-18bf92.netlify.app'}/og-default.png` },
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:image', content: 'https://slides.developingdvlpr.com/og-default.png' },
       ],
@@ -85,7 +91,7 @@ export default defineNuxtConfig({
         },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
         },
       ],
     },

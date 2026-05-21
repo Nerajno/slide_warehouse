@@ -1,15 +1,22 @@
 <script setup lang="ts">
 definePageMeta({ keepalive: true })
 
+const { public: { siteUrl } } = useRuntimeConfig()
+const canonicalUrl = `${siteUrl}/legacy`
+
 useSeoMeta({
   title: 'Legacy Presentations — Slide Warehouse',
   description: 'Browse older presentation decks in various formats including PowerPoint, PDF, and Keynote.',
   ogTitle: 'Legacy Presentations',
   ogDescription: 'Older presentation decks in various formats from before the Reveal.js era.',
-  ogUrl: 'https://slides.developingdvlpr.com/legacy',
-  ogImage: '/og-default.png',
+  ogUrl: canonicalUrl,
+  ogImage: `${siteUrl}/og-default.png`,
   ogSiteName: 'Slide Warehouse',
   twitterCard: 'summary_large_image',
+})
+
+useHead({
+  link: [{ rel: 'canonical', href: canonicalUrl }],
 })
 </script>
 

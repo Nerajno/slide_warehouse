@@ -58,7 +58,7 @@ useHead({
             }}</p>
         </div>
         <div class="text-center">
-          <p class="font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground mb-1">Talks</p>
+          <p class="font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground mb-1">Deliveries</p>
           <p class="font-display text-[2rem] font-semibold text-foreground leading-none">{{
             speaker.stats.totalTalks }}</p>
         </div>

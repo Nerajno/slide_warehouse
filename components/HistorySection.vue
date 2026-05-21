@@ -2,13 +2,10 @@
 import type { ConferenceEvent } from '~/types'
 
 const { data: events } = await useAsyncData('history-events',
-  () => queryContent<ConferenceEvent>('history').findOne()
+  () => queryContent<ConferenceEvent>('history').find()
 )
 
-const historyList = computed<ConferenceEvent[]>(() => {
-  const raw = events.value as unknown
-  return Array.isArray(raw) ? raw : []
-})
+const historyList = computed<ConferenceEvent[]>(() => events.value ?? [])
 
 const STATUS_DOT: Record<string, string> = {
   delivered:  'bg-emerald-400',
@@ -43,13 +40,19 @@ const byYear = computed(() => {
           From Atlanta to Lincoln — conferences, meetups, and community events across the US.
         </p>
         <div class="rounded-xl border border-border bg-card p-6 inline-block">
-          <p class="font-mono text-3xl font-semibold text-primary mb-1">{{ historyList.length }}</p>
-          <p class="text-sm text-muted-foreground">Events</p>
+          <p class="font-mono text-3xl font-semibold text-primary mb-1" aria-label="`${historyList.length} events`">{{ historyList.length }}</p>
+          <p class="text-sm text-muted-foreground" aria-hidden="true">{{ historyList.length === 0 ? 'No events yet' : 'Events' }}</p>
         </div>
       </div>
 
       <!-- Right col — timeline -->
       <div class="md:col-span-2">
+        <!-- Empty state -->
+        <div v-if="historyList.length === 0" class="flex flex-col gap-4 py-10">
+          <p class="text-sm text-muted-foreground">Past events coming soon — check back after the next conference.</p>
+          <a href="#decks" class="text-sm font-medium text-primary underline underline-offset-2">View deck catalog</a>
+        </div>
+
         <div v-for="([year, yearEvents], yi) in byYear" :key="year">
           <p class="font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground mb-4" :class="yi > 0 ? 'mt-8' : ''">{{ year }}</p>
 

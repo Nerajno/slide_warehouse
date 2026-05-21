@@ -18,6 +18,7 @@ const isOpen = ref(false)
         <a href="#decks" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none">Decks</a>
         <a href="#history" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none">History</a>
         <a href="#about" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none">About</a>
+        <a href="#about" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs font-medium border border-border text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none ml-1">Book a Talk</a>
         <a
           href="https://x.com/Nerajno"
           target="_blank"
@@ -50,15 +51,18 @@ const isOpen = ref(false)
     <div
       class="overflow-hidden border-t border-border/50 bg-background/95 transition-[max-height] duration-300 motion-reduce:transition-none md:hidden"
       :class="isOpen ? 'max-h-96' : 'max-h-0'"
+      :aria-hidden="!isOpen"
     >
       <nav aria-label="Mobile navigation" class="flex flex-col px-4 py-2">
-        <a href="#decks" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">Decks</a>
-        <a href="#history" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">History</a>
-        <a href="#about" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">About</a>
+        <a href="#decks" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">Decks</a>
+        <a href="#history" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">History</a>
+        <a href="#about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">About</a>
+        <a href="#about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm font-medium text-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">Book a Talk</a>
         <a
           href="https://x.com/Nerajno"
           target="_blank"
           rel="noopener noreferrer"
+          :tabindex="isOpen ? 0 : -1"
           class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >@Nerajno <span class="sr-only">(opens in new tab)</span></a>
       </nav>

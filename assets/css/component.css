@@ -1,0 +1,295 @@
+/*
+ * Slide Warehouse — Component Patterns
+ * assets/css/components.css
+ *
+ * Utility class compositions for the component library.
+ * These are @layer components blocks — Tailwind-compatible.
+ * Import in main.css after tokens.css.
+ *
+ * Usage in Vue templates:
+ *   <button class="sw-btn-primary">Browse decks</button>
+ *   <span class="sw-tag sw-tag--vue">vue</span>
+ */
+
+@layer components {
+
+  /* ─── Buttons ──────────────────────────────────────────────── */
+
+  /* Base — shared across all button variants */
+  .sw-btn {
+    @apply inline-flex items-center justify-center gap-1.5
+           font-sans font-medium text-sm
+           transition-all duration-[200ms] ease-out
+           focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] focus-visible:outline-none
+           disabled:opacity-50 disabled:cursor-not-allowed
+           active:scale-[0.98];
+    border-radius: 4px; /* btn radius */
+    padding: 8px 18px;
+    min-height: 44px; /* WCAG 2.5.8 touch target */
+    cursor: pointer;
+  }
+
+  /* Primary — filled emerald */
+  .sw-btn-primary {
+    @apply sw-btn bg-[var(--sw-primary)] text-white border-transparent;
+  }
+  .sw-btn-primary:hover:not(:disabled) {
+    background-color: var(--sw-primary-hover);
+  }
+
+  /* Secondary — outlined emerald */
+  .sw-btn-secondary {
+    @apply sw-btn bg-transparent text-[var(--sw-primary)]
+           border border-[var(--sw-primary)];
+  }
+  .sw-btn-secondary:hover:not(:disabled) {
+    background-color: var(--sw-primary-bg);
+  }
+
+  /* Ghost — subtle, for tertiary actions */
+  .sw-btn-ghost {
+    @apply sw-btn bg-transparent text-[var(--sw-text-2)]
+           border border-[var(--sw-border)];
+  }
+  .sw-btn-ghost:hover:not(:disabled) {
+    background-color: var(--sw-surface-2);
+    color: var(--sw-text-1);
+  }
+
+  /* Accent — amber, for featured / highlighted CTAs */
+  .sw-btn-accent {
+    @apply sw-btn bg-[var(--sw-accent)] text-white border-transparent;
+  }
+  .sw-btn-accent:hover:not(:disabled) {
+    background-color: var(--sw-accent-hover);
+  }
+
+  /* Danger — outlined red, for destructive actions */
+  .sw-btn-danger {
+    @apply sw-btn bg-transparent text-[var(--sw-danger)]
+           border border-[var(--sw-danger)];
+  }
+  .sw-btn-danger:hover:not(:disabled) {
+    background-color: var(--sw-danger-bg);
+  }
+
+  /* Icon button — square, icon only */
+  .sw-btn-icon {
+    @apply sw-btn p-2 bg-transparent text-[var(--sw-text-2)]
+           border border-[var(--sw-border)];
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px;
+  }
+  .sw-btn-icon:hover:not(:disabled) {
+    background-color: var(--sw-surface-2);
+    color: var(--sw-text-1);
+  }
+
+  /* ─── Topic Tags ────────────────────────────────────────────── */
+
+  /* Base tag — monospace, small */
+  .sw-tag {
+    @apply inline-flex items-center font-mono text-xs
+           border rounded-[6px] px-2 py-0.5;
+    min-height: 22px;
+  }
+
+  /* Per-topic variants — use with sw-tag */
+  .sw-tag--vue          { background: var(--tag-vue-bg);          color: var(--tag-vue-text);          border-color: var(--tag-vue-border); }
+  .sw-tag--javascript   { background: var(--tag-javascript-bg);   color: var(--tag-javascript-text);   border-color: var(--tag-javascript-border); }
+  .sw-tag--career       { background: var(--tag-career-bg);       color: var(--tag-career-text);       border-color: var(--tag-career-border); }
+  .sw-tag--soft-skills  { background: var(--tag-soft-skills-bg);  color: var(--tag-soft-skills-text);  border-color: var(--tag-soft-skills-border); }
+  .sw-tag--fundamentals { background: var(--tag-fundamentals-bg); color: var(--tag-fundamentals-text); border-color: var(--tag-fundamentals-border); }
+  .sw-tag--community    { background: var(--tag-community-bg);    color: var(--tag-community-text);    border-color: var(--tag-community-border); }
+  .sw-tag--architecture { background: var(--tag-architecture-bg); color: var(--tag-architecture-text); border-color: var(--tag-architecture-border); }
+  .sw-tag--accessibility{ background: var(--tag-accessibility-bg);color: var(--tag-accessibility-text);border-color: var(--tag-accessibility-border); }
+
+  /* ─── Filter Pills ──────────────────────────────────────────── */
+
+  .sw-filter-pill {
+    @apply inline-flex items-center gap-1 font-sans text-xs
+           px-3 py-1.5 rounded-full border border-[var(--sw-border)]
+           bg-[var(--sw-surface)] text-[var(--sw-text-2)]
+           cursor-pointer transition-all duration-[150ms]
+           hover:border-[var(--sw-primary)] hover:text-[var(--sw-primary)]
+           focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] focus-visible:outline-none;
+    min-height: 32px;
+  }
+
+  /* Active state */
+  .sw-filter-pill[aria-pressed="true"],
+  .sw-filter-pill--active {
+    background-color: var(--sw-primary);
+    color: #fff;
+    border-color: var(--sw-primary);
+  }
+
+  /* ─── Deck Card ─────────────────────────────────────────────── */
+
+  .sw-deck-card {
+    @apply relative bg-[var(--sw-surface)] border border-[var(--sw-border)]
+           rounded-[8px] p-4 flex flex-col gap-2
+           transition-all duration-[200ms]
+           hover:border-[var(--sw-primary)] hover:shadow-[var(--sw-card-hover)];
+    border-left: 3px solid var(--sw-primary);
+  }
+
+  .sw-deck-card--featured {
+    border-left-color: var(--sw-accent);
+  }
+
+  .sw-deck-card__conference {
+    @apply font-sans font-medium text-xs text-[var(--sw-primary)];
+  }
+
+  .sw-deck-card__title {
+    @apply font-display font-semibold text-base text-[var(--sw-text-1)] leading-tight;
+  }
+
+  .sw-deck-card__description {
+    @apply font-sans text-sm text-[var(--sw-text-2)] leading-relaxed;
+  }
+
+  .sw-deck-card__meta {
+    @apply font-mono text-xs text-[var(--sw-text-3)];
+  }
+
+  .sw-deck-card__cta {
+    @apply inline-flex items-center gap-1 font-sans font-medium text-xs
+           text-[var(--sw-primary)] hover:underline;
+  }
+
+  /* Featured badge */
+  .sw-badge-featured {
+    @apply inline-flex items-center font-mono text-[10px] font-medium
+           px-2 py-0.5 rounded-full
+           bg-[var(--sw-accent-bg)] text-[var(--sw-accent-text)]
+           border border-[var(--sw-accent-bg-2)];
+  }
+
+  /* ─── Stat Block ─────────────────────────────────────────────── */
+
+  .sw-stat-block {
+    @apply bg-[var(--sw-surface-2)] rounded-[8px] p-4 text-center;
+  }
+
+  .sw-stat-block__number {
+    @apply font-display font-semibold text-2xl text-[var(--sw-primary)];
+  }
+
+  .sw-stat-block__label {
+    @apply font-sans text-xs text-[var(--sw-text-3)] mt-0.5;
+  }
+
+  /* ─── Form Inputs ────────────────────────────────────────────── */
+
+  .sw-input-wrapper {
+    @apply flex flex-col gap-1;
+  }
+
+  .sw-input-label {
+    @apply font-sans font-medium text-sm text-[var(--sw-text-1)];
+  }
+
+  .sw-input {
+    @apply w-full font-sans text-sm text-[var(--sw-text-1)]
+           bg-[var(--sw-surface)] border border-[var(--sw-border-2)]
+           rounded-[4px] px-3 py-2
+           transition-colors duration-[150ms]
+           placeholder:text-[var(--sw-text-3)]
+           hover:border-[var(--sw-primary)]
+           focus:border-[var(--sw-primary)] focus:outline-none
+           focus:ring-[3px] focus:ring-[var(--sw-focus-ring)];
+    min-height: 44px; /* WCAG 2.5.8 */
+  }
+
+  .sw-input--error {
+    @apply border-[var(--sw-danger)]
+           focus:ring-[rgba(220,38,38,0.25)] focus:border-[var(--sw-danger)];
+  }
+
+  .sw-input-hint {
+    @apply font-sans text-xs text-[var(--sw-text-3)];
+  }
+
+  .sw-input-error-msg {
+    @apply font-sans text-xs text-[var(--sw-danger)] flex items-center gap-1;
+  }
+
+  /* ─── Section Heading ───────────────────────────────────────── */
+
+  .sw-section-label {
+    @apply font-sans font-medium text-xs text-[var(--sw-text-3)]
+           uppercase tracking-widest pb-2
+           border-b border-[var(--sw-border)];
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── Empty State ────────────────────────────────────────────── */
+
+  .sw-empty-state {
+    @apply flex flex-col items-center justify-center gap-3
+           py-16 px-8 text-center
+           bg-[var(--sw-surface-2)] rounded-[8px]
+           border border-dashed border-[var(--sw-border)];
+  }
+
+  .sw-empty-state__icon {
+    @apply text-[var(--sw-text-3)];
+    font-size: 32px;
+  }
+
+  .sw-empty-state__title {
+    @apply font-sans font-medium text-base text-[var(--sw-text-1)];
+  }
+
+  .sw-empty-state__message {
+    @apply font-sans text-sm text-[var(--sw-text-2)] max-w-[320px] leading-relaxed;
+  }
+
+  /* ─── Toast / Notification ───────────────────────────────────── */
+
+  .sw-toast {
+    @apply fixed bottom-6 right-6 z-[300]
+           flex items-center gap-2
+           font-sans font-medium text-sm
+           bg-[var(--sw-text-1)] text-[var(--sw-bg)]
+           px-4 py-3 rounded-[6px]
+           animate-fade-in;
+  }
+
+  .sw-toast--success {
+    background-color: var(--sw-primary);
+    color: #fff;
+  }
+
+  .sw-toast--error {
+    background-color: var(--sw-danger);
+    color: #fff;
+  }
+
+  /* ─── Breadcrumb ─────────────────────────────────────────────── */
+
+  .sw-breadcrumb {
+    @apply flex items-center gap-1.5 font-sans text-sm text-[var(--sw-text-2)];
+  }
+
+  .sw-breadcrumb a {
+    @apply text-[var(--sw-primary)] hover:underline
+           focus-visible:outline-none focus-visible:ring-[3px]
+           focus-visible:ring-[var(--sw-focus-ring)] rounded-[3px];
+  }
+
+  .sw-breadcrumb__separator {
+    @apply text-[var(--sw-text-3)];
+    font-size: 12px;
+  }
+
+  /* ─── Theme Toggle ───────────────────────────────────────────── */
+
+  .sw-theme-toggle {
+    @apply sw-btn-icon rounded-full;
+    border-radius: 9999px;
+  }
+}

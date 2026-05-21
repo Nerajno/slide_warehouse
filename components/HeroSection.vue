@@ -21,7 +21,7 @@ const confCount = computed(() => speakerData.value?.stats?.conferencesCount ?? 0
 const stats = computed(() => [
   { value: deckCount.value,  label: 'Decks'       },
   { value: slideCount.value, label: 'Slides'      },
-  { value: talkCount.value,  label: 'Talks'       },
+  { value: talkCount.value,  label: 'Deliveries'  },
   { value: confCount.value,  label: 'Conferences' },
 ])
 
@@ -31,6 +31,50 @@ const recentDeckUrl = computed(() =>
 const recentConf = computed(() =>
   (recentDeck.value as DeckFrontmatter | null)?.events?.at(-1) ?? ''
 )
+
+// Animated counters
+const statsRef = ref<HTMLElement | null>(null)
+const displayValues = ref(stats.value.map(() => 0))
+const prefersReducedMotion = ref(false)
+
+onMounted(() => {
+  prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (!entries[0].isIntersecting) return
+      observer.disconnect()
+
+      if (prefersReducedMotion.value) {
+        displayValues.value = stats.value.map(s => s.value)
+        return
+      }
+
+      const duration = 1200
+      const start = performance.now()
+      const targets = stats.value.map(s => s.value)
+
+      function tick(now: number) {
+        const elapsed = now - start
+        const progress = Math.min(elapsed / duration, 1)
+        const ease = 1 - Math.pow(1 - progress, 3)
+        displayValues.value = targets.map(t => Math.round(t * ease))
+        if (progress < 1) requestAnimationFrame(tick)
+      }
+
+      requestAnimationFrame(tick)
+    },
+    { threshold: 0.2 }
+  )
+
+  if (statsRef.value) observer.observe(statsRef.value)
+})
+
+watch(stats, (val) => {
+  if (prefersReducedMotion.value) {
+    displayValues.value = val.map(s => s.value)
+  }
+})
 </script>
 
 <template>
@@ -61,14 +105,14 @@ const recentConf = computed(() =>
         <!-- Right col -->
         <div class="mt-16 md:mt-0">
           <!-- 2×2 stat grid -->
-          <div class="grid grid-cols-2 gap-4 mb-6">
+          <div ref="statsRef" class="grid grid-cols-2 gap-4 mb-6">
             <div
-              v-for="stat in stats"
+              v-for="(stat, i) in stats"
               :key="stat.label"
               class="rounded-xl border border-border bg-card p-6"
             >
-              <p class="font-mono text-3xl font-semibold text-primary mb-1">{{ stat.value }}</p>
-              <p class="text-sm text-muted-foreground">{{ stat.label }}</p>
+              <p class="font-mono text-3xl font-semibold text-primary mb-1" aria-label="`${stat.value} ${stat.label}`">{{ displayValues[i] }}</p>
+              <p class="text-sm text-muted-foreground" aria-hidden="true">{{ stat.label }}</p>
             </div>
           </div>
 
@@ -87,7 +131,7 @@ const recentConf = computed(() =>
               <NuxtLink
                 :to="recentDeckUrl"
                 class="inline-flex items-center text-xs font-medium border border-border rounded px-3 py-1.5 text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
-              >Open Deck →</NuxtLink>
+              >Open deck →</NuxtLink>
             </div>
           </div>
         </div>

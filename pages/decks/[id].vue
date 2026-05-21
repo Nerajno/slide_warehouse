@@ -41,25 +41,37 @@ const relatedTalks = computed(() => {
 definePageMeta({})
 onMounted(() => addRecent(route.params.id as string))
 
+const { public: { siteUrl } } = useRuntimeConfig()
+
 useSeoMeta({
   title: () => `${deck.value?.title ?? 'Deck'} — Slide Warehouse`,
   description: () => deck.value?.description,
   ogTitle: () => deck.value?.title,
   ogDescription: () => deck.value?.description,
-  ogImage: () => deck.value?.thumbnail || '/og-default.png',
-  ogUrl: () => `https://slides.developingdvlpr.com/decks/${route.params.id}`,
+  ogImage: () => deck.value?.thumbnail ? `${siteUrl}${deck.value.thumbnail}` : `${siteUrl}/og-default.png`,
+  ogUrl: () => `${siteUrl}/decks/${route.params.id}`,
   ogSiteName: 'Slide Warehouse',
 })
 
 useHead({
-  meta: [
-    { property: 'og:type', content: 'article' },
-  ],
+  meta: [{ property: 'og:type', content: 'article' }],
+  link: [{ rel: 'canonical', href: () => `${siteUrl}/decks/${route.params.id}` }],
 })
 </script>
 
 <template>
   <div v-if="deck" class="flex flex-col mt-14" style="height: calc(100vh - 56px);">
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="px-4 py-2 border-b border-gray-100 dark:border-zinc-800/50 bg-white dark:bg-zinc-950">
+      <ol class="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+        <li><NuxtLink to="/" class="hover:text-foreground transition-colors focus-visible:outline-none focus-visible:underline">Home</NuxtLink></li>
+        <li aria-hidden="true"><span class="text-border">/</span></li>
+        <li><NuxtLink to="/#decks" class="hover:text-foreground transition-colors focus-visible:outline-none focus-visible:underline">Decks</NuxtLink></li>
+        <li aria-hidden="true"><span class="text-border">/</span></li>
+        <li class="text-foreground truncate max-w-[200px]" aria-current="page">{{ deck.title }}</li>
+      </ol>
+    </nav>
+
     <!-- Top bar -->
     <div
       class="shrink-0 flex items-center justify-between gap-4 px-4 h-12 border-b border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">

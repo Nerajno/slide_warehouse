@@ -1,0 +1,293 @@
+/*
+ * Slide Warehouse — Design Tokens
+ * assets/css/tokens.css
+ *
+ * All semantic color tokens as CSS custom properties.
+ * Import before any component CSS. Tailwind picks up the
+ * sw.* aliases from tailwind.config.ts which reference these vars.
+ *
+ * Theme switching:
+ *   Light: :root  (default)
+ *   Dark:  .dark  (toggled via JS / localStorage)
+ */
+
+/* ─── Font Imports ──────────────────────────────────────────────────
+   Already declared in nuxt.config.ts head.link.
+   Keeping this comment as a reminder — do not add @import here.
+   ────────────────────────────────────────────────────────────────── */
+
+/* ─── Light Mode (default) ──────────────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --sw-bg:          #fafafa;  /* zinc-50  — page canvas       */
+  --sw-surface:     #ffffff;  /* white    — cards, nav        */
+  --sw-surface-2:   #f4f4f5;  /* zinc-100 — stats, inputs     */
+  --sw-surface-3:   #e4e4e7;  /* zinc-200 — hover states      */
+
+  /* Borders */
+  --sw-border:      #e4e4e7;  /* zinc-200 — card borders      */
+  --sw-border-2:    #d4d4d8;  /* zinc-300 — dividers, inputs  */
+
+  /* Text */
+  --sw-text-1:      #18181b;  /* zinc-900 — headings, primary */
+  --sw-text-2:      #52525b;  /* zinc-600 — body, descriptions*/
+  --sw-text-3:      #71717a;  /* zinc-500 — meta, timestamps  */
+
+  /* Primary — Emerald */
+  --sw-primary:        #059669;  /* emerald-600 */
+  --sw-primary-hover:  #047857;  /* emerald-700 */
+  --sw-primary-active: #065f46;  /* emerald-800 */
+  --sw-primary-bg:     #d1fae5;  /* emerald-100 */
+  --sw-primary-bg-2:   #a7f3d0;  /* emerald-200 */
+  --sw-primary-text:   #065f46;  /* emerald-800 — text on primary-bg */
+
+  /* Accent — Amber */
+  --sw-accent:         #d97706;  /* amber-600  */
+  --sw-accent-hover:   #b45309;  /* amber-700  */
+  --sw-accent-bg:      #fef3c7;  /* amber-100  */
+  --sw-accent-bg-2:    #fde68a;  /* amber-200  */
+  --sw-accent-text:    #92400e;  /* amber-800  — text on accent-bg */
+
+  /* Semantic states */
+  --sw-danger:         #dc2626;  /* red-600    */
+  --sw-danger-bg:      #fee2e2;  /* red-100    */
+  --sw-danger-text:    #991b1b;  /* red-800    */
+
+  --sw-success:        #059669;  /* emerald-600 — same as primary */
+  --sw-success-bg:     #d1fae5;
+  --sw-success-text:   #065f46;
+
+  --sw-warning:        #d97706;  /* amber-600  — same as accent */
+  --sw-warning-bg:     #fef3c7;
+  --sw-warning-text:   #92400e;
+
+  /* Focus */
+  --sw-focus-ring:     rgba(5, 150, 105, 0.35);
+
+  /* Nav */
+  --sw-nav-height:     60px;
+  --sw-nav-bg:         #ffffff;
+  --sw-nav-border:     #e4e4e7;
+}
+
+/* ─── Dark Mode ─────────────────────────────────────────────────── */
+.dark {
+  /* Backgrounds */
+  --sw-bg:          #09090b;  /* zinc-950 — page canvas       */
+  --sw-surface:     #18181b;  /* zinc-900 — cards, nav        */
+  --sw-surface-2:   #27272a;  /* zinc-800 — stats, inputs     */
+  --sw-surface-3:   #3f3f46;  /* zinc-700 — hover states      */
+
+  /* Borders */
+  --sw-border:      #3f3f46;  /* zinc-700 — card borders      */
+  --sw-border-2:    #52525b;  /* zinc-600 — dividers, inputs  */
+
+  /* Text */
+  --sw-text-1:      #fafafa;  /* zinc-50  — headings, primary */
+  --sw-text-2:      #a1a1aa;  /* zinc-400 — body, descriptions*/
+  --sw-text-3:      #71717a;  /* zinc-500 — meta, timestamps  */
+
+  /* Primary — Emerald (lighter for dark backgrounds) */
+  --sw-primary:        #10b981;  /* emerald-500 */
+  --sw-primary-hover:  #34d399;  /* emerald-400 */
+  --sw-primary-active: #6ee7b7;  /* emerald-300 */
+  --sw-primary-bg:     #064e3b;  /* emerald-900 */
+  --sw-primary-bg-2:   #065f46;  /* emerald-800 */
+  --sw-primary-text:   #6ee7b7;  /* emerald-300 — text on primary-bg dark */
+
+  /* Accent — Amber */
+  --sw-accent:         #f59e0b;  /* amber-500  */
+  --sw-accent-hover:   #fbbf24;  /* amber-400  */
+  --sw-accent-bg:      #451a03;  /* amber-950  */
+  --sw-accent-bg-2:    #78350f;  /* amber-900  */
+  --sw-accent-text:    #fde68a;  /* amber-200  — text on accent-bg dark */
+
+  /* Semantic states */
+  --sw-danger:         #f87171;  /* red-400    */
+  --sw-danger-bg:      #450a0a;  /* red-950    */
+  --sw-danger-text:    #fca5a5;  /* red-300    */
+
+  --sw-success:        #10b981;
+  --sw-success-bg:     #064e3b;
+  --sw-success-text:   #6ee7b7;
+
+  --sw-warning:        #f59e0b;
+  --sw-warning-bg:     #451a03;
+  --sw-warning-text:   #fde68a;
+
+  /* Focus */
+  --sw-focus-ring:     rgba(16, 185, 129, 0.4);
+
+  /* Nav */
+  --sw-nav-bg:         #18181b;
+  --sw-nav-border:     #3f3f46;
+}
+
+/* ─── Tag Color Pairs ────────────────────────────────────────────── */
+/*
+ * Used via Tailwind utility classes defined in tailwind.config.ts.
+ * These CSS vars are fallbacks for any raw CSS usage.
+ * Each topic has a bg / text / border triple.
+ */
+:root {
+  --tag-vue-bg:               #dbeafe;
+  --tag-vue-text:             #1d4ed8;
+  --tag-vue-border:           #93c5fd;
+
+  --tag-javascript-bg:        #ede9fe;
+  --tag-javascript-text:      #5b21b6;
+  --tag-javascript-border:    #c4b5fd;
+
+  --tag-career-bg:            #d1fae5;
+  --tag-career-text:          #065f46;
+  --tag-career-border:        #6ee7b7;
+
+  --tag-soft-skills-bg:       #fef3c7;
+  --tag-soft-skills-text:     #92400e;
+  --tag-soft-skills-border:   #fde68a;
+
+  --tag-fundamentals-bg:      #fce7f3;
+  --tag-fundamentals-text:    #9d174d;
+  --tag-fundamentals-border:  #f9a8d4;
+
+  --tag-community-bg:         #f0fdf4;
+  --tag-community-text:       #14532d;
+  --tag-community-border:     #86efac;
+
+  --tag-architecture-bg:      #f0f9ff;
+  --tag-architecture-text:    #0c4a6e;
+  --tag-architecture-border:  #7dd3fc;
+
+  --tag-accessibility-bg:     #fdf4ff;
+  --tag-accessibility-text:   #581c87;
+  --tag-accessibility-border: #d8b4fe;
+}
+
+.dark {
+  --tag-vue-bg:               #1e3a5f;
+  --tag-vue-text:             #93c5fd;
+  --tag-vue-border:           #1d4ed8;
+
+  --tag-javascript-bg:        #2e1065;
+  --tag-javascript-text:      #c4b5fd;
+  --tag-javascript-border:    #5b21b6;
+
+  --tag-career-bg:            #064e3b;
+  --tag-career-text:          #6ee7b7;
+  --tag-career-border:        #065f46;
+
+  --tag-soft-skills-bg:       #451a03;
+  --tag-soft-skills-text:     #fde68a;
+  --tag-soft-skills-border:   #78350f;
+
+  --tag-fundamentals-bg:      #500724;
+  --tag-fundamentals-text:    #f9a8d4;
+  --tag-fundamentals-border:  #9d174d;
+
+  --tag-community-bg:         #052e16;
+  --tag-community-text:       #86efac;
+  --tag-community-border:     #14532d;
+
+  --tag-architecture-bg:      #082f49;
+  --tag-architecture-text:    #7dd3fc;
+  --tag-architecture-border:  #0c4a6e;
+
+  --tag-accessibility-bg:     #3b0764;
+  --tag-accessibility-text:   #d8b4fe;
+  --tag-accessibility-border: #581c87;
+}
+
+/* ─── Global Resets & Base Styles ───────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Smooth scrolling — only when user has not requested reduced motion */
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background-color: var(--sw-bg);
+  color: var(--sw-text-1);
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Focus Styles (WCAG 2.2 AA) ────────────────────────────────── */
+:focus-visible {
+  outline: 3px solid var(--sw-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove outline for mouse users, keep for keyboard */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ─── Skip Link ──────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 300;
+  background: var(--sw-primary);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 0 0 4px 4px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: top 200ms ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: none;
+  box-shadow: 0 0 0 3px var(--sw-focus-ring);
+}
+
+/* ─── Selection ──────────────────────────────────────────────────── */
+::selection {
+  background: var(--sw-primary-bg);
+  color: var(--sw-primary-text);
+}
+
+/* ─── Scrollbar (Webkit) ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sw-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sw-border-2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sw-text-3);
+}
