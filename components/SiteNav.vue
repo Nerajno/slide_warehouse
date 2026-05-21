@@ -6,12 +6,12 @@ const isOpen = ref(false)
   <header class="fixed inset-x-0 top-0 z-30 h-14 border-b border-border/50 bg-background/80 backdrop-blur-md">
     <div class="mx-auto flex h-full max-w-6xl items-center justify-between px-4">
       <!-- Logo -->
-      <a
-        href="#"
+      <NuxtLink
+        to="/"
         class="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <span class="font-mono text-sm text-muted-foreground">slides.</span><span class="text-sm font-semibold text-foreground">developingdvlpr</span>
-      </a>
+      </NuxtLink>
 
       <!-- Desktop nav -->
       <nav aria-label="Main navigation" class="hidden items-center gap-0.5 md:flex">
@@ -19,7 +19,7 @@ const isOpen = ref(false)
         <a href="#history" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none">History</a>
         <a href="#about" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none">About</a>
         <a
-          href="https://twitter.com/Nerajno"
+          href="https://x.com/Nerajno"
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
@@ -56,7 +56,7 @@ const isOpen = ref(false)
         <a href="#history" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">History</a>
         <a href="#about" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">About</a>
         <a
-          href="https://twitter.com/Nerajno"
+          href="https://x.com/Nerajno"
           target="_blank"
           rel="noopener noreferrer"
           class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"

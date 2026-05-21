@@ -20,6 +20,7 @@ versions:
     revealFile: "v2.html"
     changes: "Updated branding, added speaker notes, new closing slide"
 featured: true
+mostRecent: true
 events: ["Connect.Tech 2025", "Orlando Code Camp 2026"]
 tier: "45min"
 conference: ""

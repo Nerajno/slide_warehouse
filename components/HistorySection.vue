@@ -1,5 +1,14 @@
 <script setup lang="ts">
-import { history } from '~/data/history'
+import type { ConferenceEvent } from '~/types'
+
+const { data: events } = await useAsyncData('history-events',
+  () => queryContent<ConferenceEvent>('history').findOne()
+)
+
+const historyList = computed<ConferenceEvent[]>(() => {
+  const raw = events.value as unknown
+  return Array.isArray(raw) ? raw : []
+})
 
 const STATUS_DOT: Record<string, string> = {
   delivered:  'bg-emerald-400',
@@ -14,11 +23,10 @@ const STATUS_BADGE: Record<string, string> = {
 }
 
 const byYear = computed(() => {
-  const map = new Map<number, typeof history>()
-  for (const event of history) {
-    const year = new Date(event.date).getFullYear()
-    if (!map.has(year)) map.set(year, [])
-    map.get(year)!.push(event)
+  const map = new Map<number, ConferenceEvent[]>()
+  for (const event of historyList.value) {
+    if (!map.has(event.year)) map.set(event.year, [])
+    map.get(event.year)!.push(event)
   }
   return [...map.entries()].sort((a, b) => b[0] - a[0])
 })
@@ -35,31 +43,29 @@ const byYear = computed(() => {
           From Atlanta to Lincoln — conferences, meetups, and community events across the US.
         </p>
         <div class="rounded-xl border border-border bg-card p-6 inline-block">
-          <p class="font-mono text-3xl font-semibold text-primary mb-1">{{ history.length }}</p>
+          <p class="font-mono text-3xl font-semibold text-primary mb-1">{{ historyList.length }}</p>
           <p class="text-sm text-muted-foreground">Events</p>
         </div>
       </div>
 
       <!-- Right col — timeline -->
       <div class="md:col-span-2">
-        <div v-for="([year, events], yi) in byYear" :key="year">
-          <!-- Year group header -->
+        <div v-for="([year, yearEvents], yi) in byYear" :key="year">
           <p class="font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground mb-4" :class="yi > 0 ? 'mt-8' : ''">{{ year }}</p>
 
           <div class="relative">
             <div
-              v-for="(event, i) in events"
-              :key="event.name + event.date"
+              v-for="(event, i) in yearEvents"
+              :key="event.id"
               class="relative pl-7 pb-6"
             >
-              <!-- Dot -->
               <span
+                aria-hidden="true"
                 class="absolute left-0 top-1.5 w-3 h-3 rounded-full shrink-0"
                 :class="STATUS_DOT[event.status] ?? 'bg-muted-foreground'"
               />
-              <!-- Connector line (all except last of last group) -->
               <span
-                v-if="!(yi === byYear.length - 1 && i === events.length - 1)"
+                v-if="!(yi === byYear.length - 1 && i === yearEvents.length - 1)"
                 class="absolute left-[5px] top-4 w-px bg-border"
                 style="bottom: 0"
                 aria-hidden="true"
@@ -67,7 +73,7 @@ const byYear = computed(() => {
 
               <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
                 <div>
-                  <p class="text-sm font-medium text-foreground leading-snug">{{ event.name }}</p>
+                  <p class="text-sm font-medium text-foreground leading-snug">{{ event.conference }}</p>
                   <div class="flex items-center gap-2 mt-0.5">
                     <svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted-foreground shrink-0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                     <span class="text-xs text-muted-foreground">{{ event.location }}</span>

@@ -5,7 +5,7 @@
   <div class="min-h-screen flex flex-col">
     <SkipLink />
     <SiteNav />
-    <main id="main-content" class="flex-1 pt-14">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
     <SiteFooter />

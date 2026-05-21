@@ -9,7 +9,7 @@ export default defineNuxtConfig({
     '/topics/**': { ssr: true },
   },
 
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV !== 'production' },
 
   modules: [
     '@nuxtjs/tailwindcss',
@@ -59,6 +59,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      htmlAttrs: { lang: 'en' },
       title: 'Slide Warehouse',
       meta: [
         { name: 'description', content: 'Browse, search, and share Reveal.js presentations by @Nerajno' },
@@ -69,7 +70,7 @@ export default defineNuxtConfig({
       ],
       script: [
         {
-          children: `(function(){try{var t=localStorage.getItem('sw-theme')||'system';var d=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}})()`,
+          children: `(function(){try{var t=localStorage.getItem('sw-theme')||'dark';var d=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){document.documentElement.classList.add('dark')}})()`,
         },
       ],
       link: [
@@ -84,7 +85,7 @@ export default defineNuxtConfig({
         },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
         },
       ],
     },

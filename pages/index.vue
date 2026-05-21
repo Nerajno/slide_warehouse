@@ -1,13 +1,5 @@
 <script setup lang="ts">
 definePageMeta({ keepalive: true })
-const { decks, pending } = useDecks()
-const allDecks = computed(() => decks.value ?? [])
-const { recent } = useRecentDecks()
-const recentDecks = computed(() =>
-  recent.value
-    .map(id => allDecks.value.find(d => d.id === id))
-    .filter(Boolean) as typeof allDecks.value
-)
 
 useSeoMeta({
   title: 'Slide Warehouse — Conference Presentations by @Nerajno',
@@ -21,9 +13,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div>
-    <HeroSection />
-    <DecksSection />
-    <HistorySection />
-  </div>
+  <HeroSection />
+  <DecksSection />
+  <HistorySection />
 </template>

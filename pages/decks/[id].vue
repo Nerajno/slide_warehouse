@@ -59,7 +59,7 @@ useHead({
 </script>
 
 <template>
-  <div v-if="deck" class="flex flex-col" style="height: calc(100vh - 56px);">
+  <div v-if="deck" class="flex flex-col mt-14" style="height: calc(100vh - 56px);">
     <!-- Top bar -->
     <div
       class="shrink-0 flex items-center justify-between gap-4 px-4 h-12 border-b border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">

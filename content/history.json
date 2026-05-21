@@ -1,0 +1,42 @@
+[
+  {
+    "id": "connect-tech-2026",
+    "conference": "Connect.Tech 2026",
+    "date": "2026-10-01",
+    "location": "Atlanta, GA",
+    "status": "cfp-open",
+    "year": 2026
+  },
+  {
+    "id": "nebraska-code-2026",
+    "conference": "Nebraska.Code() 2026",
+    "date": "2026-07-17",
+    "location": "Lincoln, NE",
+    "status": "confirmed",
+    "year": 2026
+  },
+  {
+    "id": "orlando-code-camp-2026",
+    "conference": "Orlando Code Camp 2026",
+    "date": "2026-04-01",
+    "location": "Orlando, FL",
+    "status": "delivered",
+    "year": 2026
+  },
+  {
+    "id": "devnexus-2026",
+    "conference": "DevNexus 2026",
+    "date": "2026-03-01",
+    "location": "Atlanta, GA",
+    "status": "delivered",
+    "year": 2026
+  },
+  {
+    "id": "connect-tech-2025",
+    "conference": "Connect.Tech 2025",
+    "date": "2025-10-01",
+    "location": "Atlanta, GA",
+    "status": "delivered",
+    "year": 2025
+  }
+]

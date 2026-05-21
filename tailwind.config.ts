@@ -12,29 +12,29 @@ export default {
   theme: {
     extend: {
       colors: {
-        emerald: { DEFAULT: '#059669' },
-        amber:   { DEFAULT: '#d97706' },
-        background:  'hsl(var(--background) / <alpha-value>)',
-        foreground:  'hsl(var(--foreground) / <alpha-value>)',
+        background:  'oklch(var(--background) / <alpha-value>)',
+        foreground:  'oklch(var(--foreground) / <alpha-value>)',
         primary: {
-          DEFAULT:    'hsl(var(--primary) / <alpha-value>)',
-          foreground: 'hsl(var(--primary-foreground) / <alpha-value>)',
+          DEFAULT:    'oklch(var(--primary) / <alpha-value>)',
+          foreground: 'oklch(var(--primary-foreground) / <alpha-value>)',
         },
         muted: {
-          DEFAULT:    'hsl(var(--muted) / <alpha-value>)',
-          foreground: 'hsl(var(--muted-foreground) / <alpha-value>)',
+          DEFAULT:    'oklch(var(--muted) / <alpha-value>)',
+          foreground: 'oklch(var(--muted-foreground) / <alpha-value>)',
         },
-        border:      'hsl(var(--border) / <alpha-value>)',
+        secondary: {
+          DEFAULT:    'oklch(var(--secondary) / <alpha-value>)',
+        },
+        border:      'oklch(var(--border) / <alpha-value>)',
         card: {
-          DEFAULT:    'hsl(var(--card) / <alpha-value>)',
-          foreground: 'hsl(var(--card-foreground) / <alpha-value>)',
+          DEFAULT:    'oklch(var(--card) / <alpha-value>)',
+          foreground: 'oklch(var(--card-foreground) / <alpha-value>)',
         },
-        ring:        'hsl(var(--ring) / <alpha-value>)',
+        ring:        'oklch(var(--ring) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
-        display: ['Fraunces', 'serif'],
       },
       borderRadius: {
         card: '8px',

@@ -91,6 +91,15 @@ export interface SpeakerData {
   pipeline: ConferencePipelineItem[];
 }
 
+export interface ConferenceEvent {
+  id: string;
+  conference: string;
+  date: string;
+  location: string;
+  status: 'delivered' | 'confirmed' | 'cfp-open';
+  year: number;
+}
+
 /** Tag → Tailwind gradient classes for card thumbnails */
 export const TAG_COLORS: Record<Tag, string> = {
   vue: 'from-emerald-400 to-teal-700',

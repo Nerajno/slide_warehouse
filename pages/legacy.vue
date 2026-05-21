@@ -14,7 +14,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="max-w-6xl mx-auto px-4 py-12 space-y-8">
+  <div class="max-w-6xl mx-auto px-4 py-12 mt-14 space-y-8">
     <div>
       <h1
         class="font-display text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-gray-100 tracking-tight leading-tight mb-4">

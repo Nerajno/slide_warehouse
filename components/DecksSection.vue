@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Tag, SearchParams } from '~/types'
+import { Badge } from '~/components/ui/badge'
 
 const store = useDeckStore()
 const { decks, pending } = useDecks()
@@ -11,6 +12,18 @@ const SORT_OPTIONS: { value: SearchParams['sort']; label: string }[] = [
   { value: 'az',     label: 'A → Z'        },
   { value: 'za',     label: 'Z → A'        },
 ]
+
+const filteredDecks = computed(() => {
+  let list = [...(store.allDecks ?? [])]
+  if (store.activeTags.length) {
+    list = list.filter(d => d.tags.some(t => store.activeTags.includes(t)))
+  }
+  if (store.sort === 'oldest') list.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+  else if (store.sort === 'az') list.sort((a, b) => a.title.localeCompare(b.title))
+  else if (store.sort === 'za') list.sort((a, b) => b.title.localeCompare(a.title))
+  else list.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+  return list
+})
 
 const copiedId = ref<string | null>(null)
 
@@ -46,9 +59,10 @@ function setTag(tag: Tag | null) {
       <!-- Controls -->
       <div class="flex flex-col sm:flex-row gap-4 mb-6">
         <!-- Tag chips -->
-        <div class="flex flex-wrap gap-2 flex-1" role="group" aria-label="Filter by tag">
+        <div class="flex flex-wrap gap-2 flex-1" role="radiogroup" aria-label="Filter by tag">
           <button
-            :aria-pressed="store.activeTags.length === 0"
+            role="radio"
+            :aria-checked="store.activeTags.length === 0"
             class="h-8 px-3 rounded-full text-xs font-mono font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
             :class="store.activeTags.length === 0 ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:text-foreground'"
             @click="setTag(null)"
@@ -56,7 +70,8 @@ function setTag(tag: Tag | null) {
           <button
             v-for="tag in TAGS"
             :key="tag"
-            :aria-pressed="store.activeTags.includes(tag)"
+            role="radio"
+            :aria-checked="store.activeTags.includes(tag)"
             class="h-8 px-3 rounded-full text-xs font-mono font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
             :class="store.activeTags.includes(tag) ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:text-foreground'"
             @click="setTag(tag)"
@@ -82,9 +97,9 @@ function setTag(tag: Tag | null) {
         </div>
 
         <!-- Decks -->
-        <div v-else-if="decks?.length" class="space-y-4">
+        <div v-else-if="filteredDecks.length" class="space-y-4">
           <article
-            v-for="deck in decks"
+            v-for="deck in filteredDecks"
             :key="deck.id"
             class="rounded-xl border bg-card p-6 flex flex-col sm:flex-row sm:items-start gap-4 transition-colors hover:border-primary/30 focus-within:border-primary/30 motion-reduce:transition-none"
             :class="deck.featured ? 'bg-primary/5 border-primary/30' : 'border-border'"
@@ -95,7 +110,7 @@ function setTag(tag: Tag | null) {
             <!-- Left -->
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2 mb-1">
-                <span v-if="deck.featured" class="font-mono text-[0.6rem] uppercase tracking-widest text-primary border border-primary/30 rounded-full px-2 py-0.5">Featured</span>
+                <Badge v-if="deck.featured" variant="outline" class="font-mono text-[0.6rem] uppercase tracking-widest text-primary border-primary/30">Featured</Badge>
                 <span class="font-mono text-xs text-muted-foreground truncate">{{ deck.events?.at(-1) ?? deck.conference ?? '' }}</span>
               </div>
               <h3 class="text-base font-semibold text-foreground mb-1">{{ deck.title }}</h3>

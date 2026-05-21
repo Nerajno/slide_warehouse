@@ -2,40 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design tokens */
+/* Design tokens — oklch channels (L C H), used as oklch(var(--x) / alpha) */
 :root {
-  --color-primary: #059669;
-  --color-accent:  #d97706;
-  --radius-card:   8px;
-  --radius-tag:    6px;
-  --radius-btn:    4px;
-  --spacing-base:  8px;
+  /* Dark-first: these values are the default dark palette */
+  --background:         0.13 0.015 240;
+  --foreground:         0.94 0.005 240;
+  --card:               0.17 0.015 240;
+  --card-foreground:    0.94 0.005 240;
+  --primary:            0.75 0.16 55;
+  --primary-foreground: 0.13 0.015 240;
+  --muted:              0.22 0.015 240;
+  --muted-foreground:   0.58 0.01 240;
+  --secondary:          0.22 0.015 240;
+  --border:             0.25 0.012 240;
+  --ring:               0.75 0.16 55;
+  --radius:             0.5rem;
 
-  /* Ring offset matches page bg in each mode */
-  --ring-offset-color: #ffffff;
+  /* Ring offset — matches dark bg */
+  --ring-offset-color: oklch(0.13 0.015 240);
 
-  /* Semantic color tokens (HSL channels — used with Tailwind opacity modifier) */
-  --background:         0 0% 100%;
-  --foreground:         222 47% 11%;
-  --primary:            38 92% 50%;
-  --primary-foreground: 0 0% 100%;
-  --muted:              220 14% 96%;
-  --muted-foreground:   220 9% 46%;
-  --border:             220 13% 91%;
-  --card:               0 0% 100%;
-  --card-foreground:    222 47% 11%;
-  --ring:               38 92% 50%;   /* amber — matches primary */
+  /* Legacy spacing/radius tokens */
+  --radius-card: 8px;
+  --radius-tag:  6px;
+  --radius-btn:  4px;
 }
 
-.dark {
-  --ring-offset-color:  #030712; /* gray-950 */
-  --background:         222 84% 5%;
-  --foreground:         210 40% 98%;
-  --muted:              215 28% 12%;
-  --muted-foreground:   218 11% 65%;
-  --border:             215 28% 17%;
-  --card:               222 47% 11%;
-  --card-foreground:    210 40% 98%;
+.light {
+  --background:         1.00 0.000 0;
+  --foreground:         0.20 0.015 240;
+  --card:               1.00 0.000 0;
+  --card-foreground:    0.20 0.015 240;
+  --primary:            0.65 0.16 55;
+  --primary-foreground: 1.00 0.000 0;
+  --muted:              0.96 0.005 240;
+  --muted-foreground:   0.50 0.010 240;
+  --secondary:          0.96 0.005 240;
+  --border:             0.92 0.008 240;
+  --ring:               0.65 0.16 55;
+  --ring-offset-color:  oklch(1.00 0 0);
 }
 
 @layer base {
@@ -50,15 +54,11 @@
   /* Focus ring — amber, 2px offset matches page bg */
   *:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--ring-offset-color), 0 0 0 4px hsl(var(--ring));
+    box-shadow: 0 0 0 2px var(--ring-offset-color), 0 0 0 4px oklch(var(--ring));
   }
 
   body {
-    @apply font-sans antialiased bg-white text-gray-900;
-  }
-
-  .dark body {
-    @apply bg-gray-950 text-gray-100;
+    @apply font-sans antialiased bg-background text-foreground;
   }
 }
 

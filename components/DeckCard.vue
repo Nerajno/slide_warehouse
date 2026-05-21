@@ -27,6 +27,13 @@ const latestEvent = computed(() => props.deck.events?.at(-1) ?? '')
       <ShareButton :url="`/decks/${deck.id}`" compact />
     </div>
 
+    <button
+      type="button"
+      class="absolute top-24 left-3 z-20 text-[10px] font-mono text-white/80 uppercase tracking-widest hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      @click="navigateTo(`/?tier=${deck.tier ?? deck.durationMinutes + 'min'}`)"
+    >
+      {{ deck.tier ?? deck.durationMinutes + 'min' }}
+    </button>
     <NuxtLink
       :to="`/decks/${deck.id}`"
       class="block focus:outline-none focus:ring-2 focus:ring-emerald-600 rounded-card"
@@ -36,17 +43,7 @@ const latestEvent = computed(() => props.deck.events?.at(-1) ?? '')
         :class="gradient"
         :aria-label="`Preview of ${deck.title}`"
         role="img"
-      >
-        <div class="h-full flex items-end p-3">
-          <button
-            type="button"
-            class="text-[10px] font-mono text-white/80 uppercase tracking-widest hover:text-white transition-colors"
-            @click.stop="navigateTo(`/?tier=${deck.tier ?? deck.durationMinutes + 'min'}`)"
-          >
-            {{ deck.tier ?? deck.durationMinutes + 'min' }}
-          </button>
-        </div>
-      </div>
+      />
 
       <div class="p-4">
         <h3 class="font-display text-sm font-semibold text-gray-900 dark:text-gray-100 leading-snug mb-1">
