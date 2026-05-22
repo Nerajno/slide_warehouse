@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { DeckFrontmatter, SpeakerData } from '~/types'
-import { Badge } from '~/components/ui/badge'
-import { Button } from '~/components/ui/button'
 
 const { data: decksData } = await useAsyncData('hero-decks',
   () => queryContent<DeckFrontmatter>('decks').only(['slideCount']).find()
@@ -83,22 +81,18 @@ watch(stats, (val) => {
       <div class="md:grid md:grid-cols-2 md:gap-16 md:items-start">
         <!-- Left col -->
         <div>
-          <Badge class="font-mono text-[0.65rem] uppercase tracking-widest mb-6">
+          <span class="inline-block font-mono text-2xs uppercase tracking-widest text-[var(--sw-text-3)] mb-6">
             Conference Presentations · @Nerajno
-          </Badge>
-          <h1 id="hero-heading" class="text-5xl sm:text-6xl font-semibold leading-[0.95] tracking-tight text-foreground mb-6 text-balance">
-            Talks that<br><em class="text-primary not-italic">connect.</em>
+          </span>
+          <h1 id="hero-heading" class="font-display text-5xl sm:text-6xl font-semibold leading-[0.95] tracking-tight text-[var(--sw-text-1)] mb-6 text-balance">
+            Talks that<br><em class="text-[var(--sw-primary)] not-italic">connect.</em>
           </h1>
-          <p class="text-muted-foreground text-base sm:text-lg leading-relaxed mb-10 text-pretty max-w-lg">
+          <p class="font-sans text-[var(--sw-text-2)] text-base sm:text-lg leading-relaxed mb-10 text-pretty max-w-lg">
             Browse, search, and share Reveal.js presentation decks — from meetups and conference stages to your screen.
           </p>
           <div class="flex flex-wrap gap-3">
-            <Button as-child>
-              <a href="#decks">Browse Decks</a>
-            </Button>
-            <Button variant="outline" as-child>
-              <a href="#history">Speaker History</a>
-            </Button>
+            <a href="#decks" class="sw-btn-primary">Browse Decks</a>
+            <a href="#history" class="sw-btn-secondary">Speaker History</a>
           </div>
         </div>
 
@@ -109,28 +103,28 @@ watch(stats, (val) => {
             <div
               v-for="(stat, i) in stats"
               :key="stat.label"
-              class="rounded-xl border border-border bg-card p-6"
+              class="sw-stat-block"
             >
-              <p class="font-mono text-3xl font-semibold text-primary mb-1" aria-label="`${stat.value} ${stat.label}`">{{ displayValues[i] }}</p>
-              <p class="text-sm text-muted-foreground" aria-hidden="true">{{ stat.label }}</p>
+              <p class="sw-stat-block__number" :aria-label="`${stat.value} ${stat.label}`">{{ displayValues[i] }}</p>
+              <p class="sw-stat-block__label" aria-hidden="true">{{ stat.label }}</p>
             </div>
           </div>
 
           <!-- Most-recent-talk banner -->
-          <div v-if="recentDeck" class="rounded-xl border border-border bg-card p-6 flex gap-4 items-start">
-            <div class="shrink-0 flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
-              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+          <div v-if="recentDeck" class="rounded-card border border-[var(--sw-border)] bg-[var(--sw-surface)] p-6 flex gap-4 items-start">
+            <div class="shrink-0 flex items-center justify-center w-10 h-10 rounded-card bg-[var(--sw-primary-bg)]">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--sw-primary)]">
                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
               </svg>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground mb-1">
+              <p class="font-mono text-2xs uppercase tracking-widest text-[var(--sw-text-3)] mb-1">
                 Most Recent · {{ recentConf }}
               </p>
-              <h3 class="text-sm font-semibold text-foreground mb-3 truncate">{{ recentDeck.title }}</h3>
+              <h3 class="font-sans text-sm font-semibold text-[var(--sw-text-1)] mb-3 truncate">{{ recentDeck.title }}</h3>
               <NuxtLink
                 :to="recentDeckUrl"
-                class="inline-flex items-center text-xs font-medium border border-border rounded px-3 py-1.5 text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+                class="sw-deck-card__cta"
               >Open deck →</NuxtLink>
             </div>
           </div>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Tag, SearchParams } from '~/types'
-import { Badge } from '~/components/ui/badge'
 
 const store = useDeckStore()
 const { decks, pending } = useDecks()
@@ -59,7 +58,7 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
 </script>
 
 <template>
-  <section id="decks" aria-labelledby="decks-heading" class="border-t border-border py-20 px-6">
+  <section id="decks" aria-labelledby="decks-heading" class="border-t border-[var(--sw-border)] py-20 px-6">
     <!-- Copy toast -->
     <Transition
       enter-active-class="transition-opacity duration-150"
@@ -71,7 +70,7 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
         v-if="toastVisible"
         role="status"
         aria-live="polite"
-        class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2.5 rounded-lg border border-border bg-card shadow-md text-sm font-medium text-foreground motion-reduce:transition-none"
+        class="sw-toast sw-toast--success fixed bottom-6 left-1/2 -translate-x-1/2 z-[300]"
       >
         <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         Link copied!
@@ -80,8 +79,8 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
 
     <div class="max-w-6xl mx-auto">
       <!-- Header -->
-      <p class="font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground mb-2">Presentations</p>
-      <h2 id="decks-heading" class="text-3xl font-semibold text-foreground mb-8">Browse Decks</h2>
+      <p class="sw-section-label mb-2">Presentations</p>
+      <h2 id="decks-heading" class="font-display text-3xl font-semibold text-[var(--sw-text-1)] mb-8">Browse Decks</h2>
 
       <!-- Controls -->
       <div class="flex flex-col sm:flex-row gap-4 mb-3">
@@ -90,8 +89,8 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
           <button
             role="radio"
             :aria-checked="store.activeTags.length === 0"
-            class="h-8 px-3 rounded-full text-xs font-mono font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
-            :class="store.activeTags.length === 0 ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:text-foreground'"
+            class="sw-filter-pill"
+            :class="{ 'sw-filter-pill--active': store.activeTags.length === 0 }"
             @click="setTag(null)"
           >All</button>
           <button
@@ -99,8 +98,8 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
             :key="tag"
             role="radio"
             :aria-checked="store.activeTags.includes(tag)"
-            class="inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-xs font-mono font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
-            :class="store.activeTags.includes(tag) ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:text-foreground'"
+            class="sw-filter-pill"
+            :class="{ 'sw-filter-pill--active': store.activeTags.includes(tag) }"
             @click="setTag(tag)"
           >
             {{ tag }}
@@ -110,11 +109,11 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
 
         <!-- Sort -->
         <div class="flex items-center gap-2 shrink-0">
-          <label for="sort-select" class="text-xs text-muted-foreground font-mono whitespace-nowrap">Sort by</label>
+          <label for="sort-select" class="font-mono text-xs text-[var(--sw-text-3)] whitespace-nowrap">Sort by</label>
           <select
             id="sort-select"
             :value="store.sort"
-            class="h-9 pl-3 pr-8 border border-border rounded text-xs bg-card text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            class="sw-input h-9 pl-3 pr-8 text-xs"
             @change="store.setSort(($event.target as HTMLSelectElement).value as SearchParams['sort'])"
           >
             <option v-for="opt in SORT_OPTIONS" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
@@ -123,7 +122,7 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
       </div>
 
       <!-- Result count -->
-      <p class="font-mono text-xs text-muted-foreground mb-6">
+      <p class="font-mono text-xs text-[var(--sw-text-3)] mb-6">
         <template v-if="!pending">
           Showing {{ filteredDecks.length }} of {{ totalCount }} deck{{ totalCount !== 1 ? 's' : '' }}
         </template>
@@ -133,7 +132,7 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
       <div aria-live="polite">
         <!-- Skeleton -->
         <div v-if="pending" class="space-y-4">
-          <div v-for="n in 4" :key="n" class="h-36 rounded-xl bg-muted animate-pulse" />
+          <div v-for="n in 4" :key="n" class="h-36 rounded-card bg-[var(--sw-surface-2)] animate-pulse" />
         </div>
 
         <!-- Decks -->
@@ -141,32 +140,30 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
           <article
             v-for="deck in filteredDecks"
             :key="deck.id"
-            class="rounded-xl border bg-card p-6 flex flex-col sm:flex-row sm:items-start gap-4 transition-colors hover:border-primary/30 focus-within:border-primary/30 motion-reduce:transition-none"
-            :class="deck.featured ? 'bg-primary/5 border-primary/30' : 'border-border'"
+            class="sw-deck-card flex-row sm:items-start gap-4 flex-col sm:flex-row"
+            :class="deck.featured ? 'sw-deck-card--featured' : ''"
           >
-            <!-- Featured badge -->
-            <span v-if="deck.featured" class="sr-only">Featured</span>
-
             <!-- Left -->
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2 mb-1">
-                <Badge v-if="deck.featured" variant="outline" class="font-mono text-[0.6rem] uppercase tracking-widest text-primary border-primary/30">Featured</Badge>
-                <span class="font-mono text-xs text-muted-foreground truncate">{{ deck.events?.at(-1) ?? deck.conference ?? '' }}</span>
+                <span v-if="deck.featured" class="sw-badge-featured">Featured</span>
+                <span class="sw-deck-card__conference truncate">{{ deck.events?.at(-1) ?? deck.conference ?? '' }}</span>
               </div>
-              <h3 class="text-base font-semibold text-foreground mb-1">{{ deck.title }}</h3>
-              <p class="text-sm text-muted-foreground text-pretty mb-3">{{ deck.description }}</p>
+              <h3 class="sw-deck-card__title mb-1">{{ deck.title }}</h3>
+              <p class="sw-deck-card__description text-pretty mb-3">{{ deck.description }}</p>
               <div class="flex flex-wrap gap-1.5">
                 <span
                   v-for="tag in deck.tags"
                   :key="tag"
-                  class="font-mono text-[11px] px-2 py-0.5 rounded-full border border-border text-muted-foreground"
+                  class="sw-tag"
+                  :class="`sw-tag--${tag}`"
                 >{{ tag }}</span>
               </div>
             </div>
 
             <!-- Right -->
             <div class="flex sm:flex-col items-center sm:items-end gap-4 sm:gap-3 shrink-0">
-              <div class="flex sm:flex-col gap-3 sm:gap-1.5 font-mono text-xs text-muted-foreground">
+              <div class="flex sm:flex-col gap-3 sm:gap-1.5 sw-deck-card__meta">
                 <span class="flex items-center gap-1">
                   <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                   {{ deck.slideCount }} slides
@@ -181,34 +178,27 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
               <div class="flex items-center gap-2">
                 <!-- Copy-path button -->
                 <button
-                  class="inline-flex items-center justify-center w-8 h-8 rounded border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+                  class="sw-btn-icon"
                   aria-label="Copy deck path"
                   @click="copyPath(deck.id)"
                 >
                   <span aria-live="polite" class="sr-only">{{ copiedId === deck.id ? 'Copied!' : '' }}</span>
-                  <!-- Clipboard icon -->
                   <svg v-if="copiedId !== deck.id" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                  <!-- Check icon -->
                   <svg v-else aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </button>
 
-                <!-- Open Deck button -->
-                <NuxtLink
-                  :to="`/decks/${deck.id}`"
-                  class="inline-flex items-center justify-center h-8 px-3 rounded border border-border text-xs text-foreground hover:bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
-                >Open deck →</NuxtLink>
+                <NuxtLink :to="`/decks/${deck.id}`" class="sw-deck-card__cta">Open deck →</NuxtLink>
               </div>
             </div>
           </article>
         </div>
 
         <!-- Empty state -->
-        <div v-else class="flex flex-col items-center py-20 gap-4 text-center">
-          <div class="w-16 h-16 rounded-xl bg-muted flex items-center justify-center">
-            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-muted-foreground"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          </div>
-          <p class="text-sm text-muted-foreground">No decks match the active filter.</p>
-          <button class="text-xs text-primary underline underline-offset-2" @click="setTag(null)">Clear filters</button>
+        <div v-else class="sw-empty-state" role="status">
+          <svg class="sw-empty-state__icon" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <p class="sw-empty-state__title">No decks found</p>
+          <p class="sw-empty-state__message">No decks match the active filter.</p>
+          <button class="sw-btn-secondary mt-2" @click="setTag(null)">Clear filters</button>
         </div>
       </div>
     </div>

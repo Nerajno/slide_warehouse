@@ -3,27 +3,27 @@ const isOpen = ref(false)
 </script>
 
 <template>
-  <header class="fixed inset-x-0 top-0 z-30 h-14 border-b border-border/50 bg-background/80 backdrop-blur-md">
+  <header class="fixed inset-x-0 top-0 z-[150] h-14 border-b border-[var(--sw-border)] bg-[var(--sw-nav-bg)]/80 backdrop-blur-md">
     <div class="mx-auto flex h-full max-w-6xl items-center justify-between px-4">
       <!-- Logo -->
       <NuxtLink
         to="/"
-        class="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        class="rounded focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
       >
-        <span class="font-mono text-sm text-muted-foreground">slides.</span><span class="text-sm font-semibold text-foreground">developingdvlpr</span>
+        <span class="font-mono text-sm text-[var(--sw-text-3)]">slides.</span><span class="text-sm font-semibold text-[var(--sw-text-1)]">developingdvlpr</span>
       </NuxtLink>
 
       <!-- Desktop nav -->
       <nav aria-label="Main navigation" class="hidden items-center gap-0.5 md:flex">
-        <a href="#decks" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none">Decks</a>
-        <a href="#history" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none">History</a>
-        <a href="#about" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none">About</a>
-        <a href="#about" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs font-medium border border-border text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none ml-1">Book a Talk</a>
+        <a href="#decks" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]">Decks</a>
+        <a href="#history" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]">History</a>
+        <a href="#about" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]">About</a>
+        <a href="#about" class="inline-flex min-h-[44px] items-center justify-center rounded-btn px-3 text-xs font-medium border border-[var(--sw-border)] text-[var(--sw-text-1)] transition-colors duration-[150ms] hover:bg-[var(--sw-surface-2)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] ml-1">Book a Talk</a>
         <a
           href="https://x.com/Nerajno"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+          class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs font-medium text-[var(--sw-primary)] transition-colors duration-[150ms] hover:text-[var(--sw-primary-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
         >
           @Nerajno
           <svg aria-hidden="true" class="ml-1" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 8.5L8.5 1.5M8.5 1.5H4M8.5 1.5V6" /></svg>
@@ -33,7 +33,7 @@ const isOpen = ref(false)
 
       <!-- Mobile hamburger -->
       <button
-        class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded text-muted-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:hidden"
+        class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded text-[var(--sw-text-2)] hover:bg-[var(--sw-surface-2)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] md:hidden"
         aria-label="Toggle navigation"
         :aria-expanded="isOpen"
         @click="isOpen = !isOpen"
@@ -49,21 +49,21 @@ const isOpen = ref(false)
 
     <!-- Mobile menu -->
     <div
-      class="overflow-hidden border-t border-border/50 bg-background/95 transition-[max-height] duration-300 motion-reduce:transition-none md:hidden"
+      class="overflow-hidden border-t border-[var(--sw-border)] bg-[var(--sw-nav-bg)]/95 transition-[max-height] duration-[300ms] md:hidden"
       :class="isOpen ? 'max-h-96' : 'max-h-0'"
       :aria-hidden="!isOpen"
     >
       <nav aria-label="Mobile navigation" class="flex flex-col px-4 py-2">
-        <a href="#decks" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">Decks</a>
-        <a href="#history" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">History</a>
-        <a href="#about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">About</a>
-        <a href="#about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm font-medium text-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" @click="isOpen = false">Book a Talk</a>
+        <a href="#decks" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Decks</a>
+        <a href="#history" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">History</a>
+        <a href="#about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">About</a>
+        <a href="#about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm font-medium text-[var(--sw-text-1)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Book a Talk</a>
         <a
           href="https://x.com/Nerajno"
           target="_blank"
           rel="noopener noreferrer"
           :tabindex="isOpen ? 0 : -1"
-          class="inline-flex min-h-[44px] items-center text-sm font-medium text-primary hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          class="inline-flex min-h-[44px] items-center text-sm font-medium text-[var(--sw-primary)] hover:text-[var(--sw-primary-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
         >@Nerajno <span class="sr-only">(opens in new tab)</span></a>
       </nav>
     </div>

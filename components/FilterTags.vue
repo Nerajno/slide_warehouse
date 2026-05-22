@@ -41,10 +41,8 @@ function clearAll() {
     <div class="flex items-center gap-2 flex-nowrap overflow-x-auto sm:flex-wrap pb-1 scrollbar-none -webkit-overflow-scrolling-touch">
       <button
         :aria-pressed="store.activeTags.length === 0"
-        class="h-8 px-3 rounded-tag text-xs font-medium transition-colors"
-        :class="store.activeTags.length === 0
-          ? 'bg-emerald-600 text-white'
-          : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
+        class="sw-filter-pill"
+        :class="{ 'sw-filter-pill--active': store.activeTags.length === 0 }"
         @click="clearAll"
       >
         All
@@ -53,28 +51,23 @@ function clearAll() {
       <button
         v-for="tag in ALL_TAGS.filter(t => tagCount(t) > 0)"
         :key="tag"
-        role="button"
         :aria-pressed="store.activeTags.includes(tag)"
-        class="h-8 px-3 rounded-tag text-xs font-medium flex items-center gap-1.5 transition-colors"
-        :class="[
-          store.activeTags.includes(tag)
-            ? 'bg-emerald-600 text-white'
-            : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700',
-        ]"
+        class="sw-filter-pill"
+        :class="{ 'sw-filter-pill--active': store.activeTags.includes(tag) }"
         @click="toggle(tag)"
       >
         {{ tag }}
         <span
-          class="text-[10px] px-1 rounded-full"
+          class="font-mono text-2xs px-1 rounded-full"
           :class="store.activeTags.includes(tag)
-            ? 'bg-emerald-500 text-white'
-            : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300'"
+            ? 'bg-white/20 text-white'
+            : 'bg-[var(--sw-primary-bg)] text-[var(--sw-primary-text)]'"
         >{{ tagCount(tag) }}</span>
       </button>
 
       <button
         v-if="store.hasActiveFilters"
-        class="h-8 px-3 text-xs text-gray-500 dark:text-gray-400 underline"
+        class="sw-btn-ghost h-8 min-h-0 px-3 text-xs"
         @click="clearAll"
       >
         Clear filters
