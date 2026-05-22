@@ -31,6 +31,11 @@ const byYear = computed(() => {
 
 <template>
   <section id="history" aria-labelledby="history-heading" class="border-t border-[var(--sw-border)] py-20 px-6">
+    <!-- Map -->
+    <div class="max-w-6xl mx-auto mb-12">
+      <ConferenceMap :events="historyList" />
+    </div>
+
     <div class="max-w-6xl mx-auto md:grid md:grid-cols-3 md:gap-16">
       <!-- Left col -->
       <div class="mb-12 md:mb-0">
