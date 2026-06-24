@@ -4,7 +4,9 @@
 **Owner:** Nerando (TechTile LLC / @Nerajno)
 **Version:** 1.0
 **Last Updated:** April 14, 2026
-**Status:** Draft
+**Status:** Active — see Source-of-Truth note below
+
+<!-- 🔧 UPDATED 2026-06-23 (Council audit) — SOURCE OF TRUTH: this file stacks v1.0 spec (§1–15), April review (§16–18), the v1.1 audit, and the June audit (§19). Authoritative current state = §19 + the annotations below; where older sections conflict, §19/annotations win. Canonical data layer = data/decks.json + server/api/decks.get.ts, NOT content/decks/*.md. -->
 **Deploy Target:** Netlify
 **Stack:** Nuxt 3 · Vue 3 · Reveal.js · Tailwind CSS · Pinia
 
@@ -456,7 +458,9 @@ the most complex systems engineers will ever debug.
 
 ### 7.4 Data Layer (Nuxt Content)
 
-Deck metadata lives in `content/decks/*.md` as Markdown with frontmatter. Nuxt Content provides `queryContent()` for type-safe querying at build time and runtime.
+<!-- 🔧 UPDATED 2026-06-23 (BLOCKER fix) — CANONICAL DATA LAYER = data/decks.json → server/api/decks.get.ts → stores/deckStore.ts. The queryContent / content/decks/*.md examples below are LEGACY (5 orphaned files) and do NOT reflect `main`. Retained for historical reference only. -->
+
+Deck metadata is served from `data/decks.json` via a Nitro server route (`/api/decks`). The Nuxt Content examples below are historical.
 
 **Listing all decks (home page):**
 
@@ -507,7 +511,7 @@ export default defineNuxtConfig({
 
 ### 7.5 Reveal.js Integration & Versioning
 
-- **Approach:** iframe with `sandbox="allow-scripts allow-same-origin"`
+- **Approach:** iframe with `sandbox="allow-scripts"` — avoid pairing `allow-same-origin` (it lets the frame drop its own sandbox); validate `e.origin` on `postMessage` receipt instead of trusting `'*'`. <!-- 🔧 UPDATED 2026-06-23 (MAJOR fix): tightened sandbox + origin check. -->
 - **Communication:** `postMessage` API for slide-change events (updates "Slide X of Y")
 - **Fullscreen:** Fullscreen API on the iframe container div (not the iframe itself)
 - **Styling:** Each Reveal.js HTML uses its own CSS file — no style leakage into the Nuxt app
@@ -567,6 +571,16 @@ public/reveals/
 | Cumulative Layout Shift | < 0.1 |
 | Total Bundle Size (gzipped) | < 150KB |
 | Deck Card Images | Solid color/gradient (no raster images) |
+
+### 7.8 Testing Strategy
+<!-- 🔧 NEW 2026-06-23 (BLOCKER fix): no tests existed; the five post-build bugs (§1 BUG-1–5) are the evidence. -->
+
+| Layer | Tool | Covers |
+|---|---|---|
+| Unit | Vitest | slide-counter postMessage handler (BUG-1), version switch (US-2.5), URL state round-trip (§12) |
+| E2E | Playwright | browse → view deck → back-nav scroll restore (BUG-2) |
+| Regression | Vitest | one test per fixed bug (BUG-1–5) so they cannot silently return |
+| a11y | axe-core + manual SR pass | WCAG matrix (§9), iframe `title`, reduced motion (US-4.4) |
 
 ---
 
@@ -716,9 +730,9 @@ public/reveals/
 - **Use `queryContent` (not `useFetch`)** for deck data — Nuxt Content handles SSR hydration, caching, and hot-reload of Markdown files during development.
 - **Leverage Nuxt auto-imports** — no manual import statements for Vue APIs, composables, or `queryContent`.
 - **Use `definePageMeta`** on deck pages for dynamic SEO titles and OG tags.
-- **Set `routeRules`** in `nuxt.config.ts` for ISR on deck pages: `'/decks/**': { isr: 3600 }`.
+- **Set `routeRules`** for static prerender, NOT ISR: `'/': { prerender: true }, '/decks/**': { prerender: true }`. <!-- 🔧 UPDATED 2026-06-23: ISR removed per GAP-1; static generation is canonical. -->
 - **Nuxt Content navigation** — configure `navigation.fields` to include `tags`, `tier`, and `currentVersion` so the home page can filter without loading full document bodies.
-- **Adding a new deck** is just creating a new `.md` file in `content/decks/` — no code changes, no API updates, no redeployment needed (Netlify rebuilds on Git push).
+- **Adding a new deck** now means adding an entry to `data/decks.json` (the canonical source); Netlify rebuilds on Git push. <!-- 🔧 UPDATED 2026-06-23: corrected — content/decks/*.md is legacy, not the active data source (§19). -->
 
 ### From Reveal.js Skill
 
@@ -754,19 +768,21 @@ public/reveals/
 | Build time (Netlify) | < 90 seconds | Netlify dashboard |
 | Mobile usability | 0 errors | Google Mobile-Friendly Test |
 
+<!-- 🔧 UPDATED 2026-06-23: "Time to find a deck < 15s" is UNMEASURABLE without analytics — recast as qualitative self-assessment, or pull analytics (§10 Q2) into Phase 3 to make it real. Lighthouse a11y actual ~98 vs 100 target (§9). -->
+
 ---
 
 ## 14. Decisions Log
 
 | # | Question | Decision | Rationale |
 |---|---|---|---|
-| 1 | Data source for deck metadata | **Nuxt Content** (Markdown + frontmatter) | Git-native, no external DB, hot-reload in dev, `queryContent` API for search/filter, new decks added by creating a `.md` file. |
+| 1 | Data source for deck metadata | **Nuxt Content** (Markdown + frontmatter) | Git-native, no external DB, hot-reload in dev, `queryContent` API for search/filter, new decks added by creating a `.md` file. **[SUPERSEDED 2026-06-23 → data/decks.json + /api/decks; see §7.4 + §19]** |
 | 2 | Multi-speaker support | **Single-user MVP** | Scope control. Multi-speaker is a Phase 4 backlog item — the data model (frontmatter) can be extended with an `author` field later without migration. |
 | 3 | Presentation versioning | **Yes — versioned (`v1`, `v2`, etc.)** | Talks evolve across events (e.g., People Skills updated for OrlandoCodeCamp26). Each version is a separate HTML file in `/public/reveals/{deck-id}/`. Frontmatter tracks version history with labels, dates, and changelogs. |
 
 ## 15. Open Questions
 
-1. Is PDF export (Decktape) a Phase 2 or Phase 4 feature given the server-side dependency on Netlify?
+1. **DECIDED 2026-06-23 — Phase 4:** generate PDFs via a GitHub Actions workflow that commits to `/public/pdfs/` (Decktape needs a headless browser, infeasible on Netlify Functions). US-3.2's server-side ACs are infeasible as written. <!-- 🔧 UPDATED: resolved per §10 recommendation. -->
 
 ---
 
@@ -1550,4 +1566,70 @@ router: {
 
 ---
 
+## 19. June 2026 Verification — Main Branch Audit
 
+*Verified: June 23, 2026 against `main` branch.*
+
+### All P0/P1/P2 Items Confirmed Implemented
+
+Every checklist item in Section 7 (Implementation Checklist) verified present in `main`:
+
+| Item | Verified In |
+|---|---|
+| BUG-1 postMessage fix | `components/DeckViewer.vue:24` — `e.data?.type === 'slidechanged'` |
+| BUG-2 keepalive on index | `pages/index.vue:2` — `definePageMeta({ keepalive: true })` |
+| BUG-3 keyboard guard | `components/DeckViewer.vue:15-16` — INPUT/TEXTAREA/SELECT check |
+| BUG-4 SSR guard | `composables/useRecentDecks.ts:8,13` — `import.meta.client` |
+| BUG-5 FOUC script | `nuxt.config.ts:79` — inline head script |
+| GAP-1 routeRules | `nuxt.config.ts:11-13` — `/` and `/about` prerender |
+| GAP-2 sitemap | `package.json` — `@nuxtjs/sitemap@8.0.14` installed |
+| GAP-3 robots.txt | `public/robots.txt` — exists with Allow + Sitemap directive |
+| GAP-4 aria-live | `components/DeckGrid.vue:8` — `aria-live="polite"` on wrapper |
+| GAP-5 FilterTags mobile | `components/FilterTags.vue:41` — `flex-nowrap overflow-x-auto sm:flex-wrap` |
+| GAP-6 zero-count tags hidden | `components/FilterTags.vue:52` — `filter(t => tagCount(t) > 0)` |
+| GAP-7 iframe skeleton | `components/DeckViewer.vue:84,92` — `animate-pulse` + `@load` handler |
+| GAP-8 error.vue | `error.vue` exists at project root |
+| GAP-9 og:image | `public/og-default.png` exists; wired in `pages/index.vue` |
+| GAP-10 (Latest) label | `components/VersionSelector.vue:30` — appends `(Latest)` |
+| GAP-11 clipboard fallback | `components/ShareButton.vue:13-16` — try/catch + `prompt()` fallback |
+| GAP-13 aria-label removed | `components/DeckCard.vue` — NuxtLink has no `aria-label`; thumbnail has `role="img"` |
+| GAP-16 card hover | `components/DeckCard.vue:17` — `hover:shadow-card-hover` via sw-* token |
+| GAP-17 cross-hue gradients | `types/index.ts:104-110` — TAG_COLORS uses contrasting hue pairs |
+| GAP-18 empty state SVG | `components/DeckGrid.vue:25-32` — inline SVG illustration |
+| GAP-19 progressbar role | `components/DeckViewer.vue:96` — `role="progressbar"` with aria-valuenow/max |
+
+### Architecture Deviations from PRD
+
+**Data Layer:** PRD (Section 7.4) specifies `queryContent()` + `content/decks/*.md`. Actual implementation uses:
+- `stores/deckStore.ts` → `$fetch('/api/decks')` → `server/api/decks.get.ts` → `data/decks.json`
+- `content/decks/*.md` files still exist (5 decks) but are not the active data source
+- **Impact:** Adding a new deck requires editing `data/decks.json`, not creating a `.md` file. PRD Section 12 recommendation ("Adding a new deck is just creating a new .md file") is no longer accurate.
+- **Decision needed:** Either migrate `data/decks.json` → Nuxt Content queries, or update PRD to reflect JSON + server API as the canonical data layer.
+
+**GAP-15 Resolution:** PRD says "Replace emoji icons with SVG." Actual resolution: theme toggle button was **removed entirely** from `SiteNav.vue` in the redesign. Dark mode runs system-preference only via `plugins/theme.client.ts`. No emoji icons remain. GAP is resolved but differently than specified.
+
+### New Components Beyond PRD Scope
+
+Added during redesign sprint (not in original component spec):
+
+| Component | Purpose |
+|---|---|
+| `components/HeroSection.vue` | Landing hero above deck grid |
+| `components/DecksSection.vue` | Deck grid + filter/search wrapper (replaces inline page logic) |
+| `components/HistorySection.vue` | Speaking history from `content/history.json` |
+| `components/SiteNav.vue` | Fixed nav header (replaces layout-level nav) |
+| `components/SiteFooter.vue` | Site footer with social links |
+| `components/LegacyDeckGrid.vue` | Grid for legacy presentations (PPTX/PDF/Keynote) |
+| `pages/legacy.vue` | Legacy presentation browser |
+| `pages/topics/index.vue` | Topics listing page |
+
+### P3 Items Still Open
+
+These remain unbuilt:
+
+- [ ] **US-2.6** Keyboard shortcut hints modal
+- [ ] **US-2.7** Search autocomplete / type-ahead
+- [ ] **US-3.3** "Recently Updated" quick filter
+- [ ] **GAP-9 Phase 2** Per-deck dynamic OG images via `@nuxtjs/og-image`
+
+---
