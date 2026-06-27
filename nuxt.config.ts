@@ -34,13 +34,6 @@ export default defineNuxtConfig({
     typeCheck: false,
   },
 
-  content: {
-    highlight: false,
-    navigation: {
-      fields: ['tags', 'tier', 'currentVersion'],
-    },
-  },
-
   nitro: {
     prerender: {
       routes: [
