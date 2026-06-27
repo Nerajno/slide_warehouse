@@ -5,7 +5,7 @@ A self-hosted Reveal.js presentation repository for browsing, searching, and sha
 > **Demo:** _add link once deployed_
 > **Status:** In active development — see [Known Issues](#known-issues--todo)
 
-**Stack:** Nuxt 3 · Vue 3 · Reveal.js · Tailwind CSS · Pinia · Nuxt Content
+**Stack:** Nuxt 3 · Vue 3 · Reveal.js · Tailwind CSS · Pinia · Nuxt Content v3
 **Deploy:** Netlify
 
 ---
@@ -86,7 +86,11 @@ slide-warehouse/
 │       └── main.css          # Global styles, design tokens, focus rings
 ├── components/
 │   ├── SiteNav.vue           # Fixed nav — logo, links, mobile hamburger
+│   ├── SiteFooter.vue        # Site footer
 │   ├── SkipLink.vue          # Skip-to-content accessibility link
+│   ├── HeroSection.vue       # Hero banner section
+│   ├── DecksSection.vue      # Deck grid section wrapper
+│   ├── HistorySection.vue    # Speaking history / circuit timeline
 │   ├── DeckCard.vue          # Single deck card with share + copy button
 │   ├── DeckGrid.vue          # Filterable/sortable deck grid
 │   ├── DeckViewer.vue        # Reveal.js iframe viewer
@@ -100,20 +104,25 @@ slide-warehouse/
 │   ├── VersionChangelog.vue  # Version history list
 │   ├── LegacyDeckGrid.vue    # Legacy archive grid
 │   ├── SpeakerBio.vue        # Speaker bio card
-│   ├── SpeakerOverview.vue   # Speaker history / circuit timeline
+│   ├── SpeakerOverview.vue   # Speaker stats overview
 │   ├── ResourceLinks.vue     # External resource links
 │   └── TopicsExplorer.vue    # Tag/topic browsing grid
 ├── composables/
 │   ├── useDecks.ts           # Deck data fetching + filtering logic
+│   ├── useSearch.ts          # Search state and logic
+│   ├── useTopics.ts          # Topic/tag filtering logic
+│   ├── useRecentDecks.ts     # Recent deck selection logic
+│   ├── useFullscreen.ts      # Fullscreen API wrapper
 │   └── useTheme.ts           # Dark/light/system theme toggle
 ├── content/
 │   ├── speaker.json          # Speaker bio, social links, pipeline
-│   └── decks/                # One .md file per deck (Nuxt Content)
-│       ├── back-to-basics.md
-│       ├── networking-talk.md
-│       ├── people-skills-technical-skills.md
-│       ├── skills-to-bills.md
-│       └── vue-router-deep-dive.md
+│   ├── decks/                # One .md file per deck (Nuxt Content v3)
+│   │   ├── back-to-basics.md
+│   │   ├── networking-talk.md
+│   │   ├── people-skills-technical-skills.md
+│   │   ├── skills-to-bills.md
+│   │   └── vue-router-deep-dive.md
+│   └── history/              # Conference history data (one JSON per event)
 ├── data/                     # Static typed data (supplements content/)
 ├── layouts/
 │   └── default.vue           # App shell — SkipLink, SiteNav, main, footer
@@ -136,6 +145,7 @@ slide-warehouse/
 ├── stores/
 │   └── decks.ts              # Pinia store — search, filter, sort state
 ├── types/                    # Shared TypeScript interfaces
+├── content.config.ts         # Nuxt Content v3 collection schemas (decks, history, speaker, legacy)
 ├── netlify.toml              # Build command + publish dir (dist) + headers
 ├── nuxt.config.ts
 └── tailwind.config.ts        # Semantic color tokens + font config
@@ -150,6 +160,8 @@ slide-warehouse/
 | `/`                      | Hero section + deck grid + search + filters            |
 | `/about`                 | Speaker bio, case study, speaking history              |
 | `/decks/:id`             | Deck viewer + metadata sidebar                         |
+| `/topics`                | Browse decks by topic/tag                              |
+| `/topics/:tag`           | Filtered deck list for a specific tag                  |
 | `/legacy`                | Legacy presentation archive (PowerPoint, PDF, Keynote) |
 | `/reveals/:slug/*.html`  | Raw Reveal.js HTML (iframe source, versioned)          |
 
@@ -212,11 +224,11 @@ If you add analytics or a CMS integration later, document variables here:
 
 ## Design Tokens
 
-| Token   | Value                                      |
-| ------- | ------------------------------------------ |
-| Accent  | Amber `#d97706`                            |
-| Primary | Emerald `#059669`                          |
-| Font    | Plus Jakarta Sans · JetBrains Mono (mono)  |
+| Token   | Value                                                           |
+| ------- | --------------------------------------------------------------- |
+| Accent  | Amber `#d97706`                                                 |
+| Primary | Emerald `#059669`                                               |
+| Font    | Fraunces (display) · Plus Jakarta Sans · JetBrains Mono (mono) |
 
 ---
 
