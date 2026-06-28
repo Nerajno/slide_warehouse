@@ -21,6 +21,7 @@ function handleKeydown(e: KeyboardEvent) {
 
 onMounted(() => {
   window.addEventListener('message', (e) => {
+    if (e.origin !== window.location.origin) return
     if (e.data?.type === 'slidechanged') {
       slideIndex.value = (e.data.indexh ?? 0) + 1
       slideTotal.value = e.data.totalSlides ?? 0
@@ -43,10 +44,10 @@ async function copySlideLink() {
 }
 
 function prevSlide() {
-  iframe.value?.contentWindow?.postMessage({ method: 'prev' }, '*')
+  iframe.value?.contentWindow?.postMessage({ method: 'prev' }, window.location.origin)
 }
 function nextSlide() {
-  iframe.value?.contentWindow?.postMessage({ method: 'next' }, '*')
+  iframe.value?.contentWindow?.postMessage({ method: 'next' }, window.location.origin)
 }
 
 function handleIframeError() {
@@ -88,7 +89,7 @@ function handleIframeError() {
 
       <!-- Iframe -->
       <iframe v-if="!iframeError" ref="iframe" :src="src" :title="`Presentation: ${title}`"
-        sandbox="allow-scripts allow-same-origin" class="w-full h-full border-0" allow="fullscreen"
+        sandbox="allow-scripts" class="w-full h-full border-0" allow="fullscreen"
         @load="iframeLoaded = true" @error="handleIframeError" />
     </div>
 
