@@ -69,7 +69,7 @@ const STATUS_STYLES: Record<string, { dot: string; badge: string }> = {
           totalSlides }}</p>
       </div>
       <div class="text-center">
-        <p class="font-mono text-[0.65rem] uppercase tracking-widest text-gray-500 mb-1">Talks</p>
+        <p class="font-mono text-[0.65rem] uppercase tracking-widest text-gray-500 mb-1">Deliveries</p>
         <p class="font-display text-[1.75rem] font-semibold text-gray-800 dark:text-gray-100 leading-none">{{
           speaker.stats.totalTalks }}</p>
       </div>
