@@ -55,6 +55,15 @@ useHead({
   meta: [{ property: 'og:type', content: 'article' }],
   link: [{ rel: 'canonical', href: () => `${siteUrl}/decks/${route.params.id}` }],
 })
+
+defineOgImage({
+  component: 'DeckCard',
+  props: {
+    title: deck.value?.title,
+    description: deck.value?.description,
+    tags: deck.value?.tags,
+  },
+})
 </script>
 
 <template>

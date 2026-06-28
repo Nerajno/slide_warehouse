@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@pinia/nuxt',
     '@nuxtjs/sitemap',
+    'nuxt-og-image',
   ],
 
   site: {
