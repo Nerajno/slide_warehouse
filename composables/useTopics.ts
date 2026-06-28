@@ -1,6 +1,6 @@
 export function useTopics() {
   const { data: allDecks } = useAsyncData('topics-decks', () =>
-    queryContent('decks').find()
+    queryCollection('decks').all()
   )
 
   const tagStats = computed<Record<string, number>>(() => {

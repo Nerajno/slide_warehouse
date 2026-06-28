@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { DeckFrontmatter } from '~/types'
+import type { Tag } from '~/types'
 import { TAG_COLORS } from '~/types'
 
 const { data: deck } = await useAsyncData('featured-deck', () =>
-  queryContent<DeckFrontmatter>('decks').where({ featured: true }).findOne()
+  queryCollection('decks').where('featured', '=', true).first()
 )
 
 const gradientClass = computed(() => {
   const firstTag = deck.value?.tags?.[0]
-  return firstTag ? TAG_COLORS[firstTag] : 'from-emerald-500 to-teal-600'
+  return firstTag ? (TAG_COLORS[firstTag as Tag] ?? 'from-emerald-500 to-teal-600') : 'from-emerald-500 to-teal-600'
 })
 </script>
 

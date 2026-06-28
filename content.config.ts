@@ -34,6 +34,15 @@ export default defineContentConfig({
     legacy: defineCollection({
       type: 'page',
       source: 'legacy/*.md',
+      schema: z.object({
+        tags: z.array(z.string()).default([]),
+        format: z.string().optional(),
+        fileUrl: z.string().optional(),
+        thumbnailUrl: z.string().optional(),
+        conference: z.string().optional(),
+        date: z.string().optional(),
+        downloadable: z.boolean().optional(),
+      }),
     }),
 
     history: defineCollection({
@@ -69,7 +78,22 @@ export default defineContentConfig({
           conferencesCount: z.number(),
           since: z.number(),
         }).optional(),
-        recentTalk: z.record(z.unknown()).optional(),
+        recentTalk: z.object({
+          title: z.string(),
+          conference: z.string(),
+          hashtag: z.string().optional(),
+          location: z.string().optional(),
+          date: z.string(),
+          durationMinutes: z.number().optional(),
+          deckSlug: z.string().optional(),
+          recordingUrl: z.string().nullable().optional(),
+        }).optional(),
+        pipeline: z.array(z.object({
+          name: z.string(),
+          location: z.string().optional(),
+          date: z.string(),
+          status: z.string(),
+        })).optional(),
       }),
     }),
   },

@@ -2,7 +2,7 @@
 import type { SpeakerData, DeckFrontmatter } from '~/types'
 
 const { data: speaker } = await useAsyncData('speaker', () =>
-  queryContent<SpeakerData>('speaker').findOne()
+  queryCollection('speaker').first()
 )
 
 const { data: allDecks } = await useAsyncData('speaker-all-decks', () =>
@@ -71,12 +71,12 @@ const STATUS_STYLES: Record<string, { dot: string; badge: string }> = {
       <div class="text-center">
         <p class="font-mono text-[0.65rem] uppercase tracking-widest text-gray-500 mb-1">Talks</p>
         <p class="font-display text-[1.75rem] font-semibold text-gray-800 dark:text-gray-100 leading-none">{{
-          speaker.stats.totalTalks }}</p>
+          speaker.stats?.totalTalks }}</p>
       </div>
       <div class="text-center">
         <p class="font-mono text-[0.65rem] uppercase tracking-widest text-gray-500 mb-1">Conferences</p>
         <p class="font-display text-[1.75rem] font-semibold text-amber-600 dark:text-amber-400 leading-none">{{
-          speaker.stats.conferencesCount }}</p>
+          speaker.stats?.conferencesCount }}</p>
       </div>
     </div>
 
@@ -88,28 +88,28 @@ const STATUS_STYLES: Record<string, { dot: string; badge: string }> = {
         <div class="h-32 bg-gray-800 relative"
           style="background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.04) 39px, rgba(255,255,255,0.04) 40px);">
           <span class="absolute top-3 left-3 font-mono text-xs text-gray-300 bg-gray-900/70 px-2 py-1 rounded">
-            {{ speaker.recentTalk.conference }}
+            {{ speaker.recentTalk?.conference }}
           </span>
           <span class="absolute top-3 right-3 text-xs text-gray-400 bg-gray-900/70 px-2 py-1 rounded">
-            {{ formatDate(speaker.recentTalk.date) }}
+            {{ formatDate(speaker.recentTalk?.date ?? '') }}
           </span>
         </div>
 
         <!-- Body -->
         <div class="p-4 flex flex-col flex-1">
           <p class="font-mono text-[0.65rem] uppercase tracking-widest text-emerald-400 mb-1">Most recent talk</p>
-          <h2 class="font-display text-lg font-semibold text-white mb-1 leading-snug">{{ speaker.recentTalk.title }}
+          <h2 class="font-display text-lg font-semibold text-white mb-1 leading-snug">{{ speaker.recentTalk?.title }}
           </h2>
-          <p class="text-sm text-gray-400 mb-3">{{ speaker.recentTalk.conference }} · {{ speaker.recentTalk.hashtag }}
+          <p class="text-sm text-gray-400 mb-3">{{ speaker.recentTalk?.conference }} · {{ speaker.recentTalk?.hashtag }}
           </p>
 
           <!-- Chips -->
           <div class="flex flex-wrap gap-2 mb-4">
             <span class="text-xs bg-violet-900/40 text-violet-300 border border-violet-800 px-2 py-0.5 rounded-tag">
-              {{ speaker.recentTalk.location }}
+              {{ speaker.recentTalk?.location }}
             </span>
             <span class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-tag">
-              {{ speaker.recentTalk.durationMinutes }}min
+              {{ speaker.recentTalk?.durationMinutes }}min
             </span>
             <span v-if="recentTalkSlideCount"
               class="text-xs bg-gray-800 text-gray-400 border border-gray-700 px-2 py-0.5 rounded-tag">
@@ -119,13 +119,13 @@ const STATUS_STYLES: Record<string, { dot: string; badge: string }> = {
 
           <!-- Footer -->
           <div class="mt-auto flex items-center justify-between text-xs border-t border-gray-800 pt-3">
-            <span class="font-mono text-gray-500 truncate mr-2">/{{ speaker.recentTalk.deckSlug }}</span>
+            <span class="font-mono text-gray-500 truncate mr-2">/{{ speaker.recentTalk?.deckSlug }}</span>
             <div class="flex items-center gap-3 shrink-0">
-              <a v-if="speaker.recentTalk.recordingUrl" :href="speaker.recentTalk.recordingUrl" target="_blank"
+              <a v-if="speaker.recentTalk?.recordingUrl" :href="speaker.recentTalk?.recordingUrl" target="_blank"
                 rel="noopener"
                 class="text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer">Recording →</a>
               <span v-else class="text-gray-600 cursor-not-allowed">Recording →</span>
-              <NuxtLink :to="`/decks/${speaker.recentTalk.deckSlug}`"
+              <NuxtLink :to="`/decks/${speaker.recentTalk?.deckSlug}`"
                 class="text-emerald-400 hover:text-emerald-300 transition-colors">
                 Open deck →
               </NuxtLink>

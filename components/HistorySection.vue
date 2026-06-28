@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import type { ConferenceEvent } from '~/types'
-
 const { data: events } = await useAsyncData('history-events',
-  () => queryContent<ConferenceEvent>('history').find()
+  () => queryCollection('history').all()
 )
 
-const historyList = computed<ConferenceEvent[]>(() => events.value ?? [])
+const historyList = computed(() => events.value ?? [])
 
 const STATUS_DOT: Record<string, string> = {
   delivered:  'bg-[var(--sw-primary)]',
@@ -20,7 +18,7 @@ const STATUS_BADGE: Record<string, string> = {
 }
 
 const byYear = computed(() => {
-  const map = new Map<number, ConferenceEvent[]>()
+  const map = new Map<number, typeof historyList.value>()
   for (const event of historyList.value) {
     if (!map.has(event.year)) map.set(event.year, [])
     map.get(event.year)!.push(event)

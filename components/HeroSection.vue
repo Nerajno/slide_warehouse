@@ -2,13 +2,13 @@
 import type { DeckFrontmatter, SpeakerData } from '~/types'
 
 const { data: decksData } = await useAsyncData('hero-decks',
-  () => queryContent<DeckFrontmatter>('decks').only(['slideCount']).find()
+  () => queryCollection('decks').select('id', 'slideCount').all()
 )
 const { data: speakerData } = await useAsyncData('hero-speaker',
-  () => queryContent<SpeakerData>('speaker').findOne()
+  () => queryCollection('speaker').first()
 )
 const { data: recentDeck } = await useAsyncData('hero-recent',
-  () => queryContent<DeckFrontmatter>('decks').where({ mostRecent: true }).findOne()
+  () => queryCollection('decks').where('mostRecent', '=', true).first()
 )
 
 const deckCount = computed(() => decksData.value?.length ?? 0)

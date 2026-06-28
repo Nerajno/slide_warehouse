@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { data: legacyDecks } = await useAsyncData(
   'legacy-decks',
-  () => queryContent('legacy').find()
+  () => queryCollection('legacy').all()
 )
 
 const formatIcon = (format: string) => {
@@ -57,12 +57,12 @@ const formatColor = (format: string) => {
             <img v-if="deck.thumbnailUrl" :src="deck.thumbnailUrl" :alt="`${deck.title} thumbnail`"
               class="w-full h-full object-cover" loading="lazy" />
             <div v-else class="w-full h-full flex items-center justify-center">
-              <span class="text-6xl mb-4">{{ formatIcon(deck.format) }}</span>
+              <span class="text-6xl mb-4">{{ formatIcon(deck.format ?? '') }}</span>
             </div>
 
             <!-- Format badge -->
             <div class="absolute top-3 right-3">
-              <span :class="`px-2 py-1 text-xs font-medium rounded-full ${formatColor(deck.format)}`">
+              <span :class="`px-2 py-1 text-xs font-medium rounded-full ${formatColor(deck.format ?? '')}`">
                 {{ deck.format }}
               </span>
             </div>
@@ -83,11 +83,9 @@ const formatColor = (format: string) => {
             <div class="space-y-2 text-sm">
               <div class="flex items-center justify-between">
                 <span class="text-gray-500 dark:text-gray-400">
-                  {{ deck.year }} • {{ deck.event }}
+                  {{ deck.date ? new Date(deck.date).getFullYear() : '' }} • {{ deck.conference }}
                 </span>
-                <span class="text-gray-500 dark:text-gray-400">
-                  {{ deck.fileSize }}
-                </span>
+                <span class="text-gray-500 dark:text-gray-400"></span>
               </div>
             </div>
 
@@ -100,13 +98,13 @@ const formatColor = (format: string) => {
             </div>
 
             <!-- Download button -->
-            <a :href="deck.downloadUrl" download
+            <a :href="deck.fileUrl" download
               class="inline-flex items-center justify-center w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-md transition-colors duration-200">
               <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
-              Download {{ deck.format }}
+              Download {{ deck.format ?? 'file' }}
             </a>
           </div>
         </div>
