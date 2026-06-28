@@ -125,7 +125,7 @@ watch(stats, (val) => {
               <NuxtLink
                 :to="recentDeckUrl"
                 class="sw-deck-card__cta"
-              >Open deck →</NuxtLink>
+              >Open deck <span aria-hidden="true">→</span></NuxtLink>
             </div>
           </div>
         </div>

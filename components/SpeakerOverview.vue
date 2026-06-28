@@ -127,7 +127,7 @@ const STATUS_STYLES: Record<string, { dot: string; badge: string }> = {
               <span v-else class="text-gray-600 cursor-not-allowed">Recording →</span>
               <NuxtLink :to="`/decks/${speaker.recentTalk.deckSlug}`"
                 class="text-emerald-400 hover:text-emerald-300 transition-colors">
-                Open deck →
+                Open deck <span aria-hidden="true">→</span>
               </NuxtLink>
             </div>
           </div>

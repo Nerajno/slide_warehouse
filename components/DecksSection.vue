@@ -187,7 +187,7 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
                   <svg v-else aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </button>
 
-                <NuxtLink :to="`/decks/${deck.id}`" class="sw-deck-card__cta">Open deck →</NuxtLink>
+                <NuxtLink :to="`/decks/${deck.id}`" class="sw-deck-card__cta">Open deck <span aria-hidden="true">→</span></NuxtLink>
               </div>
             </div>
           </article>
