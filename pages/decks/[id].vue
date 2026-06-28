@@ -144,7 +144,7 @@ useHead({
 
     <!-- Full-height iframe -->
     <div class="flex-1 min-h-0">
-      <iframe :src="revealSrc" :title="`${deck.title} presentation`" sandbox="allow-scripts allow-same-origin"
+      <iframe :src="revealSrc" :title="`${deck.title} presentation`" sandbox="allow-scripts"
         class="w-full h-full border-0" allow="fullscreen" />
     </div>
 
