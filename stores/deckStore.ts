@@ -4,7 +4,7 @@ import type { Tag, SearchParams, DeckFrontmatter } from '~/types'
 export const useDeckStore = defineStore('decks', () => {
   const { data: allDecks, pending } = useAsyncData(
     'decks',
-    () => $fetch<DeckFrontmatter[]>('/api/decks'),
+    () => queryCollection('decks').all() as unknown as Promise<DeckFrontmatter[]>,
   )
 
   const searchQuery = ref('')

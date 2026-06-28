@@ -6,7 +6,7 @@ const { data: speaker } = await useAsyncData('speaker', () =>
 )
 
 const { data: allDecks } = await useAsyncData('speaker-all-decks', () =>
-  $fetch<DeckFrontmatter[]>('/api/decks')
+  queryCollection('decks').all() as unknown as Promise<DeckFrontmatter[]>
 )
 
 const totalDecks = computed(() => allDecks.value?.length ?? 0)

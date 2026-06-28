@@ -6,9 +6,7 @@ const { addRecent } = useRecentDecks()
 
 const { data: deck } = await useAsyncData(
   `deck-${route.params.id}`,
-  () => $fetch<DeckFrontmatter[]>('/api/decks').then(
-    all => all.find(d => d.id === route.params.id) ?? null,
-  ),
+  () => queryCollection('decks').where('id', '=', route.params.id as string).first() as unknown as Promise<DeckFrontmatter | null>,
 )
 
 if (!deck.value) throw createError({ statusCode: 404, message: 'Deck not found' })
@@ -26,7 +24,7 @@ const lastEvent = computed(() => deck.value?.events?.at(-1) ?? '')
 // Related talks based on shared tags
 const { data: allDecks } = await useAsyncData(
   `related-decks-${route.params.id}`,
-  () => $fetch<DeckFrontmatter[]>('/api/decks')
+  () => queryCollection('decks').all() as unknown as Promise<DeckFrontmatter[]>,
 )
 
 const relatedTalks = computed(() => {

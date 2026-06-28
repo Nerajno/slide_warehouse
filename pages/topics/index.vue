@@ -3,7 +3,7 @@ import type { DeckFrontmatter } from '~/types'
 import { TAG_COLORS } from '~/types'
 
 const { data: decks } = await useAsyncData('topics-index', () =>
-  $fetch<DeckFrontmatter[]>('/api/decks'),
+  queryCollection('decks').all() as unknown as Promise<DeckFrontmatter[]>,
 )
 
 function displayTag(tag: string) {
