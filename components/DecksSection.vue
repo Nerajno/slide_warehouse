@@ -85,10 +85,9 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
       <!-- Controls -->
       <div class="flex flex-col sm:flex-row gap-4 mb-3">
         <!-- Tag chips -->
-        <div class="flex flex-wrap gap-2 flex-1" role="radiogroup" aria-label="Filter by tag">
+        <div class="flex flex-wrap gap-2 flex-1" role="group" aria-label="Filter by tag">
           <button
-            role="radio"
-            :aria-checked="store.activeTags.length === 0"
+            :aria-pressed="store.activeTags.length === 0"
             class="sw-filter-pill"
             :class="{ 'sw-filter-pill--active': store.activeTags.length === 0 }"
             @click="setTag(null)"
@@ -96,8 +95,7 @@ const totalCount = computed(() => store.allDecks?.length ?? 0)
           <button
             v-for="tag in TAGS"
             :key="tag"
-            role="radio"
-            :aria-checked="store.activeTags.includes(tag)"
+            :aria-pressed="store.activeTags.includes(tag)"
             class="sw-filter-pill"
             :class="{ 'sw-filter-pill--active': store.activeTags.includes(tag) }"
             @click="setTag(tag)"
