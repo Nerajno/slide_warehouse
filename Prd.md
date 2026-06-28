@@ -6,7 +6,7 @@
 **Last Updated:** April 14, 2026
 **Status:** Active — see Source-of-Truth note below
 
-<!-- 🔧 UPDATED 2026-06-23 (Council audit) — SOURCE OF TRUTH: this file stacks v1.0 spec (§1–15), April review (§16–18), the v1.1 audit, and the June audit (§19). Authoritative current state = §19 + the annotations below; where older sections conflict, §19/annotations win. Canonical data layer = data/decks.json + server/api/decks.get.ts, NOT content/decks/*.md. -->
+<!-- 🔧 UPDATED 2026-06-28 (June session) — SOURCE OF TRUTH: this file stacks v1.0 spec (§1–15), April review (§16–18), the v1.1 audit, and the June audit (§19). Authoritative current state = §19 + the annotations below; where older sections conflict, §19/annotations win. Canonical data layer = content/decks/*.md + queryCollection() (Nuxt Content v3). data/decks.json and server/api/decks.get.ts were DELETED in PR #40 (2026-06-28). -->
 **Deploy Target:** Netlify
 **Stack:** Nuxt 3 · Vue 3 · Reveal.js · Tailwind CSS · Pinia
 
@@ -1600,11 +1600,11 @@ Every checklist item in Section 7 (Implementation Checklist) verified present in
 
 ### Architecture Deviations from PRD
 
-**Data Layer:** PRD (Section 7.4) specifies `queryContent()` + `content/decks/*.md`. Actual implementation uses:
-- `stores/deckStore.ts` → `$fetch('/api/decks')` → `server/api/decks.get.ts` → `data/decks.json`
-- `content/decks/*.md` files still exist (5 decks) but are not the active data source
-- **Impact:** Adding a new deck requires editing `data/decks.json`, not creating a `.md` file. PRD Section 12 recommendation ("Adding a new deck is just creating a new .md file") is no longer accurate.
-- **Decision needed:** Either migrate `data/decks.json` → Nuxt Content queries, or update PRD to reflect JSON + server API as the canonical data layer.
+**Data Layer:** ✅ RESOLVED (PR #40, 2026-06-28). PRD (Section 7.4) specifies `queryCollection()` + `content/decks/*.md`. Implementation now matches spec:
+- `stores/deckStore.ts` → `queryCollection('decks').all()`
+- `pages/about.vue`, `pages/topics/index.vue`, `pages/decks/[id].vue` → same pattern
+- `data/decks.json` and `server/api/decks.get.ts` deleted. `content/decks/*.md` is canonical.
+- Adding a new deck = creating a new `.md` file. PRD Section 12 is accurate again.
 
 **GAP-15 Resolution:** PRD says "Replace emoji icons with SVG." Actual resolution: theme toggle button was **removed entirely** from `SiteNav.vue` in the redesign. Dark mode runs system-preference only via `plugins/theme.client.ts`. No emoji icons remain. GAP is resolved but differently than specified.
 
@@ -1627,9 +1627,43 @@ Added during redesign sprint (not in original component spec):
 
 These remain unbuilt:
 
-- [ ] **US-2.6** Keyboard shortcut hints modal
-- [ ] **US-2.7** Search autocomplete / type-ahead
-- [ ] **US-3.3** "Recently Updated" quick filter
-- [ ] **GAP-9 Phase 2** Per-deck dynamic OG images via `@nuxtjs/og-image`
+- [ ] **US-2.6** (#12) Keyboard shortcut hints modal
+- [ ] **US-2.7** (#13) Search autocomplete / type-ahead
+- [ ] **US-3.3** (#14) "Recently Updated" quick filter
+- [ ] **GAP-9 Phase 2** (#15) Per-deck dynamic OG images via `@nuxtjs/og-image`
+
+Already verified implemented (tests added, PRs merged):
+
+- [x] **#28** Version selector — `components/VersionSelector.vue`
+- [x] **#29** Slide counter — `components/DeckViewer.vue` progressbar role
+- [x] **#30** Deck sidebar metadata — `components/DeckViewer.vue` sidebar sections
+- [x] **#31** Related talks section — `pages/decks/[id].vue` related talks grid
+
+---
+
+## 20. June 2026 Session — P0/P1/P2 Issues Resolved
+
+**Date:** 2026-06-28  
+**Result:** All P0, P1, and P2 issues resolved. 14 PRs merged to main.
+
+| PR | Issue | Description |
+|---|---|---|
+| #32 | #20 | OG meta URL + canonical links |
+| #33 | #22 | CTA button text aria-hidden arrow spans |
+| #34 | #6 | iframe `sandbox` security fix (removed `allow-same-origin`) |
+| #35 | #23 | Social links verified (SpeakerBio.vue already compliant) |
+| #36 | #25 | Stats label: "Talks" → "Deliveries" |
+| #37 | #24/#26 | Filter pill a11y: `role="radiogroup"` → `role="group"`, `aria-checked` → `aria-pressed` |
+| #38 | #21/#9 | Nuxt Content v3 migration: `history.json` → `content/history/`, `queryCollection` throughout |
+| #39 | #16 | Nuxt Content v2→v3: `content.config.ts` schema, query API update |
+| #40 | #5 | Data layer: deleted `data/decks.json` + `server/api/decks.get.ts`; `content/decks/*.md` canonical |
+| #41 | #27 | Mobile nav a11y: `aria-controls`, focus management (`ref`+`watch`+`nextTick`), Escape key |
+| #42 | #10 | Placeholder URL cleanup: removed empty `conferenceUrl`/`videoUrl` fields from deck MD files |
+| #43 | #4 | Test suite: deck viewer UX regression tests (version switch, slide counter) |
+| #44 | #28–31 | P3 verification: test suite confirming version selector, slide counter, sidebar, related talks |
+| #45 | #7 | WCAG 2.2 audit: `aria-hidden` on decorative SVGs, `sandbox` fix on deck detail page |
+| #46 | #11 | Perf budget: documented ~21s local build baseline in PRD |
+
+**Remaining open:** #8 (analytics), #12/#13/#14 (P3 UX features), #15 (dynamic OG images), #16–19 (backlog/docs).
 
 ---
