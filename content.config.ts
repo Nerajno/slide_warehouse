@@ -6,6 +6,7 @@ export default defineContentConfig({
       type: 'page',
       source: 'decks/*.md',
       schema: z.object({
+        id: z.string().optional(),
         tags: z.array(z.string()).default([]),
         slideCount: z.number().optional(),
         durationMinutes: z.number().optional(),
@@ -15,6 +16,7 @@ export default defineContentConfig({
           label: z.string(),
           date: z.string(),
           revealFile: z.string(),
+          changes: z.string().optional(),
         })).optional(),
         tier: z.string().optional(),
         conference: z.string().optional(),
@@ -28,6 +30,12 @@ export default defineContentConfig({
         revealBasePath: z.string().optional(),
         createdAt: z.string().optional(),
         updatedAt: z.string().optional(),
+        events: z.array(z.string()).optional(),
+        resources: z.array(z.object({
+          label: z.string(),
+          url: z.string(),
+        })).optional(),
+        thumbnail: z.string().optional(),
       }),
     }),
 
