@@ -1,10 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'https://slides.developingdvlpr.com'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
 
   runtimeConfig: {
     public: {
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://stellular-duckanoo-18bf92.netlify.app',
+      siteUrl,
     },
   },
 
@@ -63,9 +65,9 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Browse, search, and share Reveal.js presentations by @Nerajno' },
         { property: 'og:site_name', content: 'Slide Warehouse' },
-        { property: 'og:image', content: `${process.env.NUXT_PUBLIC_SITE_URL || 'https://stellular-duckanoo-18bf92.netlify.app'}/og-default.png` },
+        { property: 'og:image', content: `${siteUrl}/og-default.png` },
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:image', content: 'https://slides.developingdvlpr.com/og-default.png' },
+        { name: 'twitter:image', content: `${siteUrl}/og-default.png` },
       ],
       script: [
         {
