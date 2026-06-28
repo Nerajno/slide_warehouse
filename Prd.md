@@ -1541,12 +1541,12 @@ router: {
 | Metric | Target | Current Status |
 |---|---|---|
 | Lighthouse Accessibility | 100 | ~98 (SVG icons, aria-live, progressbar role fixed Apr 28) |
-| Lighthouse Performance | ≥ 90 | TBD — run `npm run build` to measure |
+| Lighthouse Performance | ≥ 90 | TBD — requires deployed URL + Lighthouse CI |
 | WCAG 2.2 AA Conformance | Full | ~97% (all identified gaps resolved) |
 | Slide counter works | Yes | ✅ Fixed Apr 28 (postMessage namespace) |
 | Back navigation preserves scroll | Yes | ✅ Fixed Apr 28 (keepalive moved to index.vue) |
 | Dark mode FOUC-free | Yes | ✅ Fixed Apr 27 |
-| Build time (Netlify) | < 90s | TBD |
+| Build time (Netlify) | < 90s | ~21s local (2026-06-28, `npm run build`), Netlify ~30–45s estimated |
 | Mobile usability | 0 errors | ✅ Fixed Apr 28 (FilterTags horizontal scroll) |
 | 404 error handling | Graceful | ✅ Fixed Apr 28 (error.vue created) |
 | OG social sharing | og:image set | ✅ Wired Apr 28 (create /public/og-default.png manually) |
