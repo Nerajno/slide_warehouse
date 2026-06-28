@@ -16,10 +16,6 @@ versions:
     revealFile: "v1.html"
 events: ["TechBridge Spring 2025", "Orlando Devs 2025"]
 tier: "30min"
-conference: ""
-location: ""
-conferenceUrl: ""
-videoUrl: ""
 status: "delivered"
 downloadable: true
 ---
