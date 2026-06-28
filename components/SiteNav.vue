@@ -1,9 +1,27 @@
 <script setup lang="ts">
 const isOpen = ref(false)
+const toggleBtn = ref<HTMLButtonElement | null>(null)
+const firstLink = ref<HTMLAnchorElement | null>(null)
+
+watch(isOpen, (open) => {
+  nextTick(() => {
+    if (open) firstLink.value?.focus()
+    else toggleBtn.value?.focus()
+  })
+})
+
+function handleKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape' && isOpen.value) {
+    isOpen.value = false
+  }
+}
 </script>
 
 <template>
-  <header class="fixed inset-x-0 top-0 z-[150] h-14 border-b border-[var(--sw-border)] bg-[var(--sw-nav-bg)]/80 backdrop-blur-md">
+  <header
+    class="fixed inset-x-0 top-0 z-[150] h-14 border-b border-[var(--sw-border)] bg-[var(--sw-nav-bg)]/80 backdrop-blur-md"
+    @keydown="handleKeydown"
+  >
     <div class="mx-auto flex h-full max-w-6xl items-center justify-between px-4">
       <!-- Logo -->
       <NuxtLink
@@ -33,9 +51,11 @@ const isOpen = ref(false)
 
       <!-- Mobile hamburger -->
       <button
+        ref="toggleBtn"
         class="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded text-[var(--sw-text-2)] hover:bg-[var(--sw-surface-2)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] md:hidden"
         aria-label="Toggle navigation"
         :aria-expanded="isOpen"
+        aria-controls="mobile-nav"
         @click="isOpen = !isOpen"
       >
         <svg v-if="!isOpen" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -49,12 +69,13 @@ const isOpen = ref(false)
 
     <!-- Mobile menu -->
     <div
+      id="mobile-nav"
       class="overflow-hidden border-t border-[var(--sw-border)] bg-[var(--sw-nav-bg)]/95 transition-[max-height] duration-[300ms] md:hidden"
       :class="isOpen ? 'max-h-96' : 'max-h-0'"
       :aria-hidden="!isOpen"
     >
       <nav aria-label="Mobile navigation" class="flex flex-col px-4 py-2">
-        <a href="#decks" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Decks</a>
+        <a ref="firstLink" href="#decks" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Decks</a>
         <a href="#history" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">History</a>
         <a href="#about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">About</a>
         <a href="#about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm font-medium text-[var(--sw-text-1)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Book a Talk</a>
