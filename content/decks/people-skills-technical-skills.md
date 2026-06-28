@@ -23,10 +23,6 @@ featured: true
 mostRecent: true
 events: ["Connect.Tech 2025", "Orlando Code Camp 2026"]
 tier: "45min"
-conference: ""
-location: ""
-conferenceUrl: ""
-videoUrl: ""
 status: "delivered"
 downloadable: true
 ---

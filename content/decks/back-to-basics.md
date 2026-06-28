@@ -21,8 +21,6 @@ versions:
 tier: "30min"
 conference: "Boise Code Camp"
 location: "Boise, ID"
-conferenceUrl: ""
-videoUrl: ""
 status: "delivered"
 downloadable: true
 ---
