@@ -2,7 +2,7 @@
 import type { SpeakerData, DeckFrontmatter } from '~/types'
 
 const { data: speaker } = await useAsyncData('about-speaker', () =>
-  queryContent<SpeakerData>('speaker').findOne()
+  queryCollection('speaker').first()
 )
 
 const { data: allDecks } = await useAsyncData('about-decks', () =>
@@ -60,13 +60,13 @@ useHead({
         <div class="text-center">
           <p class="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--sw-text-3)] mb-1">Deliveries</p>
           <p class="font-display text-[2rem] font-semibold text-[var(--sw-text-1)] leading-none">{{
-            speaker.stats.totalTalks }}</p>
+            speaker.stats?.totalTalks }}</p>
         </div>
         <div class="text-center">
           <p class="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--sw-text-3)] mb-1">
             Conferences</p>
           <p class="font-display text-[2rem] font-semibold text-[var(--sw-text-1)] leading-none">{{
-            speaker.stats.conferencesCount }}</p>
+            speaker.stats?.conferencesCount }}</p>
         </div>
       </div>
     </section>

@@ -2,7 +2,7 @@
 import type { SpeakerData } from '~/types'
 
 const { data: speaker } = await useAsyncData('speaker-bio', () =>
-  queryContent<SpeakerData>('speaker').findOne()
+  queryCollection('speaker').first()
 )
 
 const initials = computed(() =>
