@@ -2,29 +2,129 @@
 
 **Product:** DevelopingDvlpr Slide Repository
 **Owner:** Nerando (TechTile LLC / @Nerajno)
-**Version:** 1.0
-**Last Updated:** April 14, 2026
-**Status:** Active — see Source-of-Truth note below
-
-<!-- 🔧 UPDATED 2026-06-23 (Council audit) — SOURCE OF TRUTH: this file stacks v1.0 spec (§1–15), April review (§16–18), the v1.1 audit, and the June audit (§19). Authoritative current state = §19 + the annotations below; where older sections conflict, §19/annotations win. Canonical data layer = data/decks.json + server/api/decks.get.ts, NOT content/decks/*.md. -->
+**Version:** 2.0
+**Last Updated:** 2026-06-28
+**Status:** Active
 **Deploy Target:** Netlify
 **Stack:** Nuxt 3 · Vue 3 · Reveal.js · Tailwind CSS · Pinia
 
+Restructured 2026-06-28. Current state = §1. Historical spec = Appendix A. v1.1 audit = Appendix B.
+
 ---
 
-## 1. Problem Statement
+## §1 Current Implementation State (Living)
+
+*Verified: June 23, 2026 against `main` branch.*
+
+### All P0/P1/P2 Items Confirmed Implemented
+
+Every checklist item in Section 7 (Implementation Checklist) verified present in `main`:
+
+| Item | Verified In |
+|---|---|
+| BUG-1 postMessage fix | `components/DeckViewer.vue:24` — `e.data?.type === 'slidechanged'` |
+| BUG-2 keepalive on index | `pages/index.vue:2` — `definePageMeta({ keepalive: true })` |
+| BUG-3 keyboard guard | `components/DeckViewer.vue:15-16` — INPUT/TEXTAREA/SELECT check |
+| BUG-4 SSR guard | `composables/useRecentDecks.ts:8,13` — `import.meta.client` |
+| BUG-5 FOUC script | `nuxt.config.ts:79` — inline head script |
+| GAP-1 routeRules | `nuxt.config.ts:11-13` — `/` and `/about` prerender |
+| GAP-2 sitemap | `package.json` — `@nuxtjs/sitemap@8.0.14` installed |
+| GAP-3 robots.txt | `public/robots.txt` — exists with Allow + Sitemap directive |
+| GAP-4 aria-live | `components/DeckGrid.vue:8` — `aria-live="polite"` on wrapper |
+| GAP-5 FilterTags mobile | `components/FilterTags.vue:41` — `flex-nowrap overflow-x-auto sm:flex-wrap` |
+| GAP-6 zero-count tags hidden | `components/FilterTags.vue:52` — `filter(t => tagCount(t) > 0)` |
+| GAP-7 iframe skeleton | `components/DeckViewer.vue:84,92` — `animate-pulse` + `@load` handler |
+| GAP-8 error.vue | `error.vue` exists at project root |
+| GAP-9 og:image | `public/og-default.png` exists; wired in `pages/index.vue` |
+| GAP-10 (Latest) label | `components/VersionSelector.vue:30` — appends `(Latest)` |
+| GAP-11 clipboard fallback | `components/ShareButton.vue:13-16` — try/catch + `prompt()` fallback |
+| GAP-13 aria-label removed | `components/DeckCard.vue` — NuxtLink has no `aria-label`; thumbnail has `role="img"` |
+| GAP-16 card hover | `components/DeckCard.vue:17` — `hover:shadow-card-hover` via sw-* token |
+| GAP-17 cross-hue gradients | `types/index.ts:104-110` — TAG_COLORS uses contrasting hue pairs |
+| GAP-18 empty state SVG | `components/DeckGrid.vue:25-32` — inline SVG illustration |
+| GAP-19 progressbar role | `components/DeckViewer.vue:96` — `role="progressbar"` with aria-valuenow/max |
+
+### Architecture Deviations from PRD
+
+**Data Layer:** ✅ RESOLVED (PR #40, 2026-06-28). PRD (§8.4) specifies `queryCollection()` + `content/decks/*.md`. Implementation now matches spec:
+- `stores/deckStore.ts` → `queryCollection('decks').all()`
+- `pages/about.vue`, `pages/topics/index.vue`, `pages/decks/[id].vue` → same pattern
+- `data/decks.json` and `server/api/decks.get.ts` deleted. `content/decks/*.md` is canonical.
+- Adding a new deck = creating a new `.md` file. §13 recommendation is accurate again.
+
+**GAP-15 Resolution:** PRD says "Replace emoji icons with SVG." Actual resolution: theme toggle button was **removed entirely** from `SiteNav.vue` in the redesign. Dark mode runs system-preference only via `plugins/theme.client.ts`. No emoji icons remain. GAP is resolved but differently than specified.
+
+### New Components Beyond PRD Scope
+
+Added during redesign sprint (not in original component spec):
+
+| Component | Purpose |
+|---|---|
+| `components/HeroSection.vue` | Landing hero above deck grid |
+| `components/DecksSection.vue` | Deck grid + filter/search wrapper (replaces inline page logic) |
+| `components/HistorySection.vue` | Speaking history from `content/history.json` |
+| `components/SiteNav.vue` | Fixed nav header (replaces layout-level nav) |
+| `components/SiteFooter.vue` | Site footer with social links |
+| `components/LegacyDeckGrid.vue` | Grid for legacy presentations (PPTX/PDF/Keynote) |
+| `pages/legacy.vue` | Legacy presentation browser |
+| `pages/topics/index.vue` | Topics listing page |
+
+### P3 Items Still Open
+
+These remain unbuilt:
+
+- [ ] **US-2.6** (#12) Keyboard shortcut hints modal
+- [ ] **US-2.7** (#13) Search autocomplete / type-ahead
+- [ ] **US-3.3** (#14) "Recently Updated" quick filter
+
+Already verified implemented (tests added, PRs merged):
+
+- [x] **#28** Version selector — `components/VersionSelector.vue`
+- [x] **#29** Slide counter — `components/DeckViewer.vue` progressbar role
+- [x] **#30** Deck sidebar metadata — `components/DeckViewer.vue` sidebar sections
+- [x] **#31** Related talks section — `pages/decks/[id].vue` related talks grid
+
+### June 2026 Session — All P0/P1/P2 Issues Resolved
+
+**Date:** 2026-06-28 | **PRs merged:** 14
+
+| PR | Issue | Description |
+|---|---|---|
+| #32 | #20 | OG meta URL + canonical links |
+| #33 | #22 | CTA button text aria-hidden arrow spans |
+| #34 | #6 | iframe `sandbox` security fix (removed `allow-same-origin`) |
+| #35 | #23 | Social links verified (SpeakerBio.vue already compliant) |
+| #36 | #25 | Stats label: "Talks" → "Deliveries" |
+| #37 | #24/#26 | Filter pill a11y: `role="radiogroup"` → `role="group"`, `aria-pressed` |
+| #38 | #21/#9 | Nuxt Content v3: `history.json` → `content/history/`, `queryCollection` |
+| #39 | #16 | Nuxt Content v2→v3: `content.config.ts` schema, query API |
+| #40 | #5 | Data layer: deleted `data/decks.json` + API; `content/decks/*.md` canonical |
+| #41 | #27 | Mobile nav a11y: `aria-controls`, focus management, Escape key |
+| #42 | #10 | Placeholder URL cleanup: removed empty fields from deck MD files |
+| #43 | #4 | Test suite: deck viewer UX regression tests |
+| #44 | #28–31 | P3 verification: test suite confirming all four features implemented |
+| #45 | #7 | WCAG 2.2 audit: `aria-hidden` SVGs, `sandbox` fix on deck detail page |
+| #46 | #11 | Perf budget: ~21s local build documented |
+| #48 | #15 | Per-deck dynamic OG images via `nuxt-og-image` v5 |
+| #49 | #16 | PDF export: GitHub Actions + Decktape workflow |
+
+**Remaining open:** #8 (analytics/P2), #12/#13/#14 (P3 UX), #17/#18 (backlog).
+
+---
+
+## §2 Problem Statement
 
 Conference speakers and technical content creators accumulate dozens of Reveal.js presentations across topics, durations, and events. Without a centralized, searchable repository, finding, previewing, and sharing the right deck for an upcoming CFP, meetup, or workshop requires digging through file systems and GitHub repos. This friction slows preparation and limits content reuse.
 
 ---
 
-## 2. Product Vision
+## §3 Product Vision
 
 A lightweight, self-hosted slide repository deployed on Netlify that lets Nerando (and eventually other speakers) browse, search, filter, preview, and share Reveal.js presentations from a single responsive web interface. The repository doubles as a portfolio piece — demonstrating Nuxt 3 proficiency, WCAG 2.2 compliance, and the "Progress over Perfection" philosophy.
 
 ---
 
-## 3. Target Users
+## §4 Target Users
 
 ### Primary Persona: "Presenter Pat" (Self — Speaker & Content Creator)
 
@@ -40,7 +140,7 @@ A lightweight, self-hosted slide repository deployed on Netlify that lets Nerand
 
 ---
 
-## 4. Design System
+## §5 Design System
 
 | Token | Value |
 |---|---|
@@ -55,7 +155,7 @@ A lightweight, self-hosted slide repository deployed on Netlify that lets Nerand
 
 ---
 
-## 5. Information Architecture
+## §6 Information Architecture
 
 ```
 /                                    → Home (Deck Grid + Search + Filters)
@@ -88,7 +188,7 @@ Deck Viewer (/decks/:id)
 
 ---
 
-## 6. User Stories & Acceptance Criteria
+## §7 User Stories & Acceptance Criteria
 
 ### Epic 1: Deck Discovery
 
@@ -142,7 +242,7 @@ Deck Viewer (/decks/:id)
 **Implemented**: Topics page at `/topics/:tag` for browsing decks by category tag.
 
 | # | Status | Notes |
-|---|---|
+|---|---|---|
 | AC-1 | ✅ Implemented | Page at `pages/topics/[tag].vue` |
 | AC-2 | ✅ Implemented | Filters by `$contains` tag lookup |
 | AC-3 | ✅ Implemented | SEO meta titles |
@@ -152,7 +252,7 @@ Deck Viewer (/decks/:id)
 **Implemented**: Featured deck banner on home page.
 
 | # | Status | Notes |
-|---|---|
+|---|---|---|
 | AC-1 | ✅ Implemented | `FeaturedDeck.vue` component |
 | AC-2 | ✅ Implemented | Uses `featured: true` frontmatter |
 | AC-3 | ✅ Implemented | People Skills marked featured |
@@ -162,7 +262,7 @@ Deck Viewer (/decks/:id)
 **Implemented**: Topics widget on home page for quick browsing.
 
 | # | Status | Notes |
-|---|---|
+|---|---|---|
 | AC-1 | ✅ Implemented | `TopicsExplorer.vue` on home |
 | AC-2 | ✅ Implemented | Links to `/topics/${tag}` |
 | AC-3 | ✅ Implemented | Shows deck count per topic |
@@ -172,7 +272,7 @@ Deck Viewer (/decks/:id)
 **Implemented**: Speaker info page at `/about`.
 
 | # | Status | Notes |
-|---|---|
+|---|---|---|
 | AC-1 | ✅ Implemented | `pages/about.vue` |
 | AC-2 | ✅ Implemented | Uses `content/speaker.json` |
 | AC-3 | ✅ Implemented | Shows pipeline, stats, bio |
@@ -300,7 +400,7 @@ Deck Viewer (/decks/:id)
 
 ---
 
-## 7. Technical Specification
+## §8 Technical Specification
 
 ### 7.1 Stack
 
@@ -584,7 +684,7 @@ public/reveals/
 
 ---
 
-## 8. UI Component Specifications
+## §9 UI Component Specifications
 
 ### 8.1 DeckCard
 
@@ -645,7 +745,7 @@ public/reveals/
 
 ---
 
-## 9. Accessibility Compliance Matrix (WCAG 2.2 AA)
+## §10 Accessibility Compliance Matrix (WCAG 2.2 AA)
 
 | SC # | Criterion | Component | Implementation |
 |---|---|---|---|
@@ -667,7 +767,7 @@ public/reveals/
 
 ---
 
-## 10. Responsive Breakpoints
+## §11 Responsive Breakpoints
 
 | Breakpoint | Width | Grid Cols | Layout |
 |---|---|---|---|
@@ -677,7 +777,7 @@ public/reveals/
 
 ---
 
-## 11. Milestones & Phases
+## §12 Milestones & Phases
 
 ### Phase 1: MVP (2 weeks)
 
@@ -717,7 +817,7 @@ public/reveals/
 
 ---
 
-## 12. Recommendations
+## §13 Recommendations
 
 ### From Frontend Design Skill
 
@@ -757,7 +857,7 @@ public/reveals/
 
 ---
 
-## 13. Success Metrics
+## §14 Success Metrics
 
 | Metric | Target | Measurement |
 |---|---|---|
@@ -772,7 +872,7 @@ public/reveals/
 
 ---
 
-## 14. Decisions Log
+## §15 Decisions Log
 
 | # | Question | Decision | Rationale |
 |---|---|---|---|
@@ -780,13 +880,15 @@ public/reveals/
 | 2 | Multi-speaker support | **Single-user MVP** | Scope control. Multi-speaker is a Phase 4 backlog item — the data model (frontmatter) can be extended with an `author` field later without migration. |
 | 3 | Presentation versioning | **Yes — versioned (`v1`, `v2`, etc.)** | Talks evolve across events (e.g., People Skills updated for OrlandoCodeCamp26). Each version is a separate HTML file in `/public/reveals/{deck-id}/`. Frontmatter tracks version history with labels, dates, and changelogs. |
 
-## 15. Open Questions
+## §16 Open Questions
 
 1. **DECIDED 2026-06-23 — Phase 4:** generate PDFs via a GitHub Actions workflow that commits to `/public/pdfs/` (Decktape needs a headless browser, infeasible on Netlify Functions). US-3.2's server-side ACs are infeasible as written. <!-- 🔧 UPDATED: resolved per §10 recommendation. -->
 
 ---
 
-## 16. Implementation Review (April 2026)
+## Appendix A: April 2026 Review (Historical)
+
+## A.1 Implementation Review (April 2026)
 
 ### Issues Found
 
@@ -922,7 +1024,7 @@ The `components/FeaturedDeck.vue` exists but needs review for proper usage of `f
 
 ---
 
-## 17. Deferred / Backlog Items
+## A.2 Deferred / Backlog Items
 
 | Item | Priority | Notes |
 |---|---|---|
@@ -933,7 +1035,7 @@ The `components/FeaturedDeck.vue` exists but needs review for proper usage of `f
 
 ---
 
-## 18. Next Steps
+## A.3 Next Steps
 
 1. **Fix build error** — Clear cache and rebuild
 2. **Search tag filter** — Add tags to search query
@@ -945,10 +1047,13 @@ The `components/FeaturedDeck.vue` exists but needs review for proper usage of `f
 
 *Review completed: April 27, 2026*
 
+---
 
-# Product Requirements Document: Slide Repository
+## Appendix B: v1.1 Audit (June 2026)
+
+> Audit performed June 2026. For current state, see §1.
+
 **Product:** DevelopingDvlpr Slide Repository
-**Owner:** Nerando (TechTile LLC / @Nerajno)
 **Version:** 1.1 — Post-Implementation Review & Gap Analysis
 **Last Updated:** April 27, 2026
 **Status:** Active — Gaps Identified, Recommendations Added
@@ -967,7 +1072,7 @@ This revision is a structured audit of the existing implementation against v1.0 
 
 ---
 
-## 1. Critical Bugs Found in Current Code
+## B.1 Critical Bugs Found in Current Code
 
 These are functional defects that break existing features and must be resolved before any Phase 2 work.
 
@@ -1086,7 +1191,7 @@ app: {
 
 ---
 
-## 2. Nuxt Configuration Gaps
+## B.2 Nuxt Configuration Gaps
 
 ### GAP-1 — Missing `routeRules` / Render Strategy
 
@@ -1149,7 +1254,7 @@ sitemap: {
 
 ---
 
-## 3. UX Gaps (from ui-ux-pro-max audit)
+## B.3 UX Gaps (from ui-ux-pro-max audit)
 
 ### GAP-4 — No `aria-live` on Search Results
 
@@ -1251,7 +1356,7 @@ When a deck has multiple versions, the default is `currentVersion`, but nothing 
 
 ---
 
-## 4. Accessibility Gaps (WCAG 2.2 AA — from wcag22 skill audit)
+## B.4 Accessibility Gaps (WCAG 2.2 AA — from wcag22 skill audit)
 
 ### GAP-12 — iframe Missing `title` Attribute ✅ (Already Fixed in Code)
 
@@ -1298,7 +1403,7 @@ Per ui-ux-pro-max: "No Emoji as Structural Icons — Use vector-based icons." Th
 
 ---
 
-## 5. Design System Refinements (from frontend-design skill audit)
+## B.5 Design System Refinements (from frontend-design skill audit)
 
 ### GAP-16 — Card Hover State Uses `border-color` Only (Too Subtle)
 
@@ -1376,7 +1481,7 @@ The slide progress bar is a decorative `<div>` with no accessible context.
 
 ---
 
-## 6. Phase 2 Additions (New Stories for Enhanced Sprint)
+## B.6 Phase 2 Additions (New Stories for Enhanced Sprint)
 
 ### US-2.6 — Keyboard Shortcut Hints (Phase 3)
 
@@ -1442,7 +1547,7 @@ The slide progress bar is a decorative `<div>` with no accessible context.
 
 ---
 
-## 7. Implementation Checklist (Priority Order)
+## B.7 Implementation Checklist (Priority Order)
 
 ### 🔴 P0 — Fix Before Any New Work
 - [x] **BUG-1** Fix postMessage namespace mismatch in `DeckViewer.vue` ✅ _Apr 28_
@@ -1480,7 +1585,7 @@ The slide progress bar is a decorative `<div>` with no accessible context.
 
 ---
 
-## 8. Revised Technical Recommendations
+## B.8 Revised Technical Recommendations
 
 ### Nuxt-Specific (from nuxt skill)
 
@@ -1536,7 +1641,7 @@ router: {
 
 ---
 
-## 9. Updated Success Metrics
+## B.9 Updated Success Metrics
 
 | Metric | Target | Current Status |
 |---|---|---|
@@ -1554,7 +1659,7 @@ router: {
 
 ---
 
-## 10. Open Questions (Updated)
+## B.10 Open Questions (Updated)
 
 1. **PDF export (US-3.2):** Decktape requires a headless browser — not feasible on Netlify Functions without a custom Lambda or external service. Recommend deferring to Phase 4 with a Puppeteer-based serverless function on Railway/Render, or a GitHub Actions workflow that generates PDFs and commits them to `/public/pdfs/`.
 
@@ -1563,73 +1668,5 @@ router: {
 3. **Deck comparison (Phase 4):** Side-by-side iframes would require custom postMessage routing to disambiguate which iframe a slide-changed event came from. Feasible but adds 2–3 days of complexity.
 
 4. **Static vs. ISR:** Confirmed — **use static generation**. ISR is overkill for a repo updated via Git push. The current `nuxt generate` approach is correct; just needs the prerender `routeRules` and Netlify redirect added.
-
----
-
-## 19. June 2026 Verification — Main Branch Audit
-
-*Verified: June 23, 2026 against `main` branch.*
-
-### All P0/P1/P2 Items Confirmed Implemented
-
-Every checklist item in Section 7 (Implementation Checklist) verified present in `main`:
-
-| Item | Verified In |
-|---|---|
-| BUG-1 postMessage fix | `components/DeckViewer.vue:24` — `e.data?.type === 'slidechanged'` |
-| BUG-2 keepalive on index | `pages/index.vue:2` — `definePageMeta({ keepalive: true })` |
-| BUG-3 keyboard guard | `components/DeckViewer.vue:15-16` — INPUT/TEXTAREA/SELECT check |
-| BUG-4 SSR guard | `composables/useRecentDecks.ts:8,13` — `import.meta.client` |
-| BUG-5 FOUC script | `nuxt.config.ts:79` — inline head script |
-| GAP-1 routeRules | `nuxt.config.ts:11-13` — `/` and `/about` prerender |
-| GAP-2 sitemap | `package.json` — `@nuxtjs/sitemap@8.0.14` installed |
-| GAP-3 robots.txt | `public/robots.txt` — exists with Allow + Sitemap directive |
-| GAP-4 aria-live | `components/DeckGrid.vue:8` — `aria-live="polite"` on wrapper |
-| GAP-5 FilterTags mobile | `components/FilterTags.vue:41` — `flex-nowrap overflow-x-auto sm:flex-wrap` |
-| GAP-6 zero-count tags hidden | `components/FilterTags.vue:52` — `filter(t => tagCount(t) > 0)` |
-| GAP-7 iframe skeleton | `components/DeckViewer.vue:84,92` — `animate-pulse` + `@load` handler |
-| GAP-8 error.vue | `error.vue` exists at project root |
-| GAP-9 og:image | `public/og-default.png` exists; wired in `pages/index.vue` |
-| GAP-10 (Latest) label | `components/VersionSelector.vue:30` — appends `(Latest)` |
-| GAP-11 clipboard fallback | `components/ShareButton.vue:13-16` — try/catch + `prompt()` fallback |
-| GAP-13 aria-label removed | `components/DeckCard.vue` — NuxtLink has no `aria-label`; thumbnail has `role="img"` |
-| GAP-16 card hover | `components/DeckCard.vue:17` — `hover:shadow-card-hover` via sw-* token |
-| GAP-17 cross-hue gradients | `types/index.ts:104-110` — TAG_COLORS uses contrasting hue pairs |
-| GAP-18 empty state SVG | `components/DeckGrid.vue:25-32` — inline SVG illustration |
-| GAP-19 progressbar role | `components/DeckViewer.vue:96` — `role="progressbar"` with aria-valuenow/max |
-
-### Architecture Deviations from PRD
-
-**Data Layer:** PRD (Section 7.4) specifies `queryContent()` + `content/decks/*.md`. Actual implementation uses:
-- `stores/deckStore.ts` → `$fetch('/api/decks')` → `server/api/decks.get.ts` → `data/decks.json`
-- `content/decks/*.md` files still exist (5 decks) but are not the active data source
-- **Impact:** Adding a new deck requires editing `data/decks.json`, not creating a `.md` file. PRD Section 12 recommendation ("Adding a new deck is just creating a new .md file") is no longer accurate.
-- **Decision needed:** Either migrate `data/decks.json` → Nuxt Content queries, or update PRD to reflect JSON + server API as the canonical data layer.
-
-**GAP-15 Resolution:** PRD says "Replace emoji icons with SVG." Actual resolution: theme toggle button was **removed entirely** from `SiteNav.vue` in the redesign. Dark mode runs system-preference only via `plugins/theme.client.ts`. No emoji icons remain. GAP is resolved but differently than specified.
-
-### New Components Beyond PRD Scope
-
-Added during redesign sprint (not in original component spec):
-
-| Component | Purpose |
-|---|---|
-| `components/HeroSection.vue` | Landing hero above deck grid |
-| `components/DecksSection.vue` | Deck grid + filter/search wrapper (replaces inline page logic) |
-| `components/HistorySection.vue` | Speaking history from `content/history.json` |
-| `components/SiteNav.vue` | Fixed nav header (replaces layout-level nav) |
-| `components/SiteFooter.vue` | Site footer with social links |
-| `components/LegacyDeckGrid.vue` | Grid for legacy presentations (PPTX/PDF/Keynote) |
-| `pages/legacy.vue` | Legacy presentation browser |
-| `pages/topics/index.vue` | Topics listing page |
-
-### P3 Items Still Open
-
-These remain unbuilt:
-
-- [ ] **US-2.6** Keyboard shortcut hints modal
-- [ ] **US-2.7** Search autocomplete / type-ahead
-- [ ] **US-3.3** "Recently Updated" quick filter
-- [ ] **GAP-9 Phase 2** Per-deck dynamic OG images via `@nuxtjs/og-image`
 
 ---
