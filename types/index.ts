@@ -51,7 +51,7 @@ export interface Deck extends DeckFrontmatter {
 export interface SearchParams {
   q?: string;
   tags?: string;
-  sort?: 'newest' | 'oldest' | 'az' | 'za';
+  sort?: 'newest' | 'oldest' | 'az' | 'za' | 'recently-updated';
 }
 
 export interface Resource {
