@@ -1,0 +1,75 @@
+name: Export Reveal.js PDFs
+
+on:
+  workflow_dispatch:
+    inputs:
+      deck_id:
+        description: 'Deck ID to export (leave empty to export all decks)'
+        required: false
+        default: ''
+  push:
+    branches: [main]
+    paths:
+      - 'public/reveals/**'
+
+jobs:
+  export-pdfs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install decktape and http-server
+        run: npm install -g decktape http-server
+
+      - name: Create output directory
+        run: mkdir -p public/pdfs
+
+      - name: Start HTTP server
+        run: |
+          http-server public -p 8080 --silent &
+          echo "HTTP server PID: $!"
+          sleep 2
+
+      - name: Export PDFs
+        run: |
+          DECK_ID="${{ github.event.inputs.deck_id }}"
+          REVEALS_DIR="public/reveals"
+          PDFS_DIR="public/pdfs"
+
+          if [ -n "$DECK_ID" ]; then
+            DIRS="$REVEALS_DIR/$DECK_ID"
+          else
+            DIRS=$(find "$REVEALS_DIR" -mindepth 1 -maxdepth 1 -type d | sort)
+          fi
+
+          for deck_dir in $DIRS; do
+            deck_name=$(basename "$deck_dir")
+            for html_file in "$deck_dir"/*.html; do
+              [ -f "$html_file" ] || continue
+              version=$(basename "$html_file" .html)
+              out_file="$PDFS_DIR/${deck_name}--${version}.pdf"
+              echo "Exporting $html_file → $out_file"
+              decktape reveal \
+                "http://localhost:8080/reveals/${deck_name}/$(basename $html_file)" \
+                "$out_file" \
+                --size 1920x1080 \
+                --chrome-arg=--no-sandbox \
+                --chrome-arg=--disable-setuid-sandbox || echo "Warning: export failed for $html_file"
+            done
+          done
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: slide-pdfs-${{ github.sha }}
+          path: public/pdfs/
+          if-no-files-found: warn
+          retention-days: 30
