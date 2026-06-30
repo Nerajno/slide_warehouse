@@ -6,10 +6,11 @@ const { decks, pending } = useDecks()
 
 const TAGS: Tag[] = ['vue', 'javascript', 'career', 'soft-skills', 'fundamentals', 'community']
 const SORT_OPTIONS: { value: SearchParams['sort']; label: string }[] = [
-  { value: 'newest', label: 'Newest First' },
-  { value: 'oldest', label: 'Oldest First' },
-  { value: 'az',     label: 'A → Z'        },
-  { value: 'za',     label: 'Z → A'        },
+  { value: 'newest',           label: 'Newest First'     },
+  { value: 'oldest',           label: 'Oldest First'     },
+  { value: 'az',               label: 'A → Z'            },
+  { value: 'za',               label: 'Z → A'            },
+  { value: 'recently-updated', label: 'Recently Updated' },
 ]
 
 const filteredDecks = computed(() => {
@@ -20,6 +21,7 @@ const filteredDecks = computed(() => {
   if (store.sort === 'oldest') list.sort((a, b) => a.createdAt.localeCompare(b.createdAt))
   else if (store.sort === 'az') list.sort((a, b) => a.title.localeCompare(b.title))
   else if (store.sort === 'za') list.sort((a, b) => b.title.localeCompare(a.title))
+  else if (store.sort === 'recently-updated') list.sort((a, b) => (b.updatedAt ?? '').localeCompare(a.updatedAt ?? ''))
   else list.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
   return list
 })
