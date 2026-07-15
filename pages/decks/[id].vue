@@ -3,6 +3,7 @@ import type { DeckFrontmatter } from '~/types'
 
 const route = useRoute()
 const { addRecent } = useRecentDecks()
+const { trackDeckView } = useAnalytics()
 
 const { data: deck } = await useAsyncData(
   `deck-${route.params.id}`,
@@ -37,7 +38,10 @@ const relatedTalks = computed(() => {
 })
 
 definePageMeta({})
-onMounted(() => addRecent(route.params.id as string))
+onMounted(async () => {
+  addRecent(route.params.id as string)
+  await trackDeckView(route.params.id as string)
+})
 
 const { public: { siteUrl } } = useRuntimeConfig()
 
