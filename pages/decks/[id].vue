@@ -62,9 +62,9 @@ useHead({
     <!-- Breadcrumb -->
     <nav aria-label="Breadcrumb" class="px-4 py-2 border-b border-[var(--sw-border)] bg-[var(--sw-surface)]">
       <ol class="flex items-center gap-1.5 font-mono text-xs text-[var(--sw-text-3)]">
-        <li><NuxtLink to="/" class="hover:text-[var(--sw-text-1)] transition-colors focus-visible:outline-none focus-visible:underline">Home</NuxtLink></li>
+        <li><NuxtLink to="/" class="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[var(--sw-text-1)] transition-colors focus-visible:outline-none focus-visible:underline">Home</NuxtLink></li>
         <li aria-hidden="true"><span class="text-[var(--sw-border-2)]">/</span></li>
-        <li><NuxtLink to="/#decks" class="hover:text-[var(--sw-text-1)] transition-colors focus-visible:outline-none focus-visible:underline">Decks</NuxtLink></li>
+        <li><NuxtLink to="/#decks" class="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-[var(--sw-text-1)] transition-colors focus-visible:outline-none focus-visible:underline">Decks</NuxtLink></li>
         <li aria-hidden="true"><span class="text-[var(--sw-border-2)]">/</span></li>
         <li class="text-[var(--sw-text-1)] truncate max-w-[200px]" aria-current="page">{{ deck.title }}</li>
       </ol>
@@ -76,7 +76,7 @@ useHead({
       <!-- Left: back + title + event badge -->
       <div class="flex items-center gap-3 min-w-0">
         <NuxtLink to="/"
-          class="shrink-0 text-xs text-[var(--sw-text-3)] hover:text-[var(--sw-primary)] focus:outline-none focus:underline transition-colors">
+          class="shrink-0 inline-flex items-center justify-center min-h-[44px] min-w-[44px] shrink-0 text-xs text-[var(--sw-text-3)] hover:text-[var(--sw-primary)] focus:outline-none focus:underline transition-colors">
           ← Back
         </NuxtLink>
         <span class="text-[var(--sw-border)] shrink-0" aria-hidden="true">|</span>

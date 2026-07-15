@@ -30,9 +30,9 @@ useSeoMeta({
 <template>
   <div class="max-w-6xl mx-auto px-4 py-8">
     <nav class="text-xs text-gray-400 mb-6" aria-label="Breadcrumb">
-      <NuxtLink to="/" class="hover:text-emerald-600 focus:outline-none focus:underline">
-        ← All decks
-      </NuxtLink>
+      <ol class="flex items-center gap-1.5">
+        <li><NuxtLink to="/" class="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-emerald-600 focus:outline-none focus:underline transition-colors">← All decks</NuxtLink></li>
+      </ol>
     </nav>
 
     <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-1">{{ displayTag }}</h1>
