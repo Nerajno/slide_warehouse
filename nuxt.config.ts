@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@pinia/nuxt',
     '@nuxtjs/sitemap',
+    '@nuxt/eslint',
     'nuxt-og-image',
   ],
 
@@ -72,7 +73,9 @@ export default defineNuxtConfig({
       ],
       script: [
         {
-          children: `(function(){try{var t=localStorage.getItem('sw-theme')||'dark';var d=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){document.documentElement.classList.add('dark')}})()`,
+          // `innerHTML`, not `children` — the latter is not part of the head
+          // script schema and was the source of a long-standing TS2353.
+          innerHTML: `(function(){try{var t=localStorage.getItem('sw-theme')||'dark';var d=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){document.documentElement.classList.add('dark')}})()`,
         },
       ],
       link: [

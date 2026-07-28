@@ -89,8 +89,8 @@ onMounted(() => {
       :aria-expanded="showSuggestions && suggestions.length > 0"
       aria-controls="search-listbox"
       :aria-activedescendant="activeIndex >= 0 ? `suggestion-${activeIndex}` : undefined"
-      placeholder="Search by title, description, or tags..."
-      class="w-full h-11 pl-4 pr-10 border border-gray-200 dark:border-gray-700 rounded-card bg-white dark:bg-gray-900 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+      placeholder="Search by title, description, or tags…"
+      class="sw-input pr-10"
       @input="handleInput"
       @keydown="handleKeydown"
       @focus="handleFocus"
@@ -98,11 +98,15 @@ onMounted(() => {
     />
     <button
       v-if="store.searchQuery"
-      class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
+      type="button"
+      class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center w-8 h-8 rounded-pill
+             text-[var(--sw-text-3)] transition-colors duration-fast
+             hover:text-[var(--sw-text-1)] hover:bg-[var(--sw-surface-2)]
+             focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
       aria-label="Clear search"
       @click="clear"
     >
-      ×
+      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
     </button>
 
     <!-- Suggestions dropdown -->
@@ -111,7 +115,8 @@ onMounted(() => {
       id="search-listbox"
       role="listbox"
       aria-label="Search suggestions"
-      class="absolute z-50 top-full left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-card shadow-lg overflow-hidden"
+      class="absolute z-dropdown top-full left-0 right-0 mt-1 overflow-hidden
+             bg-[var(--sw-surface)] border border-[var(--sw-border)] rounded-card shadow-lift"
     >
       <li
         v-for="(s, i) in suggestions"
@@ -119,10 +124,10 @@ onMounted(() => {
         :key="s"
         role="option"
         :aria-selected="i === activeIndex"
-        class="px-4 py-2.5 text-sm cursor-pointer transition-colors"
+        class="px-4 py-2.5 font-sans text-sm cursor-pointer transition-colors duration-fast"
         :class="i === activeIndex
-          ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300'
-          : 'text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-800'"
+          ? 'bg-[var(--sw-primary-bg)] text-[var(--sw-primary-text)]'
+          : 'text-[var(--sw-text-1)] hover:bg-[var(--sw-surface-2)]'"
         @mousedown.prevent="selectSuggestion(s)"
       >
         {{ s }}

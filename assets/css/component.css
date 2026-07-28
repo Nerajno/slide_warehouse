@@ -23,7 +23,7 @@
            focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] focus-visible:outline-none
            disabled:opacity-50 disabled:cursor-not-allowed
            active:scale-[0.98];
-    border-radius: 4px; /* btn radius */
+    border-radius: 6px; /* btn radius */
     padding: 8px 18px;
     min-height: 44px; /* WCAG 2.5.8 touch target */
     cursor: pointer;
@@ -31,10 +31,10 @@
 
   /* Primary — filled emerald */
   .sw-btn-primary {
-    @apply sw-btn bg-[var(--sw-primary)] text-white border-transparent;
+    @apply sw-btn bg-[var(--sw-primary-solid)] text-[var(--sw-on-primary)] border-transparent;
   }
   .sw-btn-primary:hover:not(:disabled) {
-    background-color: var(--sw-primary-hover);
+    filter: brightness(1.08);
   }
 
   /* Secondary — outlined emerald */
@@ -56,12 +56,12 @@
     color: var(--sw-text-1);
   }
 
-  /* Accent — amber, for featured / highlighted CTAs */
+  /* Accent — amber, for forthcoming / booking CTAs */
   .sw-btn-accent {
-    @apply sw-btn bg-[var(--sw-accent)] text-white border-transparent;
+    @apply sw-btn bg-[var(--sw-accent-solid)] text-[var(--sw-on-accent)] border-transparent;
   }
   .sw-btn-accent:hover:not(:disabled) {
-    background-color: var(--sw-accent-hover);
+    filter: brightness(1.08);
   }
 
   /* Danger — outlined red, for destructive actions */
@@ -104,6 +104,15 @@
   .sw-tag--community    { background: var(--tag-community-bg);    color: var(--tag-community-text);    border-color: var(--tag-community-border); }
   .sw-tag--architecture { background: var(--tag-architecture-bg); color: var(--tag-architecture-text); border-color: var(--tag-architecture-border); }
   .sw-tag--accessibility{ background: var(--tag-accessibility-bg);color: var(--tag-accessibility-text);border-color: var(--tag-accessibility-border); }
+  .sw-tag--nuxt         { background: var(--tag-nuxt-bg);         color: var(--tag-nuxt-text);         border-color: var(--tag-nuxt-border); }
+  .sw-tag--typescript   { background: var(--tag-typescript-bg);   color: var(--tag-typescript-text);   border-color: var(--tag-typescript-border); }
+  .sw-tag--beginner     { background: var(--tag-beginner-bg);     color: var(--tag-beginner-text);     border-color: var(--tag-beginner-border); }
+  .sw-tag--css          { background: var(--tag-css-bg);          color: var(--tag-css-text);          border-color: var(--tag-css-border); }
+  .sw-tag--react        { background: var(--tag-react-bg);        color: var(--tag-react-text);        border-color: var(--tag-react-border); }
+  .sw-tag--design       { background: var(--tag-design-bg);       color: var(--tag-design-text);       border-color: var(--tag-design-border); }
+  .sw-tag--patterns     { background: var(--tag-patterns-bg);     color: var(--tag-patterns-text);     border-color: var(--tag-patterns-border); }
+  .sw-tag--workshop     { background: var(--tag-workshop-bg);     color: var(--tag-workshop-text);     border-color: var(--tag-workshop-border); }
+  .sw-tag--advanced     { background: var(--tag-advanced-bg);     color: var(--tag-advanced-text);     border-color: var(--tag-advanced-border); }
 
   /* ─── Filter Pills ──────────────────────────────────────────── */
 
@@ -117,26 +126,44 @@
     min-height: 32px;
   }
 
-  /* Active state */
+  /* Dense on a mouse, full 44px target on a finger. */
+  @media (pointer: coarse) {
+    .sw-filter-pill {
+      min-height: 44px;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  /*
+   * Active state uses the tinted primary pair, not white-on-emerald: white on
+   * --sw-primary measures 2.5:1 in dark and 3.4:1 in light, both below SC
+   * 1.4.3 for text this size. The solid border keeps it clearly selected.
+   */
   .sw-filter-pill[aria-pressed="true"],
   .sw-filter-pill--active {
-    background-color: var(--sw-primary);
-    color: #fff;
+    background-color: var(--sw-primary-bg);
+    color: var(--sw-primary-text);
     border-color: var(--sw-primary);
+    font-weight: 600;
   }
 
   /* ─── Deck Card ─────────────────────────────────────────────── */
 
+  /* Elevation is declared once: a hairline border at rest. The shadow appears
+     only on hover, where it reads as state feedback rather than as a second,
+     competing elevation. */
   .sw-deck-card {
     @apply relative bg-[var(--sw-surface)] border border-[var(--sw-border)]
-           rounded-[8px] p-4 flex flex-col gap-2
-           transition-all duration-[200ms]
-           hover:border-[var(--sw-primary)] hover:shadow-[var(--sw-card-hover)];
-    border-left: 3px solid var(--sw-primary);
+           rounded-card p-5 flex flex-col gap-2
+           transition-[border-color,box-shadow,transform] duration-[200ms] ease-out-smooth
+           hover:border-[var(--sw-primary)] hover:shadow-card-hover;
   }
 
+  /* Featured is still an available deck, so it stays emerald. Amber is
+     reserved site-wide for what hasn't happened yet. */
   .sw-deck-card--featured {
-    border-left-color: var(--sw-accent);
+    border-color: var(--sw-primary);
   }
 
   .sw-deck-card__conference {
@@ -144,7 +171,7 @@
   }
 
   .sw-deck-card__title {
-    @apply font-display font-semibold text-base text-[var(--sw-text-1)] leading-tight;
+    @apply font-display font-semibold text-xl text-[var(--sw-text-1)] leading-tight;
   }
 
   .sw-deck-card__description {
@@ -156,30 +183,41 @@
   }
 
   .sw-deck-card__cta {
-    @apply inline-flex items-center gap-1 font-sans font-medium text-xs
+    @apply inline-flex items-center gap-1 font-sans font-medium text-sm
            text-[var(--sw-primary)] hover:underline;
+  }
+
+  /* The arrow nudge lives here rather than as a utility on the span, so the
+     markup stays the exact `Open deck <span aria-hidden="true">→</span>`
+     pattern that issue #22 standardised across every CTA. */
+  .sw-deck-card__cta > span[aria-hidden='true'] {
+    transition: transform 150ms var(--sw-ease, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+  }
+
+  .group:hover .sw-deck-card__cta > span[aria-hidden='true'] {
+    transform: translateX(2px);
   }
 
   /* Featured badge */
   .sw-badge-featured {
-    @apply inline-flex items-center font-mono text-[10px] font-medium
-           px-2 py-0.5 rounded-full
-           bg-[var(--sw-accent-bg)] text-[var(--sw-accent-text)]
-           border border-[var(--sw-accent-bg-2)];
+    @apply inline-flex items-center font-sans text-xs font-medium
+           px-2.5 py-0.5 rounded-pill
+           bg-[var(--sw-primary-bg)] text-[var(--sw-primary-text)]
+           border border-[var(--sw-primary-bg-2)];
   }
 
   /* ─── Stat Block ─────────────────────────────────────────────── */
 
   .sw-stat-block {
-    @apply bg-[var(--sw-surface-2)] rounded-[8px] p-4 text-center;
+    @apply bg-[var(--sw-surface-2)] rounded-card p-5;
   }
 
   .sw-stat-block__number {
-    @apply font-display font-semibold text-2xl text-[var(--sw-primary)];
+    @apply font-display font-semibold text-4xl text-[var(--sw-text-1)] leading-none tabular-nums;
   }
 
   .sw-stat-block__label {
-    @apply font-sans text-xs text-[var(--sw-text-3)] mt-0.5;
+    @apply font-sans text-xs text-[var(--sw-text-3)] mt-2;
   }
 
   /* ─── Form Inputs ────────────────────────────────────────────── */
@@ -219,11 +257,96 @@
 
   /* ─── Section Heading ───────────────────────────────────────── */
 
-  .sw-section-label {
-    @apply font-sans font-medium text-xs text-[var(--sw-text-3)]
-           uppercase tracking-widest pb-2
-           border-b border-[var(--sw-border)];
-    letter-spacing: 0.1em;
+  /*
+   * There is deliberately no eyebrow/kicker class here. A small uppercase
+   * label above a heading adds a line without adding information — the
+   * heading carries its own weight. The old `.sw-section-label` was removed
+   * for this reason; use `.sw-section-head` and let the words do the work.
+   */
+  .sw-section-head {
+    @apply font-display font-semibold text-4xl sm:text-5xl
+           text-[var(--sw-text-1)] leading-[1.05] tracking-tight text-balance;
+  }
+
+  .sw-section-lede {
+    @apply font-sans text-lg text-[var(--sw-text-2)] leading-relaxed text-pretty;
+    max-width: 62ch;
+  }
+
+  /* ─── Rail — the structural axis ─────────────────────────────── */
+
+  /*
+   * A real layout spine: content hangs off a hairline vertical line, the way
+   * a timeline or a margin rule does. This is NOT a colored stripe applied to
+   * a card edge — that reads as decoration and is why the deck card lost its
+   * 3px border-left.
+   */
+  .sw-rail {
+    @apply relative;
+    padding-left: 28px;
+  }
+
+  .sw-rail::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--sw-rail);
+  }
+
+  /* A node on the rail. Emerald = delivered/archived, amber = forthcoming. */
+  .sw-rail-node {
+    @apply relative;
+  }
+
+  .sw-rail-node::before {
+    content: '';
+    position: absolute;
+    left: -32px;
+    top: 0.55em;
+    width: 9px;
+    height: 9px;
+    border-radius: 9999px;
+    background: var(--sw-bg);
+    border: 2px solid var(--sw-primary);
+  }
+
+  .sw-rail-node--live::before {
+    border-color: var(--sw-rail-live);
+    background: var(--sw-rail-live);
+  }
+
+  /* ─── Status ─────────────────────────────────────────────────── */
+
+  /*
+   * The two brand hues carry one meaning each, everywhere on the site:
+   *   emerald = delivered, archived, available
+   *   amber   = forthcoming, confirmed, open call
+   */
+  .sw-status {
+    @apply inline-flex items-center gap-1.5 font-sans font-medium text-xs
+           px-2.5 py-1 rounded-pill border;
+  }
+
+  .sw-status--delivered {
+    background: var(--sw-primary-bg);
+    color: var(--sw-primary-text);
+    border-color: var(--sw-primary-bg-2);
+  }
+
+  .sw-status--confirmed,
+  .sw-status--cfp-open {
+    background: var(--sw-accent-bg);
+    color: var(--sw-accent-text);
+    border-color: var(--sw-accent-bg-2);
+  }
+
+  /* ─── Skeleton ───────────────────────────────────────────────── */
+
+  .sw-skeleton {
+    @apply rounded-card bg-[var(--sw-surface-2)] animate-pulse;
   }
 
   /* ─── Empty State ────────────────────────────────────────────── */
@@ -231,8 +354,12 @@
   .sw-empty-state {
     @apply flex flex-col items-center justify-center gap-3
            py-16 px-8 text-center
-           bg-[var(--sw-surface-2)] rounded-[8px]
+           bg-[var(--sw-surface-2)] rounded-card
            border border-dashed border-[var(--sw-border)];
+  }
+
+  .sw-empty-state__actions {
+    @apply flex flex-wrap items-center justify-center gap-2 pt-1;
   }
 
   .sw-empty-state__icon {
@@ -260,12 +387,12 @@
   }
 
   .sw-toast--success {
-    background-color: var(--sw-primary);
-    color: #fff;
+    background-color: var(--sw-primary-solid);
+    color: var(--sw-on-primary);
   }
 
   .sw-toast--error {
-    background-color: var(--sw-danger);
+    background-color: #b91c1c; /* red-700 — 5.9:1 with white */
     color: #fff;
   }
 

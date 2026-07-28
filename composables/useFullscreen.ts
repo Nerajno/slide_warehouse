@@ -16,7 +16,8 @@ export function useFullscreen(target: Ref<HTMLElement | null>) {
   }
 
   function toggle() {
-    isFullscreen.value ? exit() : enter()
+    if (isFullscreen.value) exit()
+    else enter()
   }
 
   onMounted(() => {

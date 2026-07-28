@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DeckFrontmatter } from '~/types'
+import { tagClass } from '~/types'
 
 const route = useRoute()
 const tag = computed(() => route.params.tag as string)
@@ -7,7 +8,7 @@ const tag = computed(() => route.params.tag as string)
 const { data: decks } = await useAsyncData(
   () => `topic-${tag.value}`,
   async () => {
-    const all = await queryCollection('decks').all()
+    const all = withSlug(await queryCollection('decks').all())
     return all.filter(d => (d.tags as string[] | undefined)?.includes(tag.value) ?? false) as unknown as DeckFrontmatter[]
   },
   { watch: [tag] }
@@ -28,26 +29,28 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="max-w-6xl mx-auto px-4 py-8">
-    <nav class="text-xs text-gray-400 mb-6" aria-label="Breadcrumb">
-      <ol class="flex items-center gap-1.5">
-        <li><NuxtLink to="/" class="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-emerald-600 focus:outline-none focus:underline transition-colors">← All decks</NuxtLink></li>
+  <div class="max-w-page mx-auto px-page-x lg:px-page-x-lg py-section-lg mt-14">
+    <!--
+      Keeps the 44px touch target from the breadcrumb work merged from main,
+      but on the token palette and the full Topics > tag trail rather than a
+      single "All decks" link in raw gray.
+    -->
+    <nav class="mb-8" aria-label="Breadcrumb">
+      <ol class="sw-breadcrumb">
+        <li><NuxtLink to="/topics" class="inline-flex items-center min-h-[44px] px-1">Topics</NuxtLink></li>
+        <li aria-hidden="true"><span class="sw-breadcrumb__separator">/</span></li>
+        <li class="text-[var(--sw-text-1)]" aria-current="page">{{ displayTag }}</li>
       </ol>
     </nav>
 
-    <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-1">{{ displayTag }}</h1>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mb-6" aria-live="polite" aria-atomic="true">
+    <h1 class="sw-section-head">{{ displayTag }}</h1>
+    <p class="font-sans text-[var(--sw-text-3)] mt-4" aria-live="polite" aria-atomic="true">
       {{ decks?.length ?? 0 }} {{ (decks?.length ?? 0) === 1 ? 'deck' : 'decks' }} tagged
-      <span class="font-mono text-emerald-600 dark:text-emerald-400">{{ tag }}</span>
+      <span :class="tagClass(tag)">{{ tag }}</span>
     </p>
 
-    <div v-if="!decks?.length" class="py-16 text-center">
-      <p class="text-gray-400 text-sm">No decks found for this topic yet.</p>
-      <NuxtLink to="/" class="mt-4 inline-block text-sm text-emerald-600 dark:text-emerald-400 hover:underline">
-        Browse all decks →
-      </NuxtLink>
+    <div class="mt-section-md">
+      <DeckGrid :decks="decks" :pending="false" />
     </div>
-
-    <DeckGrid v-else :decks="decks" :pending="false" />
   </div>
 </template>

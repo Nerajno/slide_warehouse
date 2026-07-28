@@ -4,7 +4,7 @@ import type { Tag, SearchParams, DeckFrontmatter } from '~/types'
 export const useDeckStore = defineStore('decks', () => {
   const { data: allDecks, pending } = useAsyncData(
     'decks',
-    () => queryCollection('decks').all() as unknown as Promise<DeckFrontmatter[]>,
+    async () => withSlug(await queryCollection('decks').all()) as unknown as DeckFrontmatter[],
   )
 
   const searchQuery = ref('')
@@ -15,7 +15,8 @@ export const useDeckStore = defineStore('decks', () => {
 
   function toggleTag(tag: Tag) {
     const idx = activeTags.value.indexOf(tag)
-    idx === -1 ? activeTags.value.push(tag) : activeTags.value.splice(idx, 1)
+    if (idx === -1) activeTags.value.push(tag)
+    else activeTags.value.splice(idx, 1)
   }
 
   function clearFilters() {

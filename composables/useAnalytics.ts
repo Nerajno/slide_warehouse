@@ -2,7 +2,7 @@ export function useAnalytics() {
   const trackDeckView = async (deckId: string) => {
     try {
       // Don't block page load on analytics
-      if (process.client) {
+      if (import.meta.client) {
         const response = await fetch("/.netlify/functions/track-deck-view", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

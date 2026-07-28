@@ -31,15 +31,29 @@
   /* Text */
   --sw-text-1:      #18181b;  /* zinc-900 — headings, primary */
   --sw-text-2:      #52525b;  /* zinc-600 — body, descriptions*/
-  --sw-text-3:      #71717a;  /* zinc-500 — meta, timestamps  */
+  /* Darkened from zinc-500 #71717a, which measured 4.4:1 on --sw-surface-2
+     and so failed SC 1.4.3 for the meta text that uses it. */
+  --sw-text-3:      #66666e;  /* meta, timestamps — 5.1:1 on surface-2 */
 
-  /* Primary — Emerald */
-  --sw-primary:        #059669;  /* emerald-600 */
-  --sw-primary-hover:  #047857;  /* emerald-700 */
-  --sw-primary-active: #065f46;  /* emerald-800 */
+  /* Primary — Emerald.
+     emerald-700, not -600: this token is used as TEXT (links, "Open deck",
+     conference labels) on white, where #059669 measures 3.77:1 and fails
+     SC 1.4.3. #047857 measures 5.5:1 and is still fine as a border. */
+  --sw-primary:        #047857;  /* emerald-700 */
+  --sw-primary-hover:  #065f46;  /* emerald-800 */
+  --sw-primary-active: #064e3b;  /* emerald-900 */
   --sw-primary-bg:     #d1fae5;  /* emerald-100 */
   --sw-primary-bg-2:   #a7f3d0;  /* emerald-200 */
   --sw-primary-text:   #065f46;  /* emerald-800 — text on primary-bg */
+
+  /* Filled-button pairs. The display hues (--sw-primary / --sw-accent) are
+     tuned for borders, icons and text ON a surface; used AS a background
+     behind white they measure 3.4:1 and 3.1:1, below SC 1.4.3. These are the
+     darker variants reserved for filled controls. */
+  --sw-primary-solid:  #047857;  /* emerald-700 — 4.6:1 with white */
+  --sw-on-primary:     #ffffff;
+  --sw-accent-solid:   #b45309;  /* amber-700   — 5.0:1 with white */
+  --sw-on-accent:      #ffffff;
 
   /* Accent — Amber */
   --sw-accent:         #d97706;  /* amber-600  */
@@ -64,6 +78,14 @@
   /* Focus */
   --sw-focus-ring:     rgba(5, 150, 105, 0.35);
 
+  /* Elevation — offset + soft blur. Declare elevation once: border OR shadow. */
+  --sw-card-hover:     0 8px 24px -6px rgba(5, 150, 105, 0.22);
+  --sw-lift:           0 6px 20px -8px rgba(24, 24, 27, 0.28);
+
+  /* Rail — the structural axis. 1px hairline, never a stripe on a card edge. */
+  --sw-rail:           #e4e4e7;
+  --sw-rail-live:      #d97706;
+
   /* Nav */
   --sw-nav-height:     60px;
   --sw-nav-bg:         #ffffff;
@@ -85,7 +107,8 @@
   /* Text */
   --sw-text-1:      #fafafa;  /* zinc-50  — headings, primary */
   --sw-text-2:      #a1a1aa;  /* zinc-400 — body, descriptions*/
-  --sw-text-3:      #71717a;  /* zinc-500 — meta, timestamps  */
+  /* Lightened from zinc-500 #71717a, which measured 3.1:1 on --sw-surface-2. */
+  --sw-text-3:      #8f8f99;  /* meta, timestamps — 5.5:1 on surface-2 */
 
   /* Primary — Emerald (lighter for dark backgrounds) */
   --sw-primary:        #10b981;  /* emerald-500 */
@@ -94,6 +117,13 @@
   --sw-primary-bg:     #064e3b;  /* emerald-900 */
   --sw-primary-bg-2:   #065f46;  /* emerald-800 */
   --sw-primary-text:   #6ee7b7;  /* emerald-300 — text on primary-bg dark */
+
+  /* Filled-button pairs. In dark the brand hues are light, so the readable
+     pairing inverts: near-black text on the bright hue. */
+  --sw-primary-solid:  #10b981;
+  --sw-on-primary:     #052e16;  /* 8.5:1 on emerald-500 */
+  --sw-accent-solid:   #f59e0b;
+  --sw-on-accent:      #431407;  /* 8.1:1 on amber-500  */
 
   /* Accent — Amber */
   --sw-accent:         #f59e0b;  /* amber-500  */
@@ -117,6 +147,14 @@
 
   /* Focus */
   --sw-focus-ring:     rgba(16, 185, 129, 0.4);
+
+  /* Elevation */
+  --sw-card-hover:     0 8px 24px -6px rgba(16, 185, 129, 0.28);
+  --sw-lift:           0 6px 20px -8px rgba(0, 0, 0, 0.6);
+
+  /* Rail */
+  --sw-rail:           #3f3f46;
+  --sw-rail-live:      #f59e0b;
 
   /* Nav */
   --sw-nav-bg:         #18181b;
@@ -161,6 +199,43 @@
   --tag-accessibility-bg:     #fdf4ff;
   --tag-accessibility-text:   #581c87;
   --tag-accessibility-border: #d8b4fe;
+
+  /* Tags present in content/** that previously had no triple */
+  --tag-nuxt-bg:              #ccfbf1;
+  --tag-nuxt-text:            #115e59;
+  --tag-nuxt-border:          #5eead4;
+
+  --tag-typescript-bg:        #e0e7ff;
+  --tag-typescript-text:      #3730a3;
+  --tag-typescript-border:    #a5b4fc;
+
+  --tag-beginner-bg:          #ecfccb;
+  --tag-beginner-text:        #3f6212;
+  --tag-beginner-border:      #bef264;
+
+  --tag-css-bg:               #cffafe;
+  --tag-css-text:             #155e75;
+  --tag-css-border:           #67e8f9;
+
+  --tag-react-bg:             #ffe4e6;
+  --tag-react-text:           #9f1239;
+  --tag-react-border:         #fda4af;
+
+  --tag-design-bg:            #ffedd5;
+  --tag-design-text:          #9a3412;
+  --tag-design-border:        #fdba74;
+
+  --tag-patterns-bg:          #f1f5f9;
+  --tag-patterns-text:        #334155;
+  --tag-patterns-border:      #cbd5e1;
+
+  --tag-workshop-bg:          #fae8ff;
+  --tag-workshop-text:        #86198f;
+  --tag-workshop-border:      #f0abfc;
+
+  --tag-advanced-bg:          #f5f5f4;
+  --tag-advanced-text:        #44403c;
+  --tag-advanced-border:      #d6d3d1;
 }
 
 .dark {
@@ -195,6 +270,42 @@
   --tag-accessibility-bg:     #3b0764;
   --tag-accessibility-text:   #d8b4fe;
   --tag-accessibility-border: #581c87;
+
+  --tag-nuxt-bg:              #042f2e;
+  --tag-nuxt-text:            #5eead4;
+  --tag-nuxt-border:          #115e59;
+
+  --tag-typescript-bg:        #1e1b4b;
+  --tag-typescript-text:      #a5b4fc;
+  --tag-typescript-border:    #3730a3;
+
+  --tag-beginner-bg:          #1a2e05;
+  --tag-beginner-text:        #bef264;
+  --tag-beginner-border:      #3f6212;
+
+  --tag-css-bg:               #083344;
+  --tag-css-text:             #67e8f9;
+  --tag-css-border:           #155e75;
+
+  --tag-react-bg:             #4c0519;
+  --tag-react-text:           #fda4af;
+  --tag-react-border:         #9f1239;
+
+  --tag-design-bg:            #431407;
+  --tag-design-text:          #fdba74;
+  --tag-design-border:        #9a3412;
+
+  --tag-patterns-bg:          #1e293b;
+  --tag-patterns-text:        #cbd5e1;
+  --tag-patterns-border:      #475569;
+
+  --tag-workshop-bg:          #4a044e;
+  --tag-workshop-text:        #f0abfc;
+  --tag-workshop-border:      #86198f;
+
+  --tag-advanced-bg:          #292524;
+  --tag-advanced-text:        #d6d3d1;
+  --tag-advanced-border:      #57534e;
 }
 
 /* ─── Global Resets & Base Styles ───────────────────────────────── */
@@ -233,6 +344,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Fraunces ships a variable optical-size axis (opsz 9..144) that was loaded
+   but never engaged. `auto` lets the browser pick per rendered size, so a
+   96px headline gets the display cut and a 16px card title gets the text cut. */
+.font-display {
+  font-optical-sizing: auto;
+}
+
 /* ─── Focus Styles (WCAG 2.2 AA) ────────────────────────────────── */
 :focus-visible {
   outline: 3px solid var(--sw-primary);
@@ -251,8 +369,8 @@ body {
   top: -100px;
   left: 16px;
   z-index: 300;
-  background: var(--sw-primary);
-  color: #fff;
+  background: var(--sw-primary-solid);
+  color: var(--sw-on-primary);
   padding: 8px 16px;
   border-radius: 0 0 4px 4px;
   font-size: 14px;
@@ -265,6 +383,15 @@ body {
   top: 0;
   outline: none;
   box-shadow: 0 0 0 3px var(--sw-focus-ring);
+}
+
+/* ─── Search inputs ──────────────────────────────────────────────── */
+/* `type="search"` gets a WebKit clear button that sits on top of our own
+   accessible clear control, giving the field two × affordances. */
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* ─── Selection ──────────────────────────────────────────────────── */

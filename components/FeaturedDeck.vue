@@ -1,48 +1,44 @@
 <script setup lang="ts">
-import type { Tag } from '~/types'
-import { TAG_COLORS } from '~/types'
+import { tagClass } from '~/types'
 
-const { data: deck } = await useAsyncData('featured-deck', () =>
-  queryCollection('decks').where('featured', '=', true).first()
-)
-
-const gradientClass = computed(() => {
-  const firstTag = deck.value?.tags?.[0]
-  return firstTag ? (TAG_COLORS[firstTag as Tag] ?? 'from-emerald-500 to-teal-600') : 'from-emerald-500 to-teal-600'
+const { data: deck } = await useAsyncData('featured-deck', async () => {
+  const row = await queryCollection('decks').where('featured', '=', true).first()
+  return row ? { ...row, id: deckSlug(row) } : null
 })
 </script>
 
 <template>
-  <div v-if="deck" class="rounded-card border border-emerald-800 overflow-hidden flex flex-col sm:flex-row">
-        <div
-          :class="`bg-gradient-to-br ${gradientClass} sm:w-48 h-36 sm:h-auto shrink-0 relative`"
-          style="background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.08) 39px, rgba(0,0,0,0.08) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,0,0,0.08) 39px, rgba(0,0,0,0.08) 40px);"
-        >
-          <span class="absolute inset-0 flex items-center justify-center font-display text-white/20 text-5xl font-bold select-none">
-            {{ deck.title[0] }}
-          </span>
-        </div>
+  <!--
+    The featured deck is simply the deck card at a larger scale: same
+    vocabulary, more room. It carries no artwork because there is none to
+    carry — the previous version filled the gap with a gradient, a grid
+    overlay, and a giant initial, none of which said anything about the talk.
+  -->
+  <article v-if="deck" class="sw-deck-card sw-deck-card--featured group gap-3 p-6 sm:p-8">
+    <div class="relative z-raised flex items-center gap-2">
+      <span class="sw-badge-featured">Featured</span>
+      <span v-if="deck.conference" class="sw-deck-card__conference truncate">{{ deck.conference }}</span>
+    </div>
 
-        <div class="p-5 flex flex-col flex-1">
-          <h2 class="font-display text-xl font-semibold text-white mb-1 leading-snug">{{ deck.title }}</h2>
-          <p class="text-sm text-gray-400 mb-3 leading-relaxed">{{ deck.description }}</p>
+    <NuxtLink
+      :to="`/decks/${deck.id}`"
+      class="block rounded-btn focus:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
+    >
+      <span class="absolute inset-0" aria-hidden="true" />
+      <h2 class="font-display text-3xl sm:text-4xl font-semibold text-[var(--sw-text-1)] leading-tight text-pretty">
+        {{ deck.title }}
+      </h2>
+    </NuxtLink>
 
-          <div class="flex flex-wrap gap-1.5 mb-4">
-            <span
-              v-for="tag in deck.tags"
-              :key="tag"
-              class="text-xs px-2 py-0.5 rounded-tag bg-emerald-900/20 text-emerald-300 border border-emerald-800"
-            >{{ tag }}</span>
-          </div>
+    <p class="sw-deck-card__description max-w-2xl">{{ deck.description }}</p>
 
-          <div class="mt-auto">
-            <NuxtLink
-              :to="`/decks/${deck.id}`"
-              class="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400 hover:text-emerald-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 motion-safe:transition-colors"
-            >
-              Open deck <span aria-hidden="true">→</span>
-            </NuxtLink>
-          </div>
-        </div>
-  </div>
+    <div class="flex flex-wrap gap-1.5">
+      <span v-for="tag in deck.tags" :key="tag" :class="tagClass(tag)">{{ tag }}</span>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2">
+      <span class="sw-deck-card__cta">Open deck <span aria-hidden="true">→</span></span>
+      <span class="sw-deck-card__meta">{{ deck.slideCount }} slides · {{ deck.durationMinutes }}min</span>
+    </div>
+  </article>
 </template>
