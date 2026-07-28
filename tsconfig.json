@@ -1,3 +1,8 @@
 {
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "./.nuxt/tsconfig.json",
+  // Netlify edge functions run on Deno, not Node/Nuxt. They import from
+  // https://edge.netlify.com and use the global `Netlify` namespace, neither
+  // of which resolves under the Nuxt tsconfig — Netlify typechecks them at
+  // deploy time instead.
+  "exclude": ["netlify/edge-functions/**"]
 }

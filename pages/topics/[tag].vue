@@ -29,10 +29,17 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="max-w-6xl mx-auto px-4 py-8">
-    <nav class="text-xs text-gray-400 mb-6" aria-label="Breadcrumb">
-      <ol class="flex items-center gap-1.5">
-        <li><NuxtLink to="/" class="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-emerald-600 focus:outline-none focus:underline transition-colors">← All decks</NuxtLink></li>
+  <div class="max-w-page mx-auto px-page-x lg:px-page-x-lg py-section-lg mt-14">
+    <!--
+      Keeps the 44px touch target from the breadcrumb work merged from main,
+      but on the token palette and the full Topics > tag trail rather than a
+      single "All decks" link in raw gray.
+    -->
+    <nav class="mb-8" aria-label="Breadcrumb">
+      <ol class="sw-breadcrumb">
+        <li><NuxtLink to="/topics" class="inline-flex items-center min-h-[44px] px-1">Topics</NuxtLink></li>
+        <li aria-hidden="true"><span class="sw-breadcrumb__separator">/</span></li>
+        <li class="text-[var(--sw-text-1)]" aria-current="page">{{ displayTag }}</li>
       </ol>
     </nav>
 

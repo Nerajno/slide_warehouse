@@ -1,4 +1,4 @@
-import { Context } from "https://edge.netlify.com";
+import type { Context } from "https://edge.netlify.com";
 
 const SUPABASE_URL = Netlify.env.get("SUPABASE_URL");
 const SUPABASE_KEY = Netlify.env.get("SUPABASE_ANON_KEY");
