@@ -9,6 +9,7 @@ const options: { value: SearchParams['sort']; label: string }[] = [
   { value: 'oldest', label: 'Oldest First' },
   { value: 'az', label: 'A → Z' },
   { value: 'za', label: 'Z → A' },
+  { value: 'recently-updated', label: 'Recently Updated' },
 ]
 
 function onChange(e: Event) {

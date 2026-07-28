@@ -29,11 +29,11 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="max-w-page mx-auto px-page-x lg:px-page-x-lg py-section-lg mt-14">
-    <nav class="sw-breadcrumb mb-8" aria-label="Breadcrumb">
-      <NuxtLink to="/topics">Topics</NuxtLink>
-      <span class="sw-breadcrumb__separator" aria-hidden="true">/</span>
-      <span aria-current="page">{{ displayTag }}</span>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <nav class="text-xs text-gray-400 mb-6" aria-label="Breadcrumb">
+      <ol class="flex items-center gap-1.5">
+        <li><NuxtLink to="/" class="inline-flex items-center justify-center min-h-[44px] px-1 hover:text-emerald-600 focus:outline-none focus:underline transition-colors">← All decks</NuxtLink></li>
+      </ol>
     </nav>
 
     <h1 class="sw-section-head">{{ displayTag }}</h1>
