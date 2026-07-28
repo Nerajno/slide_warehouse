@@ -8,7 +8,7 @@ const tag = computed(() => route.params.tag as string)
 const { data: decks } = await useAsyncData(
   () => `topic-${tag.value}`,
   async () => {
-    const all = await queryCollection('decks').all()
+    const all = withSlug(await queryCollection('decks').all())
     return all.filter(d => (d.tags as string[] | undefined)?.includes(tag.value) ?? false) as unknown as DeckFrontmatter[]
   },
   { watch: [tag] }

@@ -8,7 +8,10 @@ const { data: speakerData } = await useAsyncData('hero-speaker',
   () => queryCollection('speaker').first()
 )
 const { data: recentDeck } = await useAsyncData('hero-recent',
-  () => queryCollection('decks').where('mostRecent', '=', true).first()
+  async () => {
+    const row = await queryCollection('decks').where('mostRecent', '=', true).first()
+    return row ? { ...row, id: deckSlug(row) } : null
+  }
 )
 
 const deckCount = computed(() => decksData.value?.length ?? 0)

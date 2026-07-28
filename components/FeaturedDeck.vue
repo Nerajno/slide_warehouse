@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { tagClass } from '~/types'
 
-const { data: deck } = await useAsyncData('featured-deck', () =>
-  queryCollection('decks').where('featured', '=', true).first()
-)
+const { data: deck } = await useAsyncData('featured-deck', async () => {
+  const row = await queryCollection('decks').where('featured', '=', true).first()
+  return row ? { ...row, id: deckSlug(row) } : null
+})
 </script>
 
 <template>

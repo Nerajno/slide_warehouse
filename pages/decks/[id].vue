@@ -4,9 +4,13 @@ import type { DeckFrontmatter } from '~/types'
 const route = useRoute()
 const { addRecent } = useRecentDecks()
 
+// Query by `path`, not `id`: Content v3 sets `id` to the source file path.
 const { data: deck } = await useAsyncData(
   `deck-${route.params.id}`,
-  () => queryCollection('decks').where('id', '=', route.params.id as string).first() as unknown as Promise<DeckFrontmatter | null>,
+  async () => {
+    const row = await queryCollection('decks').where('path', '=', `/decks/${route.params.id}`).first()
+    return (row ? { ...row, id: deckSlug(row) } : null) as unknown as DeckFrontmatter | null
+  },
 )
 
 if (!deck.value) throw createError({ statusCode: 404, message: 'Deck not found' })
@@ -29,16 +33,20 @@ const STATUS_LABEL: Record<string, string> = {
   archived:  'Archived',
 }
 
-const revealSrc = computed(
-  () => `${deck.value!.revealBasePath}/v${selectedVersion.value}.html`,
-)
+// Use the version's declared `revealFile`. Synthesising `v{N}.html` broke any
+// version whose file keeps its event-branded name (v2 of networking-talk is
+// `networking-talk-revealjs-Boise2026.html`), which 404'd the viewer.
+const revealSrc = computed(() => {
+  const v = deck.value!.versions?.find(x => x.version === selectedVersion.value)
+  return `${deck.value!.revealBasePath}/${v?.revealFile ?? `v${selectedVersion.value}.html`}`
+})
 
 const lastEvent = computed(() => deck.value?.events?.at(-1) ?? '')
 
 // Related talks based on shared tags
 const { data: allDecks } = await useAsyncData(
   `related-decks-${route.params.id}`,
-  () => queryCollection('decks').all() as unknown as Promise<DeckFrontmatter[]>,
+  async () => withSlug(await queryCollection('decks').all()) as unknown as DeckFrontmatter[],
 )
 
 const relatedTalks = computed(() => {
