@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { SpeakerData } from '~/types'
 
 const { data: speaker } = await useAsyncData('speaker-bio', () =>
   queryCollection('speaker').first()

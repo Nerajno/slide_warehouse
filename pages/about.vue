@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SpeakerData, DeckFrontmatter } from '~/types'
+import type { DeckFrontmatter } from '~/types'
 
 const { data: speaker } = await useAsyncData('about-speaker', () =>
   queryCollection('speaker').first()

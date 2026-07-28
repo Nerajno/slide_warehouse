@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DeckFrontmatter, SpeakerData } from '~/types'
+import type { DeckFrontmatter } from '~/types'
 
 const { data: decksData } = await useAsyncData('hero-decks',
   () => queryCollection('decks').select('id', 'slideCount').all()

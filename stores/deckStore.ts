@@ -15,7 +15,8 @@ export const useDeckStore = defineStore('decks', () => {
 
   function toggleTag(tag: Tag) {
     const idx = activeTags.value.indexOf(tag)
-    idx === -1 ? activeTags.value.push(tag) : activeTags.value.splice(idx, 1)
+    if (idx === -1) activeTags.value.push(tag)
+    else activeTags.value.splice(idx, 1)
   }
 
   function clearFilters() {

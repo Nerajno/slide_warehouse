@@ -41,7 +41,6 @@ const revealSrc = computed(() => {
   return `${deck.value!.revealBasePath}/${v?.revealFile ?? `v${selectedVersion.value}.html`}`
 })
 
-const lastEvent = computed(() => deck.value?.events?.at(-1) ?? '')
 
 // Related talks based on shared tags
 const { data: allDecks } = await useAsyncData(

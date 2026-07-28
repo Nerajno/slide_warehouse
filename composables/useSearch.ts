@@ -1,7 +1,6 @@
 export function useSearch() {
   const store = useDeckStore()
   const router = useRouter()
-  const route = useRoute()
 
   function onInput(val: string) {
     store.setSearch(val)

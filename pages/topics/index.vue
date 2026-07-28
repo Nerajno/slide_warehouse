@@ -15,7 +15,7 @@ const tags = computed(() => {
   return TAG_LIST.map(tag => ({
     tag,
     label: displayTag(tag),
-    count: all.filter(d => d.tags?.includes(tag as any)).length,
+    count: all.filter(d => (d.tags as string[] | undefined)?.includes(tag)).length,
   })).filter(t => t.count > 0).sort((a, b) => b.count - a.count)
 })
 
