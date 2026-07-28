@@ -4,14 +4,13 @@ const YEAR = new Date().getFullYear()
 </script>
 
 <template>
-  <footer id="about" aria-labelledby="footer-heading" class="border-t border-[var(--sw-border)] py-20 px-6">
-    <div class="max-w-6xl mx-auto">
+  <footer id="about" aria-labelledby="footer-heading" class="border-t border-[var(--sw-border)] py-section-xl px-page-x lg:px-page-x-lg">
+    <div class="max-w-page mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mb-12">
         <!-- Left — bio + socials -->
         <div>
-          <p class="font-mono text-[0.65rem] uppercase tracking-widest text-[var(--sw-text-3)] mb-4">The Speaker</p>
-          <h2 id="footer-heading" class="text-2xl font-semibold text-[var(--sw-text-1)] mb-3">Nerando Johnson</h2>
-          <p class="text-sm text-[var(--sw-text-2)] leading-relaxed mb-6">
+          <h2 id="footer-heading" class="font-display text-4xl font-semibold text-[var(--sw-text-1)] leading-tight mb-4">Nerando Johnson</h2>
+          <p class="font-sans text-[var(--sw-text-2)] leading-relaxed mb-6 max-w-prose">
             Software developer, international conference speaker, and community builder.
             Speaking at conferences across the US since 2019 — career development, soft skills, and frontend engineering.
             Writing at <a href="https://developingdvlpr.com" target="_blank" rel="noopener noreferrer" class="text-[var(--sw-primary)] underline underline-offset-2">developingdvlpr.com</a>.
@@ -52,7 +51,7 @@ const YEAR = new Date().getFullYear()
           <div>
             <h3 class="text-sm font-semibold text-[var(--sw-text-1)] mb-3">About These Slides</h3>
             <p class="text-sm text-[var(--sw-text-2)] leading-relaxed">
-              All presentations are built with <a href="https://revealjs.com" target="_blank" rel="noopener noreferrer" class="text-primary underline underline-offset-2">Reveal.js</a> — open-source HTML presentation framework. Each deck is versioned, shareable, and runs in-browser with no install required.
+              All presentations are built with <a href="https://revealjs.com" target="_blank" rel="noopener noreferrer" class="text-[var(--sw-primary)] underline underline-offset-2">Reveal.js</a> — open-source HTML presentation framework. Each deck is versioned, shareable, and runs in-browser with no install required.
             </p>
           </div>
           <div>
@@ -60,9 +59,11 @@ const YEAR = new Date().getFullYear()
             <p class="text-sm text-[var(--sw-text-2)] leading-relaxed mb-4">
               Interested in having Nerando speak at your conference, meetup, or company event?
             </p>
+            <!-- Booking is the one forthcoming-facing action here, so it takes amber. -->
             <a
               :href="`mailto:${CONTACT_EMAIL}`"
-              class="inline-flex items-center justify-center h-9 px-4 rounded border border-[var(--sw-border)] text-sm font-medium text-[var(--sw-text-1)] hover:bg-[var(--sw-surface-2)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] motion-reduce:transition-none"
+              aria-label="Email Nerando to book a talk"
+              class="sw-btn-accent"
             >Get in Touch</a>
           </div>
         </div>

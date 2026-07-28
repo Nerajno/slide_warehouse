@@ -81,36 +81,25 @@ export default {
           danger:     'var(--sw-danger)',
           'danger-bg':'var(--sw-danger-bg)',
           focus:      'var(--sw-focus-ring)',
+          rail:       'var(--sw-rail)',
+          'rail-live':'var(--sw-rail-live)',
         },
 
-        // Per-topic tag color pairs
+        // Per-topic tag color pairs.
+        // These point at the CSS vars in tokens.css so they follow the theme —
+        // hardcoding hex here is what made the old values light-mode only.
         // Usage: bg-tag-vue text-tag-vue-text border-tag-vue-border
-        tag: {
-          vue:             '#dbeafe',
-          'vue-text':      '#1d4ed8',
-          'vue-border':    '#93c5fd',
-          javascript:      '#ede9fe',
-          'javascript-text':'#5b21b6',
-          'javascript-border':'#c4b5fd',
-          career:          '#d1fae5',
-          'career-text':   '#065f46',
-          'career-border': '#6ee7b7',
-          'soft-skills':   '#fef3c7',
-          'soft-skills-text':'#92400e',
-          'soft-skills-border':'#fde68a',
-          fundamentals:    '#fce7f3',
-          'fundamentals-text':'#9d174d',
-          'fundamentals-border':'#f9a8d4',
-          community:       '#f0fdf4',
-          'community-text':'#14532d',
-          'community-border':'#86efac',
-          architecture:    '#f0f9ff',
-          'architecture-text':'#0c4a6e',
-          'architecture-border':'#7dd3fc',
-          accessibility:   '#fdf4ff',
-          'accessibility-text':'#581c87',
-          'accessibility-border':'#d8b4fe',
-        },
+        tag: Object.fromEntries(
+          [
+            'vue', 'javascript', 'career', 'soft-skills', 'fundamentals',
+            'community', 'architecture', 'accessibility', 'nuxt', 'typescript',
+            'beginner', 'css', 'react', 'design', 'patterns', 'workshop', 'advanced',
+          ].flatMap(t => [
+            [t, `var(--tag-${t}-bg)`],
+            [`${t}-text`, `var(--tag-${t}-text)`],
+            [`${t}-border`, `var(--tag-${t}-border)`],
+          ])
+        ),
       },
 
       // ─── Typography ─────────────────────────────────────────────────
@@ -132,6 +121,11 @@ export default {
         '3xl': ['30px', { lineHeight: '1.2' }],
         '4xl': ['36px', { lineHeight: '1.15' }],
         '5xl': ['48px', { lineHeight: '1.1' }],
+        // Display ceiling. Editorial sizes for Persuade surfaces only —
+        // never for Operate UI labels or data. 96px is the hard cap.
+        '6xl': ['60px', { lineHeight: '1.05', letterSpacing: '-0.02em' }],
+        '7xl': ['76px', { lineHeight: '1.0',  letterSpacing: '-0.03em' }],
+        '8xl': ['96px', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
       },
 
       fontWeight: {
@@ -162,10 +156,10 @@ export default {
 
       // ─── Border Radius ──────────────────────────────────────────────
       borderRadius: {
-        btn:   '4px',    // buttons, inputs
+        btn:   '6px',    // buttons, inputs — small controls stay tight
         tag:   '6px',    // topic tags
-        card:  '8px',    // deck cards, stat blocks
-        modal: '12px',   // modals, drawers, larger panels
+        card:  '12px',   // deck cards, stat blocks, panels
+        modal: '16px',   // modals, drawers, larger panels
         pill:  '9999px', // filter pills, badges
       },
 
@@ -173,7 +167,8 @@ export default {
       boxShadow: {
         'card-sm':    '0 1px 3px 0 rgba(0,0,0,0.08)',
         'card-md':    '0 4px 12px 0 rgba(0,0,0,0.08)',
-        'card-hover': '0 4px 16px 0 rgba(5,150,105,0.12)',
+        'card-hover': 'var(--sw-card-hover)',
+        'lift':       'var(--sw-lift)',
         'focus':      '0 0 0 3px rgba(5,150,105,0.35)',
         'focus-amber':'0 0 0 3px rgba(217,119,6,0.35)',
         none:         'none',
@@ -203,10 +198,14 @@ export default {
         slow:   '300ms',
       },
 
+      // Tailwind emits `ease-{key}`, so these keys must NOT be prefixed with
+      // `ease-` themselves — the previous `ease-out-smooth` key produced
+      // `ease-ease-out-smooth` and every `ease-out-smooth` in a template was
+      // silently a no-op.
       transitionTimingFunction: {
-        'ease-out-smooth': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-        'ease-in-smooth':  'cubic-bezier(0.55, 0.055, 0.675, 0.19)',
-        'spring':          'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'out-smooth': 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        'in-smooth':  'cubic-bezier(0.55, 0.055, 0.675, 0.19)',
+        'spring':     'cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
 
       keyframes: {
@@ -224,10 +223,13 @@ export default {
         },
       },
 
+      // The easing here is a raw CSS value, not a class name — `ease-out-smooth`
+      // is not a valid <easing-function>, so these shorthands were invalid and
+      // the animations fell back to the browser default.
       animation: {
-        'fade-in':  'fade-in 200ms ease-out-smooth both',
-        'count-up': 'count-up 600ms ease-out-smooth both',
-        'slide-in': 'slide-in 200ms ease-out-smooth both',
+        'fade-in':  'fade-in 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both',
+        'count-up': 'count-up 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both',
+        'slide-in': 'slide-in 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94) both',
       },
     },
   },

@@ -100,16 +100,39 @@ export interface ConferenceEvent {
   year: number;
 }
 
-/** Tag → Tailwind gradient classes for card thumbnails */
-export const TAG_COLORS: Record<Tag, string> = {
-  vue: 'from-emerald-400 to-teal-700',
-  nuxt: 'from-green-500 to-emerald-800',
-  javascript: 'from-amber-400 to-orange-600',
-  typescript: 'from-sky-400 to-blue-700',
-  career: 'from-violet-500 to-purple-800',
-  'soft-skills': 'from-rose-400 to-pink-700',
-  fundamentals: 'from-slate-400 to-gray-700',
-  architecture: 'from-cyan-400 to-indigo-700',
-  accessibility: 'from-teal-400 to-cyan-700',
-  community: 'from-orange-400 to-red-600',
-};
+/**
+ * Every topic the site can render, in display order.
+ *
+ * Colour for each of these lives in one place — the `--tag-*` custom
+ * properties in assets/css/tokens.css, surfaced as `.sw-tag--{tag}`. That
+ * indirection is what makes tags theme-aware; the gradient map this replaced
+ * was light-mode only and drifted out of sync with the token layer.
+ */
+export const TAG_LIST = [
+  'vue',
+  'nuxt',
+  'javascript',
+  'typescript',
+  'career',
+  'soft-skills',
+  'fundamentals',
+  'architecture',
+  'accessibility',
+  'community',
+  'beginner',
+  'css',
+  'react',
+  'design',
+  'patterns',
+  'workshop',
+  'advanced',
+] as const;
+
+export type TagName = typeof TAG_LIST[number];
+
+/** Resolve a topic to its `.sw-tag` modifier. Unknown tags fall back to neutral. */
+export function tagClass(tag: string): string {
+  return (TAG_LIST as readonly string[]).includes(tag)
+    ? `sw-tag sw-tag--${tag}`
+    : 'sw-tag sw-tag--patterns';
+}

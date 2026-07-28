@@ -76,59 +76,62 @@ watch(stats, (val) => {
 </script>
 
 <template>
-  <section aria-labelledby="hero-heading" class="pt-32 pb-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="md:grid md:grid-cols-2 md:gap-16 md:items-start">
-        <!-- Left col -->
-        <div>
-          <span class="inline-block font-mono text-2xs uppercase tracking-widest text-[var(--sw-text-3)] mb-6">
-            Conference Presentations · @Nerajno
+  <section aria-labelledby="hero-heading" class="pt-28 pb-section-xl sm:pt-40 px-page-x lg:px-page-x-lg">
+    <div class="max-w-page mx-auto">
+      <!--
+        The headline gets the page's largest type and the most air. Everything
+        below it steps down hard — that contrast is what makes this read as the
+        peak of the scroll rather than one more evenly-weighted band.
+      -->
+      <h1
+        id="hero-heading"
+        class="font-display text-6xl sm:text-7xl lg:text-8xl font-semibold text-[var(--sw-text-1)] text-balance max-w-[14ch]"
+      >
+        Talks that<br><em class="text-[var(--sw-primary)] not-italic">connect.</em>
+      </h1>
+
+      <p class="sw-section-lede mt-8 max-w-xl">
+        Browse, search, and share Reveal.js presentation decks — from meetups and conference stages to your screen.
+      </p>
+
+      <div class="flex flex-wrap gap-3 mt-10">
+        <a href="#decks" class="sw-btn-primary">Browse Decks</a>
+        <a href="#history" class="sw-btn-secondary">Speaker History</a>
+      </div>
+
+      <!-- Evidence sits below the claim, at a deliberately quieter volume. -->
+      <div class="mt-section-lg grid gap-6 lg:grid-cols-[1.4fr_1fr] lg:items-end">
+        <div ref="statsRef" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div
+            v-for="(stat, i) in stats"
+            :key="stat.label"
+            class="sw-stat-block"
+          >
+            <p class="sw-stat-block__number" :aria-label="`${stat.value} ${stat.label}`">{{ displayValues[i] }}</p>
+            <p class="sw-stat-block__label" aria-hidden="true">{{ stat.label }}</p>
+          </div>
+        </div>
+
+        <!--
+          Most-recent talk. Amber throughout, per the site's one colour rule:
+          emerald is the archive, amber is what's current or forthcoming.
+        -->
+        <NuxtLink
+          v-if="recentDeck"
+          :to="recentDeckUrl"
+          class="group block rounded-card border border-[var(--sw-accent)] bg-[var(--sw-surface)] p-5
+                 transition-[box-shadow,border-color] duration-base ease-out-smooth
+                 hover:shadow-lift focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
+        >
+          <span class="sw-status sw-status--confirmed">
+            <span aria-hidden="true" class="w-1.5 h-1.5 rounded-pill bg-current" />
+            Most recent{{ recentConf ? ` · ${recentConf}` : '' }}
           </span>
-          <h1 id="hero-heading" class="font-display text-5xl sm:text-6xl font-semibold leading-[0.95] tracking-tight text-[var(--sw-text-1)] mb-6 text-balance">
-            Talks that<br><em class="text-[var(--sw-primary)] not-italic">connect.</em>
-          </h1>
-          <p class="font-sans text-[var(--sw-text-2)] text-base sm:text-lg leading-relaxed mb-10 text-pretty max-w-lg">
-            Browse, search, and share Reveal.js presentation decks — from meetups and conference stages to your screen.
-          </p>
-          <div class="flex flex-wrap gap-3">
-            <a href="#decks" class="sw-btn-primary">Browse Decks</a>
-            <a href="#history" class="sw-btn-secondary">Speaker History</a>
-          </div>
-        </div>
-
-        <!-- Right col -->
-        <div class="mt-16 md:mt-0">
-          <!-- 2×2 stat grid -->
-          <div ref="statsRef" class="grid grid-cols-2 gap-4 mb-6">
-            <div
-              v-for="(stat, i) in stats"
-              :key="stat.label"
-              class="sw-stat-block"
-            >
-              <p class="sw-stat-block__number" :aria-label="`${stat.value} ${stat.label}`">{{ displayValues[i] }}</p>
-              <p class="sw-stat-block__label" aria-hidden="true">{{ stat.label }}</p>
-            </div>
-          </div>
-
-          <!-- Most-recent-talk banner -->
-          <div v-if="recentDeck" class="rounded-card border border-[var(--sw-border)] bg-[var(--sw-surface)] p-6 flex gap-4 items-start">
-            <div class="shrink-0 flex items-center justify-center w-10 h-10 rounded-card bg-[var(--sw-primary-bg)]">
-              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[var(--sw-primary)]">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-              </svg>
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="font-mono text-2xs uppercase tracking-widest text-[var(--sw-text-3)] mb-1">
-                Most Recent · {{ recentConf }}
-              </p>
-              <h3 class="font-sans text-sm font-semibold text-[var(--sw-text-1)] mb-3 truncate">{{ recentDeck.title }}</h3>
-              <NuxtLink
-                :to="recentDeckUrl"
-                class="sw-deck-card__cta"
-              >Open deck <span aria-hidden="true">→</span></NuxtLink>
-            </div>
-          </div>
-        </div>
+          <h2 class="font-display text-2xl font-semibold text-[var(--sw-text-1)] leading-tight mt-3 text-pretty">
+            {{ recentDeck.title }}
+          </h2>
+          <span class="sw-deck-card__cta mt-4">Open deck <span aria-hidden="true">→</span></span>
+        </NuxtLink>
       </div>
     </div>
   </section>
