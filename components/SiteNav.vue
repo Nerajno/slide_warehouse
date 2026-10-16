@@ -35,8 +35,9 @@ function handleKeydown(e: KeyboardEvent) {
 
       <!-- Desktop nav -->
       <nav aria-label="Main navigation" class="hidden items-center gap-0.5 md:flex">
-        <a href="#decks" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]">Decks</a>
-        <a href="#history" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]">History</a>
+        <a href="/#decks" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]">Decks</a>
+        <NuxtLink to="/topics" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" active-class="text-[var(--sw-primary)]">Topics</NuxtLink>
+        <a href="/#history" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]">History</a>
         <NuxtLink to="/about" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" active-class="text-[var(--sw-primary)]">About</NuxtLink>
         <a href="mailto:iamnerandojohnson@gmail.com" aria-label="Email Nerando to book a talk" class="inline-flex min-h-[44px] items-center justify-center rounded-btn px-3 text-xs font-medium border border-[var(--sw-primary)] bg-[var(--sw-primary)]/10 text-[var(--sw-primary)] transition-colors duration-[150ms] hover:bg-[var(--sw-primary)]/20 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] ml-1">Book a Talk</a>
         <a
@@ -99,13 +100,14 @@ function handleKeydown(e: KeyboardEvent) {
     <!-- Mobile menu -->
     <div
       id="mobile-nav"
-      class="overflow-hidden border-t border-[var(--sw-border)] bg-[var(--sw-nav-bg)]/95 transition-[max-height] duration-[300ms] md:hidden"
+      class="overflow-hidden border-t border-[var(--sw-border)] bg-[var(--sw-nav-bg)] transition-[max-height] duration-[300ms] md:hidden"
       :class="isOpen ? 'max-h-96' : 'max-h-0'"
       :aria-hidden="!isOpen"
     >
       <nav aria-label="Mobile navigation" class="flex flex-col px-4 py-2">
-        <a ref="firstLink" href="#decks" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Decks</a>
-        <a href="#history" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">History</a>
+        <a ref="firstLink" href="/#decks" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Decks</a>
+        <NuxtLink to="/topics" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" active-class="text-[var(--sw-primary)]" @click="isOpen = false">Topics</NuxtLink>
+        <a href="/#history" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">History</a>
         <NuxtLink to="/about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" active-class="text-[var(--sw-primary)]" @click="isOpen = false">About</NuxtLink>
         <a href="mailto:iamnerandojohnson@gmail.com" aria-label="Email Nerando to book a talk" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm font-medium text-[var(--sw-primary)] bg-[var(--sw-primary)]/10 px-3 rounded-btn hover:bg-[var(--sw-primary)]/20 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Book a Talk</a>
         <a
