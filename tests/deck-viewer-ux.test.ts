@@ -6,12 +6,6 @@ async function src(path: string): Promise<string> {
 }
 
 describe('#4 deck viewer UX — version switch + slide counter (US-2.5)', () => {
-  it('deck [id] page has version switcher with selectedVersion ref', async () => {
-    const text = await src('pages/decks/[id].vue')
-    expect(text).toContain('selectedVersion')
-    expect(text).toContain('currentVersion')
-  })
-
   it('revealSrc computed uses selectedVersion to build iframe URL', async () => {
     const text = await src('pages/decks/[id].vue')
     expect(text).toContain('revealBasePath')

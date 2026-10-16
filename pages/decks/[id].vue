@@ -24,6 +24,34 @@ const talkLength = computed(() => {
 const selectedVersion = ref(deck.value!.currentVersion)
 const frameLoaded = ref(false)
 
+// Each version is a delivery of the talk at a different event. Most labels
+// already name the event and year; only add the date when they don't, so the
+// closed select stays short enough to show "(current)".
+const versionOptions = computed(() =>
+  (deck.value!.versions ?? []).map(v => {
+    const when = /\b\d{4}\b/.test(v.label)
+      ? ''
+      : ` · ${new Date(`${v.date}T00:00:00`).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`
+    return {
+      value: v.version,
+      label: `${v.label}${when}${v.version === deck.value!.currentVersion ? ' (current)' : ''}`,
+    }
+  }),
+)
+
+// `?v=` makes a specific delivery shareable. Read after mount: pages are
+// prerendered without the query, so reading it in setup would mismatch on hydrate.
+const router = useRouter()
+onMounted(() => {
+  const v = Number(route.query.v)
+  if (versionOptions.value.some(o => o.value === v)) selectedVersion.value = v
+})
+watch(selectedVersion, (v) => {
+  frameLoaded.value = false
+  const query = { ...route.query, v: v === deck.value!.currentVersion ? undefined : String(v) }
+  router.replace({ query })
+})
+
 /** Same two-hue rule as the circuit: amber ahead, emerald done, neutral filed. */
 const STATUS_CLASS: Record<string, string> = {
   upcoming:  'sw-status--confirmed',
@@ -148,10 +176,18 @@ defineOgImage({
         </a>
       </div>
 
-      <!-- Right: talk length. Plain text: there is nothing to switch to. -->
-      <p v-if="talkLength" class="shrink-0 font-sans text-sm text-[var(--sw-text-3)]">
-        <span class="sr-only">Talk length: </span>{{ talkLength }}
-      </p>
+      <!-- Right: version (when there's more than one) and talk length. -->
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-2 min-w-0">
+        <div v-if="versionOptions.length > 1" class="flex items-center gap-2 min-w-0">
+          <label for="version-select" class="shrink-0 font-sans text-sm text-[var(--sw-text-3)]">Version</label>
+          <select id="version-select" v-model.number="selectedVersion" class="sw-input w-auto min-w-0 max-w-full pl-3 pr-8 text-sm">
+            <option v-for="o in versionOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
+          </select>
+        </div>
+        <p v-if="talkLength" class="font-sans text-sm text-[var(--sw-text-3)]">
+          <span class="sr-only">Talk length: </span>{{ talkLength }}
+        </p>
+      </div>
     </div>
 
     <!--
