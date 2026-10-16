@@ -53,6 +53,12 @@ const YEAR = new Date().getFullYear()
             <p class="text-sm text-[var(--sw-text-2)] leading-relaxed">
               All presentations are built with <a href="https://revealjs.com" target="_blank" rel="noopener noreferrer" class="text-[var(--sw-primary)] underline underline-offset-2">Reveal.js</a> — open-source HTML presentation framework. Each deck is versioned, shareable, and runs in-browser with no install required.
             </p>
+            <nav aria-label="Browse" class="mt-4">
+              <ul class="flex flex-col gap-1 text-sm">
+                <li><NuxtLink to="/topics" class="inline-flex min-h-[44px] items-center text-[var(--sw-primary)] underline underline-offset-2 hover:text-[var(--sw-primary-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] rounded">All topics</NuxtLink></li>
+                <li><NuxtLink to="/legacy" class="inline-flex min-h-[44px] items-center text-[var(--sw-primary)] underline underline-offset-2 hover:text-[var(--sw-primary-hover)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] rounded">Legacy decks</NuxtLink></li>
+              </ul>
+            </nav>
           </div>
           <div>
             <h3 class="text-sm font-semibold text-[var(--sw-text-1)] mb-3">Book a Talk</h3>
