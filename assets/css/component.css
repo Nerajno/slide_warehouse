@@ -387,8 +387,8 @@
   }
 
   .sw-toast--success {
-    background-color: var(--sw-primary-solid);
-    color: var(--sw-on-primary);
+    background-color: var(--sw-success-solid);
+    color: var(--sw-on-success);
   }
 
   .sw-toast--error {

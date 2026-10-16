@@ -5,8 +5,8 @@ const { data: speaker } = await useAsyncData('about-speaker', () =>
   queryCollection('speaker').first()
 )
 
-const { data: allDecks } = await useAsyncData('about-decks', () =>
-  queryCollection('decks').all() as unknown as Promise<DeckFrontmatter[]>
+const { data: allDecks } = await useAsyncData('about-decks', async () =>
+  withSlug(await queryCollection('decks').all()) as unknown as DeckFrontmatter[]
 )
 
 const totalDecks = computed(() => (allDecks.value as DeckFrontmatter[])?.length ?? 0)

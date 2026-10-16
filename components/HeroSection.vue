@@ -33,25 +33,34 @@ const recentConf = computed(() =>
   (recentDeck.value as DeckFrontmatter | null)?.events?.at(-1) ?? ''
 )
 
-// Animated counters
+// Animated counters. The server renders the real numbers so crawlers, link
+// previews and no-JS visitors see them; the count-up only enhances that.
 const statsRef = ref<HTMLElement | null>(null)
-const displayValues = ref(stats.value.map(() => 0))
+const displayValues = ref(stats.value.map(s => s.value))
 const prefersReducedMotion = ref(false)
 
 onMounted(() => {
   prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (prefersReducedMotion.value) return
 
+  // Already on screen at load: the visitor is reading the real numbers, so
+  // count up from 60% of them rather than dropping to 0. Below the fold:
+  // zero them while nobody can see it and count up from 0 on entry.
+  const ON_SCREEN_FROM = 0.6
+  let first = true
+  let from = 0
   const observer = new IntersectionObserver(
     (entries) => {
-      if (!entries[0].isIntersecting) return
+      const visible = entries[0].isIntersecting
+      if (first) {
+        from = visible ? ON_SCREEN_FROM : 0
+        if (!visible) displayValues.value = stats.value.map(() => 0)
+        first = false
+      }
+      if (!visible) return
       observer.disconnect()
 
-      if (prefersReducedMotion.value) {
-        displayValues.value = stats.value.map(s => s.value)
-        return
-      }
-
-      const duration = 1200
+      const duration = from ? 800 : 1200
       const start = performance.now()
       const targets = stats.value.map(s => s.value)
 
@@ -59,7 +68,7 @@ onMounted(() => {
         const elapsed = now - start
         const progress = Math.min(elapsed / duration, 1)
         const ease = 1 - Math.pow(1 - progress, 3)
-        displayValues.value = targets.map(t => Math.round(t * ease))
+        displayValues.value = targets.map(t => Math.round(t * (from + (1 - from) * ease)))
         if (progress < 1) requestAnimationFrame(tick)
       }
 
@@ -72,9 +81,7 @@ onMounted(() => {
 })
 
 watch(stats, (val) => {
-  if (prefersReducedMotion.value) {
-    displayValues.value = val.map(s => s.value)
-  }
+  displayValues.value = val.map(s => s.value)
 })
 </script>
 

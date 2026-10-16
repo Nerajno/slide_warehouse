@@ -67,13 +67,19 @@
   --sw-danger-bg:      #fee2e2;  /* red-100    */
   --sw-danger-text:    #991b1b;  /* red-800    */
 
-  --sw-success:        #059669;  /* emerald-600 — same as primary */
-  --sw-success-bg:     #d1fae5;
-  --sw-success-text:   #065f46;
+  /* Success / warning are their own hues, not the brand pair: success is a
+   * leaf green (OKLCH h≈136, emerald is 163), warning an ochre (h≈88, amber
+   * is 46–58). Each sits ΔE_ok ≥ 7 from its brand neighbour; pair them with
+   * an icon or label, never colour alone. */
+  --sw-success:        #489601;  /* icons/borders — 3.7:1 on white          */
+  --sw-success-solid:  #3e7303;  /* fills — 5.7:1 with white                */
+  --sw-on-success:     #ffffff;
+  --sw-success-bg:     #e3fdd8;
+  --sw-success-text:   #305301;  /* 8.2:1 on success-bg                    */
 
-  --sw-warning:        #d97706;  /* amber-600  — same as accent */
-  --sw-warning-bg:     #fef3c7;
-  --sw-warning-text:   #92400e;
+  --sw-warning:        #b28d04;  /* icons/borders — 3.1:1 on white          */
+  --sw-warning-bg:     #fff7d8;
+  --sw-warning-text:   #6a4d01;  /* 7.3:1 on warning-bg                    */
 
   /* Focus */
   --sw-focus-ring:     rgba(5, 150, 105, 0.35);
@@ -84,7 +90,7 @@
 
   /* Rail — the structural axis. 1px hairline, never a stripe on a card edge. */
   --sw-rail:           #e4e4e7;
-  --sw-rail-live:      #d97706;
+  --sw-rail-live:      var(--sw-accent);  /* "now" is brand emphasis, not a warning */
 
   /* Nav */
   --sw-nav-height:     60px;
@@ -137,13 +143,15 @@
   --sw-danger-bg:      #450a0a;  /* red-950    */
   --sw-danger-text:    #fca5a5;  /* red-300    */
 
-  --sw-success:        #10b981;
-  --sw-success-bg:     #064e3b;
-  --sw-success-text:   #6ee7b7;
+  --sw-success:        #77d33f;  /* 9.4:1 on zinc-900                       */
+  --sw-success-solid:  #77d33f;
+  --sw-on-success:     #0d2603;  /* 8.6:1 on success-solid                 */
+  --sw-success-bg:     #152e06;
+  --sw-success-text:   #a5ec73;  /* 10.4:1 on success-bg                   */
 
-  --sw-warning:        #f59e0b;
-  --sw-warning-bg:     #451a03;
-  --sw-warning-text:   #fde68a;
+  --sw-warning:        #ebd229;  /* 11.6:1 on zinc-900                      */
+  --sw-warning-bg:     #312900;
+  --sw-warning-text:   #edee31;  /* 11.7:1 on warning-bg                   */
 
   /* Focus */
   --sw-focus-ring:     rgba(16, 185, 129, 0.4);
@@ -154,7 +162,7 @@
 
   /* Rail */
   --sw-rail:           #3f3f46;
-  --sw-rail-live:      #f59e0b;
+  --sw-rail-live:      var(--sw-accent);
 
   /* Nav */
   --sw-nav-bg:         #18181b;
