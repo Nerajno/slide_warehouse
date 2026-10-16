@@ -39,17 +39,22 @@ const versionOptions = computed(() =>
   }),
 )
 
-// `?v=` makes a specific delivery shareable. Read after mount: pages are
-// prerendered without the query, so reading it in setup would mismatch on hydrate.
+// `?v=` makes a specific delivery shareable. Pages are prerendered without the
+// query, and while a prerendered page hydrates the router briefly sits on that
+// query-less route, restoring the real URL only after mount. So follow the
+// router's live route from mount on instead of reading the query once.
 const router = useRouter()
 onMounted(() => {
-  const v = Number(route.query.v)
-  if (versionOptions.value.some(o => o.value === v)) selectedVersion.value = v
+  watch(() => router.currentRoute.value.query.v, (q) => {
+    const v = Number(q)
+    if (versionOptions.value.some(o => o.value === v)) selectedVersion.value = v
+  }, { immediate: true })
 })
 watch(selectedVersion, (v) => {
   frameLoaded.value = false
-  const query = { ...route.query, v: v === deck.value!.currentVersion ? undefined : String(v) }
-  router.replace({ query })
+  const want = v === deck.value!.currentVersion ? undefined : String(v)
+  if (router.currentRoute.value.query.v === want) return
+  router.replace({ query: { ...router.currentRoute.value.query, v: want } })
 })
 
 /** Same two-hue rule as the circuit: amber ahead, emerald done, neutral filed. */
