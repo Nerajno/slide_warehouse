@@ -33,23 +33,28 @@ const recentConf = computed(() =>
   (recentDeck.value as DeckFrontmatter | null)?.events?.at(-1) ?? ''
 )
 
-// Animated counters
+// Animated counters. The server renders the real numbers so crawlers, link
+// previews and no-JS visitors see them; the count-up only enhances that.
 const statsRef = ref<HTMLElement | null>(null)
-const displayValues = ref(stats.value.map(() => 0))
+const displayValues = ref(stats.value.map(s => s.value))
 const prefersReducedMotion = ref(false)
 
 onMounted(() => {
   prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (prefersReducedMotion.value) return
 
+  let first = true
   const observer = new IntersectionObserver(
     (entries) => {
-      if (!entries[0].isIntersecting) return
+      const visible = entries[0].isIntersecting
+      // Already on screen at load: the real numbers are what the visitor is
+      // reading, so dropping them to 0 to count up would be a visible flash.
+      if (first && visible) return observer.disconnect()
+      // Below the fold: zero them while nobody can see it, animate on entry.
+      if (first) displayValues.value = stats.value.map(() => 0)
+      first = false
+      if (!visible) return
       observer.disconnect()
-
-      if (prefersReducedMotion.value) {
-        displayValues.value = stats.value.map(s => s.value)
-        return
-      }
 
       const duration = 1200
       const start = performance.now()
@@ -72,9 +77,7 @@ onMounted(() => {
 })
 
 watch(stats, (val) => {
-  if (prefersReducedMotion.value) {
-    displayValues.value = val.map(s => s.value)
-  }
+  displayValues.value = val.map(s => s.value)
 })
 </script>
 
