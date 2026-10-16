@@ -10,11 +10,15 @@ export default defineNuxtConfig({
     },
   },
 
+  // Netlify serves this site as static files, so every route a visitor can
+  // land on directly must be prerendered. Anything else falls through the
+  // netlify.toml catch-all to the homepage and hydrates as `/`.
   routeRules: {
     '/': { prerender: true },
     '/about': { prerender: true },
-    '/decks/**': { ssr: true },
-    '/topics/**': { ssr: true },
+    '/legacy': { prerender: true },
+    '/decks/**': { prerender: true },
+    '/topics/**': { prerender: true },
   },
 
   devtools: { enabled: process.env.NODE_ENV !== 'production' },
@@ -40,6 +44,9 @@ export default defineNuxtConfig({
 
   nitro: {
     prerender: {
+      // The homepage links every deck, so new decks are picked up without
+      // editing a list. The routes below stay as a floor for tag pages.
+      crawlLinks: true,
       routes: [
         '/about',
         '/topics',
