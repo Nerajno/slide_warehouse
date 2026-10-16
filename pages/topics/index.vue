@@ -2,8 +2,8 @@
 import type { DeckFrontmatter } from '~/types'
 import { TAG_LIST } from '~/types'
 
-const { data: decks } = await useAsyncData('topics-index', () =>
-  queryCollection('decks').all() as unknown as Promise<DeckFrontmatter[]>,
+const { data: decks } = await useAsyncData('topics-index', async () =>
+  withSlug(await queryCollection('decks').all()) as unknown as DeckFrontmatter[],
 )
 
 function displayTag(tag: string) {
