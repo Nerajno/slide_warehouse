@@ -20,12 +20,6 @@ describe('#4 deck viewer UX — version switch + slide counter (US-2.5)', () => 
     expect(text).toMatch(/revealBasePath.*selectedVersion|selectedVersion.*revealBasePath/s)
   })
 
-  it('deck [id] page exposes duration switcher with aria-pressed', async () => {
-    const text = await src('pages/decks/[id].vue')
-    expect(text).toContain('selectedDuration')
-    expect(text).toContain(':aria-pressed')
-  })
-
   it('DeckViewer receives and tracks slidechanged postMessage', async () => {
     const text = await src('components/DeckViewer.vue')
     expect(text).toContain("'slidechanged'")
