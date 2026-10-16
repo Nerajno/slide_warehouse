@@ -16,8 +16,11 @@ const { data: deck } = await useAsyncData(
 
 if (!deck.value) throw createError({ statusCode: 404, message: 'Deck not found' })
 
-const DURATIONS = ['30min', '45min', '60min'] as const
-const selectedDuration = ref<string>(deck.value!.tier ?? '45min')
+// Each deck is one length; there are no per-duration files to switch between.
+const talkLength = computed(() => {
+  const min = deck.value!.durationMinutes ?? Number.parseInt(deck.value!.tier ?? '', 10)
+  return Number.isFinite(min) ? `${min} min` : ''
+})
 const selectedVersion = ref(deck.value!.currentVersion)
 const frameLoaded = ref(false)
 
@@ -145,15 +148,10 @@ defineOgImage({
         </a>
       </div>
 
-      <!-- Right: duration switcher -->
-      <div class="flex items-center gap-1.5 shrink-0" role="group" aria-label="Select talk duration">
-        <button v-for="d in DURATIONS" :key="d" type="button" :aria-pressed="selectedDuration === d"
-          class="sw-filter-pill"
-          :class="{ 'sw-filter-pill--active': selectedDuration === d }"
-          @click="selectedDuration = d">
-          {{ d }}
-        </button>
-      </div>
+      <!-- Right: talk length. Plain text: there is nothing to switch to. -->
+      <p v-if="talkLength" class="shrink-0 font-sans text-sm text-[var(--sw-text-3)]">
+        <span class="sr-only">Talk length: </span>{{ talkLength }}
+      </p>
     </div>
 
     <!--
