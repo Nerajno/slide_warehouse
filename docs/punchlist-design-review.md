@@ -53,7 +53,7 @@ Status: ☐ open · ◐ partially fixed · ☑ done · Tracking issue: [#70]
   - Done when: Tab can always move focus past the viewer.
   - Effort: M (see Systemic below — DeckViewer needs token cleanup first).
 
-- [ ] [#66] **Stats render 0 before hydration** — `components/HeroSection.vue:38`
+- [x] [#66] **Stats render 0 before hydration** — `components/HeroSection.vue:38` — ☑ fixed in #72
   - `displayValues` starts at `0`; SSR HTML and no-JS users see zeros.
   - Fix: initialise to real values on the server; only reset to 0 on the client right before animating.
   - Done when: view-source of `/` shows real numbers.
