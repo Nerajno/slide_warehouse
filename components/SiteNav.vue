@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { CONTACT_EMAIL } from '~/utils/constants'
+
 const isOpen = ref(false)
 const toggleBtn = ref<HTMLButtonElement | null>(null)
 const firstLink = ref<HTMLAnchorElement | null>(null)
@@ -39,7 +41,7 @@ function handleKeydown(e: KeyboardEvent) {
         <NuxtLink to="/topics" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" active-class="text-[var(--sw-primary)]">Topics</NuxtLink>
         <a href="/#history" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]">History</a>
         <NuxtLink to="/about" class="inline-flex min-h-[44px] items-center justify-center rounded px-3 text-xs text-[var(--sw-text-2)] transition-colors duration-[150ms] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" active-class="text-[var(--sw-primary)]">About</NuxtLink>
-        <a href="mailto:iamnerandojohnson@gmail.com" aria-label="Email Nerando to book a talk" class="inline-flex min-h-[44px] items-center justify-center rounded-btn px-3 text-xs font-medium border border-[var(--sw-primary)] bg-[var(--sw-primary)]/10 text-[var(--sw-primary)] transition-colors duration-[150ms] hover:bg-[var(--sw-primary)]/20 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] ml-1">Book a Talk</a>
+        <a :href="`mailto:${CONTACT_EMAIL}`" aria-label="Email Nerando to book a talk" class="inline-flex min-h-[44px] items-center justify-center rounded-btn px-3 text-xs font-medium border border-[var(--sw-primary)] bg-[var(--sw-primary)]/10 text-[var(--sw-primary)] transition-colors duration-[150ms] hover:bg-[var(--sw-primary)]/20 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)] ml-1">Book a Talk</a>
         <a
           href="https://x.com/Nerajno"
           target="_blank"
@@ -109,7 +111,7 @@ function handleKeydown(e: KeyboardEvent) {
         <NuxtLink to="/topics" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" active-class="text-[var(--sw-primary)]" @click="isOpen = false">Topics</NuxtLink>
         <a href="/#history" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">History</a>
         <NuxtLink to="/about" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" active-class="text-[var(--sw-primary)]" @click="isOpen = false">About</NuxtLink>
-        <a href="mailto:iamnerandojohnson@gmail.com" aria-label="Email Nerando to book a talk" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm font-medium text-[var(--sw-primary)] bg-[var(--sw-primary)]/10 px-3 rounded-btn hover:bg-[var(--sw-primary)]/20 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Book a Talk</a>
+        <a :href="`mailto:${CONTACT_EMAIL}`" aria-label="Email Nerando to book a talk" :tabindex="isOpen ? 0 : -1" class="inline-flex min-h-[44px] items-center text-sm font-medium text-[var(--sw-primary)] bg-[var(--sw-primary)]/10 px-3 rounded-btn hover:bg-[var(--sw-primary)]/20 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]" @click="isOpen = false">Book a Talk</a>
         <a
           href="https://x.com/Nerajno"
           target="_blank"

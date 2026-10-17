@@ -64,6 +64,14 @@
     filter: brightness(1.08);
   }
 
+  /* CTA — ink. Reserved for the single booking action on a page (#63). */
+  .sw-btn-cta {
+    @apply sw-btn bg-[var(--sw-cta)] text-[var(--sw-on-cta)] border-transparent;
+  }
+  .sw-btn-cta:hover:not(:disabled) {
+    background-color: var(--sw-cta-hover);
+  }
+
   /* Danger — outlined red, for destructive actions */
   .sw-btn-danger {
     @apply sw-btn bg-transparent text-[var(--sw-danger)]

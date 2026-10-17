@@ -55,6 +55,12 @@
   --sw-accent-solid:   #b45309;  /* amber-700   — 5.0:1 with white */
   --sw-on-accent:      #ffffff;
 
+  /* Booking CTA — ink, outside the emerald/amber pair so the one
+     conversion action on a page reads as its own thing (#63). */
+  --sw-cta:            #18181b;  /* zinc-900 — 17.7:1 with on-cta */
+  --sw-cta-hover:      #3f3f46;  /* zinc-700 — 10.4:1 with on-cta */
+  --sw-on-cta:         #ffffff;
+
   /* Accent — Amber */
   --sw-accent:         #d97706;  /* amber-600  */
   --sw-accent-hover:   #b45309;  /* amber-700  */
@@ -130,6 +136,10 @@
   --sw-on-primary:     #052e16;  /* 8.5:1 on emerald-500 */
   --sw-accent-solid:   #f59e0b;
   --sw-on-accent:      #431407;  /* 8.1:1 on amber-500  */
+
+  --sw-cta:            #fafafa;  /* zinc-50  — 17.0:1 with on-cta */
+  --sw-cta-hover:      #d4d4d8;  /* zinc-300 — 12.0:1 with on-cta */
+  --sw-on-cta:         #18181b;
 
   /* Accent — Amber */
   --sw-accent:         #f59e0b;  /* amber-500  */

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DeckFrontmatter } from '~/types'
+import { CONTACT_EMAIL } from '~/utils/constants'
 
 const route = useRoute()
 const { addRecent } = useRecentDecks()
@@ -44,6 +45,11 @@ const versionOptions = computed(() =>
 // query-less route, restoring the real URL only after mount. So follow the
 // router's live route from mount on instead of reading the query once.
 const router = useRouter()
+
+// Booking: prefill the subject so the organiser doesn't have to say which talk.
+const bookingHref = computed(() =>
+  `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(`Booking request: ${deck.value!.title}`)}`,
+)
 onMounted(() => {
   watch(() => router.currentRoute.value.query.v, (q) => {
     const v = Number(q)
@@ -220,6 +226,20 @@ defineOgImage({
       <kbd class="font-mono">←</kbd> <kbd class="font-mono">→</kbd> move through slides · <kbd class="font-mono">F</kbd> full screen · <kbd class="font-mono">Tab</kbd> continues past the deck’s links
     </p>
     <div id="after-deck" tabindex="-1" class="outline-none"><span class="sr-only">End of presentation</span></div>
+
+    <!-- The one conversion action on the page, so it gets the ink CTA (#63). -->
+    <section aria-labelledby="book-heading" class="border-b border-[var(--sw-border)] bg-[var(--sw-surface)]">
+      <div class="max-w-page mx-auto px-page-x lg:px-page-x-lg py-6 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 id="book-heading" class="font-display text-xl font-semibold text-[var(--sw-text-1)]">Want this talk at your event?</h2>
+          <p class="font-sans text-sm text-[var(--sw-text-2)] mt-1">Conferences, meetups and company events.</p>
+        </div>
+        <a :href="bookingHref" class="sw-btn-cta shrink-0">
+          Book this talk
+          <span class="sr-only">(opens your email app)</span>
+        </a>
+      </div>
+    </section>
 
     <!-- Related talks — same card as everywhere else, not a second variant. -->
     <section v-if="relatedTalks.length" class="border-t border-[var(--sw-border)]">
