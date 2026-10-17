@@ -169,151 +169,64 @@
   --sw-nav-border:     #3f3f46;
 }
 
-/* ─── Tag Color Pairs ────────────────────────────────────────────── */
+/* ─── Topic Colours ───────────────────────────────────────────────── */
 /*
- * Used via Tailwind utility classes defined in tailwind.config.ts.
- * These CSS vars are fallbacks for any raw CSS usage.
- * Each topic has a bg / text / border triple.
+ * Used only by the /topics grid (pages/topics/index.vue). Tag chips on deck
+ * cards are deliberately neutral (.sw-tag): their label carries the meaning,
+ * and colour on every card was noise (#71).
+ *
+ * Five swatches, chosen in OKLCH so that no topic colour sits within ΔE_ok 10
+ * of a brand or status colour (primary emerald, accent amber, success,
+ * warning, danger) and every pair of swatches is ≥ ΔE_ok 6.5 apart. The
+ * hue band left over once brand and status colours are reserved only fits a
+ * handful of distinct colours, so the /topics grid colours tiles by position
+ * (swatch i % 5 in rendered order, which is sorted by deck count): any two
+ * tiles within four places differ, covering every row/column neighbour in
+ * the 2-, 3- and 4-column grid. A topic's colour carries no meaning.
+ * The slate swatch is 9.5 from danger-text but neutral, so no hue clash.
  */
 :root {
-  --tag-vue-bg:               #dbeafe;
-  --tag-vue-text:             #1d4ed8;
-  --tag-vue-border:           #93c5fd;
+  --tag-blue-bg:        #edf4fe;
+  --tag-blue-text:      #013980;  /* 9.99:1 on bg — h≈258 */
+  --tag-blue-border:    #b6d3fe;
 
-  --tag-javascript-bg:        #ede9fe;
-  --tag-javascript-text:      #5b21b6;
-  --tag-javascript-border:    #c4b5fd;
+  --tag-cyan-bg:        #e4f7ff;
+  --tag-cyan-text:      #014456;  /* 9.71:1 on bg — h≈222 */
+  --tag-cyan-border:    #86e0fe;
 
-  --tag-career-bg:            #d1fae5;
-  --tag-career-text:          #065f46;
-  --tag-career-border:        #6ee7b7;
+  --tag-violet-bg:      #f6f1fe;
+  --tag-violet-text:    #4d2278;  /* 10.43:1 on bg — h≈303 */
+  --tag-violet-border:  #dbc5fb;
 
-  --tag-soft-skills-bg:       #fef3c7;
-  --tag-soft-skills-text:     #92400e;
-  --tag-soft-skills-border:   #fde68a;
+  --tag-slate-bg:       #f2f4f6;
+  --tag-slate-text:     #414853;  /* 8.37:1 on bg — neutral */
+  --tag-slate-border:   #ccd1d8;
 
-  --tag-fundamentals-bg:      #fce7f3;
-  --tag-fundamentals-text:    #9d174d;
-  --tag-fundamentals-border:  #f9a8d4;
-
-  --tag-community-bg:         #f0fdf4;
-  --tag-community-text:       #14532d;
-  --tag-community-border:     #86efac;
-
-  --tag-architecture-bg:      #f0f9ff;
-  --tag-architecture-text:    #0c4a6e;
-  --tag-architecture-border:  #7dd3fc;
-
-  --tag-accessibility-bg:     #fdf4ff;
-  --tag-accessibility-text:   #581c87;
-  --tag-accessibility-border: #d8b4fe;
-
-  /* Tags present in content/** that previously had no triple */
-  --tag-nuxt-bg:              #ccfbf1;
-  --tag-nuxt-text:            #115e59;
-  --tag-nuxt-border:          #5eead4;
-
-  --tag-typescript-bg:        #e0e7ff;
-  --tag-typescript-text:      #3730a3;
-  --tag-typescript-border:    #a5b4fc;
-
-  --tag-beginner-bg:          #ecfccb;
-  --tag-beginner-text:        #3f6212;
-  --tag-beginner-border:      #bef264;
-
-  --tag-css-bg:               #cffafe;
-  --tag-css-text:             #155e75;
-  --tag-css-border:           #67e8f9;
-
-  --tag-react-bg:             #ffe4e6;
-  --tag-react-text:           #9f1239;
-  --tag-react-border:         #fda4af;
-
-  --tag-design-bg:            #ffedd5;
-  --tag-design-text:          #9a3412;
-  --tag-design-border:        #fdba74;
-
-  --tag-patterns-bg:          #f1f5f9;
-  --tag-patterns-text:        #334155;
-  --tag-patterns-border:      #cbd5e1;
-
-  --tag-workshop-bg:          #fae8ff;
-  --tag-workshop-text:        #86198f;
-  --tag-workshop-border:      #f0abfc;
-
-  --tag-advanced-bg:          #f5f5f4;
-  --tag-advanced-text:        #44403c;
-  --tag-advanced-border:      #d6d3d1;
+  --tag-magenta-bg:     #ffedfe;
+  --tag-magenta-text:   #931d96;  /* 6.58:1 on bg — h≈327 */
+  --tag-magenta-border: #f8b8f7;
 }
 
 .dark {
-  --tag-vue-bg:               #1e3a5f;
-  --tag-vue-text:             #93c5fd;
-  --tag-vue-border:           #1d4ed8;
+  --tag-blue-bg:        #16273f;
+  --tag-blue-text:      #abcdff;  /* 9.25:1 on bg — h≈258 */
+  --tag-blue-border:    #274c84;
 
-  --tag-javascript-bg:        #2e1065;
-  --tag-javascript-text:      #c4b5fd;
-  --tag-javascript-border:    #5b21b6;
+  --tag-cyan-bg:        #002c38;
+  --tag-cyan-text:      #6ddbff;  /* 9.33:1 on bg — h≈222 */
+  --tag-cyan-border:    #05566b;
 
-  --tag-career-bg:            #064e3b;
-  --tag-career-text:          #6ee7b7;
-  --tag-career-border:        #065f46;
+  --tag-violet-bg:      #2b203a;
+  --tag-violet-text:    #d7bcfe;  /* 9.13:1 on bg — h≈303 */
+  --tag-violet-border:  #564173;
 
-  --tag-soft-skills-bg:       #451a03;
-  --tag-soft-skills-text:     #fde68a;
-  --tag-soft-skills-border:   #78350f;
+  --tag-slate-bg:       #24272a;
+  --tag-slate-text:     #c4cbd4;  /* 9.18:1 on bg — neutral */
+  --tag-slate-border:   #494d54;
 
-  --tag-fundamentals-bg:      #500724;
-  --tag-fundamentals-text:    #f9a8d4;
-  --tag-fundamentals-border:  #9d174d;
-
-  --tag-community-bg:         #052e16;
-  --tag-community-text:       #86efac;
-  --tag-community-border:     #14532d;
-
-  --tag-architecture-bg:      #082f49;
-  --tag-architecture-text:    #7dd3fc;
-  --tag-architecture-border:  #0c4a6e;
-
-  --tag-accessibility-bg:     #3b0764;
-  --tag-accessibility-text:   #d8b4fe;
-  --tag-accessibility-border: #581c87;
-
-  --tag-nuxt-bg:              #042f2e;
-  --tag-nuxt-text:            #5eead4;
-  --tag-nuxt-border:          #115e59;
-
-  --tag-typescript-bg:        #1e1b4b;
-  --tag-typescript-text:      #a5b4fc;
-  --tag-typescript-border:    #3730a3;
-
-  --tag-beginner-bg:          #1a2e05;
-  --tag-beginner-text:        #bef264;
-  --tag-beginner-border:      #3f6212;
-
-  --tag-css-bg:               #083344;
-  --tag-css-text:             #67e8f9;
-  --tag-css-border:           #155e75;
-
-  --tag-react-bg:             #4c0519;
-  --tag-react-text:           #fda4af;
-  --tag-react-border:         #9f1239;
-
-  --tag-design-bg:            #431407;
-  --tag-design-text:          #fdba74;
-  --tag-design-border:        #9a3412;
-
-  --tag-patterns-bg:          #1e293b;
-  --tag-patterns-text:        #cbd5e1;
-  --tag-patterns-border:      #475569;
-
-  --tag-workshop-bg:          #4a044e;
-  --tag-workshop-text:        #f0abfc;
-  --tag-workshop-border:      #86198f;
-
-  --tag-advanced-bg:          #292524;
-  --tag-advanced-text:        #d6d3d1;
-  --tag-advanced-border:      #57534e;
+  --tag-magenta-bg:     #331d33;
+  --tag-magenta-text:   #fea6fd;  /* 8.86:1 on bg — h≈327 */
+  --tag-magenta-border: #6e316f;
 }
 
 /* ─── Global Resets & Base Styles ───────────────────────────────── */

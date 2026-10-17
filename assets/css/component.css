@@ -8,7 +8,7 @@
  *
  * Usage in Vue templates:
  *   <button class="sw-btn-primary">Browse decks</button>
- *   <span class="sw-tag sw-tag--vue">vue</span>
+ *   <span class="sw-tag">vue</span>
  */
 
 @layer components {
@@ -88,10 +88,13 @@
 
   /* ─── Topic Tags ────────────────────────────────────────────── */
 
-  /* Base tag — monospace, small */
+  /* Base tag — monospace, small, neutral. Topic chips don't carry colour:
+     the label is the meaning, and per-topic colour clashed with brand and
+     status hues (#71). Topic colours live on the /topics grid only. */
   .sw-tag {
     @apply inline-flex items-center font-mono text-xs
-           border rounded-[6px] px-2 py-0.5;
+           border rounded-[6px] px-2 py-0.5
+           bg-[var(--sw-surface)] border-[var(--sw-border)] text-[var(--sw-text-2)];
     min-height: 22px;
   }
 
@@ -112,25 +115,6 @@
       inset: -11px 0;
     }
   }
-
-  /* Per-topic variants — use with sw-tag */
-  .sw-tag--vue          { background: var(--tag-vue-bg);          color: var(--tag-vue-text);          border-color: var(--tag-vue-border); }
-  .sw-tag--javascript   { background: var(--tag-javascript-bg);   color: var(--tag-javascript-text);   border-color: var(--tag-javascript-border); }
-  .sw-tag--career       { background: var(--tag-career-bg);       color: var(--tag-career-text);       border-color: var(--tag-career-border); }
-  .sw-tag--soft-skills  { background: var(--tag-soft-skills-bg);  color: var(--tag-soft-skills-text);  border-color: var(--tag-soft-skills-border); }
-  .sw-tag--fundamentals { background: var(--tag-fundamentals-bg); color: var(--tag-fundamentals-text); border-color: var(--tag-fundamentals-border); }
-  .sw-tag--community    { background: var(--tag-community-bg);    color: var(--tag-community-text);    border-color: var(--tag-community-border); }
-  .sw-tag--architecture { background: var(--tag-architecture-bg); color: var(--tag-architecture-text); border-color: var(--tag-architecture-border); }
-  .sw-tag--accessibility{ background: var(--tag-accessibility-bg);color: var(--tag-accessibility-text);border-color: var(--tag-accessibility-border); }
-  .sw-tag--nuxt         { background: var(--tag-nuxt-bg);         color: var(--tag-nuxt-text);         border-color: var(--tag-nuxt-border); }
-  .sw-tag--typescript   { background: var(--tag-typescript-bg);   color: var(--tag-typescript-text);   border-color: var(--tag-typescript-border); }
-  .sw-tag--beginner     { background: var(--tag-beginner-bg);     color: var(--tag-beginner-text);     border-color: var(--tag-beginner-border); }
-  .sw-tag--css          { background: var(--tag-css-bg);          color: var(--tag-css-text);          border-color: var(--tag-css-border); }
-  .sw-tag--react        { background: var(--tag-react-bg);        color: var(--tag-react-text);        border-color: var(--tag-react-border); }
-  .sw-tag--design       { background: var(--tag-design-bg);       color: var(--tag-design-text);       border-color: var(--tag-design-border); }
-  .sw-tag--patterns     { background: var(--tag-patterns-bg);     color: var(--tag-patterns-text);     border-color: var(--tag-patterns-border); }
-  .sw-tag--workshop     { background: var(--tag-workshop-bg);     color: var(--tag-workshop-text);     border-color: var(--tag-workshop-border); }
-  .sw-tag--advanced     { background: var(--tag-advanced-bg);     color: var(--tag-advanced-text);     border-color: var(--tag-advanced-border); }
 
   /* ─── Filter Pills ──────────────────────────────────────────── */
 
