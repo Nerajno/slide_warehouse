@@ -199,7 +199,7 @@ const isFiltered = computed(() => store.activeTags.length > 0 || !!store.searchQ
               <h3 class="sw-deck-card__title mb-1.5 text-pretty">{{ deck.title }}</h3>
               <p class="sw-deck-card__description text-pretty mb-3 max-w-2xl">{{ deck.description }}</p>
               <div class="flex flex-wrap gap-1.5">
-                <span v-for="tag in deck.tags" :key="tag" :class="tagClass(tag)">{{ tag }}</span>
+                <NuxtLink v-for="tag in deck.tags" :key="tag" :to="`/topics/${encodeURIComponent(tag)}`" :class="tagClass(tag)"><span class="sr-only">Topic: </span>{{ tag }}</NuxtLink>
               </div>
             </div>
 
