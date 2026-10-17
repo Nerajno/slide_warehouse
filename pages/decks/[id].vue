@@ -196,16 +196,30 @@ defineOgImage({
     </div>
 
     <!--
+      Keyboard users: the deck has its own links (6–7 per deck), and while it
+      has focus the arrow keys move slides. The skip link jumps past it; the
+      hint says how to drive it and how to leave (Tab is not trapped).
+    -->
+    <a
+      href="#after-deck"
+      class="scroll-mt-16 sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:px-4 focus:py-2 focus:rounded-btn focus:bg-[var(--sw-primary-solid)] focus:text-[var(--sw-on-primary)] focus:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
+    >Skip past presentation</a>
+    <!--
       The viewer gets a fixed viewport-relative height rather than the page
       itself, so everything below it (Related Talks) is reachable. Previously
       the whole page was locked to calc(100vh - 56px) and that content sat
       outside the visible box.
     -->
-    <div class="relative w-full bg-[var(--sw-surface-2)]" style="height: calc(100vh - 8.5rem); min-height: 420px;">
+    <div class="relative w-full bg-[var(--sw-surface-2)]" style="height: calc(100vh - 13.75rem); min-height: 420px;">
       <div v-if="!frameLoaded" class="absolute inset-0 sw-skeleton rounded-none" aria-hidden="true" />
       <iframe :src="revealSrc" :title="`${deck.title} presentation`" sandbox="allow-scripts"
+        aria-describedby="deck-keyboard-hint"
         class="relative w-full h-full border-0" allow="fullscreen" @load="frameLoaded = true" />
     </div>
+    <p id="deck-keyboard-hint" class="sw-keyboard-hint px-page-x py-2 font-sans text-xs text-[var(--sw-text-3)] border-b border-[var(--sw-border)] bg-[var(--sw-surface)]">
+      <kbd class="font-mono">←</kbd> <kbd class="font-mono">→</kbd> move through slides · <kbd class="font-mono">F</kbd> full screen · <kbd class="font-mono">Tab</kbd> continues past the deck’s links
+    </p>
+    <div id="after-deck" tabindex="-1" class="outline-none"><span class="sr-only">End of presentation</span></div>
 
     <!-- Related talks — same card as everywhere else, not a second variant. -->
     <section v-if="relatedTalks.length" class="border-t border-[var(--sw-border)]">
