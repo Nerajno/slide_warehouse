@@ -33,7 +33,7 @@ const { data: deck } = await useAsyncData('featured-deck', async () => {
     <p class="sw-deck-card__description max-w-2xl">{{ deck.description }}</p>
 
     <div class="flex flex-wrap gap-1.5">
-      <span v-for="tag in deck.tags" :key="tag" :class="tagClass(tag)">{{ tag }}</span>
+      <NuxtLink v-for="tag in deck.tags" :key="tag" :to="`/topics/${encodeURIComponent(tag)}`" :class="[tagClass(tag), 'z-raised']"><span class="sr-only">Topic: </span>{{ tag }}</NuxtLink>
     </div>
 
     <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2">

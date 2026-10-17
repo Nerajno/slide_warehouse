@@ -95,6 +95,24 @@
     min-height: 22px;
   }
 
+  /* Tags that link to their topic page. Same colours; the border darkens on
+     hover and a focus ring shows for keyboard users. */
+  a.sw-tag {
+    @apply relative transition-colors duration-[150ms]
+           focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)];
+  }
+  a.sw-tag:hover { border-color: currentColor; }
+
+  /* Compact on a mouse; a 44px-tall hit area on a finger without changing
+     how the chip looks (WCAG 2.5.8). */
+  @media (pointer: coarse) {
+    a.sw-tag::after {
+      content: '';
+      position: absolute;
+      inset: -11px 0;
+    }
+  }
+
   /* Per-topic variants — use with sw-tag */
   .sw-tag--vue          { background: var(--tag-vue-bg);          color: var(--tag-vue-text);          border-color: var(--tag-vue-border); }
   .sw-tag--javascript   { background: var(--tag-javascript-bg);   color: var(--tag-javascript-text);   border-color: var(--tag-javascript-border); }

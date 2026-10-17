@@ -34,8 +34,10 @@ const tier = computed(() => props.deck.tier ?? `${props.deck.durationMinutes}min
 
     <p class="sw-deck-card__description line-clamp-2">{{ deck.description }}</p>
 
+    <!-- Each tag sits above the stretched link (a.sw-tag is position: relative);
+         blank space in the row stays with the card link. -->
     <div class="flex flex-wrap gap-1.5 mt-auto pt-3">
-      <span v-for="tag in deck.tags" :key="tag" :class="tagClass(tag)">{{ tag }}</span>
+      <NuxtLink v-for="tag in deck.tags" :key="tag" :to="`/topics/${encodeURIComponent(tag)}`" :class="[tagClass(tag), 'z-raised']"><span class="sr-only">Topic: </span>{{ tag }}</NuxtLink>
     </div>
 
     <div class="sw-deck-card__meta flex flex-wrap items-center gap-x-3 gap-y-1">
