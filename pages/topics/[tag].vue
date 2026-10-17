@@ -49,6 +49,8 @@ useSeoMeta({
       <span :class="tagClass(tag)">{{ tag }}</span>
     </p>
 
+    <!-- Cards render <h3> titles; this keeps the outline H1 → H2 → H3 (WCAG 1.3.1). -->
+    <h2 class="sr-only">Decks tagged {{ displayTag }}</h2>
     <div class="mt-section-md">
       <DeckGrid :decks="decks" :pending="false" />
     </div>
