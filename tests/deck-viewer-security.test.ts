@@ -1,28 +1,28 @@
-import { describe, it, expect } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
-import DeckViewer from '../components/DeckViewer.vue'
+import { describe, it, expect, vi } from 'vitest'
+import { mountSuspended, mockNuxtImport } from '@nuxt/test-utils/runtime'
+import DeckPage from '../pages/decks/[id].vue'
 
-const props = { src: '/reveals/test/v1.html', title: 'Test Deck' }
+// nuxt-og-image is off in the test env (no SSR), so its auto-import is missing.
+vi.hoisted(() => vi.stubGlobal('defineOgImage', () => {}))
 
-describe('#6 DeckViewer iframe security', () => {
-  it('iframe sandbox does not include allow-same-origin', async () => {
-    const wrapper = await mountSuspended(DeckViewer, { props })
-    const iframe = wrapper.find('iframe')
-    const sandbox = iframe.attributes('sandbox') ?? ''
-    expect(sandbox).not.toContain('allow-same-origin')
+const row = vi.hoisted(() => ({
+  id: 'decks/decks/test.md', stem: 'decks/test', path: '/decks/test', title: 'Test Deck', tags: [],
+  revealBasePath: '/reveals/test', currentVersion: 1,
+  versions: [{ version: 1, label: 'Original', date: '2025-01-01', revealFile: 'v1.html' }],
+}))
+mockNuxtImport('queryCollection', () => () => {
+  const q = { select: () => q, where: () => q, all: async () => [row], first: async () => row }
+  return q
+})
+
+// Decks are third-party-authored HTML. Sandboxing without allow-same-origin
+// gives the frame an opaque origin, so it can't touch this site's storage,
+// cookies or DOM.
+describe('#6 deck iframe security', () => {
+  it('the deck page iframe runs scripts but is not same-origin', async () => {
+    const wrapper = await mountSuspended(DeckPage, { route: '/decks/test' })
+    const sandbox = wrapper.find('iframe').attributes('sandbox') ?? ''
     expect(sandbox).toContain('allow-scripts')
-  })
-
-  it('postMessage to iframe uses site origin, not wildcard', async () => {
-    // Verify the component source does not send postMessage to '*'
-    // (structural test — runtime check not feasible in unit env)
-    const src = (await import('../components/DeckViewer.vue?raw')).default as string
-    expect(src).not.toContain("postMessage({ method: 'prev' }, '*')")
-    expect(src).not.toContain("postMessage({ method: 'next' }, '*')")
-  })
-
-  it('message event listener validates origin', async () => {
-    const src = (await import('../components/DeckViewer.vue?raw')).default as string
-    expect(src).toContain('e.origin')
+    expect(sandbox).not.toContain('allow-same-origin')
   })
 })

@@ -6,11 +6,6 @@ async function src(path: string): Promise<string> {
 }
 
 describe('#7 WCAG 2.2 verifiable criteria', () => {
-  it('DeckViewer iframe has descriptive title attribute', async () => {
-    const text = await src('components/DeckViewer.vue')
-    expect(text).toMatch(/:title=.*Presentation.*title/)
-  })
-
   it('deck [id] inline iframe has descriptive title attribute', async () => {
     const text = await src('pages/decks/[id].vue')
     expect(text).toMatch(/:title=.*presentation/)
@@ -29,23 +24,9 @@ describe('#7 WCAG 2.2 verifiable criteria', () => {
     expect(text).toContain('prefersReducedMotion')
   })
 
-  it('DeckViewer progress bar has full ARIA attributes', async () => {
-    const text = await src('components/DeckViewer.vue')
-    expect(text).toContain('role="progressbar"')
-    expect(text).toContain(':aria-valuenow')
-    expect(text).toContain(':aria-valuemax')
-    expect(text).toContain('aria-label')
-  })
-
-  it('DeckViewer slide nav buttons have aria-label', async () => {
-    const text = await src('components/DeckViewer.vue')
-    expect(text).toContain('aria-label="Previous slide"')
-    expect(text).toContain('aria-label="Next slide"')
-  })
-
   it('all SVG decorative icons are aria-hidden', async () => {
-    const text = await src('components/DeckViewer.vue')
-    // No SVG without aria-hidden (basic check for this component)
+    const text = await src('pages/decks/[id].vue')
+    // No SVG without aria-hidden on the deck page
     const svgs = [...text.matchAll(/<svg/g)]
     const hiddenSvgs = [...text.matchAll(/<svg[^>]*aria-hidden/g)]
     expect(hiddenSvgs.length).toBe(svgs.length)

@@ -93,18 +93,14 @@ slide-warehouse/
 │   ├── HistorySection.vue    # Speaking history / circuit timeline
 │   ├── DeckCard.vue          # Single deck card with share + copy button
 │   ├── DeckGrid.vue          # Filterable/sortable deck grid
-│   ├── DeckViewer.vue        # Reveal.js iframe viewer
 │   ├── DeckSidebar.vue       # Deck metadata sidebar
-│   ├── FeaturedDeck.vue      # Featured deck highlight banner
 │   ├── FilterTags.vue        # Tag filter chip row
-│   ├── SortDropdown.vue      # Sort select (newest/oldest/a-z/z-a)
 │   ├── SearchBar.vue         # Deck search input
 │   ├── ShareButton.vue       # Copy-link-to-clipboard button
 │   ├── VersionSelector.vue   # Deck version picker
 │   ├── VersionChangelog.vue  # Version history list
 │   ├── LegacyDeckGrid.vue    # Legacy archive grid
 │   ├── SpeakerBio.vue        # Speaker bio card
-│   ├── SpeakerOverview.vue   # Speaker stats overview
 │   ├── ResourceLinks.vue     # External resource links
 │   └── TopicsExplorer.vue    # Tag/topic browsing grid
 ├── composables/
@@ -112,7 +108,6 @@ slide-warehouse/
 │   ├── useSearch.ts          # Search state and logic
 │   ├── useTopics.ts          # Topic/tag filtering logic
 │   ├── useRecentDecks.ts     # Recent deck selection logic
-│   ├── useFullscreen.ts      # Fullscreen API wrapper
 │   └── useTheme.ts           # Dark/light/system theme toggle
 ├── content/
 │   ├── speaker.json          # Speaker bio, social links, pipeline

@@ -12,11 +12,6 @@ describe('#5 data layer source of truth', () => {
     expect(text).toContain('queryCollection')
   })
 
-  it('SpeakerOverview does not call $fetch(/api/decks)', async () => {
-    const text = await src('components/SpeakerOverview.vue')
-    expect(text).not.toContain("'/api/decks'")
-  })
-
   it('about.vue does not call $fetch(/api/decks)', async () => {
     const text = await src('pages/about.vue')
     expect(text).not.toContain("'/api/decks'")

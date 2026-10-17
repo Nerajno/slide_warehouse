@@ -12,8 +12,8 @@ const initials = computed(() =>
 <template>
   <div v-if="speaker" class="space-y-5">
     <div class="flex items-center gap-4">
-      <div class="w-12 h-12 rounded-full bg-[var(--sw-primary)] flex items-center justify-center shrink-0">
-        <span class="text-white font-semibold text-base font-mono">{{ initials }}</span>
+      <div class="w-12 h-12 rounded-full bg-[var(--sw-primary-solid)] flex items-center justify-center shrink-0">
+        <span class="text-[var(--sw-on-primary)] font-semibold text-base font-mono">{{ initials }}</span>
       </div>
       <div>
         <p class="font-semibold text-[var(--sw-text-1)] text-lg leading-tight">{{ speaker.name }}</p>
