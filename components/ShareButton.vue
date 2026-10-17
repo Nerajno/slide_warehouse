@@ -24,7 +24,7 @@ async function copy() {
 <template>
   <button
     class="rounded-btn font-medium border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-colors"
-    :class="compact ? 'w-8 h-8 flex items-center justify-center text-base' : 'h-9 px-4 text-xs'"
+    :class="compact ? 'sw-touch-hit w-8 h-8 flex items-center justify-center text-base' : 'sw-touch h-9 px-4 text-xs'"
     :aria-label="copied ? 'Link copied' : 'Copy link to this deck'"
     @click.prevent="copy"
   >

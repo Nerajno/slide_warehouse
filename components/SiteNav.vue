@@ -28,7 +28,7 @@ function handleKeydown(e: KeyboardEvent) {
       <!-- Logo -->
       <NuxtLink
         to="/"
-        class="rounded focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
+        class="inline-flex min-h-[44px] items-center rounded focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
       >
         <span class="font-mono text-sm text-[var(--sw-text-3)]">slides.</span><span class="text-sm font-semibold text-[var(--sw-text-1)]">developingdvlpr</span>
       </NuxtLink>

@@ -144,6 +144,17 @@
     min-height: 32px;
   }
 
+  /* Same rule for any compact control that doesn't have its own class:
+     dense on a mouse, a full 44px target on a finger (WCAG 2.5.8).
+     `sw-touch` lets the control grow; `sw-touch-hit` keeps a 32px icon
+     button's box and layout and extends only its hit area. */
+  @media (pointer: coarse) {
+    .sw-touch,
+    a.sw-deck-card__cta { min-height: 44px; }
+    .sw-touch-hit { position: relative; }
+    .sw-touch-hit::after { content: ''; position: absolute; inset: -7px; } /* from the padding edge: 30px + 2×7 = 44px */
+  }
+
   /* Dense on a mouse, full 44px target on a finger. */
   @media (pointer: coarse) {
     .sw-filter-pill {

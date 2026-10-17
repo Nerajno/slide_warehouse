@@ -29,7 +29,7 @@ const initials = computed(() =>
         :href="`https://x.com/${speaker.socialHandles.x}`"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-xs px-3 py-1.5 rounded-full border border-[var(--sw-border)] text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] hover:border-[var(--sw-primary)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
+        class="sw-touch inline-flex items-center text-xs px-3 py-1.5 rounded-full border border-[var(--sw-border)] text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] hover:border-[var(--sw-primary)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
       >
         X / @{{ speaker.socialHandles.x }}
       </a>
@@ -38,7 +38,7 @@ const initials = computed(() =>
         :href="`https://github.com/${speaker.socialHandles.github}`"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-xs px-3 py-1.5 rounded-full border border-[var(--sw-border)] text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] hover:border-[var(--sw-primary)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
+        class="sw-touch inline-flex items-center text-xs px-3 py-1.5 rounded-full border border-[var(--sw-border)] text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] hover:border-[var(--sw-primary)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
       >
         GitHub / @{{ speaker.socialHandles.github }}
       </a>
@@ -47,7 +47,7 @@ const initials = computed(() =>
         :href="`https://dev.to/${speaker.socialHandles.devto}`"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-xs px-3 py-1.5 rounded-full border border-[var(--sw-border)] text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] hover:border-[var(--sw-primary)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
+        class="sw-touch inline-flex items-center text-xs px-3 py-1.5 rounded-full border border-[var(--sw-border)] text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] hover:border-[var(--sw-primary)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
       >
         dev.to / @{{ speaker.socialHandles.devto }}
       </a>
@@ -57,7 +57,7 @@ const initials = computed(() =>
         :href="link.url"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-xs px-3 py-1.5 rounded-full border border-[var(--sw-border)] text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] hover:border-[var(--sw-primary)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
+        class="sw-touch inline-flex items-center text-xs px-3 py-1.5 rounded-full border border-[var(--sw-border)] text-[var(--sw-text-2)] hover:text-[var(--sw-text-1)] hover:border-[var(--sw-primary)] transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
       >
         {{ link.label }}
       </a>
