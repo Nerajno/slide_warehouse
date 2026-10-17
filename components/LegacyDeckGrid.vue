@@ -30,14 +30,14 @@ const formatLabel = (format?: string) => {
     <article v-for="deck in legacyDecks" :key="deck.id" class="sw-deck-card">
       <div class="flex items-center justify-between gap-2">
         <span class="sw-deck-card__conference truncate">{{ deck.conference }}</span>
-        <span class="sw-tag sw-tag--patterns shrink-0">{{ formatLabel(deck.format) }}</span>
+        <span class="sw-tag shrink-0">{{ formatLabel(deck.format) }}</span>
       </div>
 
       <h3 class="sw-deck-card__title text-pretty">{{ deck.title }}</h3>
       <p class="sw-deck-card__description line-clamp-2">{{ deck.description }}</p>
 
       <div v-if="deck.tags?.length" class="flex flex-wrap gap-1.5">
-        <span v-for="tag in deck.tags" :key="tag" class="sw-tag sw-tag--patterns">{{ tag }}</span>
+        <span v-for="tag in deck.tags" :key="tag" class="sw-tag">{{ tag }}</span>
       </div>
 
       <div class="sw-deck-card__meta mt-auto pt-2">

@@ -103,10 +103,8 @@ export interface ConferenceEvent {
 /**
  * Every topic the site can render, in display order.
  *
- * Colour for each of these lives in one place — the `--tag-*` custom
- * properties in assets/css/tokens.css, surfaced as `.sw-tag--{tag}`. That
- * indirection is what makes tags theme-aware; the gradient map this replaced
- * was light-mode only and drifted out of sync with the token layer.
+ * Chips on deck cards are neutral. The /topics grid colours tiles by
+ * position from five swatches in assets/css/tokens.css, not per topic.
  */
 export const TAG_LIST = [
   'vue',
@@ -130,9 +128,10 @@ export const TAG_LIST = [
 
 export type TagName = typeof TAG_LIST[number];
 
-/** Resolve a topic to its `.sw-tag` modifier. Unknown tags fall back to neutral. */
-export function tagClass(tag: string): string {
-  return (TAG_LIST as readonly string[]).includes(tag)
-    ? `sw-tag sw-tag--${tag}`
-    : 'sw-tag sw-tag--patterns';
+/**
+ * Class for a topic chip. Chips are neutral for every topic (#71); kept as a
+ * function so call sites don't change if chips ever regain per-topic styling.
+ */
+export function tagClass(_tag: string): string {
+  return 'sw-tag';
 }

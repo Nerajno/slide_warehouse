@@ -84,22 +84,6 @@ export default {
           rail:       'var(--sw-rail)',
           'rail-live':'var(--sw-rail-live)',
         },
-
-        // Per-topic tag color pairs.
-        // These point at the CSS vars in tokens.css so they follow the theme —
-        // hardcoding hex here is what made the old values light-mode only.
-        // Usage: bg-tag-vue text-tag-vue-text border-tag-vue-border
-        tag: Object.fromEntries(
-          [
-            'vue', 'javascript', 'career', 'soft-skills', 'fundamentals',
-            'community', 'architecture', 'accessibility', 'nuxt', 'typescript',
-            'beginner', 'css', 'react', 'design', 'patterns', 'workshop', 'advanced',
-          ].flatMap(t => [
-            [t, `var(--tag-${t}-bg)`],
-            [`${t}-text`, `var(--tag-${t}-text)`],
-            [`${t}-border`, `var(--tag-${t}-border)`],
-          ])
-        ),
       },
 
       // ─── Typography ─────────────────────────────────────────────────
