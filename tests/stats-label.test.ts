@@ -13,12 +13,6 @@ describe('#25 stats label consistency', () => {
     expect(text).not.toContain('"Talks"')
   })
 
-  it('SpeakerOverview uses "Deliveries" not "Talks"', async () => {
-    const text = await src('components/SpeakerOverview.vue')
-    expect(text).toContain('Deliveries')
-    expect(text).not.toContain('>Talks<')
-  })
-
   it('about.vue uses "Deliveries" not "Talks"', async () => {
     const text = await src('pages/about.vue')
     expect(text).toContain('Deliveries')

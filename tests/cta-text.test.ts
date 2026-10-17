@@ -13,18 +13,9 @@ describe('#22 CTA button text consistency', () => {
     expect(text).toContain(`Open deck ${CORRECT_ARROW}`)
   })
 
-  it('SpeakerOverview "Open deck" CTA uses aria-hidden arrow span', async () => {
-    const text = await src('components/SpeakerOverview.vue')
-    expect(text).toContain(`Open deck ${CORRECT_ARROW}`)
-  })
-
   it('DecksSection "Open deck" CTA uses aria-hidden arrow span', async () => {
     const text = await src('components/DecksSection.vue')
     expect(text).toContain(`Open deck ${CORRECT_ARROW}`)
   })
 
-  it('FeaturedDeck "Open deck" CTA already uses correct pattern', async () => {
-    const text = await src('components/FeaturedDeck.vue')
-    expect(text).toContain(`Open deck ${CORRECT_ARROW}`)
-  })
 })

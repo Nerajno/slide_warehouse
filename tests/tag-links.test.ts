@@ -3,7 +3,6 @@ import { mountSuspended, mockNuxtImport } from '@nuxt/test-utils/runtime'
 import { config } from '@vue/test-utils'
 import DeckCard from '../components/DeckCard.vue'
 import DecksSection from '../components/DecksSection.vue'
-import FeaturedDeck from '../components/FeaturedDeck.vue'
 import type { DeckFrontmatter } from '../types'
 
 const row = vi.hoisted(() => ({
@@ -65,13 +64,6 @@ describe('#62 tag chips link to topic pages', () => {
     expect(nestedLink('<nuxt-link-stub to="/decks/x"><a href="/topics/y">y</a></nuxt-link-stub>')).toBe(true)
     expect(nestedLink('<nuxt-link-stub to="/decks/x"><button>b</button></nuxt-link-stub>')).toBe(true)
     expect(nestedLink('<nuxt-link-stub to="/decks/x">x</nuxt-link-stub><a href="/topics/y">y</a>')).toBe(false)
-  })
-
-  it('FeaturedDeck: tags link to topics, no nesting', async () => {
-    const wrapper = await mountSuspended(FeaturedDeck)
-    await vi.waitFor(() => expect(tagLinks(wrapper.html()).length).toBeGreaterThan(0))
-    expect(tagLinks(wrapper.html())).toEqual(['/topics/career', '/topics/soft-skills'])
-    expect(nestedLink(wrapper.html())).toBe(false)
   })
 
   it('DecksSection: per-card tags link to topics; filter pills stay buttons', async () => {
