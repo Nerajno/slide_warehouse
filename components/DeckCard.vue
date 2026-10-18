@@ -18,7 +18,9 @@ const tier = computed(() => props.deck.tier ?? `${props.deck.durationMinutes}min
     <!-- Sits above the stretched link below so the share control stays clickable. -->
     <div class="relative z-raised flex items-start justify-between gap-2">
       <span v-if="latestEvent" class="sw-deck-card__conference truncate">{{ latestEvent }}</span>
-      <div class="shrink-0 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-fast">
+      <!-- Revealed on hover/focus with a mouse; always visible on devices that
+           can't hover, so the tappable share control is never invisible (#88). -->
+      <div class="shrink-0 opacity-0 group-hover:opacity-100 focus-within:opacity-100 [@media(hover:none)]:opacity-100 transition-opacity duration-fast">
         <ShareButton :url="`/decks/${deck.id}`" compact />
       </div>
     </div>
