@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>DIDN'T KNOW TO ASK — Full Talk · @Nerajno</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ══ 01 TITLE ══ -->
+<section class="slide-title">
+  <div class="title-bar"></div>
+  <div class="brand">@Nerajno · #AskBetter · 30–45 min</div>
+  <div class="slide-wrap">
+    <span class="title-eyebrow">This Is a Technical Talk</span>
+    <h1 class="title-kicker">DIDN'T<br>KNOW<br>TO ASK</h1>
+    <p class="title-sub">A developer's career-long guide to getting unstuck, building trust, and asking like someone responsible for outcomes.</p>
+    <p class="title-handle">Nerando Johnson &nbsp;/&nbsp; @Nerajno</p>
+  </div>
+  <div class="sn">‹01›</div>
+</section>
+
+<!-- ══ 02 SPONSORS ══ -->
+<section class="slide-content">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap" style="justify-content:center; text-align:center;">
+    <span class="label">Gratitude First</span>
+    <h2>Thank you,<br>Sponsors.</h2>
+    <p style="color:rgba(245,240,232,.5); margin-top:.6em;">This community and this event run on their generosity.</p>
+  </div>
+  <div class="sn">‹02›</div>
+</section>
+
+<!-- ══ 03–04 INTRO (vertical) ══ -->
+<section>
+  <section class="slide-anchor">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="anc-text">"I am here because<br>I lost a bet."</div>
+    <div class="sn">‹03›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Actually, I'm here because…</span>
+      <h2>Who's Talking</h2>
+      <div class="rule"></div>
+      <ul class="blist">
+        <li>Frontend Engineer · Hygiena (life sciences SaaS)</li>
+        <li>Vue Mastery — technical content creator</li>
+        <li>Atlanta freeCodeCamp Meetup organizer · 600+ members</li>
+        <li>Speaker — DevNexus, Connect.Tech, Carolina Codes, Nebraska.Code(), OCC + more</li>
+        <li>B.S. Software Engineering · WGU — expected July 2026</li>
+        <li>Building in public at <strong>developingdvlpr.com</strong> · <strong>@Nerajno</strong> everywhere</li>
+      </ul>
+    </div>
+    <div class="sn">‹04›</div>
+  </section>
+</section>
+
+<!-- ══ 05 AGENDA ══ -->
+<section class="slide-content">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap">
+    <span class="label">Content to Cover</span>
+    <h2>What We're<br>Getting Into Today</h2>
+    <div class="rule"></div>
+    <ol class="nlist">
+      <li>Why asking for help is a career-defining skill</li>
+      <li>AI + rubber duck — your first-line resource stack</li>
+      <li>Years 0–3: Ask with structure</li>
+      <li>Years 3–5: Respect time, focus on blockers</li>
+      <li>Years 5–10: Ask like you own the outcome</li>
+      <li>Async-first communication</li>
+      <li>The formula + what not to do</li>
+    </ol>
+  </div>
+  <div class="sn">‹05›</div>
+</section>
+
+<!-- ══ 06 DISCLAIMER ══ -->
+<section class="slide-content">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap" style="justify-content:center;">
+    <span class="label">Before We Dive In</span>
+    <h2>Disclaimer</h2>
+    <div class="rule"></div>
+    <p>These are opinions, patterns, and hard lessons collected across teams, conferences, and mentorship relationships over years.</p>
+    <p>Take what helps. Leave what doesn't. Your mileage may vary.</p>
+    <div class="callout"><p><strong>#2cents — </strong>this is experience talking, not gospel.</p></div>
+  </div>
+  <div class="sn">‹06›</div>
+</section>
+
+<!-- ══ §1 DIVIDER ══ -->
+<section class="slide-divider">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap" style="justify-content:center;align-items:center;text-align:center;">
+    <span class="div-num">SECTION 01 &nbsp;/&nbsp; ~5 min</span>
+    <h2 class="div-head">WHY ASKING<br>IS A <em>SKILL</em></h2>
+  </div>
+  <div class="sn">‹07›</div>
+</section>
+
+<!-- ══ 08–11 WHY (vertical) ══ -->
+<section>
+  <section class="slide-anchor">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="anc-text">DIDN'T KNOW TO ASK.<br><em>DIDN'T KNOW WHAT TO ASK.</em></div>
+    <div class="sn">‹08›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">The assumption we have to kill</span>
+      <h2>Asking ≠ Failing</h2>
+      <div class="rule"></div>
+      <p>Many developers think asking for help is an admission. That it reveals something. That it undermines credibility.</p>
+      <p>In reality: it usually means you are doing the job well.</p>
+      <div class="callout"><p>Software is complex. Deadlines are real. No one knows everything at once. <strong>The developers who pretend otherwise are burning hours — and goodwill.</strong></p></div>
+    </div>
+    <div class="sn">‹09›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Bigger than you</span>
+      <h2>It Shapes<br>Team Culture</h2>
+      <div class="rule"></div>
+      <p>A team where people ask freely is faster and healthier than one where everyone suffers in silence.</p>
+      <p class="lede">How you ask<br>shapes <em>team norms</em> —<br>not just your output.</p>
+      <p style="font-size:13pt; color:rgba(245,240,232,.6);">Psychological safety: if asking feels unsafe on your team, that's a team culture problem — not a personal failing. Name it.</p>
+    </div>
+    <div class="sn">‹10›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">The career arc</span>
+      <h2>How the Skill<br>Evolves</h2>
+      <div class="rule"></div>
+      <div class="stages">
+        <div class="stage-box">
+          <span class="st-yr">yr 0–1</span>
+          <span class="st-word">Clarity</span>
+        </div>
+        <div class="stage-box">
+          <span class="st-yr">yr 1–3</span>
+          <span class="st-word">Judgment</span>
+        </div>
+        <div class="stage-box">
+          <span class="st-yr">yr 3–5</span>
+          <span class="st-word">Efficiency</span>
+        </div>
+        <div class="stage-box hi">
+          <span class="st-yr">yr 5–10</span>
+          <span class="st-word">Leadership</span>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:.9em;"><p>The goal isn't to ask less. The goal is to ask <strong>better</strong>.</p></div>
+    </div>
+    <div class="sn">‹11›</div>
+  </section>
+</section>
+
+<!-- ══ §2 DIVIDER ══ -->
+<section class="slide-divider">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap" style="justify-content:center;align-items:center;text-align:center;">
+    <span class="div-num">SECTION 02 &nbsp;/&nbsp; ~4 min</span>
+    <h2 class="div-head">BEFORE YOU<br><em>ASK A HUMAN</em></h2>
+  </div>
+  <div class="sn">‹12›</div>
+</section>
+
+<!-- ══ 13–16 AI + DUCK (vertical) ══ -->
+<section>
+  <section class="slide-anchor">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="anc-text">Rubber duck it first.</div>
+    <div class="sn">‹13›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">A real technique with a real name</span>
+      <h2>The Rubber<br>Duck Technique</h2>
+      <div class="rule"></div>
+      <p>Explain your problem out loud — to a duck, a blank doc, a voice memo, an AI. Anything that forces articulation.</p>
+      <p>More often than not: you find the answer mid-explanation.</p>
+      <div class="callout"><p>When you don't? Your explanation <strong>becomes</strong> your question. The act of writing it is part of solving it.</p></div>
+    </div>
+    <div class="sn">‹14›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">2026 update</span>
+      <h2>AI as First-Line<br>Resource</h2>
+      <div class="rule"></div>
+      <div class="two-col">
+        <div class="col-card">
+          <span class="col-head">Use AI for</span>
+          <ul class="blist">
+            <li>Decoding error messages</li>
+            <li>Unfamiliar APIs / patterns</li>
+            <li>Getting a starting point</li>
+            <li>Rubber duck at scale</li>
+          </ul>
+        </div>
+        <div class="col-card">
+          <span class="col-head">Escalate to a human when</span>
+          <ul class="blist">
+            <li>AI's fix didn't work</li>
+            <li>Context-specific to your repo</li>
+            <li>Judgment call required</li>
+            <li>Stakes are too high to guess</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="sn">‹15›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Before any ask</span>
+      <h2>Search First</h2>
+      <div class="rule"></div>
+      <ul class="blist">
+        <li>Paste the exact error into Google</li>
+        <li>Check official docs + GitHub issues for the library</li>
+        <li>Stack Overflow — yes, still</li>
+        <li>Claude / Copilot / ChatGPT for explanation + starting point</li>
+      </ul>
+      <div class="callout"><p>Showing you searched makes your question <strong>significantly stronger</strong>. It's a signal of respect.</p></div>
+    </div>
+    <div class="sn">‹16›</div>
+  </section>
+</section>
+
+<!-- ══ §3 DIVIDER ══ -->
+<section class="slide-divider">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap" style="justify-content:center;align-items:center;text-align:center;">
+    <span class="div-num">SECTION 03 &nbsp;/&nbsp; ~8 min</span>
+    <h2 class="div-head">YEARS 0–3:<br><em>STRUCTURE</em></h2>
+  </div>
+  <div class="sn">‹17›</div>
+</section>
+
+<!-- ══ 18–21 YEARS 0-3 (vertical) ══ -->
+<section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Year 0–1: the 5-part structure</span>
+      <h2>A Strong Question<br>Includes:</h2>
+      <div class="rule"></div>
+      <ol class="nlist">
+        <li>What are you trying to do?</li>
+        <li>What happened instead?</li>
+        <li>What have you already tried?</li>
+        <li>What do you think is wrong?</li>
+        <li>What kind of help do you need right now?</li>
+      </ol>
+    </div>
+    <div class="sn">‹18›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">The difference in practice</span>
+      <h2>❌ vs ✅</h2>
+      <div class="compare">
+        <div>
+          <p class="bad-label">WEAK</p>
+          <div class="qblock bad"><p>"My app is broken."</p></div>
+        </div>
+        <div>
+          <p class="good-label">STRONG</p>
+          <div class="qblock good"><p>"Getting a 422 on form submit in my Vue app. Confirmed payload in the network tab. Tried validating each field manually. Still can't tell which the server rejects. Can you help me narrow down the field?"</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="sn">‹19›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Year 1–3 upgrade</span>
+      <h2>Ask Earlier,<br>More Precisely</h2>
+      <div class="rule"></div>
+      <div class="qblock good"><p>"I think the bug is in the state update — component renders correctly before the async call returns. Moved the update to a separate function, same result. Does this look like a timing problem?"</p></div>
+      <div class="callout"><p>Shows reasoning, not frustration. Invites collaboration. Doesn't hand off the problem.</p></div>
+    </div>
+    <div class="sn">‹20›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Practical tips · Years 0–3</span>
+      <h2>The Habits That<br>Compound</h2>
+      <div class="rule"></div>
+      <div class="tip-grid">
+        <div class="tip-card">
+          <span class="tip-head">Name your hypothesis</span>
+          <p>"I think it might be X" gives direction — confirm or redirect.</p>
+        </div>
+        <div class="tip-card">
+          <span class="tip-head">Async channels first</span>
+          <p>Slack &gt; interrupting focus. Write it like you'd say it in person.</p>
+        </div>
+        <div class="tip-card">
+          <span class="tip-head">Share a repro</span>
+          <p>StackBlitz, CodeSandbox, Gist. Smallest version that still breaks.</p>
+        </div>
+        <div class="tip-card">
+          <span class="tip-head">Close the loop</span>
+          <p>"Turned out it was a race condition in the effect cleanup." Always.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sn">‹21›</div>
+  </section>
+</section>
+
+<!-- ══ §4 DIVIDER ══ -->
+<section class="slide-divider">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap" style="justify-content:center;align-items:center;text-align:center;">
+    <span class="div-num">SECTION 04 &nbsp;/&nbsp; ~6 min</span>
+    <h2 class="div-head">YEARS 3–5:<br><em>RESPECT TIME</em></h2>
+  </div>
+  <div class="sn">‹22›</div>
+</section>
+
+<!-- ══ 23–26 YEARS 3-5 (vertical) ══ -->
+<section>
+  <section class="slide-anchor">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="anc-text">Independence ≠<br><em>Suffering alone.</em></div>
+    <div class="sn">‹23›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">The blocker ask · Years 3–5</span>
+      <h2>Protect Team<br>Momentum</h2>
+      <div class="rule"></div>
+      <div class="qblock"><p>"I've spent two hours on this deployment failure. Ruled out config, env vars, confirmed local build passes. Think it's the CI pipeline. Need a second set of eyes."</p></div>
+      <div class="callout"><p>Shows effort. Narrows the problem. Helps the other person jump in at the right level. <strong>Doesn't block the team.</strong></p></div>
+    </div>
+    <div class="sn">‹24›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Practical tips · Years 3–5</span>
+      <h2>Managing Time<br>and Blockers</h2>
+      <div class="rule"></div>
+      <div class="tip-grid">
+        <div class="tip-card">
+          <span class="tip-head">Set a time limit</span>
+          <p>30–45 min of spinning = time to ask. Thrashing ≠ independence.</p>
+        </div>
+        <div class="tip-card">
+          <span class="tip-head">Bring a proposed solution</span>
+          <p>"I'm thinking X — does that seem right?" is faster than "I don't know."</p>
+        </div>
+        <div class="tip-card">
+          <span class="tip-head">Know when to escalate</span>
+          <p>"This might need someone with deeper DB layer knowledge. I've gotten to X."</p>
+        </div>
+        <div class="tip-card">
+          <span class="tip-head">Async before screenshare</span>
+          <p>Screenshare is a premium ask of someone's focus. Use it when truly needed.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sn">‹25›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Where you ask matters as much as what you ask</span>
+      <h2>Channel Selection</h2>
+      <div class="ctable">
+        <div class="crow head">
+          <p>Situation</p><p>Recommended</p><p>Why</p>
+        </div>
+        <div class="crow" style="grid-template-columns:1fr 1fr 1fr;">
+          <p>Quick factual</p><p>Async Slack</p><p>Respects focus</p>
+        </div>
+        <div class="crow" style="grid-template-columns:1fr 1fr 1fr;">
+          <p>Complex bug</p><p>Repro → async → screenshare</p><p>Escalate only if needed</p>
+        </div>
+        <div class="crow" style="grid-template-columns:1fr 1fr 1fr;">
+          <p>Architecture</p><p>Short doc → async review</p><p>Creates a record</p>
+        </div>
+        <div class="crow alert" style="grid-template-columns:1fr 1fr 1fr;">
+          <p><strong>PROD IS DOWN</strong></p><p><strong>Call. Now. Go.</strong></p><p><strong>Every minute costs.</strong></p>
+        </div>
+      </div>
+    </div>
+    <div class="sn">‹26›</div>
+  </section>
+</section>
+
+<!-- ══ §5 DIVIDER ══ -->
+<section class="slide-divider">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap" style="justify-content:center;align-items:center;text-align:center;">
+    <span class="div-num">SECTION 05 &nbsp;/&nbsp; ~6 min</span>
+    <h2 class="div-head">YEARS 5–10:<br><em>OWN THE OUTCOME</em></h2>
+  </div>
+  <div class="sn">‹27›</div>
+</section>
+
+<!-- ══ 28–31 YEARS 5-10 (vertical) ══ -->
+<section>
+  <section class="slide-anchor">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="anc-text">A well-framed ask<br>is a <em>leadership behavior.</em></div>
+    <div class="sn">‹28›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">The tradeoff ask · Years 5–10</span>
+      <h2>Ask About<br>Decisions</h2>
+      <div class="rule"></div>
+      <div class="qblock"><p>"I've narrowed this to two options. Option A is faster but adds technical debt. Option B fits the architecture better but takes longer. I'd like your perspective on which tradeoff makes sense for this release."</p></div>
+      <div class="callout"><p>Shows ownership. Frames the problem. Invites help <strong>making a decision</strong> — not a rescue.</p></div>
+    </div>
+    <div class="sn">‹29›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Practical tips · Years 5–10</span>
+      <h2>Asking as<br>Leadership</h2>
+      <div class="rule"></div>
+      <div class="tip-grid">
+        <div class="tip-card">
+          <span class="tip-head">Bring context</span>
+          <p>Your manager / principal may not have your feature's full background. Brief them.</p>
+        </div>
+        <div class="tip-card">
+          <span class="tip-head">Know when to decide</span>
+          <p>Seeking genuine input vs. seeking validation — be honest with yourself.</p>
+        </div>
+        <div class="tip-card">
+          <span class="tip-head">Ask in public</span>
+          <p>Team channels normalize the behavior. Senior devs set the example.</p>
+        </div>
+        <div class="tip-card">
+          <span class="tip-head">Write it down</span>
+          <p>RFC / short doc > one-off question at this level. Creates a record. Scales the ask.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sn">‹30›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Same problem, different question, different format</span>
+      <h2>Ask Up<br>vs. Ask Across</h2>
+      <div class="rule"></div>
+      <div class="ua-table">
+        <div class="ua-row ua-head" style="grid-template-columns:1fr 1fr 1fr;">
+          <p>Who</p><p>What they need</p><p>How to frame it</p>
+        </div>
+        <div class="ua-row" style="grid-template-columns:1fr 1fr 1fr;">
+          <p><strong>Peer / Teammate</strong></p>
+          <p>Your code + context</p>
+          <p>Specific + technical</p>
+        </div>
+        <div class="ua-row" style="grid-template-columns:1fr 1fr 1fr;">
+          <p><strong>Manager</strong></p>
+          <p>Project impact</p>
+          <p>Tradeoffs + timeline</p>
+        </div>
+        <div class="ua-row" style="grid-template-columns:1fr 1fr 1fr;">
+          <p><strong>Principal / Architect</strong></p>
+          <p>System-level fit</p>
+          <p>Architecture + risk</p>
+        </div>
+      </div>
+    </div>
+    <div class="sn">‹31›</div>
+  </section>
+</section>
+
+<!-- ══ §6 DIVIDER ══ -->
+<section class="slide-divider">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap" style="justify-content:center;align-items:center;text-align:center;">
+    <span class="div-num">SECTION 06 &nbsp;/&nbsp; ~4 min</span>
+    <h2 class="div-head">ASYNC-FIRST<br><em>COMMUNICATION</em></h2>
+  </div>
+  <div class="sn">‹32›</div>
+</section>
+
+<!-- ══ 33–36 ASYNC (vertical) ══ -->
+<section>
+  <section class="slide-anchor">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="anc-text">Live time is a<br><em>premium resource.</em><br>Treat it like one.</div>
+    <div class="sn">‹33›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">The default posture</span>
+      <h2>Async-First<br>Principles</h2>
+      <div class="rule"></div>
+      <ul class="blist">
+        <li>Write questions specific enough that no clarification is needed first</li>
+        <li>Respect that the answer may come in 2 hours, not 2 minutes</li>
+        <li>Async creates a written record — others find it later</li>
+      </ul>
+      <div class="callout"><p>Asking well + documenting answers = <strong>the same culture.</strong></p></div>
+    </div>
+    <div class="sn">‹34›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">Underrated tool</span>
+      <h2>Loom is a<br>Valid Ask</h2>
+      <div class="rule"></div>
+      <p>A 2-minute screen recording — showing the bug, explaining what you've tried, asking one specific question — can outperform a long Slack message.</p>
+      <p>Still async. Lower friction. Higher clarity. Creates a record.</p>
+      <div class="callout"><p><strong>Add it to your toolkit.</strong> Especially useful for visual bugs or flow-level issues that are hard to describe in text.</p></div>
+    </div>
+    <div class="sn">‹35›</div>
+  </section>
+  <section class="slide-content">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <span class="label">When to break the rule</span>
+      <h2>When Sync Is<br>the Right Call</h2>
+      <div class="rule"></div>
+      <ul class="blist">
+        <li>Production is down</li>
+        <li>A deadline is imminent</li>
+        <li>Too nuanced to describe without losing critical context</li>
+        <li>Multiple people need the same context at the same time</li>
+      </ul>
+      <div class="callout"><p>Everything else: <strong>async first.</strong> Always try the message before the call.</p></div>
+    </div>
+    <div class="sn">‹36›</div>
+  </section>
+</section>
+
+<!-- ══ 37 THE FORMULA ══ -->
+<section class="slide-content" style="background:#064e3b;">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap">
+    <span class="label">Works at every level · every year</span>
+    <h2>The Formula</h2>
+    <div class="rule"></div>
+    <ol class="nlist">
+      <li>What am I trying to do?</li>
+      <li>What exactly is blocking me?</li>
+      <li>What have I already tried?</li>
+      <li>What do I think is happening?</li>
+      <li>What kind of help do I need?</li>
+      <li><strong>What will I do next if this doesn't work?</strong></li>
+    </ol>
+    <div class="callout" style="margin-top:.8em;"><p>#6 is underrated. It signals maturity and keeps the conversation moving even if the help doesn't fully land.</p></div>
+  </div>
+  <div class="sn">‹37›</div>
+</section>
+
+<!-- ══ 38 COMMON MISTAKES ══ -->
+<section class="slide-content">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap">
+    <span class="label">Do stuff… sorry… just don't do this</span>
+    <h2>Common Mistakes</h2>
+    <div class="rule"></div>
+    <ul class="blist">
+      <li><strong>Asking too early.</strong> No prep forces the other person to start from zero.</li>
+      <li><strong>Waiting too long.</strong> 3 hrs of thrashing ≠ independence. It's waste.</li>
+      <li><strong>Being vague.</strong> "It doesn't work" is not a question.</li>
+      <li><strong>The handoff ask.</strong> "Please fix this" ≠ "here's where I'm stuck."</li>
+      <li><strong>Not closing the loop.</strong> When someone helps you — follow up. Always.</li>
+    </ul>
+  </div>
+  <div class="sn">‹38›</div>
+</section>
+
+<!-- ══ 39 HOMER CAMEO ══ -->
+<section class="slide-content">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap">
+    <span class="label">Shoutout</span>
+    <h2>People Who Model<br>This Well</h2>
+    <div class="rule"></div>
+    <div class="homer">
+      <span class="hname">Homer Gaines</span>
+      <span class="htitle">Staff UI Engineer · Guru &nbsp;/&nbsp; Accessibility Professional</span>
+      <span class="hnote">The right question, to the right person, at the right time — framed around what it will unblock, not just what you don't know. Homer models this daily, especially in accessibility work where precision in how you ask determines what you get back.</span>
+    </div>
+  </div>
+  <div class="sn">‹39›</div>
+</section>
+
+<!-- ══ 40 CLOSING ══ -->
+<section class="slide-content" style="background:#0a0a0f;">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap" style="justify-content:center;">
+    <span class="label">Progress over Perfection</span>
+    <p class="lede" style="font-size:34pt;">The goal isn't<br>to ask less.</p>
+    <p class="lede" style="font-size:34pt; margin-top:.2em;">The goal is to<br>ask <em>better.</em></p>
+    <div class="rule" style="margin:.8em 0;"></div>
+    <p style="font-size:13pt; color:rgba(245,240,232,.5); line-height:1.6;">And when you do — you will learn faster, communicate better, and contribute to a team culture where that is true for everyone. Not just you. That compounds.</p>
+  </div>
+  <div class="sn">‹40›</div>
+</section>
+
+<!-- ══ 41 Q&A / FIN ══ -->
+<section class="slide-close">
+  <div class="brand">@Nerajno · #AskBetter</div>
+  <div class="slide-wrap">
+    <h2 class="close-head" style="font-size:56pt;">Questions<br>/ FIN</h2>
+    <div class="rule" style="margin:.8em 0;"></div>
+    <div class="links">
+      <p>✍️ &nbsp;developingdvlpr.com</p>
+      <p>📝 &nbsp;dev.to/@Nerajno — "DIDN'T KNOW TO ASK" series · "A Clearer Vue"</p>
+      <p>📊 &nbsp;isnerandodoneyet.com</p>
+      <p style="margin-top:.6em;"><strong>@Nerajno</strong> — LinkedIn · Twitter/X · Bluesky · Discord</p>
+    </div>
+  </div>
+  <div class="sn">‹41›</div>
+</section>
+
+<!-- ══ 42–43 BACKUP (vertical) ══ -->
+<section>
+  <section class="slide-backup">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <p class="bk-head">Speaker Backup — Core Arc + Key Points</p>
+      <div class="rule"></div>
+      <p><strong style="color:var(--am);">Core thesis:</strong> Asking for help is a skill that evolves across a full career — not a binary of needing help vs. not.</p>
+      <p><strong style="color:var(--am);">Years 0–1:</strong> Clarity. Describe the problem so someone else can understand it. Five-part structure: what I'm trying to do, what happened, what I tried, what I think, what I need.</p>
+      <p><strong style="color:var(--am);">Years 1–3:</strong> Precision + timing. Ask earlier. Name your hypothesis. Route wisely. Close the loop.</p>
+      <p><strong style="color:var(--am);">Years 3–5:</strong> Efficiency. Time-box to 30–45 min. Bring a proposed solution. Know when to escalate. Default async.</p>
+      <p><strong style="color:var(--am);">Years 5–10:</strong> Leadership. Frame tradeoffs. Ask in public. Write RFCs. Know when to decide alone. Ask up vs. across.</p>
+      <p><strong style="color:var(--am);">Psych safety:</strong> If asking feels unsafe, that's a team problem — name it.</p>
+    </div>
+    <div class="sn">‹42›</div>
+  </section>
+  <section class="slide-backup">
+    <div class="brand">@Nerajno · #AskBetter</div>
+    <div class="slide-wrap">
+      <p class="bk-head">Speaker Backup — Timing Guide + Closing Notes</p>
+      <div class="rule"></div>
+      <p><strong style="color:var(--am);">Timing (~35–40 min talk):</strong></p>
+      <p>Intro 3 min · Why 5 min · AI/Duck 4 min · Yrs 0–3 8 min · Yrs 3–5 6 min · Yrs 5–10 6 min · Async 4 min · Formula + Mistakes 4 min · Closing + Q&A 5 min</p>
+      <p><strong style="color:var(--am);">AI note:</strong> GitHub Copilot, Claude, ChatGPT as first-line. Respects team's time, not replacing mentorship. Escalate when context-specific, judgment-based, or high-stakes.</p>
+      <p><strong style="color:var(--am);">Rubber duck:</strong> Articulating the problem often solves it. When it doesn't, the explanation IS the question.</p>
+      <p><strong style="color:var(--am);">Formula #6:</strong> "What will I do next" — most underrated step. Signals maturity. Keeps the conversation moving.</p>
+      <p><strong style="color:var(--am);">Key quote:</strong> "The goal isn't to ask less. The goal is to ask better." — tie back to Progress over Perfection.</p>
+    </div>
+    <div class="sn">‹43›</div>
+  </section>
+</section>
+
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+  controls: true, progress: true, slideNumber: true,
+  hash: true, transition: 'fade', transitionSpeed: 'default',
+  center: false, autoSlide: 0, loop: false,
+});
+</script>
+</body>
+</html>

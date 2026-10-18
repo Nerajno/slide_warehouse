@@ -195,8 +195,12 @@ versions:
     label: "Original"
     date: "2026-04-14"
     revealFile: "v1.html"
+    displayedStatus: true   # optional; false hides this version from the picker
+displayedStatus: true       # optional; false hides the deck everywhere
 ---
 ```
+
+> **Hiding a deck?** Set `displayedStatus: false`. The deck drops out of every list, the hero stats and topic counts, and `/decks/{slug}` returns 404. Set it on a version instead to hide just that version from the picker. If the current version is hidden, the newest visible one opens. Both default to `true`. Production builds (`npm run build` / `npm run generate`) also strip hidden decks' folders and hidden versions' files out of `public/reveals/` in the output (`modules/hide-reveals.ts`); your source files are untouched. `npm run dev` still serves them, so you can preview before flipping the switch.
 
 > **Adding a new version?** Increment `currentVersion`, add the new entry to `versions`, and drop `v2.html` into the same folder. The viewer picks it up automatically.
 

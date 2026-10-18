@@ -1,0 +1,1762 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skills to Bills — Nerando Johnson</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+/* ─────────────────────────────────────────────
+   Skills to Bills — Design System
+   Matching "People Skills Are Technical Skills"
+   Barlow Condensed / Barlow / JetBrains Mono
+───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;700&display=swap');
+
+/* ── Design Tokens ──────────────────────────── */
+:root {
+  --blue:       #1447C4;
+  --blue-dark:  #0D2E8E;
+  --blue-deep:  #070F3A;
+  --blue-mid:   #0F1F6F;
+  --white:      #FFFFFF;
+  --off-white:  #F4F7FF;
+  --muted:      #8AAAD4;
+  --accent:     #2FD0B5;   /* teal — primary highlight */
+  --gold:       #F5C518;   /* section callouts */
+  --green:      #27AE60;
+  --warn:       #E74C3C;
+  --purple:     #8E44AD;
+  --card-bg:    rgba(255,255,255,0.05);
+  --card-border:rgba(79,172,254,0.22);
+
+  /* typography (always pt) */
+  --h1:   52pt;
+  --h2:   34pt;
+  --h3:   22pt;
+  --body: 17pt;
+  --sm:   14pt;
+  --xs:   11pt;
+}
+
+/* ── Reveal base ─────────────────────────────── */
+.reveal-viewport { background: var(--blue-deep); }
+.reveal {
+  font-family: 'Barlow', sans-serif;
+  font-size: 34px;        /* base for em calc; slide text uses pt */
+  color: var(--white);
+}
+.reveal strong, .reveal b { font-weight: 700; }
+
+.reveal h1, .reveal h2, .reveal h3,
+.reveal h4, .reveal h5, .reveal h6 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  text-transform: none;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin: 0;
+}
+.reveal h1 { font-size: var(--h1); }
+.reveal h2 { font-size: var(--h2); }
+.reveal h3 { font-size: var(--h3); }
+
+.reveal p, .reveal li, .reveal td, .reveal th {
+  font-size: var(--body);
+  line-height: 1.5;
+  color: var(--off-white);
+}
+.reveal blockquote p { font-size: inherit; }
+.reveal code { font-family: 'JetBrains Mono', monospace; }
+
+/* ── Progress / controls ─────────────────────── */
+.reveal .progress { color: var(--accent); height: 4px; }
+.reveal .controls { color: var(--accent); }
+.reveal .slide-number {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13pt;
+  background: rgba(13,46,142,.85);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* ── Fragment animations ─────────────────────── */
+.reveal .fragment { transition: all 0.3s ease; }
+.reveal .fragment.fade-up { transform: translateY(14px); opacity: 0; }
+.reveal .fragment.fade-up.visible { transform: translateY(0); opacity: 1; }
+
+/* ── Slide base — all slides use .slide-inner ── */
+.reveal .slides section {
+  text-align: left;
+  height: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+.reveal .slides section.stack { padding: 0 !important; }
+
+.slide-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: var(--blue-deep);
+}
+
+/* ── Header bar ──────────────────────────────── */
+.slide-header {
+  background: var(--blue);
+  padding: 11px 28px 11px 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  border-bottom: 2px solid var(--accent);
+}
+.slide-header h2 {
+  font-size: var(--h2);
+  line-height: 1;
+  color: var(--white);
+}
+.slide-header .eyebrow {
+  font-size: var(--sm);
+  color: rgba(255,255,255,0.65);
+  font-style: italic;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 400;
+}
+
+/* ── Left accent stripe ──────────────────────── */
+.accent-stripe {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 6px;
+  background: var(--accent);
+  z-index: 5;
+}
+
+/* ── Footer bar ──────────────────────────────── */
+.slide-footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--blue-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 24px;
+  font-size: var(--xs);
+  font-weight: 700;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.75);
+  z-index: 10;
+}
+.slide-footer .ft-accent { color: var(--accent); }
+.slide-footer .ft-handle { color: var(--gold); }
+
+/* ── Slide body (content area) ───────────────── */
+.slide-body {
+  flex: 1;
+  padding: 22px 36px 52px 36px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.slide-body.center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* ── Title / hero slides ─────────────────────── */
+.slide-inner.hero {
+  background: linear-gradient(150deg, var(--blue-dark) 0%, var(--blue-deep) 60%);
+  justify-content: center;
+  padding: 40px 52px;
+  gap: 0;
+}
+.slide-inner.hero::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 60%, transparent 100%);
+}
+.slide-inner.hero .eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: var(--sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.slide-inner.hero h1 {
+  font-size: var(--h1);
+  line-height: 0.96;
+}
+.slide-inner.hero .hero-sub {
+  font-size: var(--sm);
+  color: var(--muted);
+  margin-top: 18px;
+}
+
+/* ── Section dividers ────────────────────────── */
+.slide-inner.divider {
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-mid) 55%, var(--blue-deep) 100%);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+}
+.slide-inner.divider::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+}
+.slide-inner.divider h1 {
+  font-size: 68pt;
+  color: var(--white);
+  line-height: 0.95;
+}
+.slide-inner.divider .step-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: var(--sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.slide-inner.divider .div-sub {
+  font-size: 19pt;
+  color: rgba(255,255,255,0.65);
+  margin-top: 12px;
+  font-weight: 400;
+}
+
+/* ── Badge / pills ───────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent);
+  color: var(--blue-deep);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: var(--xs);
+  padding: 3px 13px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.badge.gold   { background: var(--gold);   color: #222; }
+.badge.blue   { background: var(--blue);   color: var(--white); border: 1px solid rgba(255,255,255,0.3); }
+.badge.warn   { background: var(--warn);   color: var(--white); }
+.badge.purple { background: var(--purple); color: var(--white); }
+.badge.green  { background: var(--green);  color: var(--white); }
+
+/* ── Cards ───────────────────────────────────── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+.card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: var(--sm);
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  display: block;
+}
+.card p, .card li { font-size: var(--sm); }
+
+/* Card with left accent border */
+.card.accent-left {
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+.card.gold-left { border-left: 4px solid var(--gold); border-radius: 0 8px 8px 0; }
+.card.warn-left { border-left: 4px solid var(--warn); border-radius: 0 8px 8px 0; }
+
+/* ── Grid layouts ────────────────────────────── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+.grid-wide-left  { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+.grid-wide-right { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+
+/* ── Lists ───────────────────────────────────── */
+.reveal ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 10px 0;
+}
+.reveal ul li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 10px;
+  font-size: var(--body);
+  color: var(--off-white);
+  line-height: 1.45;
+}
+.reveal ul li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.6em;
+  width: 7px; height: 7px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.reveal ul.sm li { font-size: var(--sm); }
+.reveal ul.sm li::before { top: 0.55em; width: 6px; height: 6px; }
+
+/* Checklist */
+.reveal ul.check li::before {
+  content: '✓';
+  background: none;
+  color: var(--accent);
+  font-weight: 900;
+  font-size: var(--sm);
+  top: 0.05em;
+  border-radius: 0;
+}
+
+/* Numbered custom list */
+.reveal ol.steps {
+  list-style: none;
+  padding: 0;
+  counter-reset: steps;
+}
+.reveal ol.steps li {
+  counter-increment: steps;
+  padding-left: 44px;
+  position: relative;
+  margin-bottom: 14px;
+  font-size: var(--body);
+  color: var(--off-white);
+  line-height: 1.4;
+}
+.reveal ol.steps li::before {
+  content: counter(steps);
+  position: absolute;
+  left: 0; top: 1px;
+  width: 28px; height: 28px;
+  background: var(--accent);
+  color: var(--blue-deep);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 14pt;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Blockquotes ─────────────────────────────── */
+.reveal blockquote {
+  background: rgba(47,208,181,0.08);
+  border-left: 5px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 22px;
+  margin: 14px 0;
+  font-style: italic;
+  box-shadow: none;
+  width: 100%;
+  max-width: none;
+}
+.reveal blockquote cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-size: var(--sm);
+  color: var(--accent);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+}
+
+/* ── Highlight / callout box ─────────────────── */
+.callout {
+  background: rgba(245,197,24,0.10);
+  border: 1px solid rgba(245,197,24,0.4);
+  border-left: 5px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 20px;
+}
+.callout p, .callout li { font-size: var(--sm); }
+.callout .callout-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: var(--sm);
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ── Stat boxes ──────────────────────────────── */
+.stat-box {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  text-align: center;
+  padding: 14px 10px;
+}
+.stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36pt;
+  font-weight: 900;
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+}
+.stat-box p { font-size: var(--xs); color: var(--muted); margin: 6px 0 0; }
+
+/* ── Agenda item ─────────────────────────────── */
+.agenda-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin-bottom: 10px;
+}
+.agenda-num {
+  width: 34px; height: 34px;
+  background: var(--accent);
+  color: var(--blue-deep);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 18pt;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.agenda-row p {
+  font-size: 17pt;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0;
+}
+
+/* ── Pill tags (inline) ──────────────────────── */
+.tag {
+  display: inline-block;
+  background: rgba(79,172,254,0.12);
+  border: 1px solid rgba(79,172,254,0.4);
+  color: #7ecfff;
+  font-size: var(--xs);
+  padding: 2px 11px;
+  border-radius: 20px;
+  margin: 2px 3px 2px 0;
+  font-weight: 600;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* ── Text utilities ──────────────────────────── */
+.text-accent  { color: var(--accent) !important; }
+.text-gold    { color: var(--gold) !important; }
+.text-muted   { color: var(--muted) !important; }
+.text-warn    { color: var(--warn) !important; }
+.text-white   { color: var(--white) !important; }
+.text-center  { text-align: center !important; }
+
+/* Gradient headline */
+.grad {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Divider rule ────────────────────────────── */
+.rule { border: none; border-top: 1px solid rgba(79,172,254,0.25); margin: 12px 0; }
+
+/* ── Big equation / hero text ────────────────── */
+.eq-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 48pt;
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.2;
+  color: var(--white);
+}
+.eq-text .op {
+  color: var(--accent);
+  font-size: 36pt;
+  display: block;
+}
+
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+
+<!-- ══════════════════════════════════════════
+     01 — TITLE
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner hero">
+  <div class="eyebrow">A User's Guide to Demonstrated Competency</div>
+  <h1 style="font-size:64pt;">Skills<br><span class="grad">to Bills</span></h1>
+  <div class="hero-sub" style="margin-top:20px;">
+    <span style="color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17pt;">Nerando Johnson</span>
+    <span style="color:var(--muted);font-size:15pt;"> &nbsp;·&nbsp; @Nerajno</span>
+  </div>
+  <div style="margin-top:22px;">
+    <span class="tag">Vue 3</span>
+    <span class="tag">TypeScript</span>
+    <span class="tag">Nuxt</span>
+    <span class="tag">Conference Speaker</span>
+    <span class="tag">Technical Writer</span>
+  </div>
+  <div style="position:absolute;bottom:14px;right:28px;font-family:'Barlow Condensed',sans-serif;font-size:11pt;color:var(--muted);">
+    developingdvlpr.com
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     02 — HELLO / BIO
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Hello — I'm <span style="color:var(--accent);">Nerando</span></h2>
+    <span class="eyebrow">I'm here because someone took the time to talk to me.</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="gap:20px;flex:1;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="badge gold" style="width:fit-content;">Where I've Been</div>
+        <ul class="sm">
+          <li>Junior~ish software developer → <strong>actively working toward Senior</strong></li>
+          <li>Vue 3 · TypeScript · Nuxt · Tailwind specialist</li>
+          <li>Atlanta freeCodeCamp meetup organizer</li>
+          <li>Conference speaker since 2022 — DevNexus, Connect.Tech, Carolina Codes, ADC &amp; more</li>
+          <li>Vue Mastery content creator</li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="badge" style="width:fit-content;">Where I'm Going</div>
+        <ul class="sm">
+          <li>WGU B.S. Software Engineering — in progress</li>
+          <li>TypeScript + Senior Vue Developer certification (2026)</li>
+          <li><em>A Clearer Vue</em> — 9-part blog series for Vue Mastery track</li>
+          <li>Boutique dev shop + MicroSaaS ($5K–10K MRR target, 2030)</li>
+          <li>"Junior~ish" was honest. <strong>Senior</strong> is earned.</li>
+        </ul>
+        <div class="callout" style="margin-top:4px;">
+          <span class="callout-title">Progress Over Perfection</span>
+          <p>Always.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     03 — AGENDA
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>What We're Covering</h2>
+    <span class="eyebrow">The four pillars of Demonstrated Competency</span>
+  </div>
+  <div class="slide-body" style="justify-content:center;gap:10px;">
+    <div class="agenda-row">
+      <div class="agenda-num">1</div>
+      <p><strong>Build It</strong> — Create the evidence before you need it</p>
+    </div>
+    <div class="agenda-row">
+      <div class="agenda-num">2</div>
+      <p><strong>Speak to It</strong> — Articulate the why and the how</p>
+    </div>
+    <div class="agenda-row">
+      <div class="agenda-num">3</div>
+      <p><strong>Share It</strong> — Amplify your work to the world</p>
+    </div>
+    <div class="agenda-row">
+      <div class="agenda-num">4</div>
+      <p><strong>Emotional Wherewithal</strong> — Handle what tries to stop you</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     04 — SKILLS ALONE DON'T PAY BILLS
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Skills Alone Don't Pay Bills</h2>
+  </div>
+  <div class="slide-body">
+    <p style="color:var(--muted);font-size:var(--sm);">In today's market, technical competence is table stakes. <strong style="color:var(--white);">Demonstrated competence</strong> is what separates you.</p>
+    <div class="grid-3" style="flex:1;align-items:stretch;">
+      <div class="card accent-left">
+        <span class="card-title"><i class="fa-solid fa-code"></i> Can You Build It?</span>
+        <p>Writing working code is the minimum bar — not the achievement that gets you hired or promoted.</p>
+      </div>
+      <div class="card accent-left">
+        <span class="card-title"><i class="fa-solid fa-comments"></i> Can You Explain It?</span>
+        <p>Articulating <em>why</em> you made the choices you made is what closes offers and earns trust.</p>
+      </div>
+      <div class="card accent-left">
+        <span class="card-title"><i class="fa-solid fa-dollar-sign"></i> Can You Sell It?</span>
+        <p>Connecting your code to a business outcome is the final piece most developers skip entirely.</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:4px;">
+      <p style="font-size:var(--sm);">This talk is about closing the gap between what you <em>can</em> do and what you can <em>clearly communicate</em> you can do.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     05 — TECH IS A TOOL (QUOTE)
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Reframe the Work</h2>
+  </div>
+  <div class="slide-body" style="justify-content:center;">
+    <blockquote>
+      <p style="font-size:19pt;">"Tech is a tool. Figure out how to make money, and then see which tech tool is the best fit."</p>
+      <cite>— Vibhas Zanpure, Software Development Manager, Amazon</cite>
+    </blockquote>
+    <div class="grid-2" style="margin-top:14px;gap:14px;">
+      <div class="card accent-left">
+        <span class="card-title">The Old Mental Model</span>
+        <p>I write code → code is the value → code speaks for itself.</p>
+      </div>
+      <div class="card gold-left">
+        <span class="card-title" style="color:var(--gold);">The Better Mental Model</span>
+        <p>I solve problems → code is a tool I used → <strong>the solution is the value.</strong></p>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:var(--sm);margin-top:10px;">Your Vue 3 components, your TypeScript types, your Nuxt routes — tools. The problem they solve is the story.</p>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+
+
+<!-- ══════════════════════════════════════════
+     NEW — AUDIENCE INTERACTION (opener)
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner" style="background:linear-gradient(160deg,var(--blue-mid),var(--blue-deep));justify-content:center;align-items:center;text-align:center;">
+  <div style="max-width:820px;padding:20px 40px;">
+    <div class="badge gold" style="margin:0 auto 20px;">Show of Hands</div>
+    <h1 style="font-size:46pt;line-height:1.1;margin-bottom:28px;">
+      How many of you have done<br><span class="grad">work you're proud of</span><br>that nobody knows about?
+    </h1>
+    <p style="font-size:18pt;color:var(--muted);margin-top:10px;">Keep your hand up if you've ever hesitated to share it because it "wasn't ready."</p>
+    <div class="callout" style="margin-top:28px;text-align:left;">
+      <span class="callout-title">That hesitation has a cost.</span>
+      <p>This talk is about closing the gap between what you can do and what the world knows you can do.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     DIVIDER — BUILD IT
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner divider">
+  <div class="step-num">Pillar 01</div>
+  <h1>Build It</h1>
+  <div class="div-sub">Create the receipts before you need them</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     06 — PEOPLE BUY SOLUTIONS
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>People Buy Solutions to Their Problems</h2>
+    <span class="eyebrow">Connect every project to a business outcome</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-3" style="flex:1;align-items:stretch;">
+      <div class="card">
+        <span class="card-title" style="font-size:13pt;"><i class="fa-solid fa-clock" style="color:var(--accent);"></i> &nbsp;Saves Time</span>
+        <p>Automate workflows, reduce steps, remove friction.</p>
+        <hr class="rule">
+        <p style="font-size:var(--xs);color:var(--accent);font-weight:600;">
+          CoffeeCircuit — CFP tracking in one place instead of ten spreadsheets.
+        </p>
+      </div>
+      <div class="card">
+        <span class="card-title" style="font-size:13pt;"><i class="fa-solid fa-chart-line" style="color:var(--gold);"></i> &nbsp;Increases Revenue</span>
+        <p>New products, better UX, faster delivery cycles.</p>
+        <hr class="rule">
+        <p style="font-size:var(--xs);color:var(--gold);font-weight:600;">
+          KitchenOnWheels — connects chefs with commercial equipment faster.
+        </p>
+      </div>
+      <div class="card">
+        <span class="card-title" style="font-size:13pt;"><i class="fa-solid fa-hand-pointer" style="color:var(--purple);"></i> &nbsp;Easier to Use</span>
+        <p>Empathy for the user built into every technical choice.</p>
+        <hr class="rule">
+        <p style="font-size:var(--xs);color:#c084fc;font-weight:600;">
+          isnerandodoneyet — accountability tool built for me, usable by anyone.
+        </p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-title">The Framing Rule</span>
+      <p>When you can map a feature to one of these three outcomes, you can speak to any stakeholder in the room — technical or not.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 01 — Build It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+
+
+<!-- ══════════════════════════════════════════
+     NEW — SAVING TIME = MORE MONEY
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Saving Time = More Money</h2>
+    <span class="eyebrow">Connect your technical solution to business efficiency</span>
+  </div>
+  <div class="slide-body" style="justify-content:center;">
+    <div class="eq-text" style="margin-bottom:20px;">
+      Saved Time
+      <span class="op">→ &nbsp;More Revenue</span>
+    </div>
+    <div class="grid-3" style="gap:14px;">
+      <div class="card accent-left">
+        <span class="card-title">The Problem</span>
+        <p>Time scarcity is the #1 pain in every business environment. Developers who remove friction become indispensable.</p>
+      </div>
+      <div class="card accent-left">
+        <span class="card-title">Your Solution Approach</span>
+        <p>Tools, automation, better UX — each one is a time-saving product. Quantify the minutes it saves per user per day.</p>
+      </div>
+      <div class="card gold-left">
+        <span class="card-title" style="color:var(--gold);">How to Articulate It</span>
+        <p>"This feature saves each user ~15 minutes daily. Across 200 users that's 50 hours/week returned to the business."</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:8px;">
+      <p><strong>CoffeeCircuit:</strong> tracking CFPs across 10 tabs vs. one dashboard. That's not a side project — that's a productivity tool with a measurable ROI story.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 01 — Build It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     NEW — EASE OF USE = MORE MONEY
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Ease of Use = More Money</h2>
+    <span class="eyebrow">Empathy for the user built into every technical choice</span>
+  </div>
+  <div class="slide-body" style="justify-content:center;">
+    <div class="eq-text" style="margin-bottom:20px;">
+      Reduced Friction
+      <span class="op">→ &nbsp;Retained Users</span>
+    </div>
+    <div class="grid-2" style="gap:16px;flex:1;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card accent-left">
+          <span class="card-title">The Problem</span>
+          <p>Users abandon products that are confusing. Every extra click is a churn risk. Good UX is a revenue decision.</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title">Solution Approach</span>
+          <p>Simplify workflows, reduce cognitive load, make the right action obvious. Frontend developers own this layer entirely.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card gold-left">
+          <span class="card-title" style="color:var(--gold);">Demo Empathy in Your Portfolio</span>
+          <p>Document <em>why</em> you chose a UI pattern. "I used a stepper instead of a long form because users were dropping off at step 3" — that is a business decision, not just a code decision.</p>
+        </div>
+        <blockquote style="margin:0;">
+          <p style="font-size:var(--sm);">"Demonstrating empathy for users through your technical choices" is what separates mid-level from senior.</p>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 01 — Build It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     07 — THE DEVELOPER PORTFOLIO
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>The Developer Portfolio</h2>
+    <span class="eyebrow">An evidence-based framework for success</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="flex:1;gap:18px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="badge gold" style="width:fit-content;margin-bottom:2px;">The Minimum Bar</div>
+        <ul class="check sm">
+          <li>3 projects at MVP status</li>
+          <li>Live and hosted — not just a GitHub repo</li>
+          <li>Documented with a real README</li>
+          <li>Has tests — even a few Vitest specs count</li>
+        </ul>
+        <div class="callout" style="margin-top:4px;">
+          <span class="callout-title">Build vs Clone + Modify?</span>
+          <p>Both count. What matters is your ability to explain what you changed — and why.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="badge" style="width:fit-content;margin-bottom:2px;">My Current Receipts</div>
+        <div class="card accent-left">
+          <span class="card-title">isnerandodoneyet</span>
+          <p>Vue 3 / Pinia / Tailwind — 8-way filter, dark mode, repository pattern.</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title">KitchenOnWheels</span>
+          <p>Full-stack rental platform — Clerk auth, Node/Express/MongoDB, real users.</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title">portfolio_v3</span>
+          <p>Astro 5 + Supabase + GEO — the portfolio that proves I know what I'm doing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 01 — Build It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     08 — POLISHED ARTIFACTS
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Create Polished Artifacts</h2>
+    <span class="eyebrow">Quality over quantity — every project should demonstrate a decision</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-wide-left" style="flex:1;gap:20px;">
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <ol class="steps">
+          <li><strong>Choose the problem first.</strong> What real friction are you solving?</li>
+          <li><strong>Document the why.</strong> A README that explains your stack choices <em>is</em> a portfolio piece.</li>
+          <li><strong>Ship it live.</strong> A working URL says more than 10 repos with "WIP" commits.</li>
+          <li><strong>Add tests.</strong> Even one test suite signals professional habits.</li>
+        </ol>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <blockquote style="margin:0;">
+          <p style="font-size:var(--sm);">"The code is not the proof. The code <strong>plus your explanation of it</strong> is the proof."</p>
+        </blockquote>
+        <div class="card gold-left">
+          <span class="card-title" style="color:var(--gold);">The Growth Lens</span>
+          <p>My <em>A Clearer Vue</em> series doesn't just teach Vue 3 — each article is a receipt that says I understand this deeply enough to explain it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 01 — Build It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+
+
+<!-- ══════════════════════════════════════════
+     NEW — EXPLAIN YOUR DECISIONS
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Explain Your Decisions</h2>
+    <span class="eyebrow">Documentation is a portfolio piece — not an afterthought</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="flex:1;gap:18px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <p style="font-size:var(--sm);color:var(--muted);">Every technical choice you made has a reason. Write it down. That reasoning is your competitive advantage in interviews, code reviews, and conversations with stakeholders.</p>
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-code-branch"></i> Tech Stack Choice</span>
+          <p>"I chose Vue 3 over React because the Composition API's TypeScript integration matches how I think about component boundaries."</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-database"></i> Architecture Decision</span>
+          <p>"I used Pinia over Vuex because the store is closer to plain TypeScript — less boilerplate, easier to test."</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-layer-group"></i> The Learning Journey</span>
+          <p>"I started with the Options API, hit a wall with complex state, then refactored to Composition API — here's what changed and why."</p>
+        </div>
+        <div class="callout">
+          <span class="callout-title">The Rule</span>
+          <p>Document your work through blogs, READMEs, or LinkedIn posts. Share your reasoning — not just the outcome. The reasoning is what makes you hireable.</p>
+        </div>
+        <blockquote style="margin:0;">
+          <p style="font-size:var(--sm);">A well-documented tradeoff shows more seniority than perfect code with no explanation.</p>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 01 — Build It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     09 — CHECK IN
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner" style="justify-content:center;align-items:center;text-align:center;background:var(--blue-mid);">
+  <div style="padding:30px 60px;">
+    <div class="badge" style="margin-bottom:18px;">Checkpoint</div>
+    <h1 style="font-size:48pt;line-height:1.05;">
+      Can you answer:<br>
+      <span class="grad">"What did you build — and why?"</span>
+    </h1>
+    <p style="font-size:19pt;color:var(--muted);margin-top:22px;max-width:680px;">
+      If yes — you are building demonstrated competence.<br>
+      If no — that's exactly what the next two pillars fix.
+    </p>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     DIVIDER — SPEAK TO IT
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner divider">
+  <div class="step-num">Pillar 02</div>
+  <h1>Speak to It</h1>
+  <div class="div-sub">Frame your work in a language everyone understands</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     10 — SELF ADVOCACY / TALKS
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Storytelling — Self Advocacy</h2>
+    <span class="eyebrow">Talking about your work isn't bragging. It's evidence.</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="flex:1;gap:14px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-bolt"></i> Lightning Talk — 5 min</span>
+          <p>Low risk. High reps. Do this first. Your local meetup is the lab.</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-users"></i> Meetup Talk — 20-30 min</span>
+          <p>ATL freeCodeCamp, your local group. Where I started. Where you should too.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-microphone-stand"></i> Conference Talk — 45-60 min</span>
+          <p>DevNexus · Connect.Tech · Carolina Codes · ADC. Submit everywhere. Often.</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-brands fa-youtube"></i> Video / Online</span>
+          <p>Vue Mastery content, recorded talks, Loom walkthroughs. Async reach is unlimited.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:8px;">
+      <p>I have <strong style="color:var(--gold);">66 talks across five career tiers</strong> — all of them started with a meetup where 12 people showed up.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 02 — Speak to It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+
+
+<!-- ══════════════════════════════════════════
+     NEW — THE CFP FORMULA
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Writing a Winning CFP</h2>
+    <span class="eyebrow">The proposal is a sales pitch — for yourself</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-wide-right" style="flex:1;gap:20px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="callout">
+          <span class="callout-title">The Formula</span>
+          <p><strong>Problem → Your Angle → What They'll Leave With</strong></p>
+        </div>
+        <div class="card gold-left">
+          <span class="card-title" style="color:var(--gold);">Real Example</span>
+          <p style="font-size:var(--xs);">
+            <strong>Problem:</strong> Developers build great things but can't talk about them.<br>
+            <strong>Angle:</strong> Demonstrated competence as a career framework.<br>
+            <strong>Outcome:</strong> A portfolio strategy, a speaking playbook, and tools to handle imposter syndrome.
+          </p>
+        </div>
+        <p style="font-size:var(--xs);color:var(--muted);">Sound familiar? That's this talk — and it got accepted.</p>
+      </div>
+      <div>
+        <ol class="steps">
+          <li><strong>Hook in sentence one.</strong> Reviewers read hundreds. Open with the problem, not your bio.</li>
+          <li><strong>Be specific about the audience.</strong> "Developers with 1–3 years experience who want to level up" beats "anyone interested in tech."</li>
+          <li><strong>Name 3 concrete takeaways.</strong> Not vibes — actual things they can do Monday morning.</li>
+          <li><strong>Match the conference's theme.</strong> DevNexus ≠ Connect.Tech ≠ CascadiaJS. Read the CFP guidelines and mirror the language.</li>
+          <li><strong>Submit early. Submit often.</strong> Rejection is data. I track every CFP in CoffeeCircuit.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 02 — Speak to It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     11 — STORYTELLING / WRITING
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Storytelling — Writing</h2>
+    <span class="eyebrow">Writing is your async talk. It compounds over time.</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="flex:1;gap:18px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-file-pen"></i> Short Posts</span>
+          <p>What you shipped. TILs. 200-word LinkedIn updates. Do this weekly.</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-code"></i> Long-form + Code</span>
+          <p>Walk through a real decision — what you tried, what broke, what worked.</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-layer-group"></i> Series</span>
+          <p>Shows depth and commitment. Cross-post to dev.to and LinkedIn for reach.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="callout">
+          <span class="callout-title">A Clearer Vue — 9 Articles</span>
+          <p>Following the Vue Mastery beginner track. Each one a receipt of mastery. First-person, honest about tradeoffs, community-oriented.</p>
+        </div>
+        <div class="card gold-left">
+          <span class="card-title" style="color:var(--gold);">The Content Stack</span>
+          <p style="font-size:var(--xs);">
+            Publish on <strong>developingdvlpr.com</strong><br>
+            → Cross-post to dev.to<br>
+            → Share on LinkedIn<br>
+            <span style="color:var(--muted);">One piece. Three channels. Compounding reach.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 02 — Speak to It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+
+
+<!-- ══════════════════════════════════════════
+     NEW — FRAME YOUR WORK AS A STORY
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Frame Your Work as a Story</h2>
+    <span class="eyebrow">Humans remember narratives — not bullet lists of features</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="flex:1;gap:16px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card warn-left">
+          <span class="card-title" style="color:var(--warn);">The Feature List (forgettable)</span>
+          <p style="font-size:var(--sm);">"I built a Vue 3 app with Pinia state management, Tailwind CSS, Supabase for the backend, and Vitest for testing."</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title">The Story (memorable)</span>
+          <p style="font-size:var(--sm);">"I was losing track of 30+ conference submissions across spreadsheets and email threads. I built CoffeeCircuit in Vue 3 to fix that — and now it's the tool I demo when someone asks what I can build."</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="callout">
+          <span class="callout-title">The Story Arc for Any Project</span>
+          <p style="font-size:var(--xs);">
+            <strong style="color:var(--gold);">Before:</strong> What was the problem or friction?<br>
+            <strong style="color:var(--accent);">During:</strong> What did you decide — and why that approach?<br>
+            <strong style="color:var(--green);">After:</strong> What changed? What did you learn?
+          </p>
+        </div>
+        <div class="card gold-left">
+          <span class="card-title" style="color:var(--gold);">Your Story Prompt</span>
+          <p>Think of the last thing you built. Can you tell me the Before / During / After in 60 seconds? If not — write it down tonight. That story is worth money.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 02 — Speak to It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     DIVIDER — SHARE IT
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner divider">
+  <div class="step-num">Pillar 03</div>
+  <h1>Share It</h1>
+  <div class="div-sub">Visibility isn't vanity — it's how opportunities find you</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     12 — WHERE TO SHARE
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Where to Share</h2>
+    <span class="eyebrow">The right people are listening — if you're speaking</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-3" style="flex:1;gap:12px;">
+      <div class="card">
+        <span class="card-title"><i class="fa-brands fa-linkedin" style="color:var(--accent);"></i> LinkedIn</span>
+        <p>Project launches, acceptances, lessons learned. 200–400 words hits the algorithm.</p>
+      </div>
+      <div class="card">
+        <span class="card-title"><i class="fa-brands fa-github" style="color:var(--accent);"></i> GitHub</span>
+        <p>Green squares + good READMEs = living portfolio. Your commit history tells a story.</p>
+      </div>
+      <div class="card">
+        <span class="card-title"><i class="fa-solid fa-seedling" style="color:var(--accent);"></i> Digital Garden</span>
+        <p>WIP learning in public. Low stakes, high signal. Mine: <em>garden.developingdvlpr.com</em></p>
+      </div>
+      <div class="card">
+        <span class="card-title"><i class="fa-solid fa-users-rectangle" style="color:var(--gold);"></i> Community</span>
+        <p>Meetup, freeCodeCamp chapters, Discord servers. Show up. Speak. Repeat.</p>
+      </div>
+      <div class="card">
+        <span class="card-title"><i class="fa-solid fa-video" style="color:var(--gold);"></i> Video + Demos</span>
+        <p>Loom walkthroughs, Vue Mastery content, conference recordings. Async reach &gt; any room.</p>
+      </div>
+      <div class="card">
+        <span class="card-title"><i class="fa-solid fa-rss" style="color:var(--gold);"></i> Your Blog</span>
+        <p>Owned media. SEO compounds. GEO-optimized posts work while you sleep.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 03 — Share It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+
+
+<!-- ══════════════════════════════════════════
+     NEW — BUILD IN PUBLIC: A WEEKLY CADENCE
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Build in Public — A Weekly Cadence</h2>
+    <span class="eyebrow">Consistency beats perfection every single time</span>
+  </div>
+  <div class="slide-body">
+    <p style="font-size:var(--sm);color:var(--muted);margin-bottom:4px;">You don't need to post every day. You need a system. Here's one that works:</p>
+    <div class="grid-2" style="flex:1;gap:14px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-1" style="color:var(--accent);"></i> &nbsp;Monday — Intention</span>
+          <p>"This week I'm working on ___ because ___." Post it. One sentence. Creates accountability.</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-3" style="color:var(--accent);"></i> &nbsp;Wednesday — Progress</span>
+          <p>A screenshot, a code snippet, a problem you hit. "Stuck on X — here's what I tried." That's content.</p>
+        </div>
+        <div class="card accent-left">
+          <span class="card-title"><i class="fa-solid fa-5" style="color:var(--accent);"></i> &nbsp;Friday — Reflection</span>
+          <p>"Here's what I shipped, what broke, and what I'd do differently." 3 sentences. Posts like this are portfolio gold.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="callout">
+          <span class="callout-title">Why This Works</span>
+          <p>Over 52 weeks that's 156 micro-posts, ~52 TILs, and a documented record of your growth. Future employers can <em>see</em> your trajectory, not just your final state.</p>
+        </div>
+        <div class="card gold-left">
+          <span class="card-title" style="color:var(--gold);">The Compound Effect</span>
+          <p>One post from 6 months ago about a Vue 3 composable I built still drives traffic to my site today. Build once, earn reach forever.</p>
+        </div>
+        <p style="font-size:var(--xs);color:var(--muted);">Start with LinkedIn. Add dev.to. Then your own blog. In that order.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 03 — Share It</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     DIVIDER — EMOTIONAL WHEREWITHAL
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner divider">
+  <div class="step-num">Pillar 04</div>
+  <h1>Emotional<br>Wherewithal</h1>
+  <div class="div-sub">Imposter syndrome doesn't go away — you go through it</div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     13 — THE QUESTIONS IN YOUR HEAD
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>The Questions That Live in Your Head</h2>
+  </div>
+  <div class="slide-body" style="justify-content:center;">
+    <div class="grid-3" style="gap:16px;">
+      <div class="card text-center" style="padding:24px 16px;">
+        <p style="font-size:26pt;font-weight:700;color:var(--accent);font-family:'Barlow Condensed',sans-serif;margin:0;">Do I<br>know it?</p>
+      </div>
+      <div class="card text-center" style="padding:24px 16px;">
+        <p style="font-size:26pt;font-weight:700;color:var(--accent);font-family:'Barlow Condensed',sans-serif;margin:0;">Can I<br>build it?</p>
+      </div>
+      <div class="card text-center" style="padding:24px 16px;">
+        <p style="font-size:26pt;font-weight:700;color:var(--accent);font-family:'Barlow Condensed',sans-serif;margin:0;">Can I<br>sell it?</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:18px;">
+      <p style="font-size:17pt;">Every developer asks these. The difference between where you are and where you want to be isn't <em>not</em> asking — it's having enough receipts to answer them with confidence.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 04 — Emotional Wherewithal</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     14 — IMPOSTER SYNDROME DEFINED
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Imposter Syndrome</h2>
+  </div>
+  <div class="slide-body">
+    <blockquote>
+      <p style="font-size:18pt;">A psychological phenomenon of feeling like a fraud — <strong>even when there's clear evidence of your competence.</strong></p>
+    </blockquote>
+    <div class="grid-2" style="flex:1;gap:16px;margin-top:4px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="badge warn" style="width:fit-content;">How It Shows Up</div>
+        <ul class="sm">
+          <li>"Everyone else already knows this"</li>
+          <li>"My code isn't good enough to share"</li>
+          <li>"I'm not ready to submit a CFP yet"</li>
+          <li>"I'm just a junior"</li>
+          <li>"What if they ask me something I don't know?"</li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="badge green" style="width:fit-content;">The Honest Truth</div>
+        <div class="card gold-left">
+          <p>I gave 20+ conference talks while calling myself <strong>"Junior~ish."</strong> The label didn't stop me. Neither should it stop you.</p>
+        </div>
+        <p style="font-size:var(--sm);color:var(--muted);">Its presence often signals high standards — not incompetence. Recognize it. Then go for it anyway.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 04 — Emotional Wherewithal</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     15 — HOW TO HEAD IT OFF
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>How to Head It Off</h2>
+    <span class="eyebrow">The receipts strategy</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-wide-right" style="flex:1;gap:20px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="callout">
+          <span class="callout-title">The Receipts Strategy</span>
+          <p>When imposter syndrome says "you don't belong here" — open your portfolio, your blog, your Sessionize profile. Let the evidence answer back.</p>
+        </div>
+        <blockquote style="margin:0;">
+          <p style="font-size:15pt;">Progress over perfection.<br><strong>Progress over perfection.<br>Progress over perfection.</strong></p>
+        </blockquote>
+      </div>
+      <div>
+        <ol class="steps">
+          <li><strong>Document your wins.</strong> A "brag doc" isn't arrogant — it's your evidence file. Write it weekly.</li>
+          <li><strong>Seek real feedback.</strong> Not validation — honest code reviews, real users, talk feedback forms.</li>
+          <li><strong>Name the distortion.</strong> "I don't know this yet" is different from "I can't know this."</li>
+          <li><strong>Build in public.</strong> Sharing your learning removes the pressure of perfection from your work.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 04 — Emotional Wherewithal</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+
+
+<!-- ══════════════════════════════════════════
+     NEW — THE BRAG DOC
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>The Brag Doc</h2>
+    <span class="eyebrow">Your evidence file — write it before you need it</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="flex:1;gap:18px;">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <blockquote style="margin:0;">
+          <p style="font-size:var(--sm);">A brag doc is not arrogant. It's a running record of what you shipped, what you fixed, and what you made better — so you're never caught flat-footed at a review.</p>
+        </blockquote>
+        <div class="card accent-left">
+          <span class="card-title">What Goes In It</span>
+          <ul class="sm" style="margin:6px 0 0;">
+            <li>Features shipped and their business impact</li>
+            <li>Bugs fixed that were costing time or money</li>
+            <li>Things you learned and then taught to someone else</li>
+            <li>Talks given, articles written, PRs merged</li>
+            <li>Feedback received — positive and constructive</li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="callout">
+          <span class="callout-title">When Imposter Syndrome Hits</span>
+          <p>Open the doc. Read three items. That is the evidence. You cannot argue with a timestamp and a shipped URL.</p>
+        </div>
+        <div class="card gold-left">
+          <span class="card-title" style="color:var(--gold);">The Weekly Habit</span>
+          <p>Friday afternoon. 5 minutes. One entry. Over a year that's 52 data points that tell the story of your growth — in your own words, before anyone else frames it for you.</p>
+        </div>
+        <p style="font-size:var(--xs);color:var(--muted);">Tools: Notion, a private GitHub gist, a text file. The format doesn't matter. The habit does.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 04 — Emotional Wherewithal</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     NEW — AUDIENCE REFLECTION MOMENT
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner" style="background:linear-gradient(160deg,var(--blue-mid),var(--blue-deep));justify-content:center;align-items:center;text-align:center;">
+  <div style="max-width:800px;padding:20px 40px;">
+    <div class="badge" style="margin:0 auto 20px;">60 Seconds</div>
+    <h1 style="font-size:44pt;line-height:1.1;margin-bottom:24px;">
+      Turn to someone near you.<br>
+      <span class="grad">Answer this question:</span>
+    </h1>
+    <div class="callout" style="text-align:left;margin-bottom:20px;">
+      <span class="callout-title">Your prompt</span>
+      <p style="font-size:19pt;">"What's one thing you've built or learned in the last 3 months that you haven't told anyone about — and why haven't you shared it?"</p>
+    </div>
+    <p style="font-size:16pt;color:var(--muted);">That hesitation? That's the gap this talk is about closing. You just identified your first piece of content.</p>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Pillar 04 — Emotional Wherewithal</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     DIVIDER — WRAP UP
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner divider">
+  <div class="step-num">Let's Wrap</div>
+  <h1>The Summary</h1>
+  <div class="div-sub">The pillars · the growth · the path forward</div>
+</div>
+</section>
+
+
+
+
+<!-- ══════════════════════════════════════════
+     NEW — WHY TECHNICAL SKILLS ALONE FAIL YOU
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Why Technical Skills Alone Fail You</h2>
+    <span class="eyebrow">The three gaps that hold developers back</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-3" style="flex:1;gap:14px;">
+      <div class="card warn-left">
+        <span class="card-title" style="color:var(--warn);"><i class="fa-solid fa-eye-slash"></i> The Visibility Gap</span>
+        <p>Technical expertise without articulation limits your impact. The best code in the world doesn't advance your career if no one knows it exists.</p>
+        <hr class="rule">
+        <p style="font-size:var(--xs);color:var(--accent);font-weight:600;">Fix: Build It + Share It</p>
+      </div>
+      <div class="card warn-left">
+        <span class="card-title" style="color:var(--warn);"><i class="fa-solid fa-puzzle-piece"></i> The Story Gap</span>
+        <p>Scattered projects without documented decisions fail to tell a coherent professional story. Reviewers can't connect the dots for you.</p>
+        <hr class="rule">
+        <p style="font-size:var(--xs);color:var(--accent);font-weight:600;">Fix: Speak to It + Explain Decisions</p>
+      </div>
+      <div class="card warn-left">
+        <span class="card-title" style="color:var(--warn);"><i class="fa-solid fa-brain"></i> The Confidence Gap</span>
+        <p>Imposter syndrome undermines recognition you've already earned. You downplay wins, over-qualify statements, and hesitate on opportunities.</p>
+        <hr class="rule">
+        <p style="font-size:var(--xs);color:var(--accent);font-weight:600;">Fix: Emotional Wherewithal + Brag Doc</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:8px;">
+      <p>Intentional growth — building, writing, speaking, sharing — compounds over time into <strong>demonstrated competence</strong>. That's what this framework is for.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills — Summary</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     16 — SUMMARY / FOUR PILLARS
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>The Four Pillars in Practice</h2>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="flex:1;gap:14px;">
+      <div class="card accent-left">
+        <span class="card-title" style="font-size:16pt;">🔨 Build It</span>
+        <p>3 quality projects at MVP. Live, hosted, documented, tested. Connect each one to a business problem — time, revenue, or UX.</p>
+      </div>
+      <div class="card accent-left">
+        <span class="card-title" style="font-size:16pt;">🎤 Speak to It</span>
+        <p>Lightning talk → meetup → conference. Frame work in business terms. Get reps until telling your story is effortless.</p>
+      </div>
+      <div class="card accent-left">
+        <span class="card-title" style="font-size:16pt;">📢 Share It</span>
+        <p>Blog series + social posts + community presence. One piece of content → three channels. Build in public consistently.</p>
+      </div>
+      <div class="card accent-left">
+        <span class="card-title" style="font-size:16pt;">🧠 Handle Your Head</span>
+        <p>Document wins weekly. Seek real feedback. Let your receipts answer imposter syndrome. Progress over perfection — always.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     17 — MY GROWTH ROADMAP
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>My Growth Roadmap — 2026</h2>
+    <span class="eyebrow">This talk is a snapshot — here's where I'm taking the work</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="flex:1;gap:18px;">
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="badge gold" style="width:fit-content;">Technical</div>
+        <ul class="sm check">
+          <li>TypeScript Developer cert — certificates.dev</li>
+          <li>Senior Vue Developer certification</li>
+          <li>WGU B.S. Software Engineering</li>
+          <li>Ship CoffeeCircuit + DevGraph to real users</li>
+          <li>Nuxt Developer certification</li>
+        </ul>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="badge" style="width:fit-content;">Content + Community</div>
+        <ul class="sm check">
+          <li>Complete <em>A Clearer Vue</em> — all 9 articles</li>
+          <li>Vue Mastery video track</li>
+          <li>DevNexus · Connect.Tech · ADC 2026 accepted talks</li>
+          <li>Boutique dev shop client revenue in year 1</li>
+          <li>MicroSaaS → $5K–$10K MRR by 2030</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:8px;">
+      <p><strong>"Junior~ish"</strong> was the honest label. <strong style="color:var(--gold);">Senior</strong> is the earned destination. The work between those two points is the story I'm telling in real time.</p>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     18 — KEY TAKEAWAY
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner" style="justify-content:center;align-items:center;text-align:center;background:linear-gradient(150deg,var(--blue-dark),var(--blue-deep));">
+  <div style="max-width:860px;padding:0 40px;">
+    <div class="badge" style="margin:0 auto 20px;">Key Takeaway</div>
+    <h1 style="font-size:44pt;line-height:1.1;">
+      Your code might speak for itself.<br>
+      <span class="grad">But you need to speak for it too.</span>
+    </h1>
+    <p style="font-size:18pt;color:var(--muted);margin-top:26px;">
+      Build the receipts. Tell the story. Share the work. Handle your head. Repeat.
+    </p>
+    <div style="margin-top:24px;">
+      <span class="tag">Build It</span>
+      <span class="tag">Speak to It</span>
+      <span class="tag">Share It</span>
+      <span class="tag">Emotional Wherewithal</span>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+<!-- ══════════════════════════════════════════
+     19 — QUESTIONS / OUTRO
+══════════════════════════════════════════ -->
+<section>
+<div class="slide-inner">
+  <div class="accent-stripe"></div>
+  <div class="slide-header">
+    <h2>Questions?</h2>
+    <span class="eyebrow">Let's keep the conversation going</span>
+  </div>
+  <div class="slide-body">
+    <div class="grid-2" style="flex:1;gap:20px;">
+      <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
+        <ul class="sm">
+          <li><i class="fa-solid fa-globe" style="color:var(--accent);width:18px;"></i> &nbsp;developingdvlpr.com</li>
+          <li><i class="fa-brands fa-bluesky" style="color:var(--accent);width:18px;"></i> &nbsp;@Nerajno</li>
+          <li><i class="fa-solid fa-microphone" style="color:var(--accent);width:18px;"></i> &nbsp;sessionize.com/Nerajno</li>
+          <li><i class="fa-brands fa-github" style="color:var(--accent);width:18px;"></i> &nbsp;github.com/Nerajno</li>
+        </ul>
+        <p style="font-size:var(--xs);color:var(--muted);">Slides, resources, and further reading linked at the talk page on my site.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
+        <div class="card accent-left">
+          <span class="card-title">Currently Shipping</span>
+          <p style="font-size:var(--xs);">
+            <span class="tag">A Clearer Vue</span>
+            <span class="tag">CoffeeCircuit</span>
+            <span class="tag">KitchenOnWheels</span>
+            <span class="tag">DevGraph</span>
+          </p>
+        </div>
+        <div class="callout">
+          <p style="font-style:normal;font-size:17pt;"><strong>Progress over perfection.</strong><br><span style="color:var(--muted);font-size:var(--sm);">Always. — @Nerajno</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="ft-accent">Skills to Bills</span>
+    <span class="ft-handle">@Nerajno</span>
+  </div>
+</div>
+</section>
+
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    slideNumber: true,
+    hash: true,
+    transition: 'slide',
+    center: false,
+    loop: false,
+  });
+</script>
+</body>
+</html>

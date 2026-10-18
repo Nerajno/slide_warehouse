@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>People Skills Are Technical Skills — @Nerajno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css" />
+<style>
+/* ── Design tokens ─────────────────────────────────── */
+:root {
+  --blue:      #1447C4;
+  --blue-dark: #0D2E8E;
+  --blue-deep: #070F3A;
+  --white:     #FFFFFF;
+  --off-white: #F4F7FF;
+  --dark-text: #1A1A2E;
+  --muted:     #5A6A9A;
+  --accent:    #2FD0B5;
+  --warn:      #C0392B;
+  --green:     #1E8449;
+  --purple:    #7D3C98;
+  --code-bg:   #0D1B5E;
+}
+
+/* ── Reveal overrides ──────────────────────────────── */
+.reveal-viewport { background: var(--blue-deep); }
+
+.reveal {
+  font-family: 'Barlow', sans-serif;
+  font-size: 36px;
+  color: var(--white);
+}
+
+.reveal .slides section {
+  text-align: left;
+  height: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.reveal h1, .reveal h2, .reveal h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  text-transform: none;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin: 0;
+}
+
+.reveal code, .reveal pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Progress & controls ───────────────────────────── */
+.reveal .progress { color: var(--accent); height: 4px; }
+.reveal .controls { color: var(--accent); }
+.reveal .slide-number {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  background: rgba(13,46,142,0.8);
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* ── Fragment animations ───────────────────────────── */
+.reveal .fragment { transition: all 0.4s ease; }
+.reveal .fragment.fade-up { transform: translateY(20px); opacity: 0; }
+.reveal .fragment.fade-up.visible { transform: translateY(0); opacity: 1; }
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT UTILITIES
+══════════════════════════════════════════════════════ */
+.slide-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Blue header bar */
+.slide-header {
+  background: var(--blue);
+  padding: 14px 30px 14px 30px;
+  flex-shrink: 0;
+}
+.slide-header h2 {
+  font-size: 1.55em;
+  line-height: 1;
+}
+.slide-header .sub {
+  font-size: 0.42em;
+  color: #C0CEFF;
+  font-style: italic;
+  font-weight: 400;
+  margin-top: 3px;
+}
+
+/* Footer bar */
+.slide-footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--blue-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 22px;
+  font-size: 0.32em;
+  font-weight: 600;
+  z-index: 10;
+}
+
+/* Left accent stripe */
+.accent-stripe {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 8px;
+  background: var(--accent);
+  z-index: 5;
+}
+
+/* Section badge */
+.section-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--blue-dark);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.38em;
+  padding: 3px 14px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+.section-badge.warn { background: var(--warn); color: white; }
+
+/* Story prompt box */
+.story-prompt {
+  background: var(--code-bg);
+  border: 1.5px solid var(--accent);
+  border-left: 6px solid var(--accent);
+  padding: 14px 18px;
+  margin-top: 20px;
+  font-size: 0.42em;
+  line-height: 1.5;
+  font-style: italic;
+  color: #dce8ff;
+  border-radius: 0 6px 6px 0;
+}
+.story-prompt strong {
+  display: block;
+  color: var(--accent);
+  font-style: normal;
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* ══════════════════════════════════════════════════════
+   SLIDE-SPECIFIC STYLES
+══════════════════════════════════════════════════════ */
+
+/* ── S1: Title ─── */
+#s-title {
+  background: var(--blue-dark);
+}
+#s-title .accent-stripe { width: 10px; }
+#s-title .title-content {
+  padding: 50px 50px 0 60px;
+  flex: 1;
+}
+#s-title h1 {
+  font-size: 3.2em;
+  line-height: 0.95;
+}
+#s-title .are-word {
+  font-size: 2.4em;
+  color: var(--accent);
+  font-style: italic;
+  display: block;
+  line-height: 1;
+}
+#s-title .subtitle {
+  font-size: 0.55em;
+  color: #C0CEFF;
+  font-style: italic;
+  margin-top: 18px;
+  font-weight: 400;
+}
+#s-title .title-footer {
+  background: var(--blue);
+  padding: 12px 50px;
+  font-size: 0.38em;
+  color: white;
+  margin-top: auto;
+}
+
+/* ── S2: Intro ─── */
+#s-intro .two-col {
+  display: grid;
+  grid-template-columns: 38% 62%;
+  height: 100%;
+}
+#s-intro .left-panel {
+  background: var(--blue);
+  padding: 30px 22px;
+  display: flex;
+  flex-direction: column;
+}
+#s-intro .left-panel h2 {
+  font-size: 2.5em;
+  line-height: 0.95;
+}
+#s-intro .left-panel .name { font-size: 0.72em; font-weight: 600; margin-top: 20px; }
+#s-intro .left-panel .role { font-size: 0.38em; color: #C0CEFF; line-height: 1.6; margin-top: 6px; }
+#s-intro .left-panel .handle { font-size: 0.34em; color: #9EB3FF; margin-top: auto; }
+#s-intro .right-panel {
+  background: var(--off-white);
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#s-intro .right-panel h2 {
+  font-size: 2em;
+  color: var(--blue);
+  line-height: 1.05;
+}
+#s-intro .right-panel .aside {
+  font-size: 0.45em;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 12px;
+}
+#s-intro .qr-placeholder {
+  width: 90px; height: 90px;
+  border: 2px solid var(--muted);
+  background: #E8EEFF;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.3em;
+  color: var(--muted);
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* ── Cards grid ─── */
+.cards-grid {
+  display: grid;
+  gap: 12px;
+  padding: 16px 24px 55px;
+  flex: 1;
+}
+.cards-grid.two-col { grid-template-columns: 1fr 1fr; }
+.cards-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+.cards-grid.four-col { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+.card {
+  background: white;
+  border: 1px solid #D0DBFF;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  overflow: hidden;
+  border-radius: 3px;
+}
+.card-header {
+  background: var(--blue);
+  color: white;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.4em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  line-height: 1.2;
+}
+.card-header .num {
+  background: var(--blue-dark);
+  color: var(--accent);
+  font-size: 1.1em;
+  min-width: 28px;
+  height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  margin: -7px -12px -7px -12px;
+  padding: 7px 10px;
+}
+.card-body {
+  padding: 10px 12px;
+  font-size: 0.37em;
+  color: var(--dark-text);
+  line-height: 1.5;
+}
+
+/* ── Agenda numbered list ─── */
+.agenda-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 14px 24px 55px;
+  flex: 1;
+}
+.agenda-item {
+  background: white;
+  border: 1px solid #D0DBFF;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 3px;
+}
+.agenda-item .num {
+  background: var(--blue);
+  color: var(--accent);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.5em;
+  min-width: 46px;
+  align-self: stretch;
+  display: flex; align-items: center; justify-content: center;
+}
+.agenda-item .label {
+  color: var(--dark-text);
+  font-size: 0.48em;
+  font-weight: 600;
+  padding: 12px 14px;
+  line-height: 1.25;
+}
+
+/* ── Disclaimer ─── */
+#s-disclaimer {
+  background: var(--blue);
+}
+#s-disclaimer .content {
+  padding: 30px 40px 55px;
+}
+#s-disclaimer h2 { font-size: 3em; }
+#s-disclaimer .divider {
+  height: 4px;
+  background: var(--accent);
+  margin: 16px 0;
+}
+#s-disclaimer .lead {
+  font-size: 0.52em;
+  font-style: italic;
+  color: white;
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+#s-disclaimer .disc-item {
+  font-size: 0.44em;
+  color: white;
+  margin: 10px 0;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.45;
+}
+#s-disclaimer .disc-item::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── Audience Interaction ─── */
+.interaction-slide {
+  background: var(--blue-dark);
+}
+.interaction-slide .top-bar {
+  background: var(--accent);
+  padding: 8px 24px;
+  font-size: 0.38em;
+  font-weight: 700;
+  color: var(--blue-dark);
+  letter-spacing: 0.06em;
+}
+.interaction-slide .content {
+  padding: 18px 30px 55px;
+  flex: 1;
+}
+.interaction-slide .intro-line {
+  font-size: 0.55em;
+  color: var(--accent);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+.interaction-slide h2 {
+  font-size: 1.7em;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+.interaction-item {
+  background: var(--blue);
+  border: 1px solid #3055D0;
+  padding: 10px 18px;
+  margin: 8px 0;
+  font-size: 0.44em;
+  color: white;
+  line-height: 1.4;
+  border-radius: 3px;
+}
+.interaction-cta {
+  font-size: 0.44em;
+  color: var(--accent);
+  font-weight: 700;
+  font-style: italic;
+  margin-top: 14px;
+}
+
+/* ── Problem slides ─── */
+.problem-slide {
+  background: var(--blue-dark);
+}
+.problem-slide .content {
+  padding: 16px 30px 55px 30px;
+  flex: 1;
+  display: flex;
+  gap: 20px;
+}
+.problem-slide .left { flex: 1; }
+.problem-slide .right {
+  width: 280px;
+  background: var(--blue);
+  border: 2px solid var(--accent);
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+.problem-slide .right p {
+  font-size: 0.46em;
+  font-style: italic;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+}
+.problem-slide .prob-num {
+  font-size: 0.44em;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.problem-slide h2 { font-size: 2.4em; line-height: 1.0; }
+
+/* code block */
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--muted);
+  padding: 16px 20px;
+  border-radius: 4px;
+  font-size: 0.44em;
+  line-height: 1.7;
+}
+.code-block .kw  { color: #C792EA; }
+.code-block .id  { color: #82AAFF; }
+.code-block .val { color: var(--accent); }
+
+/* ── Why it happens ─── */
+#s-why .cards-grid { grid-template-columns: 1fr 1fr; }
+#s-why .card-header.warn-bg { background: var(--warn); }
+#s-why .card-header.purple-bg { background: var(--purple); }
+#s-why .card-header.navy-bg { background: #1A5276; }
+
+/* ── Definition ─── */
+.definition-block {
+  background: var(--blue-dark);
+  border-left: 6px solid var(--accent);
+  padding: 14px 20px;
+  margin: 10px 24px;
+  font-size: 0.44em;
+  font-style: italic;
+  line-height: 1.55;
+  color: white;
+}
+
+/* ── Comparison table ─── */
+.compare-table {
+  margin: 10px 24px 55px;
+  border-collapse: collapse;
+  width: calc(100% - 48px);
+  font-size: 0.37em;
+}
+.compare-table th {
+  background: var(--blue);
+  color: white;
+  font-weight: 700;
+  padding: 8px 12px;
+  text-align: left;
+}
+.compare-table td {
+  padding: 7px 12px;
+  border: 0.5px solid #D0DBFF;
+  color: var(--dark-text);
+  vertical-align: middle;
+}
+.compare-table tr:nth-child(even) td { background: #EEF2FF; }
+.compare-table tr:nth-child(odd) td { background: white; }
+.compare-table td.people-col { color: var(--green); font-weight: 500; background: #F0FFF8; }
+.compare-table td.crit-col { font-weight: 600; color: var(--dark-text); }
+.compare-table .check {
+  background: var(--green);
+  color: white;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 3px;
+  padding: 2px 8px;
+}
+
+/* ── Myth vs Reality ─── */
+.myth-pairs { padding: 14px 24px 55px; flex: 1; }
+.myth-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.myth-box, .real-box {
+  display: flex;
+  gap: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid;
+}
+.myth-box { border-color: #FFCCCC; background: #FFF0F0; }
+.real-box { border-color: #C0E8D0; background: #F0FFF8; }
+.myth-tag, .real-tag {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.35em;
+  padding: 8px 5px;
+  letter-spacing: 0.1em;
+  display: flex; align-items: center; justify-content: center;
+}
+.myth-tag { background: var(--warn); color: white; }
+.real-tag { background: var(--green); color: white; }
+.myth-text, .real-text {
+  padding: 8px 12px;
+  font-size: 0.36em;
+  line-height: 1.45;
+  flex: 1;
+}
+.myth-text { color: #7B1F1F; }
+.real-text { color: #1A4D2E; }
+
+/* ── Skills map ─── */
+#s-skills-map .skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  padding: 14px 22px 55px;
+  flex: 1;
+}
+#s-skills-map .skill-tile {
+  background: white;
+  border: 1px solid #D0DBFF;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+  display: flex;
+  overflow: hidden;
+  border-radius: 3px;
+}
+#s-skills-map .skill-tile.last {
+  background: var(--blue-dark);
+  border-color: var(--blue);
+  grid-column: 3 / 5;
+}
+#s-skills-map .skill-tile .num {
+  background: var(--blue);
+  color: var(--accent);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.42em;
+  min-width: 38px;
+  display: flex; align-items: center; justify-content: center;
+}
+#s-skills-map .skill-tile .name {
+  color: var(--dark-text);
+  font-size: 0.42em;
+  font-weight: 700;
+  padding: 10px 12px;
+  display: flex; align-items: center;
+  line-height: 1.2;
+}
+#s-skills-map .skill-tile.last .name { color: white; }
+
+/* ── Skill opener ─── */
+.skill-opener {
+  background: var(--blue-dark);
+}
+.skill-opener .top-bar {
+  background: var(--blue);
+  padding: 7px 28px;
+  font-size: 0.35em;
+  color: #9EB3FF;
+}
+.skill-opener .content {
+  padding: 16px 28px 55px;
+  flex: 1;
+}
+.skill-opener h2 { font-size: 3em; }
+.skill-opener .divider {
+  height: 4px;
+  background: var(--accent);
+  margin: 14px 0;
+}
+.skill-opener .hook {
+  font-size: 0.58em;
+  font-style: italic;
+  color: #C0CEFF;
+  line-height: 1.45;
+  max-width: 85%;
+}
+
+/* ── Skill 4-col ─── */
+.skill-cols {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 6px 16px 55px;
+  flex: 1;
+}
+.skill-col-header {
+  color: white;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.38em;
+  text-align: center;
+  padding: 7px 6px;
+  letter-spacing: 0.03em;
+}
+.skill-col-body {
+  background: white;
+  padding: 10px 10px;
+  font-size: 0.36em;
+  color: var(--dark-text);
+  line-height: 1.5;
+  flex: 1;
+  border: 1px solid #D0DBFF;
+}
+.skill-col-wrap {
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+/* ── Scenario slide ─── */
+.scenario-slide { background: var(--off-white); }
+.scenario-slide .top-bar {
+  background: var(--code-bg);
+  padding: 10px 28px;
+  font-size: 0.4em;
+  color: var(--accent);
+  font-weight: 700;
+}
+.scenario-card {
+  margin: 14px 22px 55px;
+  background: white;
+  border: 1px solid #D0DBFF;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  border-left: 6px solid var(--blue);
+  border-radius: 0 4px 4px 0;
+  padding: 16px 20px;
+}
+.scenario-section { margin-bottom: 14px; }
+.scenario-section:last-child { margin-bottom: 0; }
+.scenario-label {
+  font-size: 0.34em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+.scenario-label.s-blue  { color: var(--blue); }
+.scenario-label.s-warn  { color: var(--warn); }
+.scenario-label.s-green { color: var(--green); }
+.scenario-text {
+  font-size: 0.4em;
+  color: var(--dark-text);
+  line-height: 1.5;
+}
+.scenario-text.italic { font-style: italic; }
+.scenario-divider {
+  height: 1px;
+  background: #E0E8FF;
+  margin: 12px 0;
+}
+
+/* ── Next steps ─── */
+.step-slide .content {
+  padding: 16px 26px 55px;
+  flex: 1;
+}
+.step-card {
+  background: white;
+  border: 1px solid #D0DBFF;
+  border-left: 6px solid var(--blue);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 16px 20px;
+  font-size: 0.44em;
+  color: var(--dark-text);
+  line-height: 1.55;
+  flex: 1;
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 14px;
+}
+.action-box {
+  background: var(--code-bg);
+  border: 1.5px solid var(--accent);
+  border-left: 6px solid var(--accent);
+  padding: 14px 18px;
+  font-size: 0.42em;
+  color: white;
+  font-style: italic;
+  line-height: 1.45;
+  border-radius: 0 6px 6px 0;
+}
+.action-box strong {
+  display: block;
+  color: var(--accent);
+  font-style: normal;
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+  font-family: 'Barlow Condensed', sans-serif;
+}
+
+/* ── Resources ─── */
+.resource-row {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: 0;
+  align-items: stretch;
+  margin: 0 22px 10px;
+  border: 0.5px solid #D0DBFF;
+  border-radius: 3px;
+  overflow: hidden;
+  background: white;
+  font-size: 0.37em;
+}
+.resource-row:nth-child(odd) { background: #EEF2FF; }
+.resource-num {
+  background: var(--blue);
+  color: white;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  min-width: 34px;
+  padding: 0 10px;
+}
+.resource-title { padding: 9px 12px; }
+.resource-title strong { display: block; color: var(--blue); }
+.resource-title em { font-size: 0.9em; color: var(--muted); }
+.resource-desc { padding: 9px 12px; color: var(--dark-text); display: flex; align-items: center; }
+
+/* ── Conclusion ─── */
+#s-conclusion {
+  background: var(--blue);
+}
+#s-conclusion .accent-stripe { background: var(--accent); }
+#s-conclusion .content {
+  padding: 30px 40px 55px 50px;
+  flex: 1;
+}
+#s-conclusion .so { font-size: 0.7em; color: var(--accent); font-style: italic; margin-bottom: 4px; }
+#s-conclusion h2 { font-size: 2.8em; }
+#s-conclusion .are { font-size: 2em; color: var(--accent); font-style: italic; }
+#s-conclusion .proof {
+  font-size: 0.42em;
+  color: #C0CEFF;
+  font-style: italic;
+  line-height: 1.65;
+  margin-top: 20px;
+  max-width: 85%;
+}
+
+/* ── Outro ─── */
+#s-outro { background: var(--blue-dark); }
+#s-outro .content { padding: 26px 36px 55px 50px; flex: 1; }
+#s-outro h2 { font-size: 3.2em; }
+#s-outro .divider { height: 4px; background: var(--accent); margin: 14px 0; width: 60%; }
+#s-outro .name-line { font-size: 0.75em; font-weight: 600; margin-bottom: 4px; }
+#s-outro .love { font-size: 0.6em; color: var(--accent); font-style: italic; margin-bottom: 20px; }
+#s-outro .contact-item {
+  font-size: 0.44em;
+  color: white;
+  margin: 7px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#s-outro .contact-item span { color: var(--accent); }
+#s-outro .qr-box {
+  position: absolute;
+  right: 40px;
+  top: 80px;
+  width: 130px;
+  height: 130px;
+  background: white;
+  border: 3px solid white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.3em;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ── Homer Gaines ─── */
+#s-homer { background: var(--blue-dark); }
+#s-homer .content { padding: 16px 30px 55px; flex: 1; }
+#s-homer .quote-box {
+  background: var(--blue);
+  border: 1.5px solid var(--accent);
+  padding: 18px 22px 18px 28px;
+  margin-top: 14px;
+  border-radius: 4px;
+  position: relative;
+}
+#s-homer .quote-mark {
+  font-size: 3em;
+  color: var(--accent);
+  line-height: 0.6;
+  position: absolute;
+  top: 12px; left: 10px;
+  font-family: Georgia, serif;
+}
+#s-homer .quote-text {
+  font-size: 0.44em;
+  font-style: italic;
+  line-height: 1.6;
+  color: white;
+  padding-left: 24px;
+}
+
+/* ── Reflection ─── */
+#s-reflect .content h2 { font-size: 2em; }
+
+/* ── Skill progress tracker ─── */
+.skill-progress {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 5px 16px 7px;
+  background: var(--blue-deep);
+  border-bottom: 1px solid rgba(47,208,181,0.15);
+  flex-shrink: 0;
+}
+.skill-progress .dot {
+  width: 22px; height: 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.15);
+  transition: background 0.3s;
+}
+.skill-progress .dot.done { background: rgba(47,208,181,0.45); }
+.skill-progress .dot.current { background: var(--accent); }
+.skill-progress .prog-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.28em;
+  color: rgba(255,255,255,0.45);
+  margin-left: 8px;
+  letter-spacing: 0.07em;
+}
+
+/* ── WIIFM label ─── */
+.wiifm-label {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--blue-dark);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.36em;
+  padding: 3px 12px;
+  border-radius: 3px;
+  letter-spacing: 0.1em;
+}
+
+/* ── Novelty slide ─── */
+.novelty-slide { background: var(--blue-dark); }
+.novelty-slide .top-bar {
+  background: var(--purple);
+  padding: 8px 24px;
+  font-size: 0.38em;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 0.06em;
+}
+.novelty-slide .content { padding: 18px 30px 55px; flex: 1; }
+.novelty-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 16px;
+}
+.novelty-col {
+  background: var(--blue);
+  border: 1px solid rgba(47,208,181,0.25);
+  border-top: 4px solid;
+  border-radius: 0 0 4px 4px;
+  padding: 14px 16px;
+}
+.novelty-col .nc-head {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.38em;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.novelty-col .nc-body {
+  font-size: 0.38em;
+  color: #C0CEFF;
+  line-height: 1.5;
+}
+
+/* ── Format explainer ─── */
+.format-explainer { background: var(--blue-deep); }
+.format-explainer .top-bar {
+  background: var(--blue);
+  padding: 8px 24px;
+  font-size: 0.38em;
+  font-weight: 700;
+  color: #9EB3FF;
+  letter-spacing: 0.04em;
+}
+.format-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 14px 20px 55px;
+  flex: 1;
+}
+.format-col {
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.format-col-head {
+  color: white;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.42em;
+  text-align: center;
+  padding: 8px 8px;
+  letter-spacing: 0.03em;
+}
+.format-col-body {
+  background: white;
+  padding: 12px 12px;
+  font-size: 0.37em;
+  color: var(--dark-text);
+  line-height: 1.5;
+  flex: 1;
+  border: 1px solid #D0DBFF;
+  border-top: none;
+}
+.format-col-icon {
+  font-size: 1.6em;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ── Write It Down slide ─── */
+.write-slide { background: var(--blue-deep); }
+.write-slide .top-bar {
+  background: var(--accent);
+  padding: 8px 24px;
+  font-size: 0.38em;
+  font-weight: 700;
+  color: var(--blue-dark);
+  letter-spacing: 0.06em;
+}
+.write-slide .content { padding: 16px 30px 55px; flex: 1; }
+.write-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+.write-item {
+  background: var(--blue);
+  border: 1.5px solid rgba(47,208,181,0.3);
+  border-radius: 4px;
+  padding: 14px 16px;
+}
+.write-item .wi-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.36em;
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+}
+.write-item .wi-prompt {
+  font-size: 0.39em;
+  color: white;
+  line-height: 1.45;
+}
+.write-item .wi-blank {
+  margin-top: 12px;
+  border-bottom: 1.5px dashed rgba(47,208,181,0.4);
+  height: 20px;
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ══ S1: TITLE ══════════════════════════════════════════════ -->
+<section id="s-title" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="accent-stripe"></div>
+    <div class="title-content">
+      <h1>People Skills<br><span class="are-word">are</span>Technical Skills</h1>
+      <p class="subtitle">Why your career stalls without them — and what to do about it.</p>
+    </div>
+    <div class="title-footer">
+      #ConnectTech2023 &nbsp;·&nbsp; @Nerajno &nbsp;·&nbsp; developingdvlpr.com
+    </div>
+  </div>
+</section>
+
+<!-- ══ S2: HELLO ══════════════════════════════════════════════ -->
+<section id="s-intro">
+  <div class="slide-inner">
+    <div class="two-col">
+      <div class="left-panel">
+        <h2>Hello<br>There!</h2>
+        <p class="name">Nerando Johnson</p>
+        <p class="role">
+          Frontend Developer<br>
+          Vue.js · TypeScript · React<br><br>
+          Atlanta freeCodeCamp Organizer<br>
+          Vue Mastery Content Creator<br>
+          Conference Speaker
+        </p>
+        <p class="handle">@Nerajno · developingdvlpr.com</p>
+      </div>
+      <div class="right-panel">
+        <h2>I'm here because<br>I lost a bet.</h2>
+        <p class="aside">(The truth is more interesting than that.)</p>
+        <p class="aside" style="margin-top:20px;">Scan to connect →</p>
+        <div class="qr-placeholder">QR<br>Code</div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S3: AGENDA ════════════════════════════════════════════ -->
+<section>
+  <div class="slide-inner">
+    <div class="slide-header"><h2>What We're Covering</h2><div class="sub">By the end of this talk: you'll be able to name, define, and apply 7 people skills with a direct line to your career growth.</div></div>
+    <div class="agenda-grid">
+      <div class="agenda-item fragment fade-up"><div class="num">01</div><div class="label">Disclaimer + Framing</div></div>
+      <div class="agenda-item fragment fade-up"><div class="num">02</div><div class="label">The Problem(s)</div></div>
+      <div class="agenda-item fragment fade-up"><div class="num">03</div><div class="label">What Is a Technical Skill?</div></div>
+      <div class="agenda-item fragment fade-up"><div class="num">04</div><div class="label">The 7 Tenets of Peopling Well</div></div>
+      <div class="agenda-item fragment fade-up"><div class="num">05</div><div class="label">Real Talk + Scenarios</div></div>
+      <div class="agenda-item fragment fade-up"><div class="num">06</div><div class="label">Your Next Steps + Q&amp;A</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S4: DISCLAIMER ════════════════════════════════════════ -->
+<section id="s-disclaimer" data-background-color="#1447C4">
+  <div class="slide-inner">
+    <div class="content">
+      <h2>Disclaimer</h2>
+      <div class="divider"></div>
+      <p class="lead">Everything in this talk reflects my opinion, research, and experiences. <strong>MINE.</strong></p>
+      <p class="disc-item fragment">My views are not those of my employer or any organization I'm associated with.</p>
+      <p class="disc-item fragment">This is not HR training. This is a technical field guide built from real experience.</p>
+      <p class="disc-item fragment">Take what's useful. Leave what's not. Come argue with me afterward — I love that.</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S5: AUDIENCE CHECK-IN ════════════════════════════════ -->
+<section class="interaction-slide" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">⚡ AUDIENCE CHECK-IN</div>
+    <div class="content">
+      <p class="intro-line">Quick show of hands —</p>
+      <h2>How many of you have been in a meeting where the tech was solid but the conversation fell apart?</h2>
+      <div class="interaction-item fragment">🙋 Keep your hand up if it cost you time or trust.</div>
+      <div class="interaction-item fragment">🙋 Keep it up if nobody talked about it afterward.</div>
+      <div class="interaction-item fragment">🙋 Keep it up if it still hasn't been resolved.</div>
+      <p class="interaction-cta fragment">That's what this talk is about.</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S5b: WIIFM ════════════════════════════════════════ -->
+<section data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="wiifm-label">WIIFM</span>
+        <h2>What's In It For You</h2>
+      </div>
+      <div class="sub">Three reasons this talk is directly relevant to your career — right now.</div>
+    </div>
+    <div class="cards-grid three-col" style="padding-top:14px;">
+      <div class="card fragment fade-up">
+        <div class="card-header" style="background:var(--warn);"><div class="num" style="background:#8E1B12;">📊</div>The Cost Is Real</div>
+        <div class="card-body">67% of failed projects trace to interpersonal breakdowns — not technical failures. Your next post-mortem might not be about code.</div>
+      </div>
+      <div class="card fragment fade-up">
+        <div class="card-header" style="background:#1A5276;"><div class="num" style="background:#0E3250;">📄</div>It Was in the Job Post</div>
+        <div class="card-body">Every role you've applied for listed communication, collaboration, or problem solving. They weren't describing personality — they were describing a skill gap.</div>
+      </div>
+      <div class="card fragment fade-up">
+        <div class="card-header" style="background:var(--green);"><div class="num" style="background:#145A32;">🚀</div>Your Growth Ceiling</div>
+        <div class="card-body">Technical skills get you in the room. People skills determine how far you rise. Senior engineers know this. Staff engineers live it.</div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S5c: WHAT'S NEW HERE ══════════════════════════════════ -->
+<section class="novelty-slide" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">🔭 WHAT'S NEW HERE — WHY THIS TALK IS DIFFERENT</div>
+    <div class="content">
+      <h2>You've heard "soft skills matter."<br>This talk treats them as engineering problems.</h2>
+      <div class="novelty-two-col">
+        <div class="novelty-col" style="border-top-color:var(--warn);">
+          <div class="nc-head">❌ WHAT YOU'VE HEARD BEFORE</div>
+          <div class="nc-body">
+            "Communication is important." "Be a team player." "Leadership potential." Vague advice with no implementation path — like telling a junior dev to "just write clean code."
+          </div>
+        </div>
+        <div class="novelty-col" style="border-top-color:var(--accent);">
+          <div class="nc-head">✅ WHAT YOU'LL GET TODAY</div>
+          <div class="nc-body">
+            A definition. A framework. Real scenarios with what went wrong and what to do differently. And a repeatable structure for each skill — the same way you'd approach learning TypeScript or Vue.
+          </div>
+        </div>
+      </div>
+      <p class="interaction-cta fragment" style="margin-top:18px;">If you've been in this room for other people-skills talks and felt like nothing stuck — this is built differently.</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S6: PROBLEM 1 ════════════════════════════════════════ -->
+<section class="problem-slide" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="content" style="padding-top:18px;">
+      <div style="flex:1;">
+        <div class="section-badge warn">THE PROBLEM</div>
+        <p class="prob-num">Problem 1</p>
+        <h2>We view people skills<br>as non-technical.</h2>
+      </div>
+      <div style="width:280px; background:var(--blue); border:2px solid var(--accent); padding:20px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <p style="font-size:0.46em; font-style:italic; text-align:center; line-height:1.55; margin:0;">"Soft" skills are just skills we haven't bothered to study yet.</p>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S7: PROBLEM 2 ════════════════════════════════════════ -->
+<section class="problem-slide" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="content" style="padding-top:18px; display:flex; gap:20px;">
+      <div style="flex:1;">
+        <div class="section-badge warn">THE PROBLEM</div>
+        <p class="prob-num">Problem 2</p>
+        <h2>We are technically versed<br>but <code style="color:var(--accent);">!people</code> versed.</h2>
+        <p style="font-size:0.38em; color:#9EB3FF; font-style:italic; margin-top:16px;">( yes, that's developer humor )</p>
+      </div>
+      <div class="code-block" style="align-self:center; width:260px; flex-shrink:0;">
+        <span class="kw">if </span>(developer) {<br>
+        &nbsp;&nbsp;<span class="id">code</span> = great;<br>
+        &nbsp;&nbsp;<span class="id">people</span> = <span class="val">undefined</span>;<br>
+        }
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S8: WHY IT HAPPENS ════════════════════════════════════ -->
+<section id="s-why">
+  <div class="slide-inner">
+    <div class="slide-header"><h2>Why Does This Happen?</h2></div>
+    <div class="cards-grid two-col" style="grid-template-rows:1fr 1fr;">
+      <div class="card fragment fade-up">
+        <div class="card-header" style="background:#1A5276;"><div class="num" style="background:#0E3250;">01</div>School didn't teach it</div>
+        <div class="card-body">CS programs optimize for algorithms, not collaboration. We graduate fluent in syntax and silent in conflict resolution.</div>
+      </div>
+      <div class="card fragment fade-up">
+        <div class="card-header" style="background:#1A5276;"><div class="num" style="background:#0E3250;">02</div>Hard to measure</div>
+        <div class="card-body">You can't run a test suite on communication. You can't lint your empathy. So we treat it as optional.</div>
+      </div>
+      <div class="card fragment fade-up">
+        <div class="card-header" style="background:var(--warn);"><div class="num" style="background:#8E1B12;">03</div>Invisible until it breaks</div>
+        <div class="card-body">Nobody notices great teamwork. Everyone feels the fallout when it fails. It only shows up as a post-mortem line item.</div>
+      </div>
+      <div class="card fragment fade-up">
+        <div class="card-header" style="background:var(--purple);"><div class="num" style="background:#5B2270;">04</div>The cost is real</div>
+        <div class="card-body">Projects fail. Promotions stall. Teams burn out. Studies show 67% of failed projects trace to interpersonal breakdowns, not technical ones.</div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S9: WHAT IS A TECHNICAL SKILL ════════════════════════ -->
+<section>
+  <div class="slide-inner">
+    <div class="slide-header"><h2>What Is a Technical Skill?</h2></div>
+    <div class="definition-block">"A technical skill is the specialized knowledge and expertise required to perform a specific task using specific tools and programs in real-world situations."</div>
+    <div class="cards-grid four-col" style="padding-top:10px;">
+      <div class="card fragment fade-up">
+        <div class="card-header"><div class="num">01</div>Specialized Knowledge</div>
+        <div class="card-body">You have to actually learn it</div>
+      </div>
+      <div class="card fragment fade-up">
+        <div class="card-header"><div class="num">02</div>Expertise</div>
+        <div class="card-body">Improves with practice and feedback</div>
+      </div>
+      <div class="card fragment fade-up">
+        <div class="card-header"><div class="num">03</div>Measurable Outcome</div>
+        <div class="card-body">Produces a real, observable result</div>
+      </div>
+      <div class="card fragment fade-up">
+        <div class="card-header"><div class="num">04</div>Real-World Application</div>
+        <div class="card-body">Gets tested outside the tutorial</div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S10: COMPARISON TABLE ════════════════════════════════ -->
+<section>
+  <div class="slide-inner">
+    <div class="slide-header"><h2>Apply the Same Test</h2><div class="sub">Does a people skill qualify as a technical skill by definition?</div></div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Criterion</th><th>TypeScript</th><th>Communication</th><th>✓</th></tr>
+      </thead>
+      <tbody>
+        <tr class="fragment"><td class="crit-col">Specialized Knowledge</td><td>Syntax, types, compiler</td><td class="people-col">Audience awareness, register, clarity</td><td><span class="check">✓</span></td></tr>
+        <tr class="fragment"><td class="crit-col">Expertise via Practice</td><td>Side projects, code reviews</td><td class="people-col">Writing, speaking, feedback loops</td><td><span class="check">✓</span></td></tr>
+        <tr class="fragment"><td class="crit-col">Specific Tooling</td><td>tsc, eslint, VSCode</td><td class="people-col">Slack, PRs, retros, 1:1s</td><td><span class="check">✓</span></td></tr>
+        <tr class="fragment"><td class="crit-col">Measurable Outcomes</td><td>Build passes, bugs caught</td><td class="people-col">Blockers resolved, trust built</td><td><span class="check">✓</span></td></tr>
+        <tr class="fragment"><td class="crit-col">Real-World Application</td><td>Production bugs, live systems</td><td class="people-col">Team conflicts, stakeholder demos</td><td><span class="check">✓</span></td></tr>
+      </tbody>
+    </table>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S11: MYTHS VS REALITY ════════════════════════════════ -->
+<section>
+  <div class="slide-inner">
+    <div class="slide-header"><h2>Myths vs. Reality</h2></div>
+    <div class="myth-pairs">
+      <div class="myth-row">
+        <div class="myth-box fragment fade-up"><div class="myth-tag">MYTH</div><div class="myth-text">Soft skills are personality traits — you either have them or you don't.</div></div>
+        <div class="real-box fragment fade-up"><div class="real-tag">REAL</div><div class="real-text">Every people skill on this list is learnable, trainable, and measurable.</div></div>
+      </div>
+      <div class="myth-row">
+        <div class="myth-box fragment fade-up"><div class="myth-tag">MYTH</div><div class="myth-text">Tech skills are hard. People skills are easy.</div></div>
+        <div class="real-box fragment fade-up"><div class="real-tag">REAL</div><div class="real-text">Conflict resolution under deadline pressure is one of the hardest things in any engineering career.</div></div>
+      </div>
+      <div class="myth-row">
+        <div class="myth-box fragment fade-up"><div class="myth-tag">MYTH</div><div class="myth-text">This stuff isn't relevant until you're senior.</div></div>
+        <div class="real-box fragment fade-up"><div class="real-tag">REAL</div><div class="real-text">Junior devs who communicate well get promoted faster and get better mentorship.</div></div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S11b: INTERNAL SUMMARY · BRIDGE TO SKILLS ═══════════ -->
+<section class="interaction-slide" data-background-color="#070F3A">
+  <div class="slide-inner">
+    <div class="top-bar">📍 WHERE WE ARE — BEFORE WE GO DEEPER</div>
+    <div class="content">
+      <p class="intro-line">We've made the case. Now let's get practical.</p>
+      <h2>People skills pass every test we use<br>to define a technical skill.</h2>
+      <div class="interaction-item fragment">✓ Specialized knowledge you have to learn</div>
+      <div class="interaction-item fragment">✓ Expertise that improves with deliberate practice</div>
+      <div class="interaction-item fragment">✓ Measurable outcomes in real-world situations</div>
+      <p class="interaction-cta fragment">Here are the 7 that matter most in your dev career — and what it actually looks like to level up each one.</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S12: SKILLS MAP ══════════════════════════════════════ -->
+<section id="s-skills-map">
+  <div class="slide-inner">
+    <div class="slide-header"><h2>The 7 Tenets of Peopling Well</h2><div class="sub">For each: What is it · Doing it wrong · Doing it right · Doing it better</div></div>
+    <div class="skills-grid">
+      <div class="skill-tile fragment fade-up"><div class="num">01</div><div class="name">Communication</div></div>
+      <div class="skill-tile fragment fade-up"><div class="num">02</div><div class="name">Interpersonal Skills</div></div>
+      <div class="skill-tile fragment fade-up"><div class="num">03</div><div class="name">Problem Solving</div></div>
+      <div class="skill-tile fragment fade-up"><div class="num">04</div><div class="name">Time Management</div></div>
+      <div class="skill-tile fragment fade-up"><div class="num">05</div><div class="name">Adaptability</div></div>
+      <div class="skill-tile fragment fade-up"><div class="num">06</div><div class="name">Attention to Detail</div></div>
+      <div class="skill-tile last fragment fade-up"><div class="num">07</div><div class="name" style="color:white;">Leadership</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S12b: SKILL FORMAT EXPLAINER ══════════════════════════ -->
+<section class="format-explainer" data-background-color="#070F3A">
+  <div class="slide-inner">
+    <div class="top-bar">📐 HOW EACH SKILL IS STRUCTURED — READ THIS ONCE, USE IT 7 TIMES</div>
+    <div class="format-grid">
+      <div class="format-col">
+        <div class="format-col-head" style="background:#1A5276;">What Is It?</div>
+        <div class="format-col-body"><span class="format-col-icon">🔍</span>A clean, working definition. What this skill actually means in a dev context — no HR jargon.</div>
+      </div>
+      <div class="format-col">
+        <div class="format-col-head" style="background:var(--warn);">Doing It Wrong</div>
+        <div class="format-col-body"><span class="format-col-icon">⚠️</span>The patterns most devs fall into. Not to shame — to recognize. You'll probably see yourself here.</div>
+      </div>
+      <div class="format-col">
+        <div class="format-col-head" style="background:var(--green);">Doing It Right</div>
+        <div class="format-col-body"><span class="format-col-icon">✅</span>The functional baseline. What it looks like when this skill is operating well on a real team.</div>
+      </div>
+      <div class="format-col">
+        <div class="format-col-head" style="background:var(--purple);">Doing It Better</div>
+        <div class="format-col-body"><span class="format-col-icon">🚀</span>The leveling-up move. What separates good engineers from the ones who keep getting more responsibility.</div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ SKILL MACRO (repeated 7×3) ══════════════════════════ -->
+
+<!-- 01 COMMUNICATION -->
+<section class="skill-opener" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">Tenet 01 of 7</div>
+    <div class="content">
+      <h2>Communication</h2>
+      <div class="divider"></div>
+      <p class="hook">The most technically correct message, delivered badly, is still a failed message.</p>
+      <div class="story-prompt">
+        <strong>📝 YOUR STORY PROMPT</strong>
+        Tell a story about a time you wrote (or received) a technically accurate message that completely missed the mark — a PR comment that started a war, a Slack message that read as passive-aggressive, an email that caused a week of confusion. What was in the message vs. what was heard?
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide-inner">
+    <div class="slide-header" style="display:flex; align-items:center; gap:12px;"><span style="font-size:0.6em; background:var(--blue-dark); color:var(--accent); padding:4px 10px; font-family:'Barlow Condensed',sans-serif; font-weight:700;">01</span><h2>Communication</h2></div>
+    <div class="skill-progress">
+      <div class="dot current"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="prog-label">SKILL 1 OF 7</span>
+    </div>
+    <div class="skill-cols">
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:#1A5276;">What Is It?</div><div class="skill-col-body">Sending and receiving information clearly — across technical and non-technical audiences, written and verbal.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--warn);">Doing It Wrong</div><div class="skill-col-body">Optimizing for precision over clarity. Ghosting threads. Over-documenting, under-communicating.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--green);">Doing It Right</div><div class="skill-col-body">Adjust your register per audience. A code review explanation ≠ a PM update. Same fact, different message.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--purple);">Doing It Better</div><div class="skill-col-body">Treat written comms like code — refactor it. Ask for feedback on your Slack messages the way you do on PRs.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section class="scenario-slide">
+  <div class="slide-inner">
+    <div class="top-bar">Communication · Real-World Scenario</div>
+    <div class="scenario-card">
+      <div class="scenario-section">
+        <div class="scenario-label s-blue">🎬 THE SCENARIO</div>
+        <div class="scenario-text">Sprint planning, Monday morning. You message the team: 'The auth service is broken because the token refresh logic doesn't handle edge cases in the OAuth flow.' Your PM asks the group: 'Is anything blocked?'</div>
+      </div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section">
+        <div class="scenario-label s-warn">⚡ THE TENSION</div>
+        <div class="scenario-text">Nobody answers. The PM assumes things are fine. The auth service stays broken for three days before anyone escalates. You technically communicated — but nothing changed.</div>
+      </div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section">
+        <div class="scenario-label s-green">✅ THE LESSON</div>
+        <div class="scenario-text italic">Communication isn't what you sent. It's what was received and acted on. Different audience, different message.</div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- 02 INTERPERSONAL -->
+<section class="skill-opener" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">Tenet 02 of 7</div>
+    <div class="content">
+      <h2>Interpersonal Skills</h2>
+      <div class="divider"></div>
+      <p class="hook">You can be the best engineer on the team and still be the reason good people leave.</p>
+      <div class="story-prompt">
+        <strong>📝 YOUR STORY PROMPT</strong>
+        Tell a story about a time working with someone whose interpersonal skills — good or bad — changed the outcome of a project. Maybe someone who gave feedback in a way that made you better. Maybe someone whose style made collaboration nearly impossible. What did you learn?
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide-inner">
+    <div class="slide-header" style="display:flex; align-items:center; gap:12px;"><span style="font-size:0.6em; background:var(--blue-dark); color:var(--accent); padding:4px 10px; font-family:'Barlow Condensed',sans-serif; font-weight:700;">02</span><h2>Interpersonal Skills</h2></div>
+    <div class="skill-progress">
+      <div class="dot done"></div><div class="dot current"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="prog-label">SKILL 2 OF 7</span>
+    </div>
+    <div class="skill-cols">
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:#1A5276;">What Is It?</div><div class="skill-col-body">Building and maintaining trust, respect, and working relationships with the people who share your codebase.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--warn);">Doing It Wrong</div><div class="skill-col-body">Optimizing to be right rather than effective. Confusing directness with aggression. Making people feel dumb for asking questions.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--green);">Doing It Right</div><div class="skill-col-body">Assume good intent first. That bad architecture decision was made with limited info — exactly like yours have been.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--purple);">Doing It Better</div><div class="skill-col-body">Know your teammates as people. It makes the hard conversations significantly easier.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section class="scenario-slide">
+  <div class="slide-inner">
+    <div class="top-bar">Interpersonal Skills · Real-World Scenario</div>
+    <div class="scenario-card">
+      <div class="scenario-section"><div class="scenario-label s-blue">🎬 THE SCENARIO</div><div class="scenario-text">A teammate leaves a PR comment: "This is the wrong approach entirely." No explanation. No suggestion. Just a rejection. You've spent two days on this feature.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-warn">⚡ THE TENSION</div><div class="scenario-text">You feel defensive. You push back. They double down. The PR sits unmerged for a week while two people have a territory war in the comments. The feature ships late.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-green">✅ THE LESSON</div><div class="scenario-text italic">Feedback is a collaborative act. "This is wrong" is an opinion. "Here's why this might cause problems and here's what I'd try instead" is a conversation.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ INTERACTION: After Skill 02 ══════════════════════════ -->
+<section class="interaction-slide" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">⚡ QUICK CHECK — HANDS UP</div>
+    <div class="content">
+      <p class="intro-line">Be honest with yourself —</p>
+      <h2>Has your communication or interpersonal style ever slowed a team down?</h2>
+      <div class="interaction-item fragment">🙋 Raise your hand if you've sent a message and immediately regretted the tone.</div>
+      <div class="interaction-item fragment">🙋 Keep it up if a teammate had to come back to you to understand what you meant.</div>
+      <div class="interaction-item fragment">🙋 Keep it up if it affected a deadline or a relationship.</div>
+      <p class="interaction-cta fragment">These aren't personality failures. They're skill gaps with learnable fixes. That's where we're going.</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- 03 PROBLEM SOLVING -->
+<section class="skill-opener" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">Tenet 03 of 7</div>
+    <div class="content">
+      <h2>Problem Solving</h2>
+      <div class="divider"></div>
+      <p class="hook">Jumping to solutions is not problem solving. It's solution cosplay.</p>
+      <div class="story-prompt">
+        <strong>📝 YOUR STORY PROMPT</strong>
+        Tell a story about a time you — or your team — solved the wrong problem really well. Maybe you built a beautiful feature nobody needed. Maybe you optimized code that wasn't the bottleneck. What did you learn about defining problems before solving them?
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide-inner">
+    <div class="slide-header" style="display:flex; align-items:center; gap:12px;"><span style="font-size:0.6em; background:var(--blue-dark); color:var(--accent); padding:4px 10px; font-family:'Barlow Condensed',sans-serif; font-weight:700;">03</span><h2>Problem Solving</h2></div>
+    <div class="skill-progress">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot current"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="prog-label">SKILL 3 OF 7</span>
+    </div>
+    <div class="skill-cols">
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:#1A5276;">What Is It?</div><div class="skill-col-body">Identifying root causes, evaluating tradeoffs, and making decisions under uncertainty — with other people, not just alone.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--warn);">Doing It Wrong</div><div class="skill-col-body">Jumping to implementation. Picking the first valid answer. Solving alone when the problem involves multiple people.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--green);">Doing It Right</div><div class="skill-col-body">Define the problem before the solution. "We need a new framework" is already a solution — not a problem statement.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--purple);">Doing It Better</div><div class="skill-col-body">Bring people in earlier. The person closest to the user knows things sprint planning never surfaces.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section class="scenario-slide">
+  <div class="slide-inner">
+    <div class="top-bar">Problem Solving · Real-World Scenario</div>
+    <div class="scenario-card">
+      <div class="scenario-section"><div class="scenario-label s-blue">🎬 THE SCENARIO</div><div class="scenario-text">Staging is throwing 500 errors. Half the team jumps into the codebase. Fixes start appearing in multiple branches simultaneously. Two people debug the same function from different angles.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-warn">⚡ THE TENSION</div><div class="scenario-text">An hour later, someone realizes the deployment pipeline ran the wrong migration. None of the code fixes were needed. All that real engineering effort — wasted.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-green">✅ THE LESSON</div><div class="scenario-text italic">Diagnosing together before splitting into solutions is faster than five parallel sprints toward the wrong answer.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ MID-SKILLS RECAP · THESIS BEAT 2 ════════════════════ -->
+<section class="interaction-slide" data-background-color="#1447C4">
+  <div class="slide-inner">
+    <div class="top-bar">📍 HALFWAY CHECK — SKILLS 1–3 RECAP</div>
+    <div class="content">
+      <p class="intro-line">Let's anchor what we've covered before we continue.</p>
+      <h2>People skills <em>are</em> technical skills.</h2>
+      <div class="interaction-item fragment">✓ <strong>Communication</strong> — It's not what you sent. It's what was received and acted on.</div>
+      <div class="interaction-item fragment">✓ <strong>Interpersonal Skills</strong> — Being the best engineer on a team and the reason people leave aren't mutually exclusive.</div>
+      <div class="interaction-item fragment">✓ <strong>Problem Solving</strong> — Jumping to solutions is not problem solving. It's solution cosplay.</div>
+      <p class="interaction-cta fragment">Four more. Each one learnable. Each one measurable. Each one showing up in your next performance review whether you plan for it or not.</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- 04 TIME MANAGEMENT -->
+<section class="skill-opener" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">Tenet 04 of 7</div>
+    <div class="content">
+      <h2>Time Management</h2>
+      <div class="divider"></div>
+      <p class="hook">You can't manage time. You can only manage decisions about what you do with it.</p>
+      <div class="story-prompt">
+        <strong>📝 YOUR STORY PROMPT</strong>
+        Tell a story about a time your poor time management (or someone else's) created a crisis. Maybe you said yes to everything and shipped nothing. Maybe you spent a week on a task that should've taken a day. What changed after?
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide-inner">
+    <div class="slide-header" style="display:flex; align-items:center; gap:12px;"><span style="font-size:0.6em; background:var(--blue-dark); color:var(--accent); padding:4px 10px; font-family:'Barlow Condensed',sans-serif; font-weight:700;">04</span><h2>Time Management</h2></div>
+    <div class="skill-progress">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot current"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <span class="prog-label">SKILL 4 OF 7</span>
+    </div>
+    <div class="skill-cols">
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:#1A5276;">What Is It?</div><div class="skill-col-body">Protecting your time for deep work — not just tasks. Context switching and recovery are real costs that don't show up in estimates.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--warn);">Doing It Wrong</div><div class="skill-col-body">Saying yes to everything. Treating your calendar like a public park. Estimating in ideal hours, living in actual ones.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--green);">Doing It Right</div><div class="skill-col-body">Time-box your work. Treat focus time as non-negotiable — not a luxury you get to when meetings slow down.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--purple);">Doing It Better</div><div class="skill-col-body">"I'm blocked until Thursday" said Tuesday is very different from "I'm blocked and the deadline is tomorrow."</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section class="scenario-slide">
+  <div class="slide-inner">
+    <div class="top-bar">Time Management · Real-World Scenario</div>
+    <div class="scenario-card">
+      <div class="scenario-section"><div class="scenario-label s-blue">🎬 THE SCENARIO</div><div class="scenario-text">You're in three recurring meetings, a Slack thread that's been going 45 minutes, and you just got tagged in a PR. It's 2pm. You haven't written a line of code.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-warn">⚡ THE TENSION</div><div class="scenario-text">By Friday you've worked 50 hours and shipped 20% of what you committed to. You're exhausted. Your team is waiting on you. Your estimates look terrible.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-green">✅ THE LESSON</div><div class="scenario-text italic">Your calendar is your architecture. If you wouldn't ship code with no structure, don't ship your week with no structure either.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ INTERACTION: After Skill 04 ══════════════════════════ -->
+<section class="interaction-slide" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">⚡ TEMPERATURE CHECK — TIME + ADAPTABILITY</div>
+    <div class="content">
+      <p class="intro-line">Show of hands —</p>
+      <h2>How structured is your average work week, really?</h2>
+      <div class="interaction-item fragment">🙋 Raise your hand if you had more meetings than deep work hours last week.</div>
+      <div class="interaction-item fragment">🙋 Keep it up if a requirement changed on you mid-sprint in the last 30 days.</div>
+      <div class="interaction-item fragment">🙋 Keep it up if your first reaction was frustration rather than a plan.</div>
+      <p class="interaction-cta fragment">Both of those are normal. And both of them are skills — not personality traits.</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- 05 ADAPTABILITY -->
+<section class="skill-opener" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">Tenet 05 of 7</div>
+    <div class="content">
+      <h2>Adaptability</h2>
+      <div class="divider"></div>
+      <p class="hook">The sprint doesn't care about your plan. Ship anyway.</p>
+      <div class="story-prompt">
+        <strong>📝 YOUR STORY PROMPT</strong>
+        Tell a story about a time the requirements changed mid-project and you handled it badly — or brilliantly. What made the difference? What was the hardest part of letting go of the original plan?
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide-inner">
+    <div class="slide-header" style="display:flex; align-items:center; gap:12px;"><span style="font-size:0.6em; background:var(--blue-dark); color:var(--accent); padding:4px 10px; font-family:'Barlow Condensed',sans-serif; font-weight:700;">05</span><h2>Adaptability</h2></div>
+    <div class="skill-progress">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot current"></div><div class="dot"></div><div class="dot"></div>
+      <span class="prog-label">SKILL 5 OF 7</span>
+    </div>
+    <div class="skill-cols">
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:#1A5276;">What Is It?</div><div class="skill-col-body">Recognizing when conditions change and updating your approach — without making it a crisis for you or your team.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--warn);">Doing It Wrong</div><div class="skill-col-body">Treating the original plan like a contract. Letting sunk cost trap you. Taking requirement changes personally.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--green);">Doing It Right</div><div class="skill-col-body">Decouple your identity from your decisions. New information changing the plan is engineering — not failure.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--purple);">Doing It Better</div><div class="skill-col-body">Retros aren't ritual — they're a feedback loop. If nothing changes after every retro, the retro itself is broken.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section class="scenario-slide">
+  <div class="slide-inner">
+    <div class="top-bar">Adaptability · Real-World Scenario</div>
+    <div class="scenario-card">
+      <div class="scenario-section"><div class="scenario-label s-blue">🎬 THE SCENARIO</div><div class="scenario-text">Three weeks into a six-week project, the client changes a core requirement. The feature you've been building is now irrelevant. The team is frustrated. Some people want to push back.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-warn">⚡ THE TENSION</div><div class="scenario-text">Two engineers spend two days re-litigating the original spec in Slack instead of pivoting. By the time they accept the change, the new deadline is in jeopardy.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-green">✅ THE LESSON</div><div class="scenario-text italic">The engineers who advance fastest aren't the ones with the best original solutions. They're the ones who recover from changes the fastest.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- 06 ATTENTION TO DETAIL -->
+<section class="skill-opener" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">Tenet 06 of 7</div>
+    <div class="content">
+      <h2>Attention to Detail</h2>
+      <div class="divider"></div>
+      <p class="hook">The bug that costs you the most is always the one you were "pretty sure" about.</p>
+      <div class="story-prompt">
+        <strong>📝 YOUR STORY PROMPT</strong>
+        Tell a story about a time a small detail — missed or caught — had a significant impact. A typo in a config file, a missed edge case in a form validator, a requirements doc that said "optional" when it meant "required". What did it cost?
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide-inner">
+    <div class="slide-header" style="display:flex; align-items:center; gap:12px;"><span style="font-size:0.6em; background:var(--blue-dark); color:var(--accent); padding:4px 10px; font-family:'Barlow Condensed',sans-serif; font-weight:700;">06</span><h2>Attention to Detail</h2></div>
+    <div class="skill-progress">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot current"></div><div class="dot"></div>
+      <span class="prog-label">SKILL 6 OF 7</span>
+    </div>
+    <div class="skill-cols">
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:#1A5276;">What Is It?</div><div class="skill-col-body">Catching what others miss — and building systems so you catch what you would miss too.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--warn);">Doing It Wrong</div><div class="skill-col-body">Mistaking speed for efficiency. Shipping fast and fixing "later" — where later quietly becomes never.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--green);">Doing It Right</div><div class="skill-col-body">Externalize your attention. Checklists, PR templates, linting — systems beat memory every time.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--purple);">Doing It Better</div><div class="skill-col-body">Apply detective energy to people too. A conversation that feels off is a bug — reproduce it, isolate it, fix it.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section class="scenario-slide">
+  <div class="slide-inner">
+    <div class="top-bar">Attention to Detail · Real-World Scenario</div>
+    <div class="scenario-card">
+      <div class="scenario-section"><div class="scenario-label s-blue">🎬 THE SCENARIO</div><div class="scenario-text">QA signs off on a feature. You deploy to production Friday afternoon. An hour later support tickets start arriving. The date format in the API response is returning year-month-day in one timezone and day-month-year in another.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-warn">⚡ THE TENSION</div><div class="scenario-text">It was in the original spec. You read it. You just didn't test for it. Four hours of incident response, a hotfix, and a Monday post-mortem that was entirely preventable.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-green">✅ THE LESSON</div><div class="scenario-text italic">Attention to detail is not a personality trait. It's a system you build because you know you'll miss things without one.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ SKILLS 4–6 RECAP ══════════════════════════════════════ -->
+<section class="interaction-slide" data-background-color="#070F3A">
+  <div class="slide-inner">
+    <div class="top-bar">📍 SKILLS 4–6 RECAP — ONE MORE TO GO</div>
+    <div class="content">
+      <p class="intro-line">Six down. The pattern is clear.</p>
+      <h2>Every one of these is learnable.<br>Every one has a measurable outcome.</h2>
+      <div class="interaction-item fragment">✓ <strong>Time Management</strong> — Your calendar is your architecture. Structure it like you would your code.</div>
+      <div class="interaction-item fragment">✓ <strong>Adaptability</strong> — The engineers who advance fastest recover from changes the fastest.</div>
+      <div class="interaction-item fragment">✓ <strong>Attention to Detail</strong> — Systems beat memory. Build the checklist before you need it.</div>
+      <p class="interaction-cta fragment">The last one ties them all together — and it doesn't require a title to use it.</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- 07 LEADERSHIP -->
+<section class="skill-opener" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">Tenet 07 of 7</div>
+    <div class="content">
+      <h2>Leadership</h2>
+      <div class="divider"></div>
+      <p class="hook">Leadership is not a title. It starts the moment you have context that someone else doesn't.</p>
+      <div class="story-prompt">
+        <strong>📝 YOUR STORY PROMPT</strong>
+        Tell a story about a time someone who wasn't technically a "lead" stepped up and changed the outcome of a project or conversation. Or a time when someone with the title failed to do so. What separated the two?
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section>
+  <div class="slide-inner">
+    <div class="slide-header" style="display:flex; align-items:center; gap:12px;"><span style="font-size:0.6em; background:var(--blue-dark); color:var(--accent); padding:4px 10px; font-family:'Barlow Condensed',sans-serif; font-weight:700;">07</span><h2>Leadership</h2></div>
+    <div class="skill-progress">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot current"></div>
+      <span class="prog-label">SKILL 7 OF 7</span>
+    </div>
+    <div class="skill-cols">
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:#1A5276;">What Is It?</div><div class="skill-col-body">Influencing outcomes — title or not — by sharing knowledge, creating clarity, and making teammates more effective.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--warn);">Doing It Wrong</div><div class="skill-col-body">Waiting for the title. Hoarding context. Staying quiet in meetings because "it's not your place."</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--green);">Doing It Right</div><div class="skill-col-body">Mentor without being asked. Document decisions. Speak up when you see a problem — even if you didn't cause it.</div></div>
+      <div class="skill-col-wrap"><div class="skill-col-header" style="background:var(--purple);">Doing It Better</div><div class="skill-col-body">Seek small-stage reps: run the retro, write the post-mortem, present at team sync. Small reps build for the moments that matter.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+<section class="scenario-slide">
+  <div class="slide-inner">
+    <div class="top-bar">Leadership · Real-World Scenario</div>
+    <div class="scenario-card">
+      <div class="scenario-section"><div class="scenario-label s-blue">🎬 THE SCENARIO</div><div class="scenario-text">A mid-sprint standup. Everyone gives their status. Nobody mentions the dependency conflict between two features being built in parallel. It's obvious to you — but you're not the tech lead, so you say nothing.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-warn">⚡ THE TENSION</div><div class="scenario-text">By Thursday, both features are blocked. The tech lead schedules a two-hour unblocking session that was a ten-second conversation away from being unnecessary.</div></div>
+      <div class="scenario-divider"></div>
+      <div class="scenario-section"><div class="scenario-label s-green">✅ THE LESSON</div><div class="scenario-text italic">Leadership is not about rank. It's about responsibility to the shared outcome. If you see the problem and stay quiet, you own the outcome too.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S34: REFLECTION ══════════════════════════════════════ -->
+<section id="s-reflect" class="interaction-slide" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="top-bar">⚡ REFLECTION MOMENT</div>
+    <div class="content">
+      <p class="intro-line">Turn to someone next to you —</p>
+      <h2>Which of these 7 do you actively avoid?</h2>
+      <div class="interaction-item fragment">Not the one you <em>wish</em> you were better at —</div>
+      <div class="interaction-item fragment">The one you <strong>dodge.</strong> The one that makes you uncomfortable.</div>
+      <div class="interaction-item fragment">The one that shows up in your last three performance reviews.</div>
+      <p class="interaction-cta fragment">You have 60 seconds. Go.</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S35b: PRE-CONCLUSION RECAP ═══════════════════════════ -->
+<section class="interaction-slide" data-background-color="#1447C4">
+  <div class="slide-inner">
+    <div class="top-bar">📋 WHAT WE JUST COVERED — THE FULL PICTURE</div>
+    <div class="content">
+      <p class="intro-line">Seven tenets. One argument.</p>
+      <h2>Communication · Interpersonal · Problem Solving<br>Time Management · Adaptability · Attention to Detail · Leadership</h2>
+      <div class="interaction-item fragment">Every one of them is learnable. Every one of them is measurable.</div>
+      <div class="interaction-item fragment">Every one of them has a direct, traceable line to your career trajectory.</div>
+      <p class="interaction-cta fragment">Hard to certify ≠ not worth mastering. So — what are you going to do about it?</p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S35: HOMER GAINES ════════════════════════════════════ -->
+<section id="s-homer" data-background-color="#0D2E8E">
+  <div class="slide-inner">
+    <div class="slide-header"><h2>A Word on Leadership</h2></div>
+    <div class="content">
+      <h2 style="font-size:2.2em;">Homer Gaines</h2>
+      <p style="font-size:0.5em; color:var(--accent); font-style:italic; margin-top:4px;">Staff UI Engineer at Guru · Accessibility Professional</p>
+      <div class="quote-box">
+        <div class="quote-mark">"</div>
+        <p class="quote-text">Leadership is not about having all the answers. It's about asking better questions than the people who came before you — and creating enough safety that the people who come after you feel comfortable asking better questions than you.</p>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S36: CONCLUSION ══════════════════════════════════════ -->
+<section id="s-conclusion" data-background-color="#1447C4">
+  <div class="slide-inner">
+    <div class="accent-stripe"></div>
+    <div class="content">
+      <p class="so">So —</p>
+      <h2>People Skills</h2>
+      <p class="are">are</p>
+      <h2>Technical Skills.</h2>
+      <p class="proof fragment">
+        Specialized knowledge. Deliberate practice. Measurable outcomes. Real-world testing.<br><br>
+        They clear every bar we use to define technical skills.<br>
+        Hard to certify ≠ easy to master. <strong>Treat them accordingly.</strong>
+      </p>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ WRITE IT DOWN ══════════════════════════════════════════ -->
+<section class="write-slide" data-background-color="#070F3A">
+  <div class="slide-inner">
+    <div class="top-bar">✍️ WRITE IT DOWN — BEFORE WE MOVE TO NEXT STEPS</div>
+    <div class="content">
+      <h2 style="font-size:1.9em;">Grab your phone. Open a note.<br>Answer these four questions.</h2>
+      <div class="write-grid">
+        <div class="write-item fragment">
+          <div class="wi-num">QUESTION 01</div>
+          <div class="wi-prompt">Which of the 7 tenets do you actively avoid? Not the one you wish you were better at — the one you dodge.</div>
+          <div class="wi-blank"></div>
+        </div>
+        <div class="write-item fragment">
+          <div class="wi-num">QUESTION 02</div>
+          <div class="wi-prompt">Where has that gap shown up in your work in the last 90 days? Be specific.</div>
+          <div class="wi-blank"></div>
+        </div>
+        <div class="write-item fragment">
+          <div class="wi-num">QUESTION 03</div>
+          <div class="wi-prompt">Who on your team is strong in that area? Could you watch, ask, or shadow them?</div>
+          <div class="wi-blank"></div>
+        </div>
+        <div class="write-item fragment">
+          <div class="wi-num">QUESTION 04</div>
+          <div class="wi-prompt">What is one thing you could practice differently this week? One concrete behavior — not a vibe.</div>
+          <div class="wi-blank"></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ NEXT STEPS ══════════════════════════════════════════ -->
+<section class="step-slide" data-background-color="#F4F7FF">
+  <div class="slide-inner">
+    <div class="slide-header" style="background:var(--blue);"><span style="font-size:0.7em; color:#C0CEFF; font-weight:400;">Next Step 01 of 03</span><h2>Pick One</h2></div>
+    <div class="content">
+      <div class="step-card">Choose the people skill you're worst at right now. Not the one you wish you were better at — the one you actively avoid. The one that shows up in your last few performance reviews but never makes it onto your personal roadmap.</div>
+      <div class="action-box">
+        <strong>🎯 YOUR ACTION</strong>
+        Write it down. Right now. On your phone, on paper, in a note. The skill you're committing to improving.
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<section class="step-slide" data-background-color="#F4F7FF">
+  <div class="slide-inner">
+    <div class="slide-header" style="background:#1A5276;"><span style="font-size:0.7em; color:#C0CEFF; font-weight:400;">Next Step 02 of 03</span><h2>Treat It Like a Skill</h2></div>
+    <div class="content">
+      <div class="step-card" style="border-left-color:#1A5276;">Spend 30 focused minutes this week reading, watching, or practicing it deliberately. There are books, talks, and frameworks for every single skill on this list. You've spent hundreds of hours learning TypeScript. Invest 30 minutes in communication.</div>
+      <div class="action-box">
+        <strong>🎯 YOUR ACTION</strong>
+        Block 30 minutes on your calendar this week labeled "People Skill Practice." No meetings allowed in that block.
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<section class="step-slide" data-background-color="#F4F7FF">
+  <div class="slide-inner">
+    <div class="slide-header" style="background:var(--purple);"><span style="font-size:0.7em; color:#DEC0FF; font-weight:400;">Next Step 03 of 03</span><h2>Get Feedback</h2></div>
+    <div class="content">
+      <div class="step-card" style="border-left-color:var(--purple);">Ask a trusted teammate: "How am I doing at [the skill you picked]?" Specify a real situation. Ask for one concrete thing you could do differently. The answer will be uncomfortable. That discomfort is the data you need.</div>
+      <div class="action-box">
+        <strong>🎯 YOUR ACTION</strong>
+        Identify the person you're going to ask. Send them a message this week. Don't wait for a 1:1 that might not happen.
+      </div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ RESOURCES ══════════════════════════════════════════ -->
+<section data-background-color="#F4F7FF">
+  <div class="slide-inner">
+    <div class="slide-header"><h2>Further Reading</h2></div>
+    <div style="padding:12px 0 55px; flex:1;">
+      <div class="resource-row"><div class="resource-num">1</div><div class="resource-title"><strong>Crucial Conversations</strong><em>Patterson, Grenny et al.</em></div><div class="resource-desc">The foundational text on high-stakes communication. Required reading.</div></div>
+      <div class="resource-row"><div class="resource-num">2</div><div class="resource-title"><strong>The Culture Map</strong><em>Erin Meyer</em></div><div class="resource-desc">How culture shapes communication styles — essential for distributed teams.</div></div>
+      <div class="resource-row"><div class="resource-num">3</div><div class="resource-title"><strong>Thanks for the Feedback</strong><em>Stone &amp; Heen</em></div><div class="resource-desc">Better than any feedback framework you'll find in a company handbook.</div></div>
+      <div class="resource-row"><div class="resource-num">4</div><div class="resource-title"><strong>Staff Engineer</strong><em>Will Larson</em></div><div class="resource-desc">Leadership without authority — what it actually looks like in practice.</div></div>
+      <div class="resource-row"><div class="resource-num">5</div><div class="resource-title"><strong>The Manager's Path</strong><em>Camille Fournier</em></div><div class="resource-desc">Even if you never manage — understanding the path clarifies what's expected of you.</div></div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+<!-- ══ S41: OUTRO ══════════════════════════════════════════ -->
+<section id="s-outro" data-background-color="#070F3A">
+  <div class="slide-inner">
+    <div class="accent-stripe"></div>
+    <div class="content">
+      <h2>Let's Talk.</h2>
+      <div class="divider"></div>
+      <p class="name-line">Hi, I am Nerando</p>
+      <p class="love">People skills <em>are</em> technical skills — and I love to help you treat them that way.</p>
+      <div class="contact-item">🌐 <span>developingdvlpr.com</span></div>
+      <div class="contact-item">𝕏 &nbsp;<span>@Nerajno</span></div>
+      <div class="contact-item">📍 <span>Atlanta freeCodeCamp — come to the next meetup</span></div>
+      <div class="contact-item">📄 <span>Slides + resources in QR code →</span></div>
+      <div class="contact-item" style="color:var(--accent); font-style:italic; margin-top:8px;">Questions? I have time. Bring the hard ones.</div>
+      <div class="qr-box">QR Code<br>(scan for slides<br>+ resources)</div>
+    </div>
+    <div class="slide-footer"><span>#ConnectTech2023</span><span>@Nerajno | developingdvlpr.com</span></div>
+  </div>
+</section>
+
+</div><!-- /.slides -->
+</div><!-- /.reveal -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  progress: true,
+  controls: true,
+  center: false,
+  transition: 'slide',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  width: 1280,
+  height: 720,
+  margin: 0,
+  minScale: 0.2,
+  maxScale: 2.0,
+  fragments: true,
+  fragmentInURL: false,
+  keyboard: {
+    39: 'next',
+    37: 'prev',
+    80: () => Reveal.togglePause(),   // P = pause (presenter mode)
+  },
+  plugins: [],
+});
+
+// Keyboard shortcut hints on first load
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'f' || e.key === 'F') {
+    document.documentElement.requestFullscreen?.();
+  }
+});
+</script>
+</body>
+</html>

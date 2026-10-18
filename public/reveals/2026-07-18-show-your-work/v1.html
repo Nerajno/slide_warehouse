@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Show Your Work</title>
+
+  <!-- Reveal.js core -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom styles -->
+  <style>
+/* Where Are the Receipts? — @Nerajno deck theme
+   Emerald / Amber system, Fraunces + Plus Jakarta Sans + JetBrains Mono */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --background-color: #FAF8F3;
+  --section-divider-bg: #0B2B22;
+
+  --heading-font: "Fraunces", Georgia, serif;
+  --body-font: "Plus Jakarta Sans", Helvetica, sans-serif;
+  --mono-font: "JetBrains Mono", "Courier New", monospace;
+
+  --base-font-size: 32px;
+  --text-size: 16pt;
+  --h1-size: 46pt;
+  --h2-size: 32pt;
+  --h3-size: 22pt;
+  --footnote-size: 11pt;
+
+  --primary-color: #10B981;
+  --primary-dark: #0B2B22;
+  --secondary-color: #F59E0B;
+  --text-color: #16231D;
+  --muted-color: #5B6B64;
+  --line-color: #D9D2C4;
+
+  --on-dark-text: #F4F1EA;
+  --on-dark-muted: #9FC9BA;
+
+  --slide-padding: 64px;
+  --slide-padding-top: 48px;
+  --content-gap: 26px;
+
+  --box-radius: 10px;
+}
+
+.reveal {
+  font-family: var(--body-font);
+  font-size: var(--base-font-size);
+}
+
+.reveal strong, .reveal b { font-weight: 700; color: var(--primary-dark); }
+
+.reveal-viewport { background-color: var(--background-color); }
+.reveal-viewport.is-section-divider .slide-background.present {
+  background-color: var(--section-divider-bg) !important;
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+  font-family: var(--heading-font);
+  text-transform: none;
+  color: var(--text-color);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.reveal h1 { font-size: var(--h1-size); }
+.reveal h2 { font-size: var(--h2-size); margin-bottom: 0; letter-spacing: -0.01em; }
+.reveal h3 { font-size: var(--h3-size); }
+
+.reveal p, .reveal li, .reveal td, .reveal th, .reveal blockquote {
+  font-size: var(--text-size);
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+.reveal ul { list-style: none; padding-left: 0; margin: 15px 0; }
+.reveal ul li { position: relative; padding-left: 28px; margin-bottom: 12px; }
+.reveal ul li::before {
+  content: '';
+  position: absolute; left: 0; top: 0.6em;
+  width: 9px; height: 9px;
+  background: var(--primary-color);
+  border-radius: 50%;
+}
+.reveal ul ul li::before { background: var(--secondary-color); width: 7px; height: 7px; }
+.reveal blockquote p { font-size: inherit; }
+
+.reveal .slides section {
+  height: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: var(--slide-padding-top) var(--slide-padding) var(--slide-padding) var(--slide-padding) !important;
+  box-sizing: border-box;
+  text-align: left;
+}
+.reveal .slides section.stack { padding: 0 !important; }
+
+.reveal .slides section > .content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: var(--content-gap);
+  text-align: left;
+}
+
+.reveal .slides section > .footnote {
+  position: absolute;
+  bottom: 15px;
+  left: var(--slide-padding);
+  right: var(--slide-padding);
+  font-size: var(--footnote-size);
+  color: var(--muted-color);
+  font-family: var(--mono-font);
+}
+
+.reveal .slides section.section-divider {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center;
+}
+.reveal .slides section.section-divider h1 {
+  font-size: 60pt;
+  text-align: center;
+  color: var(--on-dark-text);
+  letter-spacing: -0.01em;
+}
+.reveal .slides section.section-divider p {
+  font-size: 18pt;
+  color: var(--on-dark-muted);
+  font-family: var(--mono-font);
+  margin-top: 14px;
+}
+
+.text-lg { font-size: 18pt !important; }
+.text-xl { font-size: 20pt !important; }
+.text-2xl { font-size: 24pt !important; }
+.text-3xl { font-size: 28pt !important; }
+.text-4xl { font-size: 32pt !important; }
+.text-muted { color: var(--muted-color) !important; }
+.text-center { text-align: center !important; }
+.text-uppercase { text-transform: uppercase; letter-spacing: 0.08em; }
+.font-light { font-weight: 400; }
+.font-bold { font-weight: 700; }
+.font-mono { font-family: var(--mono-font); }
+
+.reveal blockquote {
+  border-left: 5px solid var(--primary-color);
+  padding-left: 22px;
+  margin: 20px 0;
+  font-style: italic;
+  background: none;
+  box-shadow: none;
+  width: 100%;
+  max-width: none;
+}
+.reveal blockquote cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  color: var(--muted-color);
+}
+
+/* ===========================================
+   BRAND COMPONENTS — @Nerajno system
+   =========================================== */
+
+.brand-tag {
+  position: fixed;
+  bottom: 18px;
+  right: 24px;
+  z-index: 30;
+  font-family: var(--mono-font);
+  font-size: 11pt;
+  color: var(--muted-color);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.eyebrow {
+  font-family: var(--mono-font);
+  font-size: 13pt;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+
+.anchor-label {
+  font-family: var(--mono-font);
+  color: var(--secondary-color) !important;
+  font-size: 16pt !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.act-label {
+  font-family: var(--mono-font);
+  color: var(--secondary-color) !important;
+  font-size: 15pt !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 10px;
+}
+
+/* Image-forward slide — one big visual, one short caption, minimal text per Whitney's guidance */
+.image-slide {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+.image-slide .img-placeholder {
+  flex: 1;
+  min-height: 300px;
+}
+.image-slide .caption {
+  text-align: center;
+  font-size: 20pt;
+  font-family: var(--heading-font);
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.q-card {
+  background: #FFFFFF;
+  border: 1px solid var(--line-color);
+  border-left: 6px solid var(--primary-color);
+  border-radius: var(--box-radius);
+  padding: 22px 26px;
+  box-shadow: 0 2px 10px rgba(11, 43, 34, 0.05);
+}
+.q-card.is-wrong { border-left-color: #C0392B; }
+.q-card.is-good { border-left-color: var(--primary-color); }
+.q-card.is-better { border-left-color: var(--secondary-color); }
+.q-card h3 {
+  font-family: var(--mono-font);
+  font-size: 14pt;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-color);
+  margin-bottom: 10px;
+}
+.q-card p, .q-card li { font-size: 15pt; }
+
+.stat-box {
+  background: var(--primary-dark);
+  color: var(--on-dark-text);
+  border-radius: var(--box-radius);
+  padding: 24px 20px;
+  text-align: center;
+}
+.stat-box .stat-number {
+  font-family: var(--heading-font);
+  font-size: 44pt;
+  font-weight: 700;
+  color: var(--secondary-color);
+  line-height: 1;
+  display: block;
+}
+.stat-box .stat-label {
+  font-family: var(--mono-font);
+  font-size: 12pt;
+  color: var(--on-dark-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 8px;
+  display: block;
+}
+
+.live-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(90deg, var(--primary-color), #0E9A6E);
+  color: #FFFFFF;
+  border-radius: var(--box-radius);
+  padding: 14px 22px;
+  font-family: var(--mono-font);
+  font-size: 14pt;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 18px;
+}
+.live-banner i { font-size: 18pt; color: var(--secondary-color); }
+.live-banner p { color: #FFFFFF !important; font-size: 14pt; margin: 0; }
+
+.example-card {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  background: #FFFFFF;
+  border: 1px solid var(--line-color);
+  border-radius: var(--box-radius);
+  padding: 22px 26px;
+}
+.example-card i { font-size: 28pt; color: var(--primary-color); margin-top: 4px; }
+
+.slam {
+  font-family: var(--heading-font);
+  font-weight: 700;
+  font-size: 52pt;
+  text-align: center;
+  color: var(--on-dark-text);
+  line-height: 1.15;
+}
+.slam .accent { color: var(--secondary-color); }
+
+.backup-block {
+  font-family: var(--mono-font);
+  font-size: 13pt;
+  color: var(--text-color);
+  background: #F1EEE4;
+  border-radius: var(--box-radius);
+  padding: 18px 22px;
+  margin-bottom: 14px;
+}
+.backup-block h4 {
+  font-family: var(--mono-font);
+  font-size: 13pt;
+  text-transform: uppercase;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+  letter-spacing: 0.06em;
+}
+
+  </style>
+
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="brand-tag">@Nerajno · #YourConf</div>
+  <div class="reveal">
+    <div class="slides">
+
+      <section id="divider-1" class="section-divider" data-state="is-section-divider">
+        <h1>Show Your Work</h1>
+        <p>A Developer's Case for Demonstrated Competence</p>
+      </section>
+
+      <section id="slide-2">
+        <h2>Thank You to Our Sponsors</h2>
+        <div class="content" style="justify-content: center; align-items: center;">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%;">
+            <div class="img-placeholder"><i class="fa-solid fa-image"></i><span>Sponsor Logo 1</span></div>
+            <div class="img-placeholder"><i class="fa-solid fa-image"></i><span>Sponsor Logo 2</span></div>
+            <div class="img-placeholder"><i class="fa-solid fa-image"></i><span>Sponsor Logo 3</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="divider-2" class="section-divider" data-state="is-section-divider">
+        <p class="act-label">Act I</p>
+        <h1>The Frame</h1>
+      </section>
+
+      <section id="slide-4">
+        <div class="content image-slide">
+          <div class="img-placeholder"><i class="fa-solid fa-image"></i><span>Photo: you in the classroom, or a stack of graded papers</span></div>
+          <p class="caption">I used to grade papers.</p>
+        </div>
+      </section>
+
+      <section id="slide-5">
+        <div class="content image-slide">
+          <div class="img-placeholder"><i class="fa-solid fa-image"></i><span>Photo or screenshot: a pull request review</span></div>
+          <p class="caption">Now I review pull requests.</p>
+        </div>
+      </section>
+
+      <section id="slide-6">
+        <div class="content" style="justify-content: center; align-items: center; text-align: center;">
+          <p class="text-3xl font-bold" style="max-width: 900px;">Grading required proof of learning.<br>Code review requires proof of judgment.</p>
+          <p class="text-xl text-muted" style="margin-top: 20px;">Same job. Different rubric.</p>
+        </div>
+      </section>
+
+      <section id="slide-7">
+        <p class="eyebrow">Content to Cover</p>
+        <h2>Where This Talk Goes</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+            <div class="q-card is-good"><h3>Act II</h3><p class="text-xl font-bold">The Technology — what demonstrated competence is</p></div>
+            <div class="q-card is-good"><h3>Act III</h3><p class="text-xl font-bold">The Example — how I actually did this</p></div>
+            <div class="q-card is-better"><h3>Act IV</h3><p class="text-xl font-bold">The Demo — watch it work</p></div>
+            <div class="q-card"><h3>Conclusion</h3><p class="text-xl font-bold">Back to the classroom</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-8">
+        <h2>Before We Start</h2>
+        <div class="content">
+          <blockquote>
+            This is #2cents — one engineer's opinion, built from lived experience and a little research. Not gospel. Take what's useful, leave the rest.
+          </blockquote>
+        </div>
+      </section>
+
+      <section id="divider-3" class="section-divider" data-state="is-section-divider">
+        <p class="act-label">Act II</p>
+        <h1>The Technology</h1>
+      </section>
+
+      <section id="slide-10">
+        <div class="live-banner"><i class="fa-solid fa-signal"></i><p>Live Poll — 60 Seconds</p></div>
+        <h2>tinyurl.com/show-your-work-01</h2>
+        <div class="content">
+          <p class="text-2xl" style="max-width: 900px;">In your last review or interview, could you clearly explain <strong>why</strong> you built something the way you did — not just <strong>what</strong> you built?</p>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 30px;">
+            <div class="q-card text-center"><p class="font-bold">Yes</p></div>
+            <div class="q-card is-better text-center"><p class="font-bold">Kind of</p></div>
+            <div class="q-card is-wrong text-center"><p class="font-bold">No</p></div>
+            <div class="q-card text-center"><p class="font-bold">What review?</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-11">
+        <p class="eyebrow">The Model</p>
+        <h2>Four Moves, One Loop</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; align-items: center;">
+            <div class="q-card is-good text-center"><i class="fa-solid fa-comment" style="color: var(--primary-color); font-size: 20pt;"></i><p class="font-bold" style="margin-top:8px;">Speak</p></div>
+            <div class="q-card is-good text-center"><i class="fa-solid fa-hammer" style="color: var(--primary-color); font-size: 20pt;"></i><p class="font-bold" style="margin-top:8px;">Build</p></div>
+            <div class="q-card is-good text-center"><i class="fa-solid fa-bullhorn" style="color: var(--primary-color); font-size: 20pt;"></i><p class="font-bold" style="margin-top:8px;">Share</p></div>
+            <div class="q-card is-wrong text-center"><i class="fa-solid fa-heart-pulse" style="color: #C0392B; font-size: 20pt;"></i><p class="font-bold" style="margin-top:8px;">Handle the Weight</p></div>
+          </div>
+          <p class="text-lg text-muted text-center" style="margin-top: 24px;">Not a checklist you finish once. A loop you run every time you ship something.</p>
+        </div>
+      </section>
+
+      <section id="slide-12">
+        <p class="eyebrow">What is it, exactly?</p>
+        <h2>Demonstrated Competence</h2>
+        <div class="content" style="justify-content: center;">
+          <div class="q-card is-good">
+            <p class="text-2xl">Code you shipped <strong>+</strong> the causal story of why you shipped it that way.</p>
+          </div>
+          <p class="text-lg text-muted" style="margin-top: 18px;">It's not a personality trait. It's a skill you build over time — not something you wake up with.</p>
+        </div>
+      </section>
+
+      <section id="slide-13">
+        <p class="eyebrow">Why now?</p>
+        <h2>Good Code Was Never the Whole Job</h2>
+        <div class="content" style="justify-content: center;">
+          <p class="text-2xl font-bold text-center">Today's market doesn't just ask "can you build it?"</p>
+          <p class="text-2xl font-bold text-center" style="color: var(--secondary-color);">It asks "can you explain why?"</p>
+        </div>
+      </section>
+
+      <section id="divider-4" class="section-divider" data-state="is-section-divider">
+        <p class="act-label">Act III</p>
+        <h1>The Example</h1>
+      </section>
+
+      <section id="slide-15">
+        <p class="eyebrow">Speak to It — where I got this wrong</p>
+        <h2>Here's the Real One</h2>
+        <div class="content">
+          <div class="img-placeholder">
+            <i class="fa-solid fa-image"></i>
+            <span>Photo/screenshot: the review, talk, or PR where you couldn't explain the "why"</span>
+          </div>
+          <p class="text-lg text-muted" style="margin-top: 18px;">[Speaker note: tell the real one — a review where you froze, a decision you couldn't defend. The point isn't the failure. It's what you did next.]</p>
+        </div>
+      </section>
+
+      <section id="slide-16">
+        <p class="eyebrow">Speak to It — the fix</p>
+        <h2>Problem → Choice → Tradeoff → Result</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+            <div class="q-card is-good"><h3>1</h3><p>Problem</p></div>
+            <div class="q-card is-good"><h3>2</h3><p>Choice</p></div>
+            <div class="q-card is-good"><h3>3</h3><p>Tradeoff</p></div>
+            <div class="q-card is-good"><h3>4</h3><p>Result</p></div>
+          </div>
+          <p class="text-lg text-muted" style="margin-top: 24px;">Plain language. No jargon dump. Rehearsed out loud, not just written down.</p>
+        </div>
+      </section>
+
+      <section id="slide-17">
+        <div class="live-banner"><i class="fa-solid fa-people-arrows"></i><p>Turn &amp; Talk — 4 Minutes</p></div>
+        <h2>The 60-Second Receipt</h2>
+        <div class="content">
+          <ol style="padding-left: 0;">
+            <li style="list-style: none; margin-bottom: 14px;"><strong>1.</strong> Pair up with your neighbor.</li>
+            <li style="list-style: none; margin-bottom: 14px;"><strong>2.</strong> 60 seconds: explain ONE thing you built — day job, side project, or open source — using Problem → Choice → Tradeoff → Result.</li>
+            <li style="list-style: none; margin-bottom: 14px;"><strong>3.</strong> Partner's job: ask <em>"so what did that actually solve?"</em> if the business tie-in gets skipped.</li>
+            <li style="list-style: none;"><strong>4.</strong> Swap. Go.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="slide-18">
+        <p class="eyebrow">Build It — proof, not theory</p>
+        <h2>Community Work IS Professional Evidence</h2>
+        <div class="content" style="justify-content: center;">
+          <div style="display: grid; grid-template-columns: 1fr 260px; gap: 24px; align-items: center;">
+            <div class="example-card">
+              <i class="fa-solid fa-people-group"></i>
+              <div>
+                <p class="font-bold text-xl">Atlanta freeCodeCamp Meetup</p>
+                <p class="text-muted">Organized since 2017–2018 · 600+ members</p>
+                <p style="margin-top: 10px;">Most people in this room are doing something like this right now — and don't count it.</p>
+              </div>
+            </div>
+            <div class="img-placeholder" style="min-height: 180px;"><i class="fa-solid fa-image"></i><span>Meetup photo</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-19">
+        <p class="eyebrow">Build It — the flywheel</p>
+        <h2>Learn → Build → Teach</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: center;">
+            <div class="q-card is-good text-center"><i class="fa-solid fa-book" style="color: var(--primary-color); font-size: 22pt;"></i><p class="font-bold" style="margin-top:10px;">Learn</p></div>
+            <div class="q-card is-good text-center"><i class="fa-solid fa-hammer" style="color: var(--primary-color); font-size: 22pt;"></i><p class="font-bold" style="margin-top:10px;">Build</p></div>
+            <div class="q-card is-good text-center"><i class="fa-solid fa-chalkboard-user" style="color: var(--primary-color); font-size: 22pt;"></i><p class="font-bold" style="margin-top:10px;">Teach</p></div>
+          </div>
+          <p class="text-lg text-muted" style="margin-top: 22px;">Each stage generates its own receipts. A Kill List keeps it honest: fewer projects, finished and shipped, beats a graveyard of half-built repos.</p>
+        </div>
+      </section>
+
+      <section id="slide-20">
+        <div class="live-banner"><i class="fa-solid fa-pen"></i><p>Silent Inventory — 3 Minutes</p></div>
+        <h2>Count Your Receipts</h2>
+        <div class="content">
+          <p class="text-lg" style="margin-bottom: 16px;">Write ONE thing from the last 90 days in each box.</p>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
+            <div class="q-card is-good text-center"><h3>Day Job</h3></div>
+            <div class="q-card is-good text-center"><h3>Side Project</h3></div>
+            <div class="q-card is-better text-center"><h3>Community</h3></div>
+            <div class="q-card is-better text-center"><h3>Public Learning</h3></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-21">
+        <p class="eyebrow">Share It — one artifact, every channel</p>
+        <h2>Same Story, Different Container</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+            <div class="img-placeholder" style="min-height: 90px;"><i class="fa-solid fa-image"></i><span>dev.to screenshot</span></div>
+            <div class="img-placeholder" style="min-height: 90px;"><i class="fa-solid fa-image"></i><span>Talk slide/photo</span></div>
+            <div class="img-placeholder" style="min-height: 90px;"><i class="fa-solid fa-image"></i><span>Social post screenshot</span></div>
+          </div>
+          <p class="text-lg text-muted" style="margin-top: 20px;">This is literally my "DIDN'T KNOW TO ASK" pipeline — one idea, three containers. Start smaller than you think: a single 200-word post with a real URL beats "I should really start a blog."</p>
+        </div>
+      </section>
+
+      <section id="slide-22">
+        <div class="live-banner"><i class="fa-solid fa-bolt"></i><p>Live Exercise — First Rep, Right Now</p></div>
+        <h2>Pick One Channel</h2>
+        <div class="content">
+          <p class="text-lg" style="margin-bottom: 14px;">Grab something from your inventory a few slides back. Choose ONE:</p>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+            <div class="q-card is-good text-center"><p class="font-bold">200-word post</p></div>
+            <div class="q-card is-good text-center"><p class="font-bold">Lightning talk pitch</p></div>
+            <div class="q-card is-good text-center"><p class="font-bold">One thread</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-23">
+        <div class="live-banner"><i class="fa-solid fa-hourglass-half"></i><p>3 Minutes of Silence</p></div>
+        <h2>Write the First Sentence. Only the First Sentence.</h2>
+        <div class="content" style="justify-content: center;">
+          <p class="text-xl text-center">Phone notes. Back of the program. Doesn't matter.</p>
+          <p class="text-lg text-muted text-center" style="margin-top: 16px;">When time's up, I'll ask a few of you to read yours out loud.</p>
+        </div>
+      </section>
+
+      <section id="slide-24">
+        <div class="content" style="justify-content: center; align-items: center; text-align: center;">
+          <p class="eyebrow" style="text-align: center;">Handle the Weight</p>
+          <p class="text-4xl font-bold" style="max-width: 900px;">Imposter Syndrome Is a <span style="color: var(--secondary-color);">Liar</span></p>
+          <p class="text-lg text-muted" style="margin-top: 18px;">New level, new doubt. It's a recurring tax, not a one-time bug.</p>
+        </div>
+      </section>
+
+      <section id="slide-25">
+        <div class="live-banner"><i class="fa-solid fa-lock"></i><p>Anonymous Live Poll</p></div>
+        <h2>tinyurl.com/show-your-work-02</h2>
+        <div class="content">
+          <p class="text-2xl" style="max-width: 900px;">When was the last time you felt like a fraud at work?</p>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 30px;">
+            <div class="q-card text-center"><p class="font-bold">This week</p></div>
+            <div class="q-card is-better text-center"><p class="font-bold">This month</p></div>
+            <div class="q-card is-wrong text-center"><p class="font-bold">Right now</p></div>
+            <div class="q-card is-wrong text-center"><p class="font-bold">Constantly</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-26">
+        <div class="live-banner"><i class="fa-solid fa-hourglass-half"></i><p>60 Seconds of Silence</p></div>
+        <div class="content" style="justify-content: center; align-items: center; text-align: center;">
+          <p class="text-3xl font-bold">Think of one receipt from tonight<br>that proves the voice wrong.</p>
+          <p class="text-lg text-muted" style="margin-top: 18px;">No sharing required. Some things stay internal.</p>
+        </div>
+      </section>
+
+      <section id="divider-5" class="section-divider" data-state="is-section-divider">
+        <p class="act-label">Act IV</p>
+        <h1>The Demo</h1>
+      </section>
+
+      <section id="slide-28">
+        <p class="eyebrow">Recording, not live</p>
+        <h2>Watch It Work: Receipts Poll</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="img-placeholder" style="min-height: 160px;"><i class="fa-solid fa-circle-play"></i><span>Screen recording: live poll results updating in real time</span></div>
+            <div class="example-card">
+              <i class="fa-solid fa-hammer"></i>
+              <p>Built this week in Nuxt 3 + Supabase to solve a real gap — free polling tools that cap responses. Tested it with the freeCodeCamp Atlanta crowd before tonight.</p>
+            </div>
+          </div>
+          <p class="text-lg text-muted" style="margin-top: 18px;">Pre-recorded on purpose — live demos are a coin flip, and this isn't the point I'm trying to make tonight.</p>
+        </div>
+      </section>
+
+      <section id="divider-6" class="section-divider" data-state="is-section-divider">
+        <p class="act-label">Conclusion</p>
+        <h1>Back to the Classroom</h1>
+      </section>
+
+      <section id="slide-30">
+        <div class="content" style="justify-content: center; align-items: center; text-align: center;">
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; width: 100%; max-width: 800px;">
+            <div class="img-placeholder"><i class="fa-solid fa-image"></i><span>Classroom photo (callback to Slide 4)</span></div>
+            <div class="img-placeholder"><i class="fa-solid fa-image"></i><span>Code review screenshot (callback to Slide 5)</span></div>
+          </div>
+          <p class="text-2xl font-bold" style="margin-top: 26px;">I still grade papers.</p>
+          <p class="text-2xl font-bold" style="color: var(--secondary-color);">I just call it code review now.</p>
+        </div>
+      </section>
+
+      <section id="slide-31">
+        <div class="live-banner"><i class="fa-solid fa-id-card"></i><p>Your Receipts Card</p></div>
+        <h2>Write Down One Thing</h2>
+        <div class="content">
+          <div style="display: grid; grid-template-columns: 1fr 160px; gap: 24px; align-items: center;">
+            <div>
+              <p class="text-xl">The ONE thing from the last 90 days you're going to speak about out loud <strong>this week</strong>.</p>
+              <p class="text-lg text-muted" style="margin-top: 18px;">This isn't homework I'm assigning — it's a receipt you already own.</p>
+              <div class="q-card is-good" style="margin-top: 20px;">
+                <p>Email it to me. isnerandodoneyet.com-style — I'll actually read it.</p>
+              </div>
+            </div>
+            <div class="img-placeholder is-square"><i class="fa-solid fa-qrcode"></i><span>QR code</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="divider-7" class="section-divider" data-state="is-section-divider">
+        <h1>Thank You</h1>
+        <p>@Nerajno · developingdvlpr.com</p>
+        <div class="img-placeholder on-dark is-chip">
+          <i class="fa-solid fa-image"></i>
+          <span>Optional: contact/social handles graphic or headshot</span>
+        </div>
+      </section>
+
+      <section id="slide-33">
+        <p class="eyebrow">Backup — Speaker Reference</p>
+        <h2>Run of Show (60 min)</h2>
+        <div class="content">
+          <div class="backup-block">
+            <h4>0:00–0:12</h4>
+            <p>Title → Sponsors → Act I: The Frame (classroom → PR review → thesis) → Agenda → Disclaimer</p>
+          </div>
+          <div class="backup-block">
+            <h4>0:12–0:24</h4>
+            <p>Act II: The Technology — live poll, the four-move model, definition, why it matters now</p>
+          </div>
+          <div class="backup-block">
+            <h4>0:24–0:50</h4>
+            <p>Act III: The Example — Speak/Build/Share stories + drills, then Handle the Weight</p>
+          </div>
+          <div class="backup-block">
+            <h4>0:50–1:00</h4>
+            <p>Act IV: The Demo (Receipts Poll) → Conclusion loop back to the classroom → Receipts Card → Thank You</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-34">
+        <p class="eyebrow">Backup — Speaker Reference</p>
+        <h2>On-the-Day Checklist</h2>
+        <div class="content">
+          <div class="backup-block">
+            <h4>Before you take the stage</h4>
+            <p>Laptop charged 50%+, offline copy of the deck, adapters/dongles packed, phone + laptop on Do Not Disturb, badge off, pockets empty, bathroom before you go up.</p>
+          </div>
+          <div class="backup-block">
+            <h4>During</h4>
+            <p>Presentation remote, not a laser pointer. Water on stage. End on "Thank you" — let the organizer run Q&amp;A so the room knows when to clap.</p>
+          </div>
+          <div class="backup-block">
+            <h4>If a demo or poll fails</h4>
+            <p>Screenshots are already on Slides 10/25/28 as a fallback. Laugh it off, keep moving — don't troubleshoot live.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="slide-35">
+        <p class="eyebrow">Backup — Speaker Reference</p>
+        <h2>Resources &amp; Follow-Up</h2>
+        <div class="content">
+          <div class="backup-block">
+            <h4>Read more</h4>
+            <p>developingdvlpr.com — full "DIDN'T KNOW TO ASK" series and related articles</p>
+          </div>
+          <div class="backup-block">
+            <h4>Accountability</h4>
+            <p>isnerandodoneyet.com — the live accountability tool referenced on the closing slide</p>
+          </div>
+          <div class="backup-block">
+            <h4>Say hi</h4>
+            <p>@Nerajno on socials — send your first-sentence receipts here</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js-plugins@latest/chart/plugin.js"></script>
+  <script>
+    Reveal.initialize({
+      width: 1280,
+      height: 720,
+      margin: 0,
+      controls: true,
+      progress: true,
+      slideNumber: true,
+      hash: true,
+      transition: 'slide',
+      center: false,
+      plugins: [ RevealChart ],
+      chart: {
+        defaults: Object.assign({
+          color: 'rgba(0, 0, 0, 0.8)',
+          borderColor: 'rgba(0, 0, 0, 0.8)',
+          devicePixelRatio: 2
+        }, window.location.search.includes('export') ? { animation: false } : {})
+      }
+    });
+  </script>
+</body>
+</html>

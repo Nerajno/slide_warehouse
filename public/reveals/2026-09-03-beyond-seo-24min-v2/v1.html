@@ -1,0 +1,1617 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyond SEO: Optimizing Your Web Content for the Age of AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/monokai.min.css">
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* ===========================================
+   NERAJNO BRAND SYSTEM — Emerald + Amber
+   Commit Your Code 2026
+   =========================================== */
+:root {
+  --background-color: #0f172a;
+  --section-divider-bg: #059669;
+
+  --heading-font: "Plus Jakarta Sans", Arial, sans-serif;
+  --body-font: "Plus Jakarta Sans", Arial, sans-serif;
+  --mono-font: "JetBrains Mono", monospace;
+  --base-font-size: 32px;
+  --text-size: 16pt;
+  --h1-size: 44pt;
+  --h2-size: 32pt;
+  --h3-size: 22pt;
+  --footnote-size: 10pt;
+
+  --primary-color: #059669;
+  --secondary-color: #d97706;
+  --text-color: #f1f5f9;
+  --muted-color: #94a3b8;
+  --line-color: #334155;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --emerald-dim: #064e3b;
+  --amber-dim: #78350f;
+
+  --slide-padding: 60px;
+  --slide-padding-top: 36px;
+  --content-gap: 20px;
+  --box-radius: 10px;
+}
+
+/* BASE */
+.reveal { font-family: var(--body-font); font-size: var(--base-font-size); }
+.reveal-viewport { background-color: var(--background-color); }
+.reveal strong, .reveal b { font-weight: 700; }
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: var(--heading-font);
+  text-transform: none;
+  color: var(--text-color);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.reveal h1 { font-size: var(--h1-size); }
+.reveal h2 { font-size: var(--h2-size); margin-bottom: 0; }
+.reveal h3 { font-size: var(--h3-size); color: var(--muted-color); font-weight: 500; }
+
+.reveal p, .reveal li, .reveal td, .reveal th, .reveal blockquote {
+  font-size: var(--text-size);
+  color: var(--text-color);
+  line-height: 1.55;
+}
+
+/* LISTS */
+.reveal ul { list-style: none; padding-left: 0; margin: 12px 0; }
+.reveal ul li { position: relative; padding-left: 28px; margin-bottom: 10px; }
+.reveal ul li::before {
+  content: ''; position: absolute; left: 0; top: 0.6em;
+  width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%;
+}
+.reveal ul ul li::before { background: var(--secondary-color); width: 6px; height: 6px; }
+
+/* SLIDE LAYOUT */
+.reveal .slides section {
+  height: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: var(--slide-padding-top) var(--slide-padding) var(--slide-padding) var(--slide-padding) !important;
+  box-sizing: border-box;
+  text-align: left;
+}
+.reveal .slides section.stack { padding: 0 !important; }
+.reveal .slides section > .content {
+  flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
+  padding-top: var(--content-gap); text-align: left;
+}
+.reveal .slides section > .footnote {
+  position: absolute; bottom: 15px;
+  left: var(--slide-padding); right: var(--slide-padding);
+  font-size: var(--footnote-size); color: var(--muted-color);
+}
+
+/* SECTION DIVIDERS */
+.reveal .slides section.section-divider {
+  display: flex !important; flex-direction: column !important;
+  justify-content: center !important; align-items: center !important;
+  text-align: center;
+}
+.reveal .slides section.section-divider h1 { font-size: 52pt; text-align: center; color: #fff; }
+.reveal .slides section.section-divider p { font-size: 20pt; color: rgba(255,255,255,0.85); }
+.reveal .slides section.section-divider .act-label {
+  font-size: 11pt; text-transform: uppercase; letter-spacing: 0.18em;
+  color: #ffffff; font-family: var(--mono-font); font-weight: 700;
+  margin-bottom: 16px; display: block;
+}
+
+/* TOP BAR ACCENT */
+.reveal .slides section:not(.section-divider)::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+/* CARDS */
+.card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--box-radius); padding: 18px 22px;
+}
+.card-emerald {
+  background: var(--emerald-dim); border: 1px solid var(--primary-color);
+  border-radius: var(--box-radius); padding: 18px 22px;
+}
+.card-amber {
+  background: var(--amber-dim); border: 1px solid var(--secondary-color);
+  border-radius: var(--box-radius); padding: 18px 22px;
+}
+.card-ghost {
+  border: 2px dashed var(--card-border);
+  border-radius: var(--box-radius); padding: 18px 22px; opacity: 0.65;
+}
+.card p, .card li, .card-emerald p, .card-emerald li,
+.card-amber p, .card-amber li, .card-ghost p { color: var(--text-color); }
+
+/* COLUMNS */
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.cols-60-40 { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; }
+
+/* COMPARISON TABLE */
+.compare-table { width: 100%; border-collapse: collapse; }
+.compare-table th {
+  background: var(--card-bg); color: var(--text-color);
+  padding: 9px 12px; border: 1px solid var(--card-border);
+  font-weight: 700; font-size: 13pt;
+}
+.compare-table th.col-emerald { background: var(--emerald-dim); color: #6ee7b7; border-color: var(--primary-color); }
+.compare-table th.col-amber { background: var(--amber-dim); color: #fcd34d; border-color: var(--secondary-color); }
+.compare-table td {
+  padding: 8px 12px; border: 1px solid var(--card-border);
+  font-size: 12pt; color: var(--text-color); vertical-align: top;
+}
+.compare-table tr:nth-child(odd) td { background: #1a2540; }
+.compare-table tr:nth-child(even) td { background: var(--card-bg); }
+.compare-table td:first-child {
+  font-family: var(--mono-font); font-weight: 600;
+  color: var(--muted-color); font-size: 11pt;
+}
+
+/* CODE BLOCKS */
+.reveal pre {
+  border-radius: var(--box-radius); font-size: 12pt;
+  background: #0d1117; border: 1px solid var(--card-border); box-shadow: none; width: 100%;
+}
+.reveal pre code { font-family: var(--mono-font); padding: 14px 18px; font-size: 11pt; line-height: 1.5; }
+
+/* BLOCKQUOTES */
+.reveal blockquote {
+  border-left: 4px solid var(--secondary-color); padding-left: 20px; margin: 14px 0;
+  font-style: italic; background: none; box-shadow: none; width: 100%; max-width: none;
+}
+.reveal blockquote cite { display: block; margin-top: 8px; font-style: normal; color: var(--muted-color); font-size: 13pt; }
+.reveal blockquote p { font-size: inherit; }
+
+/* CHIPS */
+.chip {
+  display: inline-block; padding: 3px 12px; border-radius: 99px;
+  font-size: 11pt; font-family: var(--mono-font); font-weight: 600; letter-spacing: 0.04em;
+}
+.chip-emerald { background: var(--emerald-dim); color: #6ee7b7; border: 1px solid var(--primary-color); }
+.chip-amber   { background: var(--amber-dim);   color: #fcd34d; border: 1px solid var(--secondary-color); }
+.chip-slate   { background: #1e293b; color: var(--muted-color); border: 1px solid #475569; }
+
+/* IMAGE PLACEHOLDERS */
+.img-placeholder {
+  background: #1e293b; border: 2px dashed #475569; border-radius: var(--box-radius);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; color: var(--muted-color); font-size: 12pt; font-family: var(--mono-font); min-height: 180px;
+}
+.img-placeholder i { font-size: 26pt; color: #475569; }
+
+/* FEATURE ROWS */
+.feature-row { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+.feature-row .icon-wrap {
+  width: 36px; height: 36px; border-radius: 8px; background: var(--emerald-dim);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+}
+.feature-row .icon-wrap i { color: var(--primary-color); font-size: 14pt; }
+.feature-row .icon-wrap.amber-icon { background: var(--amber-dim); }
+.feature-row .icon-wrap.amber-icon i { color: var(--secondary-color); }
+.feature-row p { margin: 0; font-size: 15pt; }
+
+/* STAT NUMBERS */
+.stat-number { font-size: 48pt; font-weight: 800; line-height: 1; color: var(--primary-color); }
+.stat-number.amber { color: var(--secondary-color); }
+
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; gap: 14px; }
+.timeline-item { display: flex; gap: 16px; align-items: flex-start; }
+.timeline-dot {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--primary-color);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 12pt; font-family: var(--mono-font); font-weight: 700; color: #fff; margin-top: 2px;
+}
+.timeline-dot.amber { background: var(--secondary-color); }
+.timeline-item p { margin: 0; font-size: 15pt; }
+
+/* CONNECT LINKS */
+.connect-links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+.connect-link {
+  display: flex; align-items: center; gap: 8px; font-size: 13pt;
+  font-family: var(--mono-font); color: var(--text-color);
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  padding: 8px 18px; border-radius: var(--box-radius);
+}
+.connect-link i { color: var(--primary-color); }
+
+/* TEXT UTILITIES */
+.text-lg  { font-size: 18pt !important; }
+.text-xl  { font-size: 20pt !important; }
+.text-2xl { font-size: 24pt !important; }
+.text-3xl { font-size: 28pt !important; }
+.text-4xl { font-size: 32pt !important; }
+.text-muted { color: var(--muted-color) !important; }
+.text-center { text-align: center !important; }
+.text-emerald { color: var(--primary-color) !important; }
+.text-amber { color: var(--secondary-color) !important; }
+.text-uppercase { text-transform: uppercase; letter-spacing: 0.1em; }
+.font-mono { font-family: var(--mono-font) !important; }
+.font-bold { font-weight: 700; }
+
+/* TITLE SLIDE */
+.title-eyebrow {
+  font-size: 11pt; text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--primary-color); font-family: var(--mono-font); font-weight: 600;
+  margin-bottom: 12px; display: block;
+}
+
+</style>
+</head>
+<body>
+<!--
+  ============================================================
+  24-MINUTE CUT — live-delivery flow (20 slides, ~24 min):
+  Title -> Code of Conduct -> Who I Am -> Disclaimer ->
+  Sponsors -> What We'll Cover -> [GIF energy beat] ->
+  [11 content slides] -> Summary -> Call to Action.
+
+  Everything from the original longer (~45 min) deck is kept —
+  the deep-dive slides (full SEO/AEO/GEO breakdowns, BlogPosting
+  + FAQPage schema, the Astro before/after, entity optimization,
+  measurement system, decision tree, etc.) are marked
+  data-visibility="hidden" and live at the end as a Q&A /
+  backup appendix. Jump to them live via the reveal.js overview
+  (press "O" or "Esc") if a question calls for one.
+  ============================================================
+-->
+<div class="reveal">
+  <div class="slides">
+
+<section>
+  <div style="display:flex;flex-direction:column;height:100%;justify-content:center;">
+    <span class="title-eyebrow">Commit Your Code 2026</span>
+    <h1 style="font-size:40pt;line-height:1.1;margin-bottom:18px;">
+      Beyond SEO:<br>
+      <span class="text-emerald">Make AI Cite Your Content</span><br>
+      Instead of Ignoring It
+    </h1>
+    <p style="font-size:18pt;color:var(--text-color);margin-bottom:10px;font-weight:600;line-height:1.35;">You'll leave with copy-paste code patterns that make your content discoverable by AI engines — <span class="text-emerald">implemented this week.</span></p>
+    <p class="text-muted" style="font-size:14pt;margin-bottom:20px;">Generative Engine Optimization (GEO) &mdash; what it is, why it matters, how to ship it.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+      <span class="chip chip-emerald"><i class="fa-solid fa-magnifying-glass" style="margin-right:6px;"></i>SEO</span>
+      <span style="color:var(--muted-color);align-self:center;">&#x2192;</span>
+      <span class="chip chip-slate"><i class="fa-solid fa-comment-dots" style="margin-right:6px;"></i>AEO</span>
+      <span style="color:var(--muted-color);align-self:center;">&#x2192;</span>
+      <span class="chip chip-amber"><i class="fa-solid fa-robot" style="margin-right:6px;"></i>GEO</span>
+    </div>
+    <p style="font-size:14pt;color:var(--muted-color);font-family:var(--mono-font);">@nerajno &nbsp;&#xb7;&nbsp; developingdvlpr.com</p>
+  </div>
+  <aside class="notes">Welcome everyone. Quick show of hands: how many of you have asked an AI assistant something instead of Googling it this week? That shift is exactly what this talk is about. By the end you'll have code — not theory — that changes how AI finds you.</aside>
+</section>
+
+<section>
+  <h2><i class="fa-solid fa-shield-heart text-emerald" style="margin-right:10px;"></i>Code of Conduct</h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:center;">
+      <div>
+        <p style="margin-bottom:16px;font-size:17pt;line-height:1.4;">This is a community space. <strong>Be kind. Be respectful. Look out for each other.</strong></p>
+        <div class="card-emerald" style="margin-bottom:14px;">
+          <p style="margin:0;font-size:15pt;">Harassment, discrimination, and disruptive behavior aren't welcome here &mdash; full stop.</p>
+        </div>
+        <div class="card" style="border-color:var(--secondary-color);">
+          <p style="margin:0;font-size:14pt;"><i class="fa-solid fa-triangle-exclamation text-amber" style="margin-right:8px;"></i>See something, feel unsafe, or just aren't sure? Find an organizer &mdash; don't sit on it.</p>
+        </div>
+      </div>
+      <div style="text-align:center;">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAGaAQAAAAAefbjOAAAC+0lEQVR4nO2cQY6cMBBFX8VIswSpDzBHgZtFc6TcAI4yB4iEly0Z/Sxs0/Qkm2Q0dAeKBeqm/TSFKJW/f5kx8dfH9O3vGXDIIYcccsghh44JWTkaIJptr3WLQawDhoeE59D+UC9JmoGpAxtYjF4SxBfZQJAk6R7aLzyH9odiKQD2XZLGWKqFxva6lozmceE5tBvUfLwwGYg2NSKGRP/+IntceA49AdSmXA/MusVsYDGNX/OXHHpmqJXKg48vAoKkOeRPNgCS0uPCc2hvaMrrCqCfy8mGzbAlLzUeFZ5De+uIjZU9dQFBrQfT69V0N2DX8BzaHSKvKvsZgCCNef4IeRKR5nLKv0qSxie/J4c+A5WMoE1obFP9SqhVoU0lLUaCsm/hGXFkaK0RQbUUQNGYbcmNkgxzGewZcWioPuS2FIrtibDNCACvEceHNjqiPPi2lIzqbIdtqnhGHB5aPcuQrNdiIjZJcDVNBtBeTdmjiO5inwEqs8ZqP1UVCcW1ui09qu70GnFoqM4aSuQTbemC3pqdVUf46vMM0J2yhJIWWVbU3LhJCNcRx4eqNohWfMmp+wlZVrwblC5ogyYL1ch88nty6DNQyYh+viSIl2TwIuBqQE4BGW1qrJ8v1cx+8nty6DPQ6ll+MC7rNFG6oHW0zxqHhzYCEqofUVsaYXUmVsnpGXF0aJsRvW4CMm01Zl6Rtq4szwBVHfHjkozYlatTN5d219SFRFEUS+M64lSQ3l4ljdFMY2ywITZAezWz14R7lieB7vsaqwtRO+RZRwB5EnEdcXxodbHXPMhH2O6a6mvSuI44C3R7p0tjrgyL3e3GLRNG+fpf3JNDn+xr1M73Zn8dsDGwva9xDmi7z7KveyGqQ5Xu3ArvfZ4T6mdgsga95dd4qhVBbLDh0eE59NXQ72/5dT+xXktjtDPA0qh/N0S8eKfrBFDNiFZABBHLi56CpSHbVENIBmH/8BzaHfpzX6PY1lVRrNrCdcTxIfP/TOaQQw455JBDDv0j9AvfQXPXzAEfRgAAAABJRU5ErkJggg==" alt="QR code linking to the conference Code of Conduct" style="width:170px;height:170px;border-radius:10px;border:3px solid var(--primary-color);background:#fff;padding:8px;" />
+        <p style="font-size:11pt;font-family:var(--mono-font);color:var(--muted-color);margin-top:10px;word-break:break-all;">internals.tech/documents/<br>code-of-conduct.html</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Standard housekeeping — quick and light. Point at the QR, mention organizers by name/location if you know them, then move on. Don't linger here.</aside>
+</section>
+
+<section>
+  <h2>Who I Am</h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fa-solid fa-code" style="color:var(--primary-color);"></i>
+          </div>
+          <p><strong>Frontend Engineer</strong> @ Hygiena &amp; TechTile LLC<br><span class="text-muted">Vue 3 &bull; TypeScript &bull; Astro &bull; Nuxt</span></p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fa-solid fa-microphone" style="color:var(--secondary-color);"></i>
+          </div>
+          <p><strong>Conference Speaker</strong> &amp; Content Creator<br><span class="text-muted">DevNexus &bull; Connect.Tech &bull; Vue Mastery</span></p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fa-solid fa-people-group" style="color:var(--primary-color);"></i>
+          </div>
+          <p><strong>Organizer</strong> &mdash; Atlanta freeCodeCamp <span class="text-muted">(600+ members)</span></p>
+        </div>
+        <div class="card-emerald" style="margin-top:18px;border-left:4px solid var(--secondary-color);">
+          <p style="margin:0;font-size:17pt;font-weight:800;font-style:italic;">Progress over perfection.</p>
+          <p style="margin:4px 0 0;font-size:13pt;" class="text-muted">It's not just a phrase — it's how all of this gets shipped.</p>
+        </div>
+      </div>
+      <div>
+        <img src="data:image/jpeg;base64,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" alt="Nerando Johnson speaking at a conference" style="width:100%;height:340px;object-fit:cover;object-position:center 25%;border-radius:14px;border:3px solid var(--primary-color);display:block;" />
+        <p style="font-size:14pt;text-align:center;margin-top:10px;" class="text-muted font-mono">@nerajno</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Keep this tight — 45–60 seconds, this is a 24-minute talk. The audience doesn't need your full bio, they need enough to trust you. Hit the three pillars: you build, you speak, you organize. Let "Progress over perfection" land as your philosophy, not just a motto.</aside>
+</section>
+
+<section>
+  <h2><i class="fa-solid fa-circle-exclamation text-amber" style="margin-right:10px;"></i>Before We Begin</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:18px;font-size:16pt;">A few things to keep in mind as we go through this together.</p>
+    <div class="card-amber" style="margin-bottom:16px;">
+      <div class="feature-row">
+        <div class="icon-wrap amber-icon" style="width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fa-solid fa-flask" style="color:var(--secondary-color);"></i>
+        </div>
+        <p><strong>Research-backed, not gospel.</strong> Everything shared here is based on my own research, experiments, and real implementations — not vendor marketing or sponsored content.</p>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--primary-color);margin-bottom:16px;">
+      <div class="feature-row">
+        <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fa-solid fa-rotate" style="color:var(--primary-color);"></i>
+        </div>
+        <p><strong>This space moves fast.</strong> GEO best practices will evolve — sometimes weekly. Treat this talk as a <span class="text-emerald">snapshot</span>, not a permanent rulebook. Always verify against current platform behavior.</p>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--card-border);margin-bottom:16px;">
+      <div class="feature-row">
+        <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--card-bg);border:1px solid var(--card-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <i class="fa-solid fa-user" style="color:var(--muted-color);"></i>
+        </div>
+        <p><strong>These are my opinions.</strong> Everything expressed here is entirely my own and does not represent my employer, clients, or any organization I'm affiliated with.</p>
+      </div>
+    </div>
+    <div class="card-emerald">
+      <p style="margin:0;font-size:15pt;"><i class="fa-solid fa-link" style="margin-right:8px;color:#6ee7b7;"></i>Slides, code, and resources will be shared at <strong class="font-mono">developingdvlpr.com/geo-talk</strong> — follow <strong class="font-mono">@nerajno</strong> for updates as the field evolves.</p>
+    </div>
+  </div>
+  <aside class="notes">Set expectations up front. People trust talks more when speakers are honest about the limitations of their knowledge. This is especially important for a fast-moving field like GEO where what's true today might need an update in six months.</aside>
+</section>
+
+<section>
+  <h2 style="text-align:center;">Thank You to Our <span class="text-emerald">Sponsors</span></h2>
+  <div class="content" style="justify-content:center;">
+    <p class="text-muted" style="text-align:center;margin-bottom:14px;font-size:13pt;">This event wouldn't happen without their support.</p>
+
+    <div style="margin-bottom:12px;">
+      <p style="font-size:9pt;font-family:var(--mono-font);color:var(--muted-color);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;text-align:center;">Platinum</p>
+      <div class="cols-2" style="gap:12px;">
+        <div class="card-amber" style="text-align:center;padding:12px;border-width:2px;">
+          <p style="margin:0;font-size:16pt;font-weight:800;">Capital One</p>
+        </div>
+        <div class="card-amber" style="text-align:center;padding:12px;border-width:2px;">
+          <p style="margin:0;font-size:16pt;font-weight:800;">Ziosk</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <p style="font-size:9pt;font-family:var(--mono-font);color:var(--muted-color);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;text-align:center;">Gold</p>
+      <div class="card" style="text-align:center;padding:9px;max-width:260px;margin:0 auto;border-color:#b45309;">
+        <p style="margin:0;font-size:14pt;font-weight:700;">Coder</p>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <p style="font-size:9pt;font-family:var(--mono-font);color:var(--muted-color);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;text-align:center;">Silver</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">
+        <span class="chip chip-slate">TuxCare</span>
+        <span class="chip chip-slate">Improving</span>
+        <span class="chip chip-slate">Render</span>
+        <span class="chip chip-slate">Zerops</span>
+        <span class="chip chip-slate">Crash Override</span>
+        <span class="chip chip-slate">Deepgram</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px;">
+      <p style="font-size:9pt;font-family:var(--mono-font);color:var(--muted-color);text-transform:uppercase;letter-spacing:0.15em;margin-bottom:6px;text-align:center;">Bronze</p>
+      <div style="display:flex;justify-content:center;">
+        <span class="chip chip-slate">LogicGate</span>
+      </div>
+    </div>
+
+    <div class="card-emerald" style="text-align:center;padding:10px 18px;">
+      <p style="margin:0;font-size:11pt;line-height:1.5;"><i class="fa-solid fa-heart" style="margin-right:6px;color:#6ee7b7;"></i><strong>Community partners:</strong> Dallas Software Developers &bull; Java MUG &mdash; Metroplex Users Group &bull; 100Devs &bull; Let's Get Technical &bull; Plano Prompt Engineers Meetup &bull; Texas Linux Fest</p>
+    </div>
+  </div>
+  <aside class="notes">Pause here. Acknowledge the organizers by name if you know them — Platinum sponsors Capital One and Ziosk carry the room, give them a beat. The community partner line can go fast, it's a visual thank-you more than a read-aloud list. Sponsors pay for the event — give them their moment early, then move straight into the agenda.</aside>
+</section>
+
+<section>
+  <h2>What We'll Cover</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:16px;font-size:16pt;">One track, ~24 minutes, every slide is something you can ship this week.</p>
+    <div class="card-emerald" style="margin-bottom:16px;">
+      <ul style="margin:0;">
+        <li>SEO &rarr; AEO &rarr; GEO &mdash; the 60-second version</li>
+        <li>The 3 pillars of GEO &mdash; with real code</li>
+        <li>JSON-LD schema you can ship today</li>
+        <li>Accessibility &amp; GEO &mdash; same work, double the return</li>
+        <li>Your 3 next steps</li>
+      </ul>
+    </div>
+    <div class="card-emerald" style="border-left:4px solid var(--primary-color);">
+      <p style="margin:0;font-size:17pt;font-weight:700;"><i class="fa-solid fa-flag-checkered text-emerald" style="margin-right:10px;"></i>You leave with <strong>copy-paste code</strong> that makes AI engines cite your content &mdash; implementable this week.</p>
+    </div>
+  </div>
+  <aside class="notes">Set the contract early. One track, one outcome: working code. The agenda is a promise — come back to it if the room starts to drift. Deep-dive material that doesn't fit the 24 minutes lives in backup slides for Q&A.</aside>
+</section>
+
+<section>
+  <div style="display:flex;flex-direction:column;height:100%;justify-content:center;align-items:center;text-align:center;">
+    <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHMzOHZkYW1nN251anJtdXU0Zmxya2Fsb2NnM2pscTlsdzJwOHUwayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vnELlPo3FyzfO/giphy.gif" alt="Discovery Channel / MythBusters funny reaction gif" style="max-width:420px;width:100%;border-radius:14px;border:3px solid var(--primary-color);margin-bottom:22px;" />
+    <p style="font-size:18pt;font-weight:700;margin:0;">Okay. Let's actually do this.</p>
+  </div>
+  <aside class="notes">Quick energy beat between the agenda and the content — let it play a couple seconds, don't over-explain the joke, then move straight into the experiment slide. Note: this GIF loads from giphy.com, so it needs live internet at presentation time — if venue wifi is shaky, consider skipping or having a local backup.</aside>
+</section>
+
+<section>
+  <h2>Let's Run an Experiment</h2>
+  <div class="content">
+    <p style="margin-bottom:18px;font-size:17pt;">Open ChatGPT, Perplexity, or Gemini right now and ask one of these:</p>
+    <div class="card-emerald" style="margin-bottom:18px;padding:24px 28px;">
+      <p style="font-size:21pt;font-family:var(--mono-font);font-style:italic;margin:0;line-height:1.4;">"Who are the developers writing about Vue 3 and Astro in Atlanta?"</p>
+    </div>
+    <div class="card-amber" style="margin-bottom:20px;padding:24px 28px;">
+      <p style="font-size:21pt;font-family:var(--mono-font);font-style:italic;margin:0;line-height:1.4;">"What's the best way to handle routing in a Vue 3 app?"</p>
+    </div>
+    <p style="font-size:19pt;font-weight:700;">Did <strong class="text-emerald">your name</strong> come up? Did <strong class="text-amber">your article</strong> get cited?</p>
+  </div>
+  <aside class="notes">Give the audience 30 seconds to actually try this. The silence when their names don't appear IS the talk. That moment of "wait, I write about this" is the problem we're solving today.</aside>
+</section>
+
+<section>
+  <h2>The Problem</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:18px;">
+      <div class="card-emerald" style="text-align:center;padding:28px 20px;">
+        <i class="fa-solid fa-check-circle" style="font-size:36pt;color:#6ee7b7;margin-bottom:12px;display:block;"></i>
+        <p style="font-size:14pt;font-family:var(--mono-font);color:#6ee7b7;margin:0 0 10px;text-transform:uppercase;letter-spacing:0.1em;">What You Built</p>
+        <p style="font-size:17pt;font-weight:700;margin:4px 0;">Fast &bull; Accessible &bull; SEO-ready</p>
+        <p class="text-muted" style="font-size:14pt;margin:6px 0 0;">You did the work. The checklist is green.</p>
+      </div>
+      <div class="card-amber" style="text-align:center;padding:28px 20px;">
+        <i class="fa-solid fa-robot" style="font-size:36pt;color:#fcd34d;margin-bottom:12px;display:block;"></i>
+        <p style="font-size:14pt;font-family:var(--mono-font);color:#fcd34d;margin:0 0 10px;text-transform:uppercase;letter-spacing:0.1em;">What AI Sees</p>
+        <p style="font-size:17pt;font-weight:700;margin:4px 0;">Unstructured &bull; Vague &bull; Uncitable</p>
+        <p class="text-muted" style="font-size:14pt;margin:6px 0 0;">No entity clarity. No machine-readable signals.</p>
+      </div>
+    </div>
+    <blockquote>
+      <p>Your content isn't invisible because it's bad. It's invisible because it's not structured for <strong>how AI engines ingest and cite information.</strong></p>
+    </blockquote>
+  </div>
+  <aside class="notes">This is the core tension. We've done everything right by the playbook we learned. But the playbook now has a new layer on top.</aside>
+</section>
+
+<section>
+  <h2>Three Eras of Search</h2>
+  <div class="content">
+    <div class="cols-3" style="margin-bottom:18px;">
+      <div class="card" style="text-align:center;padding:30px 16px;">
+        <p style="font-size:11pt;font-family:var(--mono-font);color:var(--muted-color);margin:0 0 8px;">Era 1 &mdash; 1990s&ndash;now</p>
+        <p style="font-size:26pt;font-weight:800;color:var(--primary-color);margin:0 0 10px;">SEO</p>
+        <p style="margin:0;font-size:16pt;font-weight:600;">Rank higher.<br>Get clicked.</p>
+      </div>
+      <div class="card" style="text-align:center;padding:30px 16px;border-color:#7c3aed;background:#1e1b4b;">
+        <p style="font-size:11pt;font-family:var(--mono-font);color:#a78bfa;margin:0 0 8px;">Era 2 &mdash; 2015&ndash;now</p>
+        <p style="font-size:26pt;font-weight:800;color:#a78bfa;margin:0 0 10px;">AEO</p>
+        <p style="margin:0;font-size:16pt;font-weight:600;">Be the answer.<br>Skip the click.</p>
+      </div>
+      <div class="card-amber" style="text-align:center;padding:30px 16px;">
+        <p style="font-size:11pt;font-family:var(--mono-font);color:#fcd34d;margin:0 0 8px;">Era 3 &mdash; NOW</p>
+        <p style="font-size:26pt;font-weight:800;color:var(--secondary-color);margin:0 0 10px;">GEO</p>
+        <p style="margin:0;font-size:16pt;font-weight:600;">Be cited by AI.<br>Influence without a visit.</p>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--secondary-color);">
+      <p style="margin:0;font-size:16pt;"><i class="fa-solid fa-triangle-exclamation text-amber" style="margin-right:8px;"></i>A single query can hit <strong>all three simultaneously.</strong> Optimize for only one and you're invisible in the others.</p>
+    </div>
+  </div>
+  <aside class="notes">These are layers, not replacements. SEO didn't die when AEO emerged. They stack. You're here because GEO is the new layer most developers are missing. Full deep-dive on each era is in the backup slides if a question calls for it.</aside>
+</section>
+
+<section>
+  <h2>5 Key Differences &mdash; SEO &middot; AEO &middot; <span class="text-amber">GEO</span></h2>
+  <div class="content">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:20%;">Dimension</th>
+          <th>SEO</th>
+          <th>AEO</th>
+          <th class="col-amber">GEO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Discovery</td>
+          <td>Keyword ranking &amp; backlinks</td>
+          <td>Answer box / voice result</td>
+          <td>Entity recognition &amp; citation</td>
+        </tr>
+        <tr>
+          <td>Content focus</td>
+          <td>Keyword density, domain authority</td>
+          <td>Direct answers, schema markup</td>
+          <td>Structured, explicit, self-contained</td>
+        </tr>
+        <tr>
+          <td>Goal</td>
+          <td>Rank on Google &mdash; get the click</td>
+          <td>Own the answer box</td>
+          <td>Be cited in the AI response</td>
+        </tr>
+        <tr>
+          <td>Metrics</td>
+          <td>Rank position, CTR, organic traffic</td>
+          <td>Featured snippet wins, voice hits</td>
+          <td>Citation frequency, conversational reach</td>
+        </tr>
+        <tr>
+          <td>Technical needs</td>
+          <td>Meta tags, sitemaps, Core Web Vitals</td>
+          <td>FAQPage, HowTo, Speakable schema</td>
+          <td>JSON-LD, semantic HTML, entity graph</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="text-muted" style="margin-top:12px;font-size:13pt;font-family:var(--mono-font);">Photo this slide &mdash; you&rsquo;ll want it as a reference. The GEO column is why you&rsquo;re here.</p>
+  </div>
+  <aside class="notes">Five dimensions — walk the GEO column top to bottom: discovery shifts from keyword rank to entity recognition, content shifts from keyword density to self-contained paragraphs, and your metrics aren't in GA yet — you're tracking conversational reach manually. The "Metrics" row usually gets gasps. Nobody is tracking this yet. That's your edge.</aside>
+</section>
+
+<section>
+  <h2>The 3 Core Pillars of GEO</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:16px;">Every GEO optimization traces back to one of these three.</p>
+    <div class="cols-3">
+      <div class="card-emerald" style="text-align:center;padding:22px 16px;">
+        <i class="fa-solid fa-code" style="font-size:26pt;color:#6ee7b7;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:16pt;font-weight:700;margin:0 0 6px;">Semantic HTML<br>Structure</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Proper heading hierarchy, landmark elements, meaningful markup</p>
+      </div>
+      <div class="card" style="text-align:center;padding:22px 16px;border-color:#7c3aed;background:#1e1b4b;">
+        <i class="fa-solid fa-align-left" style="font-size:26pt;color:#a78bfa;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:16pt;font-weight:700;margin:0 0 6px;">Explicit Content<br>Formatting</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Self-contained paragraphs, direct answers, citable writing</p>
+      </div>
+      <div class="card-amber" style="text-align:center;padding:22px 16px;">
+        <i class="fa-solid fa-database" style="font-size:26pt;color:#fcd34d;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:16pt;font-weight:700;margin:0 0 6px;">Structured Data<br>Markup</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">JSON-LD schema that LLM crawlers parse and trust</p>
+      </div>
+    </div>
+    <p class="text-muted" style="margin-top:18px;font-size:15pt;"><i class="fa-solid fa-circle-info text-emerald" style="margin-right:6px;"></i>These pillars also strengthen AEO and SEO &mdash; it's a rising tide that lifts all three.</p>
+  </div>
+  <aside class="notes">Anchor the frame: every slide from here traces back to one of these three. When you get to Accessibility = GEO Foundation, pull this back: "Remember the three pillars — that's Pillars 1 and 2 at once." Repetition of the framework builds retention.</aside>
+</section>
+
+<section>
+  <h2>Pillar 1 &mdash; Semantic HTML Structure</h2>
+  <div class="content">
+    <div class="card-emerald" style="margin-bottom:12px;padding:12px 18px;">
+      <p style="margin:0;font-size:14pt;"><i class="fa-solid fa-circle-info" style="margin-right:8px;color:#6ee7b7;"></i><strong>Why it matters:</strong> HTML tags are meaning signals. AI crawlers weight <code>&lt;article&gt;</code> and <code>&lt;h1&gt;</code> differently than <code>&lt;div class="title"&gt;</code>. Same visual output — completely different machine-readable signal.</p>
+    </div>
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:8px;font-size:12pt;font-family:var(--mono-font);color:#ef4444;">&#x2717; AI-INVISIBLE</p>
+        <pre><code class="language-html">&lt;div class="blog-post"&gt;
+  &lt;div class="title"&gt;
+    My Tutorial
+  &lt;/div&gt;
+  &lt;div class="body"&gt;
+    &lt;div&gt;Step one...&lt;/div&gt;
+    &lt;div&gt;Step two...&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+      <div>
+        <p style="margin-bottom:8px;font-size:12pt;font-family:var(--mono-font);color:#6ee7b7;">&#x2713; GEO-READY</p>
+        <pre><code class="language-html">&lt;article&gt;
+  &lt;header&gt;
+    &lt;h1&gt;How to Handle State
+        in Vue 3&lt;/h1&gt;
+    &lt;time datetime="2026-01-15"&gt;
+      Jan 2026&lt;/time&gt;
+    &lt;address&gt;
+      By Nerando Johnson
+    &lt;/address&gt;
+  &lt;/header&gt;
+  &lt;section&gt;
+    &lt;h2&gt;Why Pinia Over Vuex&lt;/h2&gt;
+    &lt;p&gt;Pinia is the recommended...&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/article&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">The visual output of both code blocks is identical. That's the point. Same page, same appearance — completely different machine-readable signal. HTML tags aren't just about presentation, they're vocabulary. article, header, time, address — these are words the AI crawler knows. div class="title" is noise to a machine.</aside>
+</section>
+
+<section>
+  <h2>Pillar 2 &mdash; Write for Humans, Structure for AI</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:14px;">
+      <div class="card" style="border-color:#ef4444;background:#1a0a0a;">
+        <p style="margin:0 0 8px;font-size:11pt;font-family:var(--mono-font);color:#ef4444;">&#x2717; KILLS AI DISCOVERABILITY</p>
+        <ul>
+          <li>"As mentioned above, this approach&hellip;"</li>
+          <li>"We looked at this earlier, but&hellip;"</li>
+          <li>"It depends on what you're building."</li>
+          <li>"See the next section for details."</li>
+        </ul>
+      </div>
+      <div class="card-emerald">
+        <p style="margin:0 0 8px;font-size:11pt;font-family:var(--mono-font);color:#6ee7b7;">&#x2713; CITABLE / SELF-CONTAINED</p>
+        <ul>
+          <li>Every paragraph answers a specific question</li>
+          <li>Subject always explicit &mdash; no dangling pronouns</li>
+          <li>Direct assertions: "Pinia is the official Vue 3 state manager"</li>
+          <li>Definitions included inline, not referenced elsewhere</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-amber">
+      <p style="margin:0 0 6px;font-size:14pt;"><strong>The Litmus Test:</strong></p>
+      <p style="margin:0;font-size:15pt;font-style:italic;">"If someone extracted just this paragraph and read it with no context, would it still make complete sense?"</p>
+      <p style="margin:8px 0 0;font-size:14pt;">If no &rarr; rewrite it. AI will skip it.</p>
+    </div>
+  </div>
+  <aside class="notes">The litmus test is the takeaway. Give the audience 15 seconds to think of a paragraph from their own writing that would fail it. The uncomfortable silence is the lesson. "As mentioned above" is the enemy. Say it again: "AI can't scroll back up."</aside>
+</section>
+
+<section>
+  <h2>Pillar 3 &mdash; Structured Data Markup</h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:14px;font-size:16pt;">JSON-LD is the language of structured data. It lives in your &lt;head&gt; and tells AI crawlers exactly what your content is.</p>
+        <p style="margin-bottom:10px;font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);">3 SCHEMA TYPES YOU NEED:</p>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-newspaper" style="color:var(--primary-color);"></i></div>
+          <p><strong>BlogPosting</strong> &mdash; for every article, tutorial, and blog entry</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-circle-question" style="color:var(--secondary-color);"></i></div>
+          <p><strong>FAQPage</strong> &mdash; maps directly to how users query AI platforms</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:#1e1b4b;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #7c3aed;"><i class="fa-solid fa-user" style="color:#a78bfa;"></i></div>
+          <p><strong>Person</strong> &mdash; establishes <em>you</em> as a known, citable entity</p>
+        </div>
+      </div>
+      <div>
+        <div class="card-amber">
+          <p style="margin:0 0 6px;font-size:12pt;font-family:var(--mono-font);color:#fcd34d;">WHY JSON-LD?</p>
+          <ul style="margin:0;">
+            <li>Doesn't pollute your HTML</li>
+            <li>Easy to add in Astro/Vue &lt;head&gt;</li>
+            <li>Google + LLM crawlers parse it</li>
+            <li>Validated by Rich Results Test</li>
+          </ul>
+        </div>
+        <div class="img-placeholder" style="min-height:110px;margin-top:12px;">
+          <i class="fa-solid fa-code"></i>
+          <p>[ JSON-LD in DevTools ]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">JSON-LD lives in your head tag. It doesn't affect page render. It doesn't slow your site. For Astro users: one component, imported on every blog post layout. For Vue/Nuxt users: useHead() composable. Zero excuses for not having it. BlogPosting and FAQPage code examples are in the backup slides — we're going deep on Person schema live, since it pays off across every article you write.</aside>
+</section>
+
+<section>
+  <h2>JSON-LD &mdash; <span style="color:#a78bfa;">Person Schema</span></h2>
+  <div class="content">
+    <div class="card" style="margin-bottom:12px;padding:12px 18px;border-color:#7c3aed;background:#1e1b4b;">
+      <p style="margin:0;font-size:14pt;"><i class="fa-solid fa-circle-info" style="margin-right:8px;color:#a78bfa;"></i><strong>Why it matters:</strong> This makes <em>you</em> a named entity in the AI knowledge graph — not just an anonymous page author. Without it, AI engines can't confidently attribute expertise to you across multiple articles and platforms.</p>
+    </div>
+    <p class="text-muted" style="margin-bottom:8px;font-size:13pt;">Add once to your portfolio homepage. It anchors your identity everywhere:</p>
+    <pre><code class="language-json">{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Nerando Johnson",
+  "alternateName": "Nerajno",
+  "url": "https://developingdvlpr.com",
+  "jobTitle": "Frontend Software Engineer",
+  "knowsAbout": ["Vue 3", "Astro", "TypeScript", "GEO", "Web Accessibility"],
+  "worksFor": { "@type": "Organization", "name": "Hygiena" },
+  "sameAs": [
+    "https://linkedin.com/in/nerajno",
+    "https://github.com/nerajno",
+    "https://bsky.app/profile/nerajno.bsky.social"
+  ],
+  "description": "Frontend engineer in Atlanta, GA specializing in Vue 3,
+                  Astro, and web accessibility."
+}</code></pre>
+    <div class="card-emerald" style="margin-top:10px;">
+      <p style="margin:0;font-size:14pt;"><strong>knowsAbout</strong> is your expertise signal. <strong>sameAs</strong> is your entity signal — it links your identity across platforms so AI knowledge graphs can confirm you are who you say you are.</p>
+    </div>
+  </div>
+  <aside class="notes">The Person schema is the one that pays dividends across every article you've ever written. Add it once to your portfolio homepage. Every blog post that links back to your portfolio now has an entity trail. The sameAs array is the trust signal — more platforms, more confirmation. Add GitHub, LinkedIn, Bluesky, your Sessionize profile. BlogPosting and FAQPage schema follow the exact same pattern — full code in backup slides.</aside>
+</section>
+
+<section>
+  <h2>Accessibility <span class="text-emerald">=</span> GEO Foundation</h2>
+  <div class="content">
+    <div class="card-emerald" style="margin-bottom:16px;">
+      <p style="margin:0;font-size:18pt;font-weight:700;line-height:1.35;">Accessible content is explicit content.<br>Explicit content is citable content.<br><span class="text-amber">The three are the same work.</span></p>
+    </div>
+    <div class="cols-2" style="margin-bottom:14px;">
+      <div>
+        <p style="font-size:13pt;" class="text-muted">WCAG 2.2 practices that <strong>double as GEO signals</strong>:</p>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-heading" style="color:var(--primary-color);"></i></div>
+          <p><strong>Heading hierarchy</strong> (1.3.1) &mdash; same signal AI uses to understand content structure</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-image" style="color:var(--primary-color);"></i></div>
+          <p><strong>Descriptive alt text</strong> (1.1.1) &mdash; image context for both screen readers and AI parsers</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-list" style="color:var(--secondary-color);"></i></div>
+          <p><strong>Landmark regions</strong> (4.1.2) &mdash; main, nav, aside signal page architecture to both</p>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <div class="card" style="width:100%;border-color:var(--primary-color);">
+          <p style="margin:0 0 10px;font-size:14pt;"><i class="fa-solid fa-gift text-emerald" style="margin-right:8px;"></i>Done a <strong>WCAG 2.2 AA audit</strong> recently?</p>
+          <p style="margin:0;font-size:16pt;font-weight:700;">You're already ~60% of the way to GEO Pillars 1 &amp; 2.</p>
+          <p style="margin:8px 0 0;font-size:13pt;" class="text-muted">Same HTML. Double the return. Ship it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">This is the moment a11y advocates lean forward. Everything we do for screen reader users is exactly what AI crawlers need too. Same work, double the return. If your team already does accessibility audits, you have a head start on GEO that your competitors don't.</aside>
+</section>
+
+<section>
+  <h2>3 Things to Do This Week</h2>
+  <div class="content">
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">1</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Audit one page with Google Rich Results Test</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;">Pick your most-visited blog post or portfolio page. See what structured data (if any) exists today.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">2</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Add Person schema to your portfolio homepage</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;">Copy the pattern from this talk. Add sameAs links. Deploy. That's your entity established.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot amber">3</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Query an AI with your name + your topic</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;">Screenshot the result tonight. That's your baseline. Repeat in 30 days after implementing GEO. Compare.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px;border-color:var(--secondary-color);">
+      <p style="margin:0;font-size:16pt;font-weight:700;"><i class="fa-solid fa-bolt text-amber" style="margin-right:10px;"></i>Ship one of these <strong>before you leave the building today.</strong> Tag me when you do &mdash; <span class="font-mono text-emerald">@nerajno</span></p>
+    </div>
+  </div>
+  <aside class="notes">Three actions. Not "rebuild your whole site." Three things. Rich Results audit. Person schema. Baseline query. That's it. This is the Kill List: pick one, ship it today. Don't let perfect be the enemy of done.</aside>
+</section>
+
+<section>
+  <h2>What We Covered <span class="text-muted" style="font-size:20pt;font-weight:400;">— The Short Version</span></h2>
+  <div class="content">
+    <div class="cols-3" style="margin-bottom:16px;">
+      <div class="card-emerald" style="padding:20px 16px;">
+        <p style="margin:0 0 10px;font-size:11pt;font-family:var(--mono-font);color:#6ee7b7;text-transform:uppercase;letter-spacing:0.1em;">The Landscape</p>
+        <ul style="margin:0;">
+          <li>SEO &rarr; AEO &rarr; GEO evolution</li>
+          <li>AI engines need <strong>different signals</strong></li>
+          <li>~1% click-through, 4&ndash;5&times; conversion</li>
+          <li>The window is open — act now</li>
+        </ul>
+      </div>
+      <div class="card-amber" style="padding:20px 16px;">
+        <p style="margin:0 0 10px;font-size:11pt;font-family:var(--mono-font);color:#fcd34d;text-transform:uppercase;letter-spacing:0.1em;">The 3 Pillars</p>
+        <ul style="margin:0;">
+          <li><strong>Semantic HTML</strong> — tags are signals</li>
+          <li><strong>Explicit writing</strong> — self-contained paragraphs</li>
+          <li><strong>JSON-LD schema</strong> — Person is your anchor</li>
+          <li>Accessibility <span class="text-emerald">=</span> GEO foundation</li>
+        </ul>
+      </div>
+      <div class="card" style="border-color:var(--primary-color);padding:20px 16px;">
+        <p style="margin:0 0 10px;font-size:11pt;font-family:var(--mono-font);color:var(--primary-color);text-transform:uppercase;letter-spacing:0.1em;">This Week</p>
+        <div class="timeline" style="gap:10px;">
+          <div class="timeline-item">
+            <div class="timeline-dot" style="width:24px;height:24px;font-size:10pt;">1</div>
+            <p style="font-size:14pt;margin:0;">Rich Results Test on your best post</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="width:24px;height:24px;font-size:10pt;">2</div>
+            <p style="font-size:14pt;margin:0;">Add Person schema to your portfolio</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot amber" style="width:24px;height:24px;font-size:10pt;">3</div>
+            <p style="font-size:14pt;margin:0;">Query an AI with your name + topic &mdash; baseline it</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-emerald" style="border-left:4px solid var(--secondary-color);">
+      <p style="margin:0;font-size:17pt;font-weight:700;font-style:italic;">"You don't need to be perfect to be citable. You need to be <span class="text-amber">structured, explicit, and consistent.</span>"</p>
+    </div>
+  </div>
+  <aside class="notes">Landing slide before the call to action. Gives the audience a moment to digest and photograph. Pause here — don't rush. Let the summary breathe.</aside>
+</section>
+
+<section data-background-color="#0f172a">
+  <div style="display:flex;flex-direction:column;height:100%;justify-content:center;align-items:center;text-align:center;padding:40px 60px;">
+    <span class="title-eyebrow">Commit Your Code 2026</span>
+    <h1 style="font-size:52pt;color:var(--text-color);margin-bottom:10px;line-height:1.05;">Progress over perfection.<br><span class="text-emerald">Let's go.</span></h1>
+    <p style="font-size:17pt;color:var(--muted-color);margin-bottom:18px;max-width:640px;">Ship <strong style="color:var(--text-color);">one</strong> of these before you leave the building today. Tag me when you do.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">
+      <span class="chip chip-emerald">Rich Results Test &#x2713;</span>
+      <span class="chip chip-slate">Person Schema &#x2713;</span>
+      <span class="chip chip-amber">Baseline Query &#x2713;</span>
+    </div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:18px;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:14pt;font-family:var(--mono-font);color:var(--text-color);background:var(--card-bg);border:2px solid var(--primary-color);padding:9px 18px;border-radius:12px;"><i class="fa-brands fa-linkedin" style="color:var(--primary-color);font-size:16pt;"></i>linkedin.com/in/nerajno</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:14pt;font-family:var(--mono-font);color:var(--text-color);background:var(--card-bg);border:2px solid var(--primary-color);padding:9px 18px;border-radius:12px;"><i class="fa-brands fa-bluesky" style="color:var(--primary-color);font-size:16pt;"></i>@nerajno.bsky.social</div>
+    </div>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQAAAADAX2ykAAACiUlEQVR4nO2bS27jMAyGP44MdCnfYI4i32COVPRm9lF6gAHkZQAZnIUk2zH6RNPUGlCLIIy/BQGCD/9URPnMmX59CgfjjTfeeOONN/41XsrpEOlBpF8EWESGuT4b7uiP8Tfmg6qqRiBE0BGnMuAUcKqqqtf8d/tj/I35uWSoPvVAiCV/dQREpLu3P8Z/Dy+PcREZ5gfVJ3lQGX7YH+O/xncHWydxKrAIQRdR5vv6Y/xteXJzLf3XlSaMLw23/LYi49n8N/5D/CQieXQecEp47iBEpzKw5PH5vv4YfyM+1+eDSKmQYPqd0OOzs/lv/DunFN8IOmYzAT5BfjWKTnX0CavPTfI5vrs2W1qvyzHPJ1j/bZWv87O/iE6DS9WMgFcEXIK5r2X6bP4b/0HeKUETOrJISd25q0qH1/omfFr/jX/5lPqs6epdKIKOfq3KVaS0+twaX+I7elXwCdUIRYneYp5Ni297/NV8FYugsdM3chJHLL5t8mt9XpOYfcLW0Kaa52fz3/h3zpa/hJy6pSpXcy3cFt8G+V3/zR9l0qqlGZ9W4cPi2x6/2y9sbTY/yd98ykq0xbdJftWflw58KuY0uCSTZPFZ2S0Jz+a/8W+fol9Nf6LC3Gcr73/xf7u6NnL38sf42/L7+Tnrz5uWkTWtfbm2+twaT40qAHVgDrHuF3YztcW3Qf54f4OgqT6Ia/562x81yu/2v3lMHrdc9Wtptvn5f+HlMQJTv5TrsqMvNzlk+BF/jP8af7w/ydRHJTw/KNPQJQlxQZm7uhg+m//Gv32W/b4C83rbyl+EoEC+LusvYvv9JvkX5ue0atIAm2Zp/bdB/nh/UneW33529v8j44033njjjb8d/w8GKDaWjBsa5gAAAABJRU5ErkJggg==" alt="QR code to slides, code, and resources at developingdvlpr.com/geo-talk" style="width:140px;height:140px;border-radius:10px;border:3px solid var(--secondary-color);background:#fff;padding:8px;margin-bottom:8px;" />
+    <p style="font-size:12pt;color:var(--muted-color);font-family:var(--mono-font);">Slides + code &middot; developingdvlpr.com/geo-talk</p>
+    <p style="font-size:14pt;color:var(--muted-color);margin-top:14px;">Questions? No such thing as a bad one.</p>
+  </div>
+  <aside class="notes">End strong. Ship one thing tonight — Rich Results audit, Person schema, or baseline query. Then open the floor: "Has anyone tried asking an AI to describe them as an expert?" / "Anyone already using JSON-LD?" Tag me @nerajno when your first AI citation drops.</aside>
+</section>
+
+<!-- ============================================================
+     BACKUP / Q&A APPENDIX — hidden from the live 24-min flow.
+     Reachable via reveal.js overview (press "O"), not shown by
+     next/prev arrows or the progress bar. Nothing from the
+     original deck was deleted — it all lives here.
+     ============================================================ -->
+
+<section data-visibility="hidden">
+  <h2>SEO &mdash; <span class="text-emerald">How do I rank?</span></h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:16px;font-size:17pt;line-height:1.4;">SEO targets search engines. The output is a <strong>ranked blue link.</strong> You win when the user clicks through.</p>
+        <div class="card-emerald" style="margin-bottom:14px;">
+          <p style="margin:0 0 8px;font-size:12pt;font-family:var(--mono-font);color:#6ee7b7;">KEY LEVERS:</p>
+          <ul style="margin:0;">
+            <li>Keywords &amp; backlinks &amp; domain authority</li>
+            <li>Core Web Vitals (LCP, INP, CLS)</li>
+            <li>Crawlability, sitemaps, canonical URLs</li>
+          </ul>
+        </div>
+        <div class="card" style="border-color:var(--primary-color);">
+          <p style="margin:0;font-size:14pt;"><strong>Still essential</strong> for buying-intent and local queries &mdash; where AI Overviews appear least often.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card-amber" style="margin-bottom:10px;text-align:center;padding:20px;">
+          <div class="stat-number amber" style="font-size:46pt;">~58%</div>
+          <p class="text-muted" style="font-size:13pt;margin-top:4px;">drop in clicks to #1 rank<br>when AI Overview appears</p>
+          <p style="font-size:10pt;font-family:var(--mono-font);color:rgba(255,255,255,0.5);margin:4px 0 0;">Ahrefs analysis, ~300K keywords</p>
+        </div>
+        <div class="card" style="text-align:center;padding:14px;">
+          <div class="stat-number" style="font-size:34pt;">~48%</div>
+          <p class="text-muted" style="font-size:12pt;margin-top:4px;">of Google queries now<br>show an AI Overview</p>
+          <p style="font-size:10pt;font-family:var(--mono-font);color:rgba(255,255,255,0.5);margin:4px 0 0;">Estimated; varies by query type</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Don't let this become an SEO-is-dead debate. It's not. The ~58% click drop is real, but local and transactional queries still drive traditional organic. The point: if you're a developer writing articles or maintaining a portfolio, your queries are informational — and that's exactly where AI Overviews dominate.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>AEO &mdash; <span style="color:#a78bfa;">How do I become the answer?</span></h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:16px;font-size:17pt;line-height:1.4;">AEO targets the answer box <strong>that appears above the links.</strong> You win when Google or Siri reads your content aloud &mdash; no click required.</p>
+        <div class="card" style="margin-bottom:14px;border-color:#7c3aed;background:#1e1b4b;">
+          <p style="margin:0 0 8px;font-size:12pt;font-family:var(--mono-font);color:#a78bfa;">KEY LEVERS:</p>
+          <ul style="margin:0;">
+            <li><strong>Schema markup:</strong> FAQPage, HowTo, Speakable</li>
+            <li>Direct answer in the <strong>first sentence</strong></li>
+            <li>Question-style H2s that match how people ask</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-color:#7c3aed;margin-bottom:10px;padding:20px;text-align:center;">
+          <p style="font-size:20pt;font-weight:800;color:#a78bfa;margin:0 0 6px;">Featured Snippet</p>
+          <p style="margin:0;font-size:14pt;">Your words, Google's voice.<br>User never visits your site.</p>
+        </div>
+        <div class="card" style="border-color:#7c3aed;padding:20px;text-align:center;">
+          <p style="font-size:20pt;font-weight:800;color:#a78bfa;margin:0 0 6px;">Zero-click Result</p>
+          <p style="margin:0;font-size:14pt;">Your brand gets read.<br>Your URL may not.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">AEO is the middle child most developers skip entirely. Schema markup is table stakes for modern search.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>GEO &mdash; <span class="text-amber">How does AI decide what to cite?</span></h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:16px;font-size:17pt;line-height:1.4;">GEO targets AI-native engines. They don't return links &mdash; they <strong>synthesize a response</strong> and cite their sources. You win by being one of them.</p>
+        <div class="card-amber" style="margin-bottom:14px;">
+          <p style="margin:0 0 8px;font-size:12pt;font-family:var(--mono-font);color:#fcd34d;">KEY LEVERS:</p>
+          <ul style="margin:0;">
+            <li><strong>Entity authority</strong> &mdash; who you are, clearly defined</li>
+            <li>Structured data LLM crawlers can parse</li>
+            <li>Self-contained, citable paragraphs</li>
+          </ul>
+        </div>
+        <div class="card" style="border-color:var(--secondary-color);">
+          <p style="margin:0;font-size:14pt;"><i class="fa-solid fa-triangle-exclamation text-amber" style="margin-right:8px;"></i><strong>Failure mode:</strong> AI hallucinates your data, or ignores you entirely.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card-amber" style="margin-bottom:12px;padding:20px;">
+          <p style="margin:0 0 6px;font-size:12pt;font-family:var(--mono-font);color:#fcd34d;">AI TOOLS TARGETED:</p>
+          <p style="font-size:17pt;font-weight:700;margin:0;">ChatGPT Search<br>Perplexity AI<br>Google AI Overviews</p>
+        </div>
+        <div class="card-emerald" style="padding:16px;">
+          <p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:#6ee7b7;">REAL EXAMPLE:</p>
+          <p style="margin:0;font-size:13pt;">Perplexity cites <strong>Smashing Magazine</strong> as the source for "how to structure a Vue 3 component" — even though hundreds of sites cover the topic — because their article has Person schema, structured FAQ, and explicit author identity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">The failure mode is brutal: the AI hallucinates your data, gets facts wrong, or ignores you entirely. The win is being the source it trusts. Smashing Magazine is a good concrete example — they didn't do anything magic, they just structured their content correctly.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>The Stat That Changes Everything</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:18px;">
+      <div class="card-amber" style="text-align:center;padding:28px 14px;">
+        <div class="stat-number amber" style="font-size:56pt;">~1%</div>
+        <p style="margin-top:8px;font-size:16pt;">of users click a source<br><strong>cited inside</strong> an AI response</p>
+        <p style="font-size:10pt;font-family:var(--mono-font);color:rgba(255,255,255,0.5);margin:8px 0 0;">Pew Research, 900 U.S. adults, tracked 1 month</p>
+      </div>
+      <div class="card-emerald" style="text-align:center;padding:28px 14px;">
+        <div class="stat-number" style="font-size:56pt;">4–5×</div>
+        <p style="margin-top:8px;font-size:16pt;">higher conversion rate<br>for <strong>AI search visitors</strong></p>
+        <p style="font-size:10pt;font-family:var(--mono-font);color:rgba(255,255,255,0.5);margin:8px 0 0;">vs. traditional organic traffic &mdash; multiple studies, directionally consistent</p>
+      </div>
+    </div>
+    <div class="card-emerald" style="border-color:var(--secondary-color);">
+      <p style="margin:0;font-size:16pt;"><i class="fa-solid fa-lightbulb text-amber" style="margin-right:10px;"></i><strong>The implication:</strong> fewer clicks, but the clicks that come from AI citations convert at a dramatically higher rate. Volume is losing to <strong>precision.</strong></p>
+    </div>
+  </div>
+  <aside class="notes">This is the core tension. SEO traffic is declining in value. AI search traffic is tiny but converts like crazy. The game is shifting from volume to influence. Exact numbers vary by study — the direction is what matters.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>AIO &mdash; <span style="background:linear-gradient(90deg,var(--primary-color),var(--secondary-color));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">The Umbrella</span></h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:16px;">AI Optimization &mdash; the term that wraps SEO, AEO, and GEO into one frame.</p>
+    <div class="cols-3" style="margin-bottom:16px;">
+      <div class="card" style="text-align:center;padding:16px 12px;">
+        <p style="font-size:22pt;font-weight:800;color:var(--primary-color);margin:0 0 4px;">SEO</p>
+        <p style="margin:0;font-size:13pt;">Rank on Google<br><span class="text-muted">buying-intent &amp; local</span></p>
+      </div>
+      <div class="card" style="text-align:center;padding:16px 12px;border-color:#7c3aed;">
+        <p style="font-size:22pt;font-weight:800;color:#a78bfa;margin:0 0 4px;">AEO</p>
+        <p style="margin:0;font-size:13pt;">Be the answer shown<br><span class="text-muted">definitions &amp; how-tos</span></p>
+      </div>
+      <div class="card-amber" style="text-align:center;padding:16px 12px;">
+        <p style="font-size:22pt;font-weight:800;color:var(--secondary-color);margin:0 0 4px;">GEO</p>
+        <p style="margin:0;font-size:13pt;">Be the brand cited<br><span class="text-muted">early buyer research</span></p>
+      </div>
+    </div>
+    <div class="card-emerald" style="margin-bottom:12px;">
+      <p style="margin:0;font-size:15pt;"><i class="fa-solid fa-layer-group" style="margin-right:8px;color:#6ee7b7;"></i><strong>AIO</strong> is the frame, not a separate workstream. You don't pick one &mdash; you know <em>which one fixes which problem on which page.</em></p>
+    </div>
+    <div class="card" style="border-color:var(--secondary-color);">
+      <p style="margin:0;font-size:14pt;"><i class="fa-solid fa-triangle-exclamation text-amber" style="margin-right:8px;"></i><strong>Red flag:</strong> If a vendor sells you "AIO services" as one thing and can't break it into SEO / AEO / GEO specifics &mdash; walk away.</p>
+    </div>
+  </div>
+  <aside class="notes">AIO is the word marketers use when they mean all three layers. As developers, we can be precise. Know which layer you're working on.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>The Triple Hit Scenario</h2>
+  <div class="content">
+    <div class="card-emerald" style="margin-bottom:16px;">
+      <p style="margin:0;font-family:var(--mono-font);font-size:16pt;font-style:italic;color:#d1fae5;">"Best Vue 3 router tutorials"</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">1</div>
+        <p><strong class="text-amber">Google AI Overview</strong> (GEO) &mdash; synthesized answer at the very top, sourcing 3&ndash;5 sites. Yours or theirs?</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">2</div>
+        <p><strong style="color:#a78bfa;">Featured Snippet</strong> (AEO) &mdash; pulled from a well-structured FAQ. Step-by-step preview. Click optional.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot amber">3</div>
+        <p><strong class="text-emerald">Blue Links</strong> (SEO) &mdash; ten ranked links below everything. The user may never scroll here.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <p style="margin:0;font-size:15pt;"><i class="fa-solid fa-triangle-exclamation text-amber" style="margin-right:8px;"></i>If you've only optimized for SEO, you're <strong>invisible in the first two results</strong> the user actually sees.</p>
+    </div>
+  </div>
+  <aside class="notes">The triple hit is the aha moment for SEO believers. Walk it slowly — they can all picture this search result. "Your link is the third thing they might see, if they scroll." That lands. Give it a pause.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>Where AI Gets Its Sources</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:16px;">Pew Research tracked which sources AI engines cite most. The results are not what developers expect.</p>
+    <div class="cols-3" style="margin-bottom:16px;">
+      <div class="card-emerald" style="text-align:center;padding:20px 14px;">
+        <i class="fa-brands fa-wikipedia-w" style="font-size:30pt;color:#6ee7b7;margin-bottom:8px;display:block;"></i>
+        <p style="font-size:16pt;font-weight:700;margin:0 0 4px;">Wikipedia</p>
+        <p style="margin:0;font-size:13pt;color:rgba(255,255,255,0.75);">Most-cited source<br>across all AI engines</p>
+      </div>
+      <div class="card" style="text-align:center;padding:20px 14px;border-color:#ef4444;background:#1a0a0a;">
+        <i class="fa-brands fa-youtube" style="font-size:30pt;color:#ef4444;margin-bottom:8px;display:block;"></i>
+        <p style="font-size:16pt;font-weight:700;margin:0 0 4px;">YouTube</p>
+        <p style="margin:0;font-size:13pt;color:rgba(255,255,255,0.75);">Video transcripts<br>carry high trust</p>
+      </div>
+      <div class="card-amber" style="text-align:center;padding:20px 14px;">
+        <i class="fa-brands fa-reddit" style="font-size:30pt;color:#fcd34d;margin-bottom:8px;display:block;"></i>
+        <p style="font-size:16pt;font-weight:700;margin:0 0 4px;">Reddit</p>
+        <p style="margin:0;font-size:13pt;color:rgba(255,255,255,0.75);">Community-verified<br>real-world experience</p>
+      </div>
+    </div>
+    <div class="card-amber">
+      <p style="margin:0;font-size:15pt;"><i class="fa-solid fa-triangle-exclamation" style="margin-right:8px;color:var(--secondary-color);"></i><strong>Not your company blog.</strong> Brand mentions <em>across the web</em> matter more than backlinks. Reddit, Quora, niche forums, podcast appearances, quality publications &mdash; these are the trust signals GEO targets.</p>
+    </div>
+  </div>
+  <aside class="notes">This is the key mindset shift for GEO vs SEO. You're building credibility on platforms you don't own. Seed mentions where AI looks first.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>How AI Engines Actually Work</h2>
+  <div class="content">
+    <div class="cols-2">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">WHAT THEY LOOK FOR:</p>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-tag" style="color:var(--primary-color);"></i></div>
+          <p><strong>Semantic HTML</strong> &mdash; article, section, h1&ndash;h6 signals content structure</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-database" style="color:var(--primary-color);"></i></div>
+          <p><strong>JSON-LD Schema</strong> &mdash; machine-readable metadata LLM crawlers prioritize</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-fingerprint" style="color:var(--secondary-color);"></i></div>
+          <p><strong>Entity clarity</strong> &mdash; consistent, cross-referenced author identity</p>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:#ef4444;margin-bottom:10px;">&#x2717; KILLS CITABILITY:</p>
+        <div class="card" style="background:#1a0a0a;border-color:#ef4444;">
+          <ul style="margin:0;">
+            <li style="margin-bottom:10px;font-size:15pt;">"As mentioned above&hellip;"</li>
+            <li style="margin-bottom:10px;font-size:15pt;">Dangling pronouns ("it," "this," "they")</li>
+            <li style="margin-bottom:10px;font-size:15pt;">Context-dependent sentences</li>
+            <li style="font-size:15pt;">No author &bull; No schema</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="card-amber" style="margin-top:14px;">
+      <p style="margin:0;font-size:16pt;">Each paragraph must make sense <strong>extracted from context.</strong> AI can't scroll back up.</p>
+    </div>
+  </div>
+  <aside class="notes">Think of an LLM crawler as a very fast, very literal reader who can't scroll back up. "As I mentioned above" is a broken citation.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>The Career Opportunity</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:16px;">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:8px;">KEYWORD DIFFICULTY COMPARISON:</p>
+        <div class="card-emerald" style="margin-bottom:10px;">
+          <p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:#6ee7b7;">GEO TERMS TODAY</p>
+          <div class="stat-number" style="font-size:52pt;line-height:1;">15&ndash;20</div>
+          <p style="margin:4px 0 0;font-size:13pt;">avg. keyword difficulty score</p>
+        </div>
+        <div class="card-amber">
+          <p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:#fcd34d;">SEO EQUIVALENTS</p>
+          <div class="stat-number amber" style="font-size:52pt;line-height:1;">45&ndash;60</div>
+          <p style="margin:4px 0 0;font-size:13pt;">avg. keyword difficulty score</p>
+        </div>
+      </div>
+      <div>
+        <blockquote style="margin-bottom:14px;">
+          <p>Developers who learn GEO now will be the ones <strong>defining team standards</strong> and consulting on content strategy in 12&ndash;18 months.</p>
+        </blockquote>
+        <div class="card" style="margin-bottom:10px;"><p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:var(--primary-color);">SHORT TERM</p><p style="margin:0;font-size:14pt;">Apply to your portfolio &amp; blog today</p></div>
+        <div class="card" style="margin-bottom:10px;"><p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:var(--secondary-color);">MID TERM</p><p style="margin:0;font-size:14pt;">Become the GEO lead on your team</p></div>
+        <div class="card"><p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:#a78bfa;">LONG TERM</p><p style="margin:0;font-size:14pt;">Consulting, content strategy, conference talks</p></div>
+      </div>
+    </div>
+    <p class="text-muted" style="font-size:13pt;font-family:var(--mono-font);">That gap closes every month as enterprise budgets enter the space.</p>
+  </div>
+  <aside class="notes">This is the "why now" moment. GEO keyword difficulty is 15–20 vs SEO's 45–60 — that gap closes as enterprise budgets enter. Ask the room: "How many of you want to be the person your team asks about this in 18 months?" Then: "That starts tonight."</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>JSON-LD &mdash; <span class="text-emerald">BlogPosting Schema</span></h2>
+  <div class="content">
+    <div class="card-emerald" style="margin-bottom:12px;padding:12px 18px;">
+      <p style="margin:0;font-size:14pt;"><i class="fa-solid fa-circle-info" style="margin-right:8px;color:#6ee7b7;"></i><strong>Why it matters:</strong> This invisible snippet in your <code>&lt;head&gt;</code> tells AI crawlers <em>what</em> the page is, <em>who</em> wrote it, and <em>when</em> — the three things needed to cite you with confidence. Your readers never see it; crawlers can't ignore it.</p>
+    </div>
+    <p class="text-muted" style="margin-bottom:8px;font-size:13pt;">Add this inside a <code>&lt;script type="application/ld+json"&gt;</code> tag in your page <code>&lt;head&gt;</code>:</p>
+    <pre><code class="language-json" data-line-numbers="1-3|4-11|12-18">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Handle State Management in Vue 3 with Pinia",
+  "author": {
+    "@type": "Person",
+    "name": "Nerando Johnson",
+    "url": "https://developingdvlpr.com",
+    "sameAs": [
+      "https://linkedin.com/in/nerajno",
+      "https://bsky.app/profile/nerajno.bsky.social"
+    ]
+  },
+  "datePublished": "2026-01-15",
+  "dateModified": "2026-02-01",
+  "description": "A complete guide to Vue 3 state management using Pinia...",
+  "url": "https://developingdvlpr.com/blog/vue3-pinia-state",
+  "keywords": ["Vue 3", "Pinia", "state management", "frontend"]
+}</code></pre>
+    <div class="card-amber" style="margin-top:10px;">
+      <p style="margin:0;font-size:14pt;"><strong>author.sameAs</strong> is your entity signal &mdash; it links your identity across platforms. AI knowledge graphs use this to confirm you are who you say you are.</p>
+    </div>
+  </div>
+  <aside class="notes">The sameAs array is the secret weapon. AI knowledge graphs see "Nerando Johnson on site X = Nerando Johnson on site Y" and build entity authority.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>JSON-LD &mdash; <span class="text-amber">FAQPage Schema</span></h2>
+  <div class="content">
+    <div class="card-amber" style="margin-bottom:12px;padding:12px 18px;">
+      <p style="margin:0;font-size:14pt;"><i class="fa-solid fa-circle-info" style="margin-right:8px;color:#fcd34d;"></i><strong>Why it matters:</strong> FAQ schema maps directly to conversational AI queries. When someone asks ChatGPT "What's the difference between Pinia and Vuex?", a well-structured FAQPage is exactly what it looks for to cite.</p>
+    </div>
+    <p class="text-muted" style="margin-bottom:8px;font-size:13pt;">Each question + answer pair becomes a citable unit:</p>
+    <pre><code class="language-json">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What is the difference between Pinia and Vuex in Vue 3?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Pinia is the official state management library for Vue 3,
+               replacing Vuex. Pinia offers a simpler API, better TypeScript
+               support, and native DevTools integration. Unlike Vuex,
+               Pinia uses a store-per-feature pattern with no mutations."
+    }
+  }]
+}</code></pre>
+    <div class="cols-2" style="margin-top:10px;">
+      <div class="card-amber"><p style="margin:0;font-size:13pt;"><strong>Each answer must be fully self-contained.</strong> Write it as a direct response &mdash; no "see our full guide."</p></div>
+      <div class="card"><p style="margin:0;font-size:13pt;">Match questions to <strong>real queries</strong> people ask ChatGPT, Perplexity, and Google AI.</p></div>
+    </div>
+  </div>
+  <aside class="notes">The FAQ answer must be self-contained — read just the answer, no question. Does it still make sense? If not, rewrite. The "name" field in Question schema is exactly the question people type into AI. Research it: open Perplexity, start typing your topic, see what autocompletes. That's your Q.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>Astro Component &mdash; Before &amp; After</h2>
+  <div class="content">
+    <div class="card-emerald" style="margin-bottom:12px;padding:12px 18px;">
+      <p style="margin:0;font-size:14pt;"><i class="fa-solid fa-circle-info" style="margin-right:8px;color:#6ee7b7;"></i><strong>Why it matters:</strong> The visual output of this component is identical before and after. The machine-readable output is completely different. That's the GEO design principle: structure for machines, write for humans.</p>
+    </div>
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:8px;font-size:12pt;font-family:var(--mono-font);color:#ef4444;">&#x2717; BEFORE (AI-invisible)</p>
+        <pre><code class="language-html">---
+const { title, content, date }
+  = Astro.props
+---
+&lt;div class="post"&gt;
+  &lt;div class="post-header"&gt;
+    &lt;h1&gt;{ title }&lt;/h1&gt;
+    &lt;span&gt;{ date }&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="post-body"&gt;
+    &lt;Fragment set:html={content}/&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        <div class="cols-3" style="margin-top:8px;">
+          <div class="card-ghost"><p style="margin:0;font-size:11pt;">No semantic tags</p></div>
+          <div class="card-ghost"><p style="margin:0;font-size:11pt;">No author signal</p></div>
+          <div class="card-ghost"><p style="margin:0;font-size:11pt;">No schema</p></div>
+        </div>
+      </div>
+      <div>
+        <p style="margin-bottom:8px;font-size:12pt;font-family:var(--mono-font);color:#6ee7b7;">&#x2713; AFTER (GEO-ready)</p>
+        <pre><code class="language-html">---
+const { title, content, date,
+        description, tags }
+  = Astro.props
+---
+&lt;script type="application/ld+json"&gt; &lt;!-- ① --&gt;
+  {JSON.stringify({
+    "@type": "BlogPosting",
+    "headline": title,
+    "author": {           &lt;!-- ② --&gt;
+      "@type": "Person",
+      "name": "Nerando Johnson"
+    },
+    "datePublished": date &lt;!-- ③ --&gt;
+  })}
+&lt;/script&gt;
+&lt;article&gt;              &lt;!-- ① semantic --&gt;
+  &lt;header&gt;
+    &lt;h1&gt;{ title }&lt;/h1&gt;
+    &lt;time datetime={date}&gt;{ date }&lt;/time&gt;
+    &lt;address&gt;By Nerando Johnson&lt;/address&gt;
+  &lt;/header&gt;
+  &lt;section&gt;
+    &lt;Fragment set:html={content}/&gt;
+  &lt;/section&gt;
+&lt;/article&gt;</code></pre>
+        <div class="card-emerald" style="margin-top:8px;">
+          <p style="margin:0;font-size:12pt;"><strong>① JSON-LD schema</strong> &bull; <strong>② named author</strong> &bull; <strong>③ date</strong><br>Three additions. Zero visual change. Full AI citability.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">The visible output barely changes. The machine-readable output changes dramatically. That's the GEO design principle: structure for machines, write for humans.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>Building AI-Friendly FAQ Sections</h2>
+  <div class="content">
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:8px;">SEMANTIC FAQ HTML:</p>
+        <pre><code class="language-html">&lt;section aria-label="FAQ"&gt;
+  &lt;h2&gt;Frequently Asked Questions&lt;/h2&gt;
+
+  &lt;details&gt;
+    &lt;summary&gt;
+      What is Vue 3 Composition API?
+    &lt;/summary&gt;
+    &lt;p&gt;
+      The Vue 3 Composition API is a set of
+      additive, function-based APIs that
+      allow flexible composition of logic.
+      Unlike Options API, it organizes code
+      by feature rather than option type.
+    &lt;/p&gt;
+  &lt;/details&gt;
+&lt;/section&gt;</code></pre>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">QUESTION WRITING RULES:</p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot">1</div>
+            <p>Start with <strong>What, How, Why, When, Which</strong> &mdash; mirrors conversational AI queries</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">2</div>
+            <p>Write answers that work <strong>without reading the question first</strong></p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot amber">3</div>
+            <p>Aim for <strong>3&ndash;6 sentences per answer</strong> &mdash; citable but not skippable</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">The details + summary pattern is both accessible and semantic. Screen readers announce it as a disclosure widget. AI parsers see question + answer pairs. One implementation, two returns.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>Advanced &mdash; Entity Optimization</h2>
+  <div class="content">
+    <p style="margin-bottom:14px;font-size:16pt;">An <strong>entity</strong> is an unambiguous, well-defined concept the AI knowledge graph recognizes and trusts.</p>
+    <div class="cols-2">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">BUILDING YOUR ENTITY:</p>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-link" style="color:var(--primary-color);"></i></div>
+          <p>Consistent name + handle across <strong>all platforms</strong> (@nerajno everywhere)</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-arrows-turn-right" style="color:var(--primary-color);"></i></div>
+          <p>Cross-referencing &mdash; your blog cites your talks; your talks mention your blog</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-star" style="color:var(--secondary-color);"></i></div>
+          <p>Citations from trusted sources &mdash; Sessionize, Vue Mastery, conference sites</p>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">TOPIC CLUSTER STRATEGY:</p>
+        <div class="card-emerald">
+          <ul style="margin:0;">
+            <li>5+ articles on Vue 3 routing &rarr; you become an <strong>authority</strong> on Vue routing to AI</li>
+            <li>Link articles within the cluster to each other</li>
+            <li>Add a hub/index page that collects them all</li>
+            <li>Reinforce with matching JSON-LD keywords</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Entity optimization is the long game. The @nerajno handle example is personal — use it. "I use the same handle everywhere because AI knowledge graphs build confidence through repetition." The topic cluster strategy: 5 articles on Vue routing makes you the Vue routing authority to AI.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>How to Know It's Working</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:16px;">GEO introduces a new metric most teams aren't tracking yet: <strong class="text-emerald">conversational reach</strong>.</p>
+    <div class="cols-3">
+      <div class="card-emerald" style="text-align:center;padding:20px 14px;">
+        <i class="fa-solid fa-robot" style="font-size:24pt;color:#6ee7b7;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:15pt;font-weight:700;margin:0 0 6px;">Direct AI Querying</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Ask ChatGPT, Perplexity, Gemini about your topics weekly. Screenshot citations.</p>
+      </div>
+      <div class="card" style="text-align:center;padding:20px 14px;">
+        <i class="fa-brands fa-google" style="font-size:24pt;color:var(--text-color);margin-bottom:10px;display:block;"></i>
+        <p style="font-size:15pt;font-weight:700;margin:0 0 6px;">Rich Results Test</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Google's tool validates your JSON-LD. Run after every schema change.</p>
+      </div>
+      <div class="card-amber" style="text-align:center;padding:20px 14px;">
+        <i class="fa-solid fa-chart-line" style="font-size:24pt;color:#fcd34d;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:15pt;font-weight:700;margin:0 0 6px;">Conversational Reach</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Track how many unique AI queries return your name as a citation.</p>
+      </div>
+    </div>
+    <div class="img-placeholder" style="min-height:110px;margin-top:14px;">
+      <i class="fa-solid fa-chart-bar"></i>
+      <p>[ Screenshot: Perplexity citing your article / Citation tracking spreadsheet ]</p>
+    </div>
+  </div>
+  <aside class="notes">No Google Analytics equivalent for GEO yet. Start simple: spreadsheet, weekly query list, "cited / not cited" column. Build your baseline now.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>Building Your Measurement System</h2>
+  <div class="content">
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="font-size:13pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">WEEKLY RITUAL (15 MINUTES):</p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot">1</div>
+            <p>Pick <strong>5&ndash;10 queries</strong> your content should answer</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">2</div>
+            <p>Run across <strong>ChatGPT, Perplexity, &amp; Gemini</strong></p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">3</div>
+            <p>Log in your spreadsheet (see columns &rarr;)</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot amber">4</div>
+            <p>Track trend week-over-week as you ship GEO changes</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:13pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">LOG THESE 6 COLUMNS WEEKLY:</p>
+        <div class="card-emerald" style="padding:16px;">
+          <ul style="margin:0;">
+            <li style="margin-bottom:8px;"><strong>Date</strong> &mdash; week of</li>
+            <li style="margin-bottom:8px;"><strong>Query</strong> &mdash; exact prompt used</li>
+            <li style="margin-bottom:8px;"><strong>AI Engine</strong> &mdash; ChatGPT / Perplexity / Gemini</li>
+            <li style="margin-bottom:8px;"><strong>Cited?</strong> &mdash; Yes / No / Partially</li>
+            <li style="margin-bottom:8px;"><strong>Who else?</strong> &mdash; competitor cited instead</li>
+            <li><strong>Action taken</strong> &mdash; what you changed this week</li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top:10px;border-color:var(--secondary-color);">
+          <p style="margin:0;font-size:13pt;"><i class="fa-solid fa-check-circle text-emerald" style="margin-right:8px;"></i><strong>Validate schema:</strong> search.google.com/test/rich-results &bull; validator.schema.org</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Start the spreadsheet tonight. 10 minutes. Pick 5 queries you should rank for. Run them in ChatGPT and Perplexity. Screenshot. That's your Week 0 baseline. No GA equivalent for GEO yet — manual tracking is your advantage while others wait for tooling.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>It's Already Happening</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:16px;">
+      <div style="text-align:center;padding:14px 10px;">
+        <div class="stat-number" style="font-size:40pt;">1B+</div>
+        <p class="text-muted" style="font-size:14pt;margin-top:4px;">Google AI Overviews<br>shown per month (2025)</p>
+      </div>
+      <div style="text-align:center;padding:14px 10px;">
+        <div class="stat-number amber" style="font-size:40pt;">10M+</div>
+        <p class="text-muted" style="font-size:14pt;margin-top:4px;">Perplexity daily active users<br>and growing</p>
+      </div>
+    </div>
+    <div class="cols-3">
+      <div class="card">
+        <p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);">LIVE NOW</p>
+        <ul style="margin:0;">
+          <li>Google AI Overviews</li>
+          <li>ChatGPT Search</li>
+          <li>Perplexity AI</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);">EXPANDING</p>
+        <ul style="margin:0;">
+          <li>Gemini in Google Search</li>
+          <li>Copilot in Bing</li>
+          <li>Claude web search</li>
+        </ul>
+      </div>
+      <div class="card-amber">
+        <p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:#fcd34d;">YOUR WINDOW</p>
+        <p style="margin:0;font-size:14pt;">Most developers haven't heard of GEO yet. That changes in 12&ndash;18 months.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">This is not speculative. This is the current reality for billions of search sessions per month. The only question is whether your content shows up in those synthesized answers.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>Which Problem Are You Solving?</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:14px;">Match the symptom to the right lever before you open your editor.</p>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot amber">?</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong class="text-amber">Traffic dropping but rankings look fine?</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;">Audit which queries now show AI Overviews. Those pages need <strong>AEO</strong> work first &mdash; rewrite the first 100 words as a direct answer, add FAQ schema.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot amber">?</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong class="text-amber">Inbound feels different &mdash; buyers arrive more informed?</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;">AI pre-qualified them before they found you. The question: are you the brand it mentions? That's a <strong>GEO</strong> problem. Seed mentions on Reddit and quality publications.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">?</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong class="text-emerald">New project, no domain authority yet?</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;"><strong>GEO is your shortcut.</strong> Lower keyword difficulty (15&ndash;20 vs 45&ndash;60), higher conversion traffic. Skip the five-year SEO grind.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">?</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong class="text-emerald">Strong existing rankings?</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;">Most to lose, easiest to protect. Layer <strong>AEO</strong> on top &mdash; you already have the authority. You just need the format.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">This is the decision tree. Use it to triage before you touch a single line of code or content. Know which layer you're working on.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>Resources &amp; Further Reading</h2>
+  <div class="content">
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">START HERE:</p>
+        <div class="card-emerald" style="margin-bottom:12px;">
+          <p style="margin:0 0 4px;font-size:16pt;font-weight:700;">GEO Series &mdash; developingdvlpr.com</p>
+          <p style="margin:0;font-size:13pt;font-family:var(--mono-font);color:rgba(255,255,255,0.7);">Two-part series that mirrors this talk, with full code patterns</p>
+        </div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:8px;">VALIDATE YOUR WORK:</p>
+        <ul style="margin:0;">
+          <li><strong>search.google.com/test/rich-results</strong></li>
+          <li><strong>validator.schema.org</strong></li>
+          <li><strong>perplexity.ai</strong> &mdash; citation testing</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">GET THE SLIDES + CODE:</p>
+        <div style="text-align:center;">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQAAAADAX2ykAAACiUlEQVR4nO2bS27jMAyGP44MdCnfYI4i32COVPRm9lF6gAHkZQAZnIUk2zH6RNPUGlCLIIy/BQGCD/9URPnMmX59CgfjjTfeeOONN/41XsrpEOlBpF8EWESGuT4b7uiP8Tfmg6qqRiBE0BGnMuAUcKqqqtf8d/tj/I35uWSoPvVAiCV/dQREpLu3P8Z/Dy+PcREZ5gfVJ3lQGX7YH+O/xncHWydxKrAIQRdR5vv6Y/xteXJzLf3XlSaMLw23/LYi49n8N/5D/CQieXQecEp47iBEpzKw5PH5vv4YfyM+1+eDSKmQYPqd0OOzs/lv/DunFN8IOmYzAT5BfjWKTnX0CavPTfI5vrs2W1qvyzHPJ1j/bZWv87O/iE6DS9WMgFcEXIK5r2X6bP4b/0HeKUETOrJISd25q0qH1/omfFr/jX/5lPqs6epdKIKOfq3KVaS0+twaX+I7elXwCdUIRYneYp5Ni297/NV8FYugsdM3chJHLL5t8mt9XpOYfcLW0Kaa52fz3/h3zpa/hJy6pSpXcy3cFt8G+V3/zR9l0qqlGZ9W4cPi2x6/2y9sbTY/yd98ykq0xbdJftWflw58KuY0uCSTZPFZ2S0Jz+a/8W+fol9Nf6LC3Gcr73/xf7u6NnL38sf42/L7+Tnrz5uWkTWtfbm2+twaT40qAHVgDrHuF3YztcW3Qf54f4OgqT6Ia/562x81yu/2v3lMHrdc9Wtptvn5f+HlMQJTv5TrsqMvNzlk+BF/jP8af7w/ydRHJTw/KNPQJQlxQZm7uhg+m//Gv32W/b4C83rbyl+EoEC+LusvYvv9JvkX5ue0atIAm2Zp/bdB/nh/UneW33529v8j44033njjjb8d/w8GKDaWjBsa5gAAAABJRU5ErkJggg==" alt="QR code to slides, code, and resources at developingdvlpr.com/geo-talk" style="width:150px;height:150px;border-radius:10px;border:3px solid var(--secondary-color);background:#fff;padding:8px;" />
+          <p style="font-size:12pt;margin-top:10px;">developingdvlpr.com/geo-talk</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">This is a backup/handoff slide. Audience can photograph the QR or type the URL. Point them to the same QR on the closing slide.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>Bonus &mdash; If Time Allows</h2>
+  <div class="content">
+    <div class="cols-2">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">EXTENDED TOPICS:</p>
+        <ul>
+          <li>GEO for client work &mdash; how to pitch it</li>
+          <li>AIO vs GEO &mdash; when clients ask "which one?"</li>
+          <li>The Speakable schema for voice/audio</li>
+          <li>How Perplexity cites vs ChatGPT (different strategies)</li>
+          <li>GEO for non-English content</li>
+          <li>Content decay &mdash; keeping GEO content fresh</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">COMMON QUESTIONS:</p>
+        <ul>
+          <li>"Does this work for portfolio projects, not just articles?"</li>
+          <li>"What about paywalled content?"</li>
+          <li>"How long until you see results?"</li>
+          <li>"Is this relevant for backend/fullstack devs?"</li>
+          <li>"What if AI changes its citation behavior?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+<script>
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    center: false,
+    autoSlide: 0,
+    loop: false,
+    plugins: [ RevealNotes, RevealHighlight ],
+    keyboard: {
+      70: () => {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+      }
+    }
+  });
+
+</script>
+</body>
+</html>

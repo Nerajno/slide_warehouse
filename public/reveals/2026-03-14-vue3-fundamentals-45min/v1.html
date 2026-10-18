@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vue 3 Fundamentals — 45 Min Talk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+<style>
+  :root {
+    --vue-green: #42b883;
+    --vue-dark: #35495e;
+    --amber: #f5a623;
+    --coral: #ff6b6b;
+    --bg: #0a0a14;
+    --bg2: #111120;
+    --surface: #1a1a2e;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  .reveal-viewport { background: var(--bg); }
+  .reveal { font-family: var(--font-body); color: var(--text); }
+  .reveal .slides section { height: 100%; box-sizing: border-box; text-align: left; }
+
+  .reveal h1, .reveal h2, .reveal h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-transform: none;
+    margin: 0 0 0.4em;
+    color: #fff;
+  }
+  .reveal h1 { font-size: 2.8em; }
+  .reveal h2 { font-size: 1.9em; }
+  .reveal h3 { font-size: 1.35em; color: var(--vue-green); }
+  .reveal p, .reveal li { font-size: 0.85em; line-height: 1.65; color: var(--text); font-family: var(--font-body); }
+  .reveal strong { color: var(--vue-green); font-weight: 600; }
+  .reveal em { color: var(--amber); font-style: normal; font-weight: 500; }
+  .reveal ul { list-style: none; padding: 0; margin: 0; }
+  .reveal ul li { padding-left: 1.2em; position: relative; margin-bottom: 0.4em; }
+  .reveal ul li::before { content: '▸'; position: absolute; left: 0; color: var(--vue-green); }
+
+  .reveal pre {
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px rgba(66,184,131,0.2), 0 20px 60px rgba(0,0,0,0.5);
+    margin: 0.6em 0;
+    width: 100%;
+  }
+  .reveal pre code {
+    font-family: var(--font-mono);
+    font-size: 0.68em;
+    line-height: 1.6;
+    padding: 1.2em 1.4em;
+    max-height: 340px;
+  }
+  .reveal code:not(pre code) {
+    font-family: var(--font-mono);
+    background: rgba(66,184,131,0.12);
+    color: var(--vue-green);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+
+  .bar { display: block; width: 52px; height: 4px; background: var(--vue-green); border-radius: 2px; margin-bottom: 1em; }
+  .bar-amber { background: var(--amber); }
+  .bar-coral { background: var(--coral); }
+  .slide-num { font-family: var(--font-mono); font-size: 0.6em; color: var(--muted); display: block; margin-bottom: 0.5em; letter-spacing: 0.1em; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2em; align-items: start; }
+  .cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5em; }
+  .cols-60-40 { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2em; align-items: start; }
+
+  .card { background: var(--surface); border: 1px solid rgba(66,184,131,0.15); border-radius: 10px; padding: 1.2em 1.4em; }
+  .card h4 { font-family: var(--font-display); font-size: 1em; color: var(--vue-green); margin: 0 0 0.4em; font-weight: 400; }
+  .card p, .card li { font-size: 0.78em; color: #a0a0c0; margin: 0.2em 0; }
+  .card.amber h4 { color: var(--amber); }
+  .card.coral h4 { color: var(--coral); }
+
+  .tag { display: inline-block; background: rgba(66,184,131,0.15); color: var(--vue-green); border: 1px solid rgba(66,184,131,0.3); border-radius: 20px; padding: 0.2em 0.8em; font-size: 0.65em; font-family: var(--font-mono); margin: 0.15em; }
+  .tag-amber { background: rgba(245,166,35,0.12); color: var(--amber); border-color: rgba(245,166,35,0.3); }
+
+  .cover-slide {
+    background: var(--bg); position: relative; overflow: hidden;
+    display: flex !important; flex-direction: column; justify-content: flex-end;
+    padding: 2.5em !important; min-height: 100%;
+  }
+  .cover-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 80% 20%, rgba(66,184,131,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(53,73,94,0.3) 0%, transparent 50%);
+    z-index: 0;
+  }
+  .cover-logo { position: absolute; top: 2em; right: 2em; font-size: 5em; opacity: 0.08; z-index: 0; line-height: 1; font-family: var(--font-display); }
+  .cover-slide > * { position: relative; z-index: 1; }
+  .cover-meta { display: flex; gap: 0.5em; margin-bottom: 1.5em; flex-wrap: wrap; }
+  .cover-slide h1 { font-size: 3em; line-height: 1.05; margin-bottom: 0.3em; }
+  .cover-sub { font-size: 1em; color: var(--muted); margin-bottom: 1.5em; max-width: 560px; }
+  .cover-speaker { font-size: 0.75em; color: var(--muted); display: flex; gap: 1.5em; }
+  .cover-speaker strong { color: var(--vue-green); }
+
+  .section-slide {
+    background: var(--bg2); display: flex !important; flex-direction: column;
+    justify-content: center; padding: 2.5em !important; position: relative;
+    overflow: hidden; min-height: 100%;
+  }
+  .section-num { font-family: var(--font-mono); font-size: 7em; font-weight: 600; color: rgba(66,184,131,0.08); position: absolute; right: -0.05em; top: 50%; transform: translateY(-50%); line-height: 1; }
+  .section-slide h2 { font-size: 2.8em; }
+
+  .content-slide { padding: 2em 2.5em !important; display: flex !important; flex-direction: column; justify-content: flex-start; min-height: 100%; }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-top: 0.8em; }
+  .compare-box { background: var(--surface); border-radius: 10px; padding: 1em 1.2em; border-top: 3px solid var(--vue-green); }
+  .compare-box.alt { border-top-color: var(--amber); }
+  .compare-box.coral { border-top-color: var(--coral); }
+  .compare-box h4 { font-family: var(--font-mono); font-size: 0.68em; color: var(--muted); margin: 0 0 0.5em; letter-spacing: 0.05em; text-transform: uppercase; }
+  .compare-box pre { box-shadow: none; margin: 0; border-radius: 6px; }
+  .compare-box pre code { font-size: 0.6em; padding: 0.8em; }
+
+  .big-q { display: flex !important; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 2em !important; min-height: 100%; background: var(--bg); position: relative; overflow: hidden; }
+  .big-q::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(66,184,131,0.1) 0%, transparent 70%); }
+  .big-q h2 { font-size: 2.6em; text-align: center; position: relative; }
+  .big-q p { font-size: 0.95em; color: var(--muted); position: relative; max-width: 600px; }
+
+  .close-slide { background: var(--bg); position: relative; overflow: hidden; display: flex !important; flex-direction: column; justify-content: center; padding: 2.5em !important; min-height: 100%; }
+  .close-slide::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 0% 100%, rgba(66,184,131,0.15) 0%, transparent 60%), radial-gradient(ellipse 50% 50% at 100% 0%, rgba(53,73,94,0.2) 0%, transparent 50%); }
+  .close-slide > * { position: relative; }
+
+  .roadmap { display: flex; flex-direction: column; gap: 0.6em; margin-top: 0.8em; }
+  .roadmap-item { display: flex; align-items: center; gap: 1em; }
+  .roadmap-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--vue-green); flex-shrink: 0; }
+  .roadmap-dot.dim { background: var(--surface); border: 2px solid rgba(66,184,131,0.3); }
+  .roadmap-label { font-size: 0.82em; }
+  .roadmap-label span { color: var(--muted); font-size: 0.85em; margin-left: 0.5em; }
+
+  .social-links { display: flex; flex-direction: column; gap: 0.3em; margin-top: 1em; }
+  .social-links a { font-family: var(--font-mono); font-size: 0.72em; color: var(--vue-green); text-decoration: none; }
+
+  .badge-row { display: flex; gap: 0.5em; margin-top: 0.8em; flex-wrap: wrap; }
+  .badge { display: inline-block; padding: 0.3em 0.8em; border-radius: 6px; font-family: var(--font-mono); font-size: 0.62em; }
+  .badge-g { background: rgba(66,184,131,0.15); color: var(--vue-green); border: 1px solid rgba(66,184,131,0.3); }
+  .badge-a { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+
+  .timing-bar { display: flex; width: 100%; height: 6px; border-radius: 3px; overflow: hidden; margin: 0.5em 0 1.2em; gap: 2px; }
+  .timing-seg { height: 100%; border-radius: 3px; }
+
+  .reveal .progress { background: rgba(255,255,255,0.05); }
+  .reveal .progress span { background: var(--vue-green); }
+  .reveal .controls { color: var(--vue-green); }
+
+  .hl { color: var(--vue-green); }
+  .hl-amber { color: var(--amber); }
+
+  .duration-badge { position: fixed; top: 1em; right: 1em; background: rgba(245,166,35,0.15); border: 1px solid rgba(245,166,35,0.3); color: var(--amber); font-family: var(--font-mono); font-size: 0.6em; padding: 0.3em 0.8em; border-radius: 20px; z-index: 100; }
+
+  /* ── Agenda slide ── */
+  .agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8em; margin-top: 1em; }
+  .agenda-item { display: flex; gap: 0.8em; align-items: flex-start; padding: 0.8em 1em; background: var(--surface); border-radius: 8px; border-left: 3px solid var(--vue-green); }
+  .agenda-item.a { border-left-color: var(--amber); }
+  .agenda-num { font-family: var(--font-mono); color: var(--muted); font-size: 0.7em; min-width: 1.5em; margin-top: 0.1em; }
+  .agenda-text { font-size: 0.78em; }
+  .agenda-text strong { display: block; color: #fff; margin-bottom: 0.15em; }
+  .agenda-text span { color: var(--muted); font-size: 0.85em; }
+
+  /* ── Watch comparison ── */
+  .three-col-code { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1em; margin-top: 0.8em; }
+  .code-cell { background: var(--surface); border-radius: 8px; padding: 0.8em; border-top: 2px solid var(--vue-green); }
+  .code-cell.a { border-top-color: var(--amber); }
+  .code-cell h4 { font-family: var(--font-mono); font-size: 0.6em; color: var(--muted); margin: 0 0 0.4em; text-transform: uppercase; letter-spacing: 0.06em; }
+  .code-cell pre { box-shadow: none; margin: 0; }
+  .code-cell pre code { font-size: 0.58em; padding: 0.6em; }
+</style>
+</head>
+<body>
+<div class="duration-badge">⏱ 45 MIN TALK</div>
+<div class="reveal">
+<div class="slides">
+
+  <!-- ═══ SLIDE 1 — COVER ═══ -->
+  <section class="cover-slide">
+    <div class="cover-bg"></div>
+    <div class="cover-logo">Vue</div>
+    <div class="cover-meta">
+      <span class="tag">Introductory</span>
+      <span class="tag">⭐⭐ Effort</span>
+      <span class="tag-amber tag">45 Minutes</span>
+    </div>
+    <h1>Vue 3 Fundamentals</h1>
+    <p class="cover-sub">Modern JavaScript frameworks made simple. Core concepts, real code, zero fluff — for absolute beginners and framework evaluators.</p>
+    <div class="cover-speaker">
+      <span><strong>Nerando Johnson</strong></span>
+      <span>@nerajno</span>
+      <span>developingdvlpr.com</span>
+    </div>
+    <aside class="notes">Welcome! 45 minutes, one brief interactive demo, Q&A at the end. Slides + the full 6-article series at developingdvlpr.com.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 2 — AGENDA ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">00 / 24</span>
+    <span class="bar"></span>
+    <h2>What We're Covering Today</h2>
+    <div class="agenda-grid">
+      <div class="agenda-item"><div class="agenda-num">01</div><div class="agenda-text"><strong>What Is Vue 3?</strong><span>Framework overview, the progressive model, why it matters</span></div></div>
+      <div class="agenda-item"><div class="agenda-num">02</div><div class="agenda-text"><strong>API Styles</strong><span>Options API vs Composition API — the honest comparison</span></div></div>
+      <div class="agenda-item"><div class="agenda-num">03</div><div class="agenda-text"><strong>Reactivity Deep Dive</strong><span>ref, reactive, computed, watch, watchEffect</span></div></div>
+      <div class="agenda-item a"><div class="agenda-num">04</div><div class="agenda-text"><strong>Component Model</strong><span>SFCs, props, events, scoped styles</span></div></div>
+      <div class="agenda-item a"><div class="agenda-num">05</div><div class="agenda-text"><strong>Template Directives</strong><span>v-bind, v-on, v-model, v-if, v-for and friends</span></div></div>
+      <div class="agenda-item a"><div class="agenda-num">06</div><div class="agenda-text"><strong>Demo + Next Steps</strong><span>Mini todo, ecosystem overview, resources</span></div></div>
+    </div>
+    <aside class="notes">Walking through 6 sections. Each is self-contained so if your brain fills up at section 3, you still leave with something usable.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 3 — WHO IS THIS FOR ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">01 / 24</span>
+    <span class="bar"></span>
+    <h2>Who Is This Talk For?</h2>
+    <div class="cols-3" style="margin-top:1em">
+      <div class="card">
+        <h4>Complete Beginners</h4>
+        <p>You know HTML, CSS, and a little JS. Frameworks feel overwhelming. We start from scratch.</p>
+      </div>
+      <div class="card amber">
+        <h4>Framework Evaluators</h4>
+        <p>Comparing React, Angular, and Vue. You want signal, not hype, before committing weeks of learning.</p>
+      </div>
+      <div class="card">
+        <h4>Vue 2 Alumni</h4>
+        <p>You remember Vuex and the Options API. Vue 3 changed more than you think — in the best way.</p>
+      </div>
+    </div>
+    <p style="margin-top:1.2em">Prerequisites: <em>basic HTML, CSS, and JavaScript</em> — nothing more.</p>
+    <aside class="notes">Quick pulse check: hands up if you've never written a Vue component. Never used any framework. Good — that's the room.</aside>
+  </section>
+
+  <!-- ═══ S1 SECTION ═══ -->
+  <section class="section-slide">
+    <div class="section-num">01</div>
+    <span class="bar"></span>
+    <h2>What Is Vue 3?</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">A JavaScript framework for building user interfaces — built on top of standards you already know.</p>
+    <aside class="notes">Section 1. ~7 minutes here.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 4 — WHAT IS VUE ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">02 / 24</span>
+    <span class="bar"></span>
+    <h2>Vue Explained Simply</h2>
+    <div class="cols" style="margin-top:0.8em">
+      <div>
+        <p><strong>Declarative Rendering</strong><br/>Describe <em>what</em> the UI should show based on your data — not <em>how</em> to manipulate the DOM.</p>
+        <p style="margin-top:0.8em"><strong>Automatic Reactivity</strong><br/>Change your data. Vue updates the DOM. No selectors. No manual re-renders.</p>
+        <p style="margin-top:0.8em"><strong>Component Model</strong><br/>Build UIs as a tree of reusable pieces — each owning its own logic, template, and styles.</p>
+        <div class="badge-row" style="margin-top:1em">
+          <span class="badge badge-g">HTML+</span>
+          <span class="badge badge-g">CSS+</span>
+          <span class="badge badge-g">JS+</span>
+          <span class="badge badge-a">No magic</span>
+        </div>
+      </div>
+      <pre><code class="language-vue" data-trim>
+&lt;!-- This is a complete Vue component --&gt;
+&lt;script setup&gt;
+import { ref } from 'vue'
+
+// Reactive state — when this changes,
+// the template updates automatically
+const count = ref(0)
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click="count++"&gt;
+    Clicked {{ count }} times
+  &lt;/button&gt;
+&lt;/template&gt;</code></pre>
+    </div>
+    <aside class="notes">The button example is the whole pitch. Zero DOM manipulation. Zero getElementById. Change count, UI updates. That's the contract Vue makes with you.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 5 — PROGRESSIVE ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">03 / 24</span>
+    <span class="bar bar-amber"></span>
+    <h2>The Progressive Framework</h2>
+    <p>Vue meets you where you are. You don't have to learn everything to start building.</p>
+    <div class="cols" style="margin-top:1em">
+      <div style="display:flex;flex-direction:column;gap:0.6em">
+        <div class="card">
+          <h4>Level 1 — Script Tag</h4>
+          <p>Drop a CDN link into any HTML page. Add a sprinkle of Vue. No build step, no config.</p>
+        </div>
+        <div class="card">
+          <h4>Level 2 — Single-Page App</h4>
+          <p>Scaffold with <code>npm create vue@latest</code>. Add Vue Router, Pinia. Full SPA.</p>
+        </div>
+        <div class="card amber">
+          <h4>Level 3 — Production Scale</h4>
+          <p>Nuxt 3 for SSR, SSG, TypeScript — the full enterprise-ready stack.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.5em;justify-content:center">
+        <p><strong>No other major framework</strong> lets you go from a script tag all the way to a production SSR app using the same mental model and syntax.</p>
+        <p style="color:var(--muted)">Vue 3 is used in production by Alibaba, GitLab, Adobe, Grammarly, and thousands of startups.</p>
+      </div>
+    </div>
+    <aside class="notes">The progressive model is a real differentiator. I've literally added Vue to a legacy HTML marketing page with one script tag. That's not a toy use case.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 6 — FRAMEWORK COMPARISON ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">04 / 24</span>
+    <span class="bar bar-coral"></span>
+    <h2>Vue vs React vs Angular</h2>
+    <div class="cols-3" style="margin-top:1em">
+      <div class="card">
+        <h4>React</h4>
+        <ul>
+          <li>Library, not full framework</li>
+          <li>Choose your own routing, state</li>
+          <li>JSX (JS-centric syntax)</li>
+          <li>Huge ecosystem, more decisions</li>
+        </ul>
+      </div>
+      <div class="card amber">
+        <h4>Vue 3</h4>
+        <ul>
+          <li>Full framework, progressive</li>
+          <li>Official router (Vue Router) + state (Pinia)</li>
+          <li>HTML-centric template syntax</li>
+          <li>Gentle learning curve</li>
+        </ul>
+      </div>
+      <div class="card coral">
+        <h4>Angular</h4>
+        <ul>
+          <li>Full framework, opinionated</li>
+          <li>Enterprise-first design</li>
+          <li>TypeScript required</li>
+          <li>Steeper initial curve</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:1em; font-size:0.78em; color:var(--muted)">There's no wrong answer. Vue's advantage is readability and approachability — it's the best first framework for developers who think in HTML.</p>
+    <aside class="notes">Don't let the comparison paralyze you. Learn Vue. You'll understand React and Angular better having learned Vue first — the shared concepts far outweigh the differences.</aside>
+  </section>
+
+  <!-- ═══ S2 SECTION ═══ -->
+  <section class="section-slide">
+    <div class="section-num">02</div>
+    <span class="bar bar-amber"></span>
+    <h2>API Styles</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">Options API vs Composition API — why there are two, and which one to learn.</p>
+    <aside class="notes">Section 2. ~5 minutes. This is the most common point of confusion for beginners.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 7 — OPTIONS VS COMPOSITION ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">05 / 24</span>
+    <span class="bar"></span>
+    <h2>Two Ways to Write Components</h2>
+    <div class="compare">
+      <div class="compare-box">
+        <h4>Options API — the original</h4>
+        <pre><code class="language-vue" data-trim>
+&lt;script&gt;
+export default {
+  data() {
+    return { count: 0 }
+  },
+  computed: {
+    doubled() {
+      return this.count * 2
+    }
+  },
+  methods: {
+    increment() {
+      this.count++
+    }
+  },
+  mounted() {
+    console.log('ready')
+  }
+}
+&lt;/script&gt;</code></pre>
+      </div>
+      <div class="compare-box alt">
+        <h4>Composition API — Vue 3 native</h4>
+        <pre><code class="language-vue" data-trim>
+&lt;script setup&gt;
+import { ref, computed, onMounted } from 'vue'
+
+const count = ref(0)
+
+const doubled = computed(() => count.value * 2)
+
+function increment() {
+  count.value++
+}
+
+onMounted(() => {
+  console.log('ready')
+})
+&lt;/script&gt;</code></pre>
+      </div>
+    </div>
+    <p style="margin-top:0.8em; font-size:0.78em">Both are valid. <strong>Composition API + <code>&lt;script setup&gt;</code></strong> is the recommended path for new Vue 3 projects.</p>
+    <aside class="notes">The Options API isn't dead — you'll see it in older codebases and it still works great. But everything new should use Composition API.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 8 — WHY COMPOSITION ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">06 / 24</span>
+    <span class="bar"></span>
+    <h2>Why Composition API Wins</h2>
+    <div class="cols" style="margin-top:0.8em">
+      <div style="display:flex;flex-direction:column;gap:0.8em">
+        <div class="card">
+          <h4>Logic by feature, not by type</h4>
+          <p>Options API scatters feature logic across data, methods, computed, watchers. Composition API groups everything for one feature together.</p>
+        </div>
+        <div class="card amber">
+          <h4>Composables = reusable logic</h4>
+          <p>Extract related logic into standalone functions (<code>useCounter</code>, <code>useFetch</code>) and reuse them across any component.</p>
+        </div>
+        <div class="card">
+          <h4>Better TypeScript support</h4>
+          <p>The Composition API was designed with TypeScript in mind. Type inference works naturally.</p>
+        </div>
+      </div>
+      <pre><code class="language-javascript" data-trim>
+// useCounter.js — reusable composable
+import { ref, computed } from 'vue'
+
+export function useCounter(initial = 0) {
+  const count = ref(initial)
+  const doubled = computed(() => count.value * 2)
+
+  function increment() { count.value++ }
+  function decrement() { count.value-- }
+  function reset() { count.value = initial }
+
+  return { count, doubled, increment, decrement, reset }
+}
+
+// Use in ANY component:
+// const { count, increment } = useCounter(10)</code></pre>
+    </div>
+    <aside class="notes">Composables are the killer feature of Vue 3. Everything you could do with mixins (and more) without the naming conflicts and implicit dependencies.</aside>
+  </section>
+
+  <!-- ═══ S3 SECTION ═══ -->
+  <section class="section-slide">
+    <div class="section-num">03</div>
+    <span class="bar"></span>
+    <h2>Reactivity</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">ref, reactive, computed, watch — the engine under everything.</p>
+    <aside class="notes">Section 3. ~8 minutes. This is the densest section. Take it slow.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 9 — REF ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">07 / 24</span>
+    <span class="bar"></span>
+    <h2><code>ref</code> — Reactive State</h2>
+    <div class="cols-60-40" style="margin-top:0.6em">
+      <pre><code class="language-vue" data-trim>
+&lt;script setup&gt;
+import { ref } from 'vue'
+
+const count   = ref(0)       // number
+const name    = ref('Nerando') // string
+const isReady = ref(false)   // boolean
+const tags    = ref(['vue', 'js']) // array
+
+// In script: use .value
+count.value++
+console.log(name.value)
+
+// In template: Vue auto-unwraps (no .value needed)
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;p&gt;{{ count }} — {{ name }}&lt;/p&gt;
+  &lt;p v-if="isReady"&gt;Ready to go!&lt;/p&gt;
+&lt;/template&gt;</code></pre>
+      <div style="display:flex;flex-direction:column;gap:0.8em">
+        <div class="card">
+          <h4>The one rule</h4>
+          <p>Use <code>.value</code> inside <code>&lt;script setup&gt;</code>. Drop it in <code>&lt;template&gt;</code> — Vue unwraps automatically.</p>
+        </div>
+        <div class="card amber">
+          <h4>ref accepts anything</h4>
+          <p>Primitives, objects, arrays — <code>ref</code> handles all of them. It's your default reactive tool.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">The .value thing trips people up exactly once. After that it becomes muscle memory.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 10 — REACTIVE ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">08 / 24</span>
+    <span class="bar bar-amber"></span>
+    <h2><code>reactive</code> — Object State</h2>
+    <div class="cols" style="margin-top:0.6em">
+      <pre><code class="language-vue" data-trim>
+&lt;script setup&gt;
+import { reactive } from 'vue'
+
+const user = reactive({
+  name: 'Nerando',
+  role: 'developer',
+  skills: ['Vue 3', 'TypeScript'],
+  isLoggedIn: false
+})
+
+// No .value needed — access like normal JS
+user.name = 'Nerajno'
+user.isLoggedIn = true
+user.skills.push('Nuxt')
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;p&gt;{{ user.name }} — {{ user.role }}&lt;/p&gt;
+  &lt;p v-if="user.isLoggedIn"&gt;Welcome back!&lt;/p&gt;
+&lt;/template&gt;</code></pre>
+      <div style="display:flex;flex-direction:column;gap:0.8em;justify-content:center">
+        <div class="card">
+          <h4>ref vs reactive</h4>
+          <p><code>ref</code> wraps any value. <code>reactive</code> wraps objects only — no primitives.</p>
+          <p style="margin-top:0.4em">The Vue team recommends defaulting to <code>ref</code> for everything. Use <code>reactive</code> when you have a clear group of related state.</p>
+        </div>
+        <div class="card amber">
+          <h4>Caveat: destructuring</h4>
+          <p>Destructuring a <code>reactive</code> object loses reactivity. Use <code>toRefs</code> if you need to destructure.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">When in doubt, use ref. The .value cost is worth the consistency.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 11 — COMPUTED ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">09 / 24</span>
+    <span class="bar"></span>
+    <h2><code>computed</code> — Derived State</h2>
+    <pre><code class="language-vue" data-trim>
+&lt;script setup&gt;
+import { ref, computed } from 'vue'
+
+const items = ref([
+  { id: 1, name: 'Vue 3',      done: true  },
+  { id: 2, name: 'Pinia',      done: false },
+  { id: 3, name: 'Nuxt 3',     done: false },
+])
+
+const filter = ref('all')
+
+// Recalculates ONLY when items or filter changes
+// Cached between renders — more efficient than a method
+const filtered = computed(() => {
+  if (filter.value === 'done')    return items.value.filter(i => i.done)
+  if (filter.value === 'pending') return items.value.filter(i => !i.done)
+  return items.value
+})
+
+const doneCount = computed(() => items.value.filter(i => i.done).length)
+&lt;/script&gt;</code></pre>
+    <p style="margin-top:0.6em">Computed properties are <em>cached</em> — they only recalculate when their reactive dependencies change. If a value can be derived, make it computed.</p>
+    <aside class="notes">The caching is the key value prop of computed. A method would recalculate on every render. Computed only runs when it needs to.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 12 — WATCH ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">10 / 24</span>
+    <span class="bar bar-amber"></span>
+    <h2><code>watch</code> &amp; <code>watchEffect</code></h2>
+    <div class="three-col-code">
+      <div class="code-cell">
+        <h4>watch — specific</h4>
+        <pre><code class="language-javascript" data-trim>
+import { ref, watch } from 'vue'
+
+const query = ref('')
+
+// Runs when query changes
+// Gets old + new value
+watch(query, (newVal, oldVal) => {
+  fetchResults(newVal)
+})
+
+// Watch multiple sources
+watch(
+  [query, filter],
+  ([q, f]) => search(q, f)
+)</code></pre>
+      </div>
+      <div class="code-cell a">
+        <h4>watchEffect — auto-track</h4>
+        <pre><code class="language-javascript" data-trim>
+import { ref, watchEffect } from 'vue'
+
+const count = ref(0)
+const msg   = ref('')
+
+// Runs immediately,
+// auto-tracks ALL reactive
+// deps used inside
+watchEffect(() => {
+  msg.value =
+    `Count: ${count.value}`
+})</code></pre>
+      </div>
+      <div class="code-cell">
+        <h4>When to use what</h4>
+        <pre><code class="language-markdown" data-trim>
+watch
+  ✓ Need old + new value
+  ✓ Lazy (only on change)
+  ✓ Specific source
+
+watchEffect
+  ✓ Run immediately
+  ✓ Multiple auto deps
+  ✓ Simpler syntax</code></pre>
+      </div>
+    </div>
+    <aside class="notes">My rule of thumb: watch for API calls and things where old/new comparison matters. watchEffect for syncing reactive state into side effects.</aside>
+  </section>
+
+  <!-- ═══ S4 SECTION ═══ -->
+  <section class="section-slide">
+    <div class="section-num">04</div>
+    <span class="bar"></span>
+    <h2>Components</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">SFCs, props, events — the reusable building blocks of every Vue UI.</p>
+    <aside class="notes">Section 4. ~8 minutes.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 13 — SFC ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">11 / 24</span>
+    <span class="bar"></span>
+    <h2>Single-File Components</h2>
+    <div class="cols" style="align-items:start">
+      <pre><code class="language-vue" data-trim>
+&lt;!-- TaskCard.vue --&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue'
+
+const props = defineProps({
+  task: { type: Object, required: true }
+})
+
+const emit = defineEmits(['complete'])
+const isExpanded = ref(false)
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div
+    class="card"
+    :class="{ done: task.completed }"
+  &gt;
+    &lt;h3 @click="isExpanded = !isExpanded"&gt;
+      {{ task.title }}
+    &lt;/h3&gt;
+    &lt;p v-if="isExpanded"&gt;{{ task.description }}&lt;/p&gt;
+    &lt;button
+      @click="emit('complete', task.id)"
+      :disabled="task.completed"
+    &gt;Complete&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+.card { padding: 1rem; border-radius: 8px; }
+.done { opacity: 0.5; text-decoration: line-through; }
+&lt;/style&gt;</code></pre>
+      <div style="display:flex;flex-direction:column;gap:0.8em">
+        <div class="card"><h4>script setup</h4><p>Logic lives here. Reactive state, props declaration, emit declaration, methods.</p></div>
+        <div class="card amber"><h4>template</h4><p>HTML + Vue directives. Everything here reacts to the script automatically.</p></div>
+        <div class="card"><h4>style scoped</h4><p>CSS that applies only to this component. Vue handles the scoping — no class collisions.</p></div>
+        <p style="font-size:0.75em; color:var(--muted)">All in one <code>.vue</code> file. Portable. Self-contained. Testable.</p>
+      </div>
+    </div>
+    <aside class="notes">This one component uses props, emits, local ref state, two directives, scoped styles, and conditional rendering. That's a real component pattern right there.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 14 — PROPS & EVENTS ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">12 / 24</span>
+    <span class="bar bar-amber"></span>
+    <h2>Props Down · Events Up</h2>
+    <div class="cols">
+      <div>
+        <p><strong>Props</strong> carry data from parent → child. They're read-only inside the child.</p>
+        <pre><code class="language-vue" data-trim>
+&lt;!-- Parent: pass data down --&gt;
+&lt;TaskCard
+  :task="currentTask"
+  :show-details="true"
+  @complete="handleComplete"
+  @delete="handleDelete"
+/&gt;</code></pre>
+        <p style="margin-top:0.8em"><strong>Events</strong> carry information from child → parent. The child emits, the parent listens.</p>
+      </div>
+      <div>
+        <pre><code class="language-vue" data-trim>
+&lt;!-- Child: define what it receives
+     and what it can send back --&gt;
+&lt;script setup&gt;
+const props = defineProps({
+  task: {
+    type: Object,
+    required: true
+  },
+  showDetails: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const emit = defineEmits([
+  'complete',
+  'delete'
+])
+&lt;/script&gt;</code></pre>
+      </div>
+    </div>
+    <p style="font-size:0.78em; color:var(--muted)">This pattern keeps data flow predictable. One direction down, one direction up. Easy to debug.</p>
+    <aside class="notes">Props down, events up is the law of component communication in Vue. If you internalize nothing else from this section, internalize that.</aside>
+  </section>
+
+  <!-- ═══ S5 SECTION ═══ -->
+  <section class="section-slide">
+    <div class="section-num">05</div>
+    <span class="bar bar-amber"></span>
+    <h2>Template Directives</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">The v- attributes that give your HTML superpowers.</p>
+    <aside class="notes">Section 5. ~6 minutes. This should feel familiar — we've been using directives since slide 2.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 15 — DIRECTIVES OVERVIEW ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">13 / 24</span>
+    <span class="bar"></span>
+    <h2>The Core Directives</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; margin-top:0.8em">
+      <div class="card"><h4>v-bind ( : )</h4><p>Bind attribute to reactive data<br/><code>:href="url"</code> <code>:class="{ active }"</code> <code>:style="obj"</code></p></div>
+      <div class="card amber"><h4>v-on ( @ )</h4><p>Handle DOM events<br/><code>@click="fn"</code> <code>@submit.prevent</code> <code>@keyup.enter</code></p></div>
+      <div class="card"><h4>v-model</h4><p>Two-way binding on inputs<br/><code>v-model="searchQuery"</code> — works on text, select, checkbox, radio</p></div>
+      <div class="card"><h4>v-if / v-else / v-show</h4><p><code>v-if</code> removes from DOM. <code>v-show</code> toggles CSS display. Use <code>v-show</code> for frequent toggling.</p></div>
+      <div class="card" style="grid-column:1/-1"><h4>v-for + :key</h4><p>Render lists from arrays. <strong>Always</strong> include <code>:key</code> for efficient updates — use a unique id, not the array index when possible.</p></div>
+    </div>
+    <aside class="notes">These five patterns cover 90%+ of what you'll do in templates day to day.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 16 — DIRECTIVES IN ACTION ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">14 / 24</span>
+    <span class="bar"></span>
+    <h2>All Five, One Component</h2>
+    <pre><code class="language-vue" data-trim>
+&lt;script setup&gt;
+import { ref, computed } from 'vue'
+
+const newSkill = ref('')
+const skills   = ref(['Vue 3', 'TypeScript', 'Nuxt'])
+const filter   = ref('all')
+
+const visible = computed(() =>
+  filter.value === 'vue'
+    ? skills.value.filter(s => s.includes('Vue'))
+    : skills.value
+)
+
+function addSkill() {
+  if (newSkill.value.trim()) {
+    skills.value.push(newSkill.value.trim())
+    newSkill.value = ''
+  }
+}
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;input v-model="newSkill" @keyup.enter="addSkill" placeholder="Add a skill" /&gt;
+  &lt;button @click="addSkill"&gt;Add&lt;/button&gt;
+
+  &lt;select v-model="filter"&gt;
+    &lt;option value="all"&gt;All&lt;/option&gt;
+    &lt;option value="vue"&gt;Vue only&lt;/option&gt;
+  &lt;/select&gt;
+
+  &lt;ul v-if="visible.length"&gt;
+    &lt;li v-for="skill in visible" :key="skill"&gt;{{ skill }}&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p v-else&gt;No skills match.&lt;/p&gt;
+&lt;/template&gt;</code></pre>
+    <aside class="notes">v-model input, @keyup.enter, @click, v-model on select, v-if, v-else, v-for, :key, computed — a real functional component, not a toy.</aside>
+  </section>
+
+  <!-- ═══ S6 SECTION ═══ -->
+  <section class="section-slide">
+    <div class="section-num">06</div>
+    <span class="bar"></span>
+    <h2>Demo + Next Steps</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">Putting it together, and where to go from here.</p>
+    <aside class="notes">Section 6. Final 8 minutes. Quick demo walk-through, ecosystem map, resources.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 17 — MINI DEMO ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">15 / 24</span>
+    <span class="bar"></span>
+    <h2>Mini Demo: Todo App Architecture</h2>
+    <div class="cols" style="margin-top:0.6em">
+      <div style="display:flex;flex-direction:column;gap:0.6em">
+        <div class="card"><h4>App.vue</h4><p>Single source of truth. All todo state lives here. Passes data down, listens for events up.</p></div>
+        <div class="card amber"><h4>TodoInput.vue</h4><p>Owns its own local input state. Emits <code>'add'</code> with the text when submitted.</p></div>
+        <div class="card"><h4>TodoItem.vue</h4><p>Pure presentational. Receives a <code>todo</code> prop. Emits <code>'toggle'</code> and <code>'delete'</code>.</p></div>
+        <div class="card"><h4>TodoFilter.vue</h4><p>Receives active filter as prop. Emits <code>'change'</code> when a tab is clicked.</p></div>
+      </div>
+      <pre><code class="language-vue" data-trim>
+&lt;!-- App.vue — the full state layer --&gt;
+&lt;script setup&gt;
+import { ref, computed } from 'vue'
+
+const todos       = ref([])
+const activeFilter = ref('all')
+
+const filtered = computed(() => {
+  if (activeFilter.value === 'active')
+    return todos.value.filter(t => !t.completed)
+  if (activeFilter.value === 'done')
+    return todos.value.filter(t => t.completed)
+  return todos.value
+})
+
+function addTodo(text) {
+  todos.value.push({ id: Date.now(), text, completed: false })
+}
+function toggle(id) {
+  const t = todos.value.find(t => t.id === id)
+  if (t) t.completed = !t.completed
+}
+function remove(id) {
+  todos.value = todos.value.filter(t => t.id !== id)
+}
+&lt;/script&gt;</code></pre>
+    </div>
+    <aside class="notes">Full source in the article series. Article 6 walks through every file step by step. I recommend typing it, not copying it.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 18 — ECOSYSTEM MAP ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">16 / 24</span>
+    <span class="bar bar-amber"></span>
+    <h2>The Vue Ecosystem</h2>
+    <div class="cols-3" style="margin-top:1em">
+      <div>
+        <p style="font-family:var(--font-mono);font-size:0.65em;color:var(--muted);margin-bottom:0.6em;letter-spacing:0.05em">OFFICIAL</p>
+        <div class="card" style="margin-bottom:0.6em"><h4>Vue Router</h4><p>Multi-page navigation. File-based routes in Nuxt.</p></div>
+        <div class="card"><h4>Pinia</h4><p>State management. Simpler Vuex — the official replacement.</p></div>
+      </div>
+      <div>
+        <p style="font-family:var(--font-mono);font-size:0.65em;color:var(--muted);margin-bottom:0.6em;letter-spacing:0.05em">META-FRAMEWORK</p>
+        <div class="card amber"><h4>Nuxt 3</h4><p>SSR, SSG, file-based routing, auto-imports. Production-grade Vue.</p></div>
+      </div>
+      <div>
+        <p style="font-family:var(--font-mono);font-size:0.65em;color:var(--muted);margin-bottom:0.6em;letter-spacing:0.05em">UTILITIES</p>
+        <div class="card" style="margin-bottom:0.6em"><h4>VueUse</h4><p>200+ composable utilities — useStorage, useFetch, useDark, and more.</p></div>
+        <div class="card"><h4>Vite</h4><p>The default build tool. Instant dev server. Fast HMR.</p></div>
+      </div>
+    </div>
+    <aside class="notes">You don't need all of this on day one. Vue core → Vue Router → Pinia is the natural progression. Nuxt when you're ready for production.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 19 — LEARNING PATH ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">17 / 24</span>
+    <span class="bar"></span>
+    <h2>Your Learning Path</h2>
+    <div class="roadmap" style="margin-top:1em">
+      <div class="roadmap-item"><div class="roadmap-dot"></div><div class="roadmap-label"><strong style="color:#fff">Vue 3 Fundamentals</strong> <span>You are here — this series. Build the todo app.</span></div></div>
+      <div class="roadmap-item"><div class="roadmap-dot"></div><div class="roadmap-label"><strong style="color:#fff">Vue Router</strong> <span>Add multiple pages to your app. Understand history mode, dynamic routes.</span></div></div>
+      <div class="roadmap-item"><div class="roadmap-dot"></div><div class="roadmap-label"><strong style="color:#fff">Pinia</strong> <span>Shared state across components. Replaces Vuex. Much simpler.</span></div></div>
+      <div class="roadmap-item"><div class="roadmap-dot"></div><div class="roadmap-label"><strong style="color:#fff">Composables</strong> <span>Extract and reuse logic. The Vue 3 superpower you want to learn early.</span></div></div>
+      <div class="roadmap-item"><div class="roadmap-dot dim"></div><div class="roadmap-label"><strong style="color:var(--muted)">Nuxt 3</strong> <span>When you're ready to go to production with SSR/SSG.</span></div></div>
+      <div class="roadmap-item"><div class="roadmap-dot dim"></div><div class="roadmap-label"><strong style="color:var(--muted)">TypeScript + Vue</strong> <span>Add type safety. Easier than it sounds once you know the framework.</span></div></div>
+    </div>
+    <aside class="notes">The order matters. Don't jump to Nuxt before you're comfortable with components and reactivity. That's how people get stuck.</aside>
+  </section>
+
+  <!-- ═══ SLIDE 18 — RESOURCES ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">18 / 24</span>
+    <span class="bar bar-amber"></span>
+    <h2>Resources That Are Worth Your Time</h2>
+    <div class="cols" style="margin-top:1em">
+      <div style="display:flex;flex-direction:column;gap:0.6em">
+        <div class="card"><h4>vuejs.org/guide</h4><p>The official docs are excellent. Read the Essentials section front to back — it's the best structured intro that exists.</p></div>
+        <div class="card amber"><h4>vueschool.io</h4><p>Free Vue 3 Fundamentals course with the Composition API. Video-first learners, this is your spot.</p></div>
+        <div class="card"><h4>vuemastery.com</h4><p>Higher-production video courses. "Vue 3 Fundamentals" and "Real World Vue" are the two to start with.</p></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.6em">
+        <div class="card"><h4>play.vuejs.org</h4><p>The official Vue playground. No setup required — write components in the browser and share links.</p></div>
+        <div class="card amber"><h4>vueuse.org</h4><p>Browse the composables. Even if you're not using them yet, reading the source teaches idiomatic Vue 3.</p></div>
+        <div class="card"><h4>developingdvlpr.com</h4><p>The full 6-article series that goes with this talk. Every concept today has a companion article.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CLOSE ═══ -->
+  <section class="close-slide">
+    <span class="bar"></span>
+    <h2>Progress Over Perfection.</h2>
+    <p style="color:var(--muted); max-width:500px; margin:0.5em 0 1.5em">You don't have to understand everything before you write your first real app. Start building. The gaps fill in fast.</p>
+    <div class="cols-3" style="margin-top:0.5em">
+      <div class="card"><h4>Read</h4><p>Full 6-article series at developingdvlpr.com</p></div>
+      <div class="card amber"><h4>Practice</h4><p>Build the Todo app from Article 6. Then break it and fix it.</p></div>
+      <div class="card"><h4>Connect</h4><p>Atlanta freeCodeCamp meetups, local Vue community, and @nerajno on X</p></div>
+    </div>
+    <div class="social-links" style="margin-top:1.5em">
+      <a>🌐 developingdvlpr.com</a>
+      <a>𝕏 @nerajno</a>
+      <a>📚 vueschool.io · vuemastery.com</a>
+    </div>
+    <aside class="notes">
+      Thanks everyone. I'll take questions for the remaining time. Come find me after if the line's too long. Slides are already live.
+    </aside>
+  </section>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: false,
+  controls: true,
+  progress: true,
+  center: false,
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  plugins: [RevealNotes, RevealHighlight],
+  highlight: { highlightOnLoad: true }
+});
+</script>
+</body>
+</html>

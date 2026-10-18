@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Back to Basics · @Nerajno</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <style>
+/* ============================================================
+   DESIGN TOKENS — every color, size and radius below reads from here.
+   ============================================================ */
+:root {
+  /* surfaces */
+  --ink: #0C1A14; --paper: #FAFAF7; --surface: #FFFFFF; --line: #DCE5DF;
+  /* text */
+  --text: #14231C; --muted: #4B5B53; --on-dark: #ECFDF5; --on-dark-muted: #A7C4B5;
+  /* brand */
+  --emerald: #10B981; --emerald-deep: #047857; --emerald-soft: #ECFDF5; --emerald-bright: #6EE7B7;
+  --amber: #F59E0B; --amber-deep: #B45309; --amber-soft: #FFFBEB;
+  /* code */
+  --code-bg: #0F1E18; --code-text: #E6F4EC;
+  --syn-keyword: #6EE7B7; --syn-string: #FCD34D; --syn-comment: #7E9A8C;
+  --syn-number: #FDBA74; --syn-title: #A7F3D0; --syn-tag: #A7C4B5;
+  /* type */
+  --heading: "Fraunces", Georgia, serif;
+  --body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  /* code size scale: lg for solo code, md/sm/xs for side-by-side panels */
+  --code-lg: 24px; --code-md: 20px; --code-sm: 18px; --code-xs: 16px;
+  /* radius */
+  --radius-sm: 4px; --radius: 10px; --radius-lg: 14px;
+}
+
+.reveal-viewport { background: var(--paper); }
+.reveal { font-family: var(--body); font-size: 32px; color: var(--text); }
+.reveal strong, .reveal b { font-weight: 700; }
+.reveal .slides section {
+  height: 100%; display: flex !important; flex-direction: column !important;
+  padding: 52px 72px 84px !important; box-sizing: border-box; text-align: left;
+}
+.reveal h1, .reveal h2 { font-family: var(--heading); font-weight: 700; text-transform: none; color: var(--text); line-height: 1.12; letter-spacing: -0.01em; margin: 0; }
+.reveal h1 { font-size: 44pt; }
+.reveal h2 { font-size: 28pt; }
+.reveal p, .reveal li, .reveal td, .reveal th { font-size: 18pt; line-height: 1.45; color: var(--text); }
+.reveal code { font-family: var(--mono); font-size: 0.9em; background: var(--emerald-soft); color: var(--emerald-deep); padding: 0.05em 0.3em; border-radius: var(--radius-sm); }
+.reveal .content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.reveal .kicker { font-family: var(--mono); font-size: 13pt; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber-deep); margin: 0 0 14px; font-weight: 600; }
+
+/* lists */
+.reveal ul, .reveal ol { margin: 0; padding: 0; list-style: none; }
+.reveal .content > ul > li { position: relative; padding-left: 34px; margin: 0 0 16px; font-size: 22pt; }
+.reveal .content > ul > li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 14px; height: 14px; border-radius: 3px; background: var(--emerald); }
+.reveal .content > ol { counter-reset: n; }
+.reveal .content > ol > li { counter-increment: n; position: relative; padding-left: 64px; margin: 0 0 20px; font-size: 24pt; }
+.reveal .content > ol > li::before { content: counter(n, decimal-leading-zero); position: absolute; left: 0; top: 0.1em; font-family: var(--mono); font-size: 16pt; color: var(--amber-deep); font-weight: 600; }
+
+/* dark slides (background color is applied from --ink by the script at the bottom) */
+.reveal section.dark h1, .reveal section.dark h2, .reveal section.dark p, .reveal section.dark li { color: var(--on-dark); }
+.reveal section.dark .kicker { color: var(--amber); }
+.reveal section.dark .sub { color: var(--on-dark-muted); }
+.reveal section.dark code { background: rgba(16,185,129,.16); color: var(--emerald-bright); }
+
+/* title */
+.reveal section.title { justify-content: center; }
+.reveal section.title h1 { font-size: 46pt; max-width: 1000px; }
+.reveal section.title h1::after { content: ""; display: block; width: 120px; height: 6px; background: var(--amber); margin-top: 28px; border-radius: 3px; }
+.reveal section.title .sub { font-size: 20pt; margin-top: 24px; }
+.reveal section.title .byline { font-size: 16pt; margin-top: 30px; color: var(--emerald); }
+.reveal section.title .byline strong { color: var(--emerald); }
+.reveal section.title .hashtag { color: var(--on-dark-muted); }
+
+/* statement / question / questions */
+.reveal section.statement, .reveal section.question, .reveal section.questions { justify-content: center; }
+.reveal h1.big { font-size: 54pt; max-width: 1080px; }
+.reveal section.question h1.big { font-size: 42pt; color: var(--text); }
+.reveal .sub { font-size: 22pt; color: var(--muted); margin-top: 22px; }
+.reveal section.question { background: linear-gradient(90deg, var(--amber) 0 10px, transparent 10px); }
+
+/* divider */
+.reveal section.divider { justify-content: center; }
+.reveal section.divider h1 { font-size: 60pt; }
+.reveal section.divider .sub { font-family: var(--mono); font-size: 15pt; letter-spacing: 0.04em; }
+
+/* anchor */
+.reveal section.anchor { justify-content: center; }
+.reveal section.anchor .num { font-family: var(--mono); font-size: 24pt; color: var(--emerald-deep); margin: 0 0 6px; font-weight: 600; }
+.reveal section.anchor h1 { font-size: 58pt; }
+.reveal section.anchor .what { font-size: 22pt; margin-top: 26px; color: var(--muted); max-width: 980px; }
+.reveal .q { font-weight: 700; color: var(--amber-deep); }
+
+/* compare */
+.reveal .num-inline { font-family: var(--mono); font-size: 0.65em; color: var(--emerald-deep); vertical-align: 0.15em; }
+/* grid + "Good:" rule are one group, centered together under the heading (law of proximity) */
+.reveal .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: auto; padding-top: 22px; min-height: 0; align-items: start; }
+.reveal section.compare .good { margin-bottom: auto; }
+.reveal .panel { display: flex; flex-direction: column; min-width: 0; }
+.reveal .panel .label { font-family: var(--mono); font-size: 12.5pt; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin: 0 0 8px; }
+.reveal .panel.wrong .label { color: var(--amber-deep); }
+.reveal .panel.better .label { color: var(--emerald-deep); }
+.reveal .panel pre { margin: 0; border-top: 6px solid var(--amber); }
+.reveal .panel.better pre { border-top-color: var(--emerald); }
+.reveal .panel pre code { padding: 14px 18px; }
+.reveal .good { margin: 18px 0 0; font-size: 17pt; padding: 12px 18px; background: var(--emerald-soft); border-radius: 8px; }
+
+/* code blocks — sizes come from the --code-* scale, never inline styles */
+.reveal pre { width: 100%; box-shadow: none; margin: 0; background: var(--code-bg); border-radius: var(--radius); font-size: 13pt; line-height: 1.5; }
+.reveal pre code { display: block; background: transparent; color: var(--code-text); padding: 18px 22px; font-size: var(--code-md); max-height: none; overflow: hidden; white-space: pre; border-radius: var(--radius); }
+.reveal pre code.code-lg { font-size: var(--code-lg); }
+.reveal pre code.code-md { font-size: var(--code-md); }
+.reveal pre code.code-sm { font-size: var(--code-sm); }
+.reveal pre code.code-xs { font-size: var(--code-xs); }
+.reveal pre.small code { padding: 12px 20px; line-height: 1.38; }
+.reveal section.code h2 + .content { margin-top: 14px; }
+.reveal .hljs { background: transparent; color: var(--code-text); }
+.reveal .hljs-keyword, .reveal .hljs-built_in, .reveal .hljs-name { color: var(--syn-keyword); }
+.reveal .hljs-string, .reveal .hljs-template-variable, .reveal .hljs-attr { color: var(--syn-string); }
+.reveal .hljs-comment { color: var(--syn-comment); font-style: italic; }
+.reveal .hljs-number, .reveal .hljs-literal { color: var(--syn-number); }
+.reveal .hljs-title, .reveal .hljs-function { color: var(--syn-title); }
+.reveal .hljs-tag { color: var(--syn-tag); }
+.reveal .caption { margin-top: 18px; font-size: 19pt; }
+
+/* cards */
+.reveal .card-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.reveal .card { background: var(--surface); border: 1px solid var(--line); border-top: 6px solid var(--amber); border-radius: 12px; padding: 30px 26px; }
+.reveal .card p { font-size: 20pt; color: var(--muted); margin: 0; }
+.reveal .card .card-head { font-family: var(--heading); font-size: 36pt; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+
+/* map */
+.reveal .act-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.reveal .act { background: var(--surface); border: 1px solid var(--line); border-left: 6px solid var(--emerald); border-radius: var(--radius); padding: 22px 26px; }
+.reveal .act .act-head { font-family: var(--heading); font-weight: 700; font-size: 22pt; margin: 0 0 10px; }
+.reveal .act li { font-size: 17pt; margin: 0 0 4px; color: var(--muted); }
+.reveal .act li .n { display: inline-block; min-width: 3.4em; font-family: var(--mono); font-size: 0.85em; font-weight: 600; color: var(--emerald-deep); }
+
+/* loop */
+.reveal ol.loop > li { font-family: var(--heading); font-size: 30pt !important; font-weight: 700; }
+
+/* demo */
+.reveal section.demo { justify-content: center; background: linear-gradient(90deg, var(--emerald) 0 12px, transparent 12px); }
+.reveal section.demo h1 { font-size: 46pt; margin-bottom: 24px; }
+.reveal section.demo ol.steps { counter-reset: n; }
+.reveal section.demo ol.steps li { counter-increment: n; position: relative; padding-left: 52px; margin-bottom: 10px; font-size: 19pt; }
+.reveal section.demo ol.steps li::before { content: counter(n); position: absolute; left: 0; top: 0.12em; width: 32px; height: 32px; border-radius: 50%; background: var(--emerald); color: var(--ink); font-family: var(--mono); font-size: 14pt; font-weight: 700; text-align: center; line-height: 32px; }
+.reveal section.demo .meta { margin-top: 22px; font-family: var(--mono); font-size: 14pt; color: var(--amber) !important; }
+
+/* person */
+.reveal section.person { justify-content: center; }
+.reveal .person-card { display: flex; align-items: center; gap: 34px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 30px 36px; max-width: 900px; }
+.reveal .avatar { width: 120px; height: 120px; border-radius: 50%; background: var(--emerald); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.reveal .avatar p { font-family: var(--heading); font-size: 34pt; font-weight: 700; color: var(--ink); margin: 0; }
+.reveal .person-card h2 { font-size: 34pt; }
+.reveal .role { margin: 4px 0 0; font-size: 18pt; color: var(--muted); }
+
+/* resources */
+.reveal ul.res > li { padding-left: 34px; margin-bottom: 18px; font-size: 20pt; }
+.reveal ul.res .url { font-family: var(--mono); font-size: 14pt; color: var(--emerald-deep); }
+
+/* TODO markers — loud on purpose so no placeholder survives rehearsal */
+.reveal .todo { color: var(--amber-deep) !important; background: var(--amber-soft); border-radius: var(--radius-sm); padding: 0 0.3em; font-family: var(--mono); font-weight: 600; }
+
+/* sponsors */
+.reveal .sponsor-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.reveal .tile { height: 112px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; display: flex; align-items: center; justify-content: center; padding: 18px; }
+.reveal .tile img { max-width: 100%; max-height: 100%; object-fit: contain; margin: 0; border: 0; box-shadow: none; background: none; }
+/* text fallback, shown only when a logo file is missing */
+.reveal .tile .name { display: none; margin: 0; font-weight: 700; font-size: 15pt; text-align: center; }
+.reveal .tile.no-logo img { display: none; }
+.reveal .tile.no-logo .name { display: block; }
+
+/* backup */
+.reveal section.backup h2 { font-size: 24pt; }
+.reveal section.backup h2::before { content: "APPENDIX · "; font-family: var(--mono); font-size: 12pt; letter-spacing: .12em; color: var(--amber-deep); vertical-align: 0.3em; }
+.reveal table { border-collapse: collapse; width: 100%; }
+.reveal th, .reveal td { font-size: 14.5pt; padding: 7px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+.reveal th { font-family: var(--mono); font-size: 12pt; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.reveal .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.reveal .two-col .col-head { font-weight: 700; font-size: 18pt; margin: 0 0 12px; color: var(--emerald-deep); }
+.reveal .two-col li { font-size: 16pt; margin-bottom: 10px; padding-left: 4px; list-style: decimal inside; }
+.reveal section.backup .content > ul > li { font-size: 18pt; }
+
+/* icons — Uicons by Flaticon, the same set as the Skills to Bills deck */
+.reveal .fi { display: inline-block; line-height: 1; vertical-align: -0.12em; }
+.reveal .kicker .fi { margin-right: 8px; }
+.reveal .card .card-head .fi { display: block; font-size: 0.75em; color: var(--amber-deep); margin-bottom: 12px; }
+.reveal .act .act-head .fi { color: var(--emerald-deep); margin-right: 10px; font-size: 0.85em; }
+.reveal ul.res > li::before { display: none; }
+.reveal ul.res > li { padding-left: 46px; }
+.reveal ul.res > li > .fi { position: absolute; left: 0; top: 0.18em; color: var(--emerald); font-size: 0.95em; }
+.reveal .concept { margin: 22px 0 6px; font-size: 19pt; font-weight: 600; color: var(--emerald-deep); }
+.reveal .concept .fi { margin-right: 8px; }
+.reveal .tagline { margin: 0; font-size: 15pt; color: var(--muted); }
+.reveal .credit { margin-top: 10px; font-family: var(--mono); font-size: 11pt; color: var(--muted); }
+
+/* right-column image, same split as Skills to Bills. Files load from assets/;
+   if one is missing the image is removed and the slide goes back to full width. */
+.reveal section.has-media > *:not(.media):not(aside) { max-width: 56%; }
+.reveal .media { position: absolute; right: 64px; top: 50%; transform: translateY(-50%); width: 34%; height: 70%; margin: 0; display: flex; align-items: center; justify-content: center; }
+.reveal .media img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--radius-lg); margin: 0; border: 0; box-shadow: none; background: none; }
+
+.reveal .media.qr img { width: 320px; height: 320px; background: #fff; padding: 12px; border: 1px solid var(--line); }
+
+.reveal section.has-media .card-row { grid-template-columns: 1fr; gap: 14px; }
+.reveal section.has-media .card { display: flex; align-items: baseline; gap: 16px; padding: 18px 24px; }
+.reveal section.has-media .card .card-head { font-size: 28pt; margin: 0; white-space: nowrap; }
+.reveal section.has-media .card .card-head .fi { display: inline-block; font-size: 0.8em; margin: 0 10px 0 0; }
+
+/* footer brand bar */
+.brand-bar { position: fixed; left: 0; right: 0; bottom: 0; height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; font-family: var(--mono); font-size: 13px; letter-spacing: .04em; color: var(--muted); z-index: 30; pointer-events: none; }
+.brand-bar.on-dark { color: var(--on-dark-muted); }
+.brand-bar .handle { color: var(--emerald-deep); font-weight: 600; }
+.brand-bar.on-dark .handle { color: var(--emerald); }
+.reveal .progress { color: var(--amber); height: 4px; }
+</style>
+</head>
+<body>
+  <!-- Change the event hashtag in ONE place: the EVENT_HASHTAG constant at the bottom of this file. -->
+  <div class="reveal">
+    <div class="slides">
+
+<section id="s01-title" class="title dark">
+  <p class="kicker">Back to Basics</p>
+  <h1>Essential JavaScript Foundations for Modern Framework Development</h1>
+  <p class="sub">You can't run a framework you don't understand.</p>
+  <p class="byline"><strong>@Nerajno</strong> · <span class="hashtag">#TechBash2026</span></p>
+  <aside class="notes">0:00 START. Welcome. Breathe. Intro, sponsors, bet joke, agenda and disclaimer together take about 2 min, then the hook.</aside>
+</section>
+
+<section id="s02-sponsors" class="sponsors">
+  <h2>Thank You, Sponsors</h2>
+  <div class="content"><div class="sponsor-grid">
+    <div class="tile"><img src="assets/sponsors-clear-measure.png" alt="Clear Measure"><p class="name">Clear Measure</p></div>
+    <div class="tile"><img src="assets/sponsors-progress.png" alt="Progress"><p class="name">Progress</p></div>
+    <div class="tile"><img src="assets/sponsors-text-control.png" alt="Text Control"><p class="name">Text Control</p></div>
+    <div class="tile"><img src="assets/sponsors-iowa-computer-gurus.png" alt="Iowa Computer Gurus"><p class="name">Iowa Computer Gurus</p></div>
+    <div class="tile"><img src="assets/sponsors-uno-platform.png" alt="Uno Platform"><p class="name">Uno Platform</p></div>
+    <div class="tile"><img src="assets/sponsors-balsamiq.png" alt="Balsamiq"><p class="name">Balsamiq</p></div>
+    <div class="tile"><img src="assets/sponsors-devit-jobs.png" alt="DevIT Jobs"><p class="name">DevIT Jobs</p></div>
+    <div class="tile"><img src="assets/sponsors-community-credentials.png" alt="Community Credentials"><p class="name">Community Credentials</p></div>
+  </div>
+  <p class="concept"><i class="fi fi-rr-handshake" aria-hidden="true"></i>Before you leave: visit their booths and say hi.</p>
+  <p class="tagline">Tag them + <span class="hashtag">#TechBash2026</span> and tell them which talk sent you.</p></div>
+  <aside class="notes">Always slide 2. Name each sponsor out loud: Clear Measure, Progress, Text Control, Iowa Computer Gurus, Uno Platform, Balsamiq, DevIT Jobs, Community Credentials. Get the room to clap for them. Logos load from assets/, the same files as the Skills to Bills deck; if a file is missing, the tile shows the sponsor's name instead.</aside>
+</section>
+
+<section id="s03-statement" class="statement dark">
+  <h1 class="big">I am here because I lost a bet.</h1>
+  <aside class="notes">Pause for the laugh. Then the real reason, which is the next slide.</aside>
+</section>
+
+<section id="s04-bullets" class="bullets has-media">
+  <figure class="media"><img src="assets/hello.png" alt="Illustrated portrait of Nerando"></figure>
+  <h2>Nerando Johnson · @Nerajno</h2>
+  <div class="content"><ul><li>Software Engineer @ Hygiena</li><li>Former middle school science &amp; literacy teacher</li><li>Founder, TechTile LLC</li><li>Writes at <strong>developingdvlpr.com</strong></li><li>Motto: <strong>Progress over perfection</strong></li></ul></div>
+  <aside class="notes">Real reason I'm here: I went back to basics and it changed how I write Vue. Keep this under 40 seconds.</aside>
+</section>
+
+<section id="s05-numbered" class="numbered">
+  <h2>Content to Cover</h2>
+  <div class="content"><ol><li>Vue bug or JavaScript bug?</li><li>The foundation crisis</li><li>11 fundamentals · 4 acts · 4 live demos</li><li>Spot the JavaScript</li><li>Questions / FIN</li></ol></div>
+  <aside class="notes">Show the map, then set the lens on the next slide.</aside>
+</section>
+
+<section id="s06-bullets" class="bullets has-media">
+  <figure class="media"><img src="assets/disclaimer.gif" alt="A black cat calmly filing its nails"></figure>
+  <p class="kicker">#2cents</p>
+  <h2>Disclaimer</h2>
+  <div class="content"><ul><li>My opinions, NOT my employer's</li><li>Earned the hard way in a real Vue 3 codebase</li><li>Code is trimmed to fit a slide. Not production-ready.</li><li>Vue 3.5+ · Composition API · <code>&lt;script setup&gt;</code></li><li>Not JavaScript 101. A curated map.</li></ul></div>
+  <aside class="notes">Sets the lens. Say the employer line out loud. Options API folks, everything still applies, the syntax just shifts. ~20 seconds.</aside>
+</section>
+
+<section id="s06b-coc" class="bullets has-media">
+  <figure class="media qr"><img src="assets/coc.png" alt="QR code linking to the TechBash Code of Conduct"></figure>
+  <p class="kicker"><i class="fi fi-rr-shield-check" aria-hidden="true"></i>Before we start</p>
+  <h2>Code of Conduct</h2>
+  <div class="content"><ul><li>Basically: be nice.</li><li>See someone not being nice? Tell conference staff.</li><li>Safe + fun = people actually learn.</li></ul>
+  <p class="tagline">Scan to read it → techbash.com/code-of-conduct</p></div>
+  <aside class="notes">~20 seconds. Most conferences have a CoC, so don't be shy, take a peek. If you see someone breaking it, let staff know.</aside>
+</section>
+
+<section id="s07-cards" class="cards">
+  <p class="kicker">Who this is for</p>
+  <h2>Prerequisites</h2>
+  <div class="content"><div class="card-row"><div class="card"><p class="card-head"><i class="fi fi-rr-check-circle" aria-hidden="true"></i>Need</p><p>Basic HTML</p></div><div class="card"><p class="card-head"><i class="fi fi-rr-bulb" aria-hidden="true"></i>Helpful</p><p>Some JavaScript: variables, functions</p></div><div class="card"><p class="card-head"><i class="fi fi-rr-smile" aria-hidden="true"></i>Not required</p><p>Any Vue experience</p></div></div></div>
+  <aside class="notes">If you've written an HTML page and a function, you're in the right room. Vue-curious folks get the most out of this. ~20 seconds.</aside>
+</section>
+
+<section id="s08-code" class="code">
+  <h2>Vue Bug or JavaScript Bug?</h2>
+  <div class="content"><pre><code class="language-html code-lg" data-trim data-noescape>&lt;script setup&gt;
+import { reactive } from 'vue'
+
+const state = reactive({ count: 0 })
+let { count } = state
+const increment = () =&gt; state.count++
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click="increment"&gt;Clicked {{ count }} times&lt;/button&gt;
+&lt;/template&gt;</code></pre>
+  <p class="caption">Click it all day. It says <strong>0</strong>. Hands up: Vue bug? JavaScript bug?</p></div>
+  <aside class="notes">~2:00. Let them read it. Get hands for each option. Don't reveal yet.</aside>
+</section>
+
+<section id="s09-statement" class="statement dark has-media">
+  <figure class="media"><img src="assets/plot-twist.gif" data-fallback="assets/plot-twist.png" alt="A man with his hand on his chin, mouth open in shock"></figure>
+  <h1 class="big">It's JavaScript.</h1>
+  <p class="sub">Destructuring copied a number. Vue never saw it again.</p>
+  <aside class="notes">Plant it, then promise we fix it live in Demo 1.</aside>
+</section>
+
+<section id="s10-statement" class="statement dark">
+  <h1 class="big">Frameworks amplify your JavaScript.</h1>
+  <p class="sub">Your strengths AND your gaps.</p>
+  <aside class="notes">This is the thesis. Say it slowly. Everything after this is evidence.</aside>
+</section>
+
+<section id="s11-question" class="question has-media">
+  <figure class="media"><img src="assets/speaking.jpg" alt="Nerando presenting in front of an Audience Question slide"></figure>
+  <p class="kicker"><i class="fi fi-rr-hand" aria-hidden="true"></i>Audience Question?</p>
+  <h1 class="big">Who learned a framework before they felt solid in JavaScript?</h1>
+  <aside class="notes">Hands up. Raise your own hand. Normalize it. ~4:00 by the end of this slide.</aside>
+</section>
+
+<section id="s12-divider" class="divider dark">
+  <h1>The Foundation Crisis</h1>
+  <p class="sub">How we got here, and what it costs</p>
+  <aside class="notes">4:00. Six minutes for this whole section.</aside>
+</section>
+
+<section id="s13-bullets" class="bullets">
+  <h2>Classroom → Codebase</h2>
+  <div class="content"><ul><li>Taught middle school science</li><li>Hired into a Vue 3 codebase</li><li>Could ship it… couldn't explain it</li><li>Chose to go <strong>BACK TO BASICS</strong></li></ul></div>
+  <aside class="notes">Personal story. The honest moment was realizing I was pattern-matching, not understanding. Two minutes max.</aside>
+</section>
+
+<section id="s14-bullets" class="bullets">
+  <h2>Framework First, JavaScript… Later?</h2>
+  <div class="content"><ul><li>Tutorials start at <code>npm create vue</code></li><li>Influencers sell speed, skip the why</li><li>AI scaffolds code you can't read yet</li></ul></div>
+  <aside class="notes">Not anti-tutorial or anti-AI. The problem is the missing why underneath.</aside>
+</section>
+
+<section id="s15-cards" class="cards has-media">
+  <figure class="media"><img src="assets/this-is-fine.gif" data-fallback="assets/this-is-fine.png" alt="Comic: a man sips coffee in a burning room and says, This is fine."></figure>
+  <h2>What It Costs on a Real Team</h2>
+  <div class="content"><div class="card-row"><div class="card"><p class="card-head"><i class="fi fi-rr-bug" aria-hidden="true"></i>Bugs</p><p>you can't explain</p></div><div class="card"><p class="card-head"><i class="fi fi-rr-eye" aria-hidden="true"></i>PRs</p><p>you can't review</p></div><div class="card"><p class="card-head"><i class="fi fi-rr-terminal" aria-hidden="true"></i>Stack traces</p><p>you can't read</p></div></div></div>
+  <aside class="notes">Each of these is a trust problem with your team, not just a skill problem. The GIF: shipping code you can't explain feels fine, right up until the room is on fire.</aside>
+</section>
+
+<section id="s16-map" class="map">
+  <h2>The Map: 11 Fundamentals, 4 Acts</h2>
+  <div class="content"><div class="act-grid"><div class="act"><p class="act-head"><i class="fi fi-rr-cube" aria-hidden="true"></i>Act 1 · Data &amp; State</p><ul><li><span class="n">[1]</span>Variables &amp; data types</li><li><span class="n">[2]</span>Template literals</li><li><span class="n">[4]</span>Objects &amp; destructuring</li></ul></div><div class="act"><p class="act-head"><i class="fi fi-rr-filter" aria-hidden="true"></i>Act 2 · Functions &amp; Transformation</p><ul><li><span class="n">[3]</span>Arrow functions</li><li><span class="n">[5]</span>Arrays &amp; array methods</li></ul></div><div class="act"><p class="act-head"><i class="fi fi-rr-clock" aria-hidden="true"></i>Act 3 · Async &amp; Resilience</p><ul><li><span class="n">[6]</span>Promises &amp; async/await</li><li><span class="n">[9]</span>Optional chaining</li><li><span class="n">[11]</span>Error handling</li></ul></div><div class="act"><p class="act-head"><i class="fi fi-rr-layers" aria-hidden="true"></i>Act 4 · Structure &amp; Communication</p><ul><li><span class="n">[7]</span>Modules &amp; exports</li><li><span class="n">[8]</span>Classes &amp; OOP</li><li><span class="n">[10]</span>Event handling</li></ul></div></div></div>
+  <aside class="notes">The bracket numbers match the companion article, so they jump around inside the acts. Say it once here so nobody thinks a slide is missing.</aside>
+</section>
+
+<section id="s17-loop" class="loop has-media">
+  <figure class="media"><img src="assets/fix.gif" alt=""></figure>
+  <h2>How Do We Handle It?</h2>
+  <div class="content"><ol class="loop"><li class="fragment">What is it?</li><li class="fragment">How do we do it wrong?</li><li class="fragment">How do we do it good?</li><li class="fragment">How do we do it better?</li></ol></div>
+  <aside class="notes">Every fundamental gets this treatment: anchor slide = what is it, then wrong vs better code, with the "Good:" rule underneath. ~10:00 by the end of this slide.</aside>
+</section>
+
+<section id="s18-divider" class="divider dark">
+  <p class="kicker"><i class="fi fi-rr-cube" aria-hidden="true"></i>Act 1</p>
+  <h1>Data &amp; State</h1>
+  <p class="sub">Variables · Template literals · Destructuring</p>
+  <aside class="notes">10:00. Ten minutes for Act 1 including Demo 1.</aside>
+</section>
+
+<section id="s19-anchor" class="anchor">
+  <p class="num">[1]</p>
+  <h1>Variables &amp; Data Types</h1>
+  <p class="what"><span class="q">What is it?</span> Where values live, and whether they're copied or shared.</p>
+  <aside class="notes">Primitives vs references is the whole game for reactivity.</aside>
+</section>
+
+<section id="s20-compare" class="compare">
+  <h2><span class="num-inline">[1]</span> Variables &amp; Data Types</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-js code-md" data-trim data-noescape>let count = 0
+const increment = () =&gt; count++
+// the template never updates</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-js code-md" data-trim data-noescape>const count = ref(0)
+const increment = () =&gt; count.value++
+// const holds the box, .value changes</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> Primitives copy. Objects share. <code>ref()</code> wraps your value in an object for a reason.</p>
+  <aside class="notes">Ask: why can count be const if it changes? Because the ref object never changes, only its value.</aside>
+</section>
+
+<section id="s21-anchor" class="anchor">
+  <p class="num">[2]</p>
+  <h1>Template Literals</h1>
+  <p class="what"><span class="q">What is it?</span> Strings with JavaScript expressions inside.</p>
+  <aside class="notes">Quick one. The point is the mental model for the template.</aside>
+</section>
+
+<section id="s22-compare" class="compare">
+  <h2><span class="num-inline">[2]</span> Template Literals</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-js code-sm" data-trim data-noescape>const label = 'Hi ' + first.value +
+  ' ' + last.value + '!'
+const cls = 'btn btn-' + variant.value</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-js code-sm" data-trim data-noescape>const label = computed(
+  () =&gt; `Hi ${first.value} ${last.value}!`
+)
+// template: :class="`btn btn-${variant}`"</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> <code>{{ }}</code> is a JavaScript expression. Same mental model as <code>${ }</code>.</p>
+  <aside class="notes">If you can read a template literal, you can read a Vue template. Note .value in script, none in the template: refs auto-unwrap there.</aside>
+</section>
+
+<section id="s23-anchor" class="anchor has-media">
+  <figure class="media"><img src="assets/nothing-happened.gif" data-fallback="assets/nothing-happened.png" alt="A woman smiling and holding a box, captioned: This was all a dream."></figure>
+  <p class="num">[4]</p>
+  <h1>Objects &amp; Destructuring</h1>
+  <p class="what"><span class="q">What is it?</span> Pulling values out of objects into their own variables.</p>
+  <aside class="notes">This is the opening-hook bug. Build the tension before Demo 1. The GIF: you clicked, the count said 0, like the click was all a dream.</aside>
+</section>
+
+<section id="s24-compare" class="compare">
+  <h2><span class="num-inline">[4]</span> Objects &amp; Destructuring</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-js code-md" data-trim data-noescape>const state = reactive({ name: 'Ada' })
+const { name } = state
+// name is a plain string now</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-js code-md" data-trim data-noescape>const state = reactive({ name: 'Ada' })
+const { name } = toRefs(state)
+name.value = 'Grace' // still reactive</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> Vue 3.5+: destructured <code>defineProps()</code> stays reactive. <code>reactive()</code> still doesn't.</p>
+  <aside class="notes">toRefs turns each property into a ref linked back to the source.</aside>
+</section>
+
+<section id="s25-demo" class="demo dark">
+  <p class="kicker"><i class="fi fi-rr-play" aria-hidden="true"></i>Live Demo 1</p>
+  <h1>Fix the Stale Value</h1>
+  <ol class="steps"><li>Run the opening-hook component. Click. Still 0.</li><li>Log <code>typeof count</code>. It's a number, not a ref.</li><li>Fix 1: read <code>state.count</code> in the template</li><li>Fix 2: <code>const { count } = toRefs(state)</code></li></ol>
+  <p class="meta">Concepts [1] [4] · branch <code>demo-1-start</code></p>
+  <aside class="notes">4 min. Should finish by 20:00. If the build fails, switch to the 60-second fallback recording for Demo 1 and keep talking over it.</aside>
+</section>
+
+<section id="s26-divider" class="divider dark">
+  <p class="kicker"><i class="fi fi-rr-filter" aria-hidden="true"></i>Act 2</p>
+  <h1>Functions &amp; Transformation</h1>
+  <p class="sub">Arrow functions · Array methods</p>
+  <aside class="notes">20:00. Eight minutes for Act 2 including Demo 2.</aside>
+</section>
+
+<section id="s27-anchor" class="anchor">
+  <p class="num">[3]</p>
+  <h1>Arrow Functions</h1>
+  <p class="what"><span class="q">What is it?</span> Short functions with no <code>this</code> of their own.</p>
+  <aside class="notes">Most Composition API callbacks are arrows. Here's why.</aside>
+</section>
+
+<section id="s28-compare" class="compare">
+  <h2><span class="num-inline">[3]</span> Arrow Functions</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-js code-sm" data-trim data-noescape>const doubled = computed(function () {
+  return this.count * 2
+  // this is undefined in &lt;script setup&gt;
+})</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-js code-sm" data-trim data-noescape>const doubled = computed(() =&gt; count.value * 2)
+
+watch(count, (next, prev) =&gt; {
+  console.log(prev, '→', next)
+})</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> In <code>&lt;script setup&gt;</code> there is no <code>this</code>. Arrow functions make that obvious.</p>
+  <aside class="notes">Options API habits are where this bites. Name the habit, then break it.</aside>
+</section>
+
+<section id="s29-anchor" class="anchor has-media">
+  <figure class="media"><img src="assets/precious.gif" alt="Bilbo Baggins clutching the ring: My preciousss"></figure>
+  <p class="num">[5]</p>
+  <h1>Arrays &amp; Array Methods</h1>
+  <p class="what"><span class="q">What is it?</span> filter, map, reduce: the engine behind every v-for.</p>
+  <aside class="notes">Computed lists are just array methods with a cache. The GIF: your source array is precious. Some array methods quietly change it, and that's the next slide.</aside>
+</section>
+
+<section id="s30-compare" class="compare">
+  <h2><span class="num-inline">[5]</span> Arrays &amp; Array Methods</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-js code-lg" data-trim data-noescape>const sorted = computed(() =&gt;
+  items.value.sort(byName)
+  // sort() mutates the source!
+)</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-js code-lg" data-trim data-noescape>const visible = computed(() =&gt;
+  items.value
+    .filter(i =&gt; i.active)
+    .toSorted(byName)
+)</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> Computed should READ, never mutate. Use <code>toSorted()</code> or <code>[...items].sort()</code>.</p>
+  <aside class="notes">Mutating inside computed causes loops and warnings. Know which array methods mutate.</aside>
+</section>
+
+<section id="s31-demo" class="demo dark">
+  <p class="kicker"><i class="fi fi-rr-play" aria-hidden="true"></i>Live Demo 2</p>
+  <h1>Filtered List</h1>
+  <ol class="steps"><li>Start with a static array and an empty <code>computed()</code></li><li>Add <code>filter()</code> on a search box</li><li>Chain <code>map()</code> to shape each row</li><li>Sort with <code>toSorted()</code>, show the source is untouched</li></ol>
+  <p class="meta">Concepts [3] [5] · branch <code>demo-2-start</code></p>
+  <aside class="notes">3 min. CHECKPOINT: if you are not into Act 3 by 28:00, start cutting (see backup slide).</aside>
+</section>
+
+<section id="s32-divider" class="divider dark">
+  <p class="kicker"><i class="fi fi-rr-clock" aria-hidden="true"></i>Act 3</p>
+  <h1>Async &amp; Resilience</h1>
+  <p class="sub">Promises · Optional chaining · Error handling</p>
+  <aside class="notes">28:00 checkpoint. Ten minutes for Act 3 including Demo 3.</aside>
+</section>
+
+<section id="s33-anchor" class="anchor has-media">
+  <figure class="media"><img src="assets/waiting.gif" data-fallback="assets/waiting.png" alt="A skeleton sitting in a chair, still waiting"></figure>
+  <p class="num">[6]</p>
+  <h1>Promises &amp; Async/Await</h1>
+  <p class="what"><span class="q">What is it?</span> Code that finishes later.</p>
+  <aside class="notes">If onMounted feels like guessing, this is why. The GIF: your template, waiting on a Promise nobody awaited.</aside>
+</section>
+
+<section id="s34-compare" class="compare">
+  <h2><span class="num-inline">[6]</span> Promises &amp; Async/Await</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-js code-lg" data-trim data-noescape>onMounted(() =&gt; {
+  weather.value = fetch(url)
+    .then(r =&gt; r.json())
+  // a Promise, not your data
+})</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-js code-lg" data-trim data-noescape>onMounted(async () =&gt; {
+  loading.value = true
+  const res = await fetch(url)
+  weather.value = await res.json()
+  loading.value = false
+})</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> Every async UI has three states: <strong>loading</strong>, <strong>data</strong>, <strong>error</strong>.</p>
+  <aside class="notes">This version still has a hole. What happens when the fetch fails? That's fundamental 11.</aside>
+</section>
+
+<section id="s35-anchor" class="anchor has-media">
+  <figure class="media"><img src="assets/confused.gif" data-fallback="assets/confused.png" alt="John Travolta looking around, confused, against a background of glowing neurons"></figure>
+  <p class="num">[9]</p>
+  <h1>Optional Chaining</h1>
+  <p class="what"><span class="q">What is it?</span> Ask safely when the data might not be there yet.</p>
+  <aside class="notes">The data is null until the fetch lands. The template renders anyway. The GIF: your template, looking for weather.current before it exists.</aside>
+</section>
+
+<section id="s36-compare" class="compare">
+  <h2><span class="num-inline">[9]</span> Optional Chaining</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-html code-sm" data-trim data-noescape>&lt;p&gt;{{ weather.current.temp }}°&lt;/p&gt;
+&lt;!-- TypeError while loading --&gt;</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-html code-sm" data-trim data-noescape>&lt;p&gt;{{ weather?.current?.temp ?? '--' }}°&lt;/p&gt;
+&lt;!-- safe path + a default --&gt;</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> <code>?.</code> guards the path. <code>??</code> supplies the default. <code>||</code> would hide a real 0°.</p>
+  <aside class="notes">The 0 degrees example lands well. Zero is a real temperature.</aside>
+</section>
+
+<section id="s37-anchor" class="anchor">
+  <p class="num">[11]</p>
+  <h1>Error Handling</h1>
+  <p class="what"><span class="q">What is it?</span> Plan for the API to fail. It will.</p>
+  <aside class="notes">Closes the hole from fundamental 6.</aside>
+</section>
+
+<section id="s38-compare" class="compare">
+  <h2><span class="num-inline">[11]</span> Error Handling</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-js code-sm" data-trim data-noescape>const res = await fetch(url)
+weather.value = await res.json()
+// bad city → blank screen</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-js code-sm" data-trim data-noescape>try {
+  const res = await fetch(url)
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`)
+  }
+  weather.value = await res.json()
+} catch (e) {
+  error.value = e.message
+} finally {
+  loading.value = false
+}</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> <code>fetch</code> only rejects on network failure, so check <code>res.ok</code>. <code>onErrorCaptured</code> catches what bubbles up.</p>
+  <aside class="notes">finally means loading always turns off. That's the hole from fundamental [6], two slides back, now closed.</aside>
+</section>
+
+<section id="s39-demo" class="demo dark">
+  <p class="kicker"><i class="fi fi-rr-play" aria-hidden="true"></i>Live Demo 3</p>
+  <h1>Weather Card</h1>
+  <ol class="steps"><li>Fetch from the local JSON mock in <code>onMounted</code></li><li>Show loading, then data</li><li>Type a bad city name. Show the error state.</li><li>Prove the template never throws on <code>undefined</code></li></ol>
+  <p class="meta">Concepts [6] [9] [11] · branch <code>demo-3-start</code></p>
+  <aside class="notes">4 min. Local mock only (a bad city returns 404 from the mock). Conference Wi-Fi is not a dependency. Done by 38:00.</aside>
+</section>
+
+<section id="s40-divider" class="divider dark">
+  <p class="kicker"><i class="fi fi-rr-layers" aria-hidden="true"></i>Act 4</p>
+  <h1>Structure &amp; Communication</h1>
+  <p class="sub">Modules · Classes · Events</p>
+  <aside class="notes">38:00. Seven minutes for Act 4 including Demo 4.</aside>
+</section>
+
+<section id="s41-anchor" class="anchor">
+  <p class="num">[7]</p>
+  <h1>Modules &amp; Exports</h1>
+  <p class="what"><span class="q">What is it?</span> One file, one job, shared on purpose.</p>
+  <aside class="notes">Composables are the payoff.</aside>
+</section>
+
+<section id="s42-compare" class="compare">
+  <h2><span class="num-inline">[7]</span> Modules &amp; Exports</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-js code-xs" data-trim data-noescape>// WeatherCard.vue, Forecast.vue, Header.vue
+onMounted(async () =&gt; {
+  const res = await fetch(`/api/weather?q=${city}`)
+  weather.value = await res.json()
+})
+// pasted three times, fixed three times</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-js code-xs" data-trim data-noescape>// composables/useWeather.js
+export function useWeather(city) {
+  const weather = ref(null)
+  const error = ref(null)
+  // fetch + loading + error, once
+  return { weather, error }
+}</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> A composable is just a function in a module. No magic.</p>
+  <aside class="notes">Named exports for composables. import { useWeather } from '@/composables/useWeather'.</aside>
+</section>
+
+<section id="s43-anchor" class="anchor">
+  <p class="num">[8]</p>
+  <h1>Classes &amp; OOP</h1>
+  <p class="what"><span class="q">What is it?</span> Blueprints for objects. Useful. Not everywhere.</p>
+  <aside class="notes">Keep this one tight. It's the first cut if running long.</aside>
+</section>
+
+<section id="s44-compare" class="compare">
+  <h2><span class="num-inline">[8]</span> Classes &amp; OOP</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-js code-xs" data-trim data-noescape>class Cart {
+  #items = []
+  add(i) { this.#items.push(i) }
+}
+const cart = reactive(new Cart())
+cart.add(item) // TypeError: Proxy vs #private</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-js code-xs" data-trim data-noescape>class WeatherApi {
+  constructor(baseUrl) { this.baseUrl = baseUrl }
+  get(city) {
+    return fetch(`${this.baseUrl}?q=${city}`)
+  }
+}
+// UI state stays in ref() / reactive()</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> Classes for services and API clients. Plain objects and refs for component state.</p>
+  <aside class="notes">Private fields don't survive a reactive Proxy. Good reason to keep classes at the edges.</aside>
+</section>
+
+<section id="s45-anchor" class="anchor">
+  <p class="num">[10]</p>
+  <h1>Event Handling</h1>
+  <p class="what"><span class="q">What is it?</span> Listening for what happens, and announcing your own.</p>
+  <aside class="notes">DOM events, modifiers, then custom events with defineEmits.</aside>
+</section>
+
+<section id="s46-compare" class="compare">
+  <h2><span class="num-inline">[10]</span> Event Handling</h2>
+  <div class="compare-grid">
+    <div class="panel wrong"><p class="label">How do we do it wrong?</p><pre><code class="language-html code-md" data-trim data-noescape>&lt;div class="btn" @click="save"&gt;Save&lt;/div&gt;
+&lt;!-- no keyboard, no focus, no role --&gt;</code></pre></div>
+    <div class="panel better"><p class="label">How do we do it better?</p><pre><code class="language-html code-md" data-trim data-noescape>&lt;form @submit.prevent="save"&gt;
+  &lt;button type="submit"&gt;Save&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;script setup&gt;
+const emit = defineEmits(['saved'])
+const save = () =&gt; emit('saved')
+&lt;/script&gt;</code></pre></div>
+  </div>
+  <p class="good"><span class="q">Good:</span> Native elements bring keyboard and focus for free. <code>defineEmits</code> documents your component's API.</p>
+  <aside class="notes">Enter key submits the form for free. The div version needs tabindex, role and key handlers to catch up.</aside>
+</section>
+
+<section id="s47-person" class="person">
+  <p class="kicker"><i class="fi fi-rr-megaphone" aria-hidden="true"></i>Shout-out</p>
+  <div class="person-card">
+    <div class="avatar"><p>HG</p></div>
+    <div><h2>Homer Gaines</h2><p class="role">Staff UI Engineer at Guru</p><p class="role">Accessibility Professional</p></div>
+  </div>
+  <p class="caption">Events are an accessibility decision. Go learn from people who do this every day.</p>
+  <aside class="notes">Shout-out cameo. Keep it short and genuine.</aside>
+</section>
+
+<section id="s48-demo" class="demo dark">
+  <p class="kicker"><i class="fi fi-rr-play" aria-hidden="true"></i>Live Demo 4</p>
+  <h1>Extract a Composable</h1>
+  <ol class="steps"><li>Cut the fetch logic out of the Weather Card</li><li>Paste it into <code>useWeather()</code> and export it</li><li>Import it back. Component shrinks to a few lines.</li><li>Emit <code>city-selected</code> from a child list</li></ol>
+  <p class="meta">Concepts [7] [10] · branch <code>demo-4-start</code></p>
+  <aside class="notes">3 min. If running long, do this as a pre-written code reveal instead. Done by 45:00.</aside>
+</section>
+
+<section id="s49-code" class="code">
+  <h2>Spot the JavaScript</h2>
+  <div class="content"><pre class="small"><code class="language-html code-sm" data-trim data-noescape>&lt;script setup&gt;
+import { ref, computed } from 'vue'
+import { useWeather } from '@/composables/useWeather'
+const props = defineProps({ cities: Array })
+const emit = defineEmits(['city-selected'])
+const query = ref('')
+const { weather } = useWeather('Atlanta')
+const matches = computed(() =&gt; {
+  const q = query.value.toLowerCase()
+  return props.cities.filter(c =&gt; c.toLowerCase().includes(q))
+})
+const label = computed(() =&gt; `${matches.value.length} cities`)
+&lt;/script&gt;
+&lt;template&gt;
+  &lt;input v-model="query" aria-label="Filter cities" /&gt;
+  &lt;p&gt;{{ weather?.current?.temp ?? '--' }}° · {{ label }}&lt;/p&gt;
+  &lt;button v-for="c in matches" :key="c" @click="emit('city-selected', c)"&gt;{{ c }}&lt;/button&gt;
+&lt;/template&gt;</code></pre>
+  <p class="caption">Call them out: which fundamentals do you see?</p></div>
+  <aside class="notes">45:00. Let the room shout. Point at each line as they name it. Answer key: [1] const/ref, [2] the label backticks, [3] every arrow, [4] { weather }, [5] filter, [7] the imports, [9] ?. and ??, [10] @click + emit. About 3 minutes.</aside>
+</section>
+
+<section id="s50-statement" class="statement dark">
+  <h1 class="big">8 of 11 fundamentals.</h1>
+  <p class="sub">One screen. Vue is the thin layer on top of JavaScript.</p>
+  <aside class="notes">The other three (async, error handling, classes) live inside the composable. That's the point. ~49:00 by the end of this slide.</aside>
+</section>
+
+<section id="s51-numbered" class="numbered">
+  <h2>Three Things to Take Home</h2>
+  <div class="content"><ol><li>Frameworks amplify your JavaScript</li><li>Debug the JavaScript first</li><li>Learn to walk before you run</li></ol></div>
+  <aside class="notes">49:00. Slow down here. These are the three lines people should repeat later.</aside>
+</section>
+
+<section id="s52-resources" class="resources">
+  <h2>Keep Going</h2>
+  <div class="content"><ul class="res"><li><i class="fi fi-rr-file-edit" aria-hidden="true"></i><strong>Companion article (updated Oct 2026)</strong><br><span class="url">developingdvlpr.com/blog/11-javascript-fundamentals-for-vue-developers</span></li><li><i class="fi fi-rr-book" aria-hidden="true"></i><strong>Vue 3 Fundamentals series</strong><br><span class="url">developingdvlpr.com/series/vue-3-fundamentals</span></li><li><i class="fi fi-rr-microphone" aria-hidden="true"></i><strong>Slides</strong><br><span class="url">slides.developingdvlpr.com</span></li><li><i class="fi fi-rr-terminal" aria-hidden="true"></i><strong>Demo repo</strong><br><span class="url todo">TODO: add demo repo link</span></li></ul>
+  <p class="credit">Icons: Uicons by Flaticon · flaticon.com</p></div>
+  <aside class="notes">Point at the series for anyone who wants Vue next. Part 3 on reactivity backs up Act 1. Leave this up during Q&amp;A if the room allows it.</aside>
+</section>
+
+<section id="s53-statement" class="statement dark">
+  <h1 class="big">Progress over perfection.</h1>
+  <p class="sub">Let's go. 🚀</p>
+  <aside class="notes">Sign-off. Then straight into Questions.</aside>
+</section>
+
+<section id="s54-questions" class="questions dark has-media">
+  <figure class="media"><img src="assets/questions.gif" alt=""></figure>
+  <h1 class="big">Questions / FIN</h1>
+  <p class="sub"><strong>@Nerajno</strong> · developingdvlpr.com</p>
+  <aside class="notes">51:00. Nine minutes. Seed if quiet: with AI writing so much code now, do fundamentals still matter? Never cut Q&amp;A below 5 minutes.</aside>
+</section>
+
+<section id="s55-table" class="table backup">
+  <h2>Backup · Run of Show</h2>
+  <div class="content"><table><thead><tr><th>Block</th><th>Time</th><th>Length</th></tr></thead><tbody><tr><td>Opening hook</td><td>0:00–4:00</td><td>4 min</td></tr><tr><td>Foundation crisis</td><td>4:00–10:00</td><td>6 min</td></tr><tr><td>Act 1 · Data &amp; State</td><td>10:00–20:00</td><td>10 min</td></tr><tr><td>Act 2 · Functions &amp; Transformation</td><td>20:00–28:00</td><td>8 min</td></tr><tr><td>Act 3 · Async &amp; Resilience</td><td>28:00–38:00</td><td>10 min</td></tr><tr><td>Act 4 · Structure &amp; Communication</td><td>38:00–45:00</td><td>7 min</td></tr><tr><td>Spot the JavaScript</td><td>45:00–49:00</td><td>4 min</td></tr><tr><td>Close</td><td>49:00–51:00</td><td>2 min</td></tr><tr><td>Q&amp;A</td><td>51:00–60:00</td><td>9 min</td></tr></tbody></table></div>
+  <aside class="notes">Speaker prep only. Times live here and in the notes, never on audience-facing slides.</aside>
+</section>
+
+<section id="s56-twocol" class="twocol backup">
+  <h2>Backup · Where to Flex</h2>
+  <div class="content"><div class="two-col"><div><p class="col-head">Running long: cut in order</p><ol><li>Demo 4 → pre-written code reveal (~2 min)</li><li>Classes &amp; OOP → one slide (~2 min)</li><li>Spot the JavaScript → 2 min, presenter-led</li><li>Q&amp;A absorbs the rest. Never below 5 min.</li></ol></div><div><p class="col-head">Running short: add in order</p><ol><li>"What would break?" prediction before each demo (+1 min each)</li><li>Closures &amp; scope bonus, tied to composables (+3 min)</li><li>Second Spot the JavaScript component (+3 min)</li></ol></div></div></div>
+  <aside class="notes">Checkpoint is 28:00.</aside>
+</section>
+
+<section id="s57-bullets" class="bullets backup">
+  <h2>Backup · Demo Checklist</h2>
+  <div class="content"><ul><li>One branch per start state: <code>demo-1-start</code> … <code>demo-4-start</code></li><li>Weather API mocked with a local JSON file</li><li>60-second fallback recording for each demo</li><li>Editor at 22pt+, high-contrast theme</li><li>Notifications OFF, Wi-Fi optional</li></ul></div>
+  <aside class="notes">Run through this the night before and again 30 minutes before the talk.</aside>
+</section>
+
+    </div>
+  </div>
+
+  <div class="brand-bar" aria-hidden="true">
+    <span><span class="handle">@Nerajno</span> · <span class="tag">#TechBash2026</span></span>
+    <span>Back to Basics · <span class="num">1</span></span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script>
+    const EVENT_HASHTAG = '#TechBash2026';
+    document.querySelectorAll('.hashtag, .brand-bar .tag').forEach(el => el.textContent = EVENT_HASHTAG);
+
+    // Dark slides take their background from the --ink token (no hardcoded hex per slide).
+    const ink = getComputedStyle(document.documentElement).getPropertyValue('--ink').trim();
+    document.querySelectorAll('.slides section.dark').forEach(s => s.dataset.backgroundColor = ink);
+
+    // Sponsor logos: fall back to the sponsor's name if a file is missing.
+    document.querySelectorAll('.sponsor-grid .tile img').forEach(img => {
+      const fail = () => img.closest('.tile').classList.add('no-logo');
+      if (img.complete && img.naturalWidth === 0) fail(); else img.addEventListener('error', fail);
+    });
+
+    // Right-column images: drop the column if a file is missing.
+    document.querySelectorAll('.media img').forEach(img => {
+      const fail = () => {
+        // try the still image first (e.g. plot-twist.png when plot-twist.gif isn't there)
+        if (img.dataset.fallback && img.getAttribute('src') !== img.dataset.fallback) { img.src = img.dataset.fallback; return; }
+        img.closest('section').classList.remove('has-media'); img.closest('.media').remove();
+      };
+      if (img.complete && img.naturalWidth === 0) fail(); else img.addEventListener('error', fail);
+    });
+
+    // Respect reduced-motion preferences on the presenting machine.
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    Reveal.initialize({
+      width: 1280, height: 720, margin: 0,
+      controls: true, progress: true, hash: true,
+      transition: reduceMotion ? 'none' : 'slide', center: false,
+      plugins: [RevealNotes, RevealHighlight]
+    });
+
+    const bar = document.querySelector('.brand-bar');
+    const sync = () => {
+      const s = Reveal.getCurrentSlide();
+      bar.classList.toggle('on-dark', s.classList.contains('dark'));
+      bar.querySelector('.num').textContent = Reveal.getSlidePastCount() + 1;
+    };
+    Reveal.on('ready', sync);
+    Reveal.on('slidechanged', sync);
+  </script>
+</body>
+</html>

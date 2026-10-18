@@ -1,0 +1,20 @@
+---
+id: "2026-07-18-where-are-the-receipts-v2"
+title: "Where Are the Receipts (copy 2)"
+description: "A developer's guide to demonstrated competence — showing the receipts for what you can do."
+tags: ["career", "soft-skills"]
+slideCount: 42
+createdAt: "2026-07-18"
+updatedAt: "2026-07-18"
+revealBasePath: "/reveals/2026-07-18-where-are-the-receipts-v2"
+currentVersion: 1
+versions:
+  - version: 1
+    label: "copy 2 · Jul 18, 2026"
+    date: "2026-07-18"
+    revealFile: "v1.html"
+# Imported from ~/Downloads; flip to true once reviewed.
+displayedStatus: false
+---
+
+A developer's guide to demonstrated competence — showing the receipts for what you can do.

@@ -1,0 +1,1341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyond SEO: Optimizing Your Web Content for the Age of AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/monokai.min.css">
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* ===========================================
+   NERAJNO BRAND SYSTEM — Emerald + Amber
+   Altanta Cloud and AI Conf 2026
+   =========================================== */
+:root {
+  --background-color: #0f172a;
+  --section-divider-bg: #059669;
+
+  --heading-font: "Plus Jakarta Sans", Arial, sans-serif;
+  --body-font: "Plus Jakarta Sans", Arial, sans-serif;
+  --mono-font: "JetBrains Mono", monospace;
+  --base-font-size: 32px;
+  --text-size: 16pt;
+  --h1-size: 44pt;
+  --h2-size: 32pt;
+  --h3-size: 22pt;
+  --footnote-size: 10pt;
+
+  --primary-color: #059669;
+  --secondary-color: #d97706;
+  --text-color: #f1f5f9;
+  --muted-color: #94a3b8;
+  --line-color: #334155;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --emerald-dim: #064e3b;
+  --amber-dim: #78350f;
+
+  --slide-padding: 60px;
+  --slide-padding-top: 36px;
+  --content-gap: 20px;
+  --box-radius: 10px;
+}
+
+/* BASE */
+.reveal { font-family: var(--body-font); font-size: var(--base-font-size); }
+.reveal-viewport { background-color: var(--background-color); }
+.reveal strong, .reveal b { font-weight: 700; }
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: var(--heading-font);
+  text-transform: none;
+  color: var(--text-color);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.reveal h1 { font-size: var(--h1-size); }
+.reveal h2 { font-size: var(--h2-size); margin-bottom: 0; }
+.reveal h3 { font-size: var(--h3-size); color: var(--muted-color); font-weight: 500; }
+
+.reveal p, .reveal li, .reveal td, .reveal th, .reveal blockquote {
+  font-size: var(--text-size);
+  color: var(--text-color);
+  line-height: 1.55;
+}
+
+/* LISTS */
+.reveal ul { list-style: none; padding-left: 0; margin: 12px 0; }
+.reveal ul li { position: relative; padding-left: 28px; margin-bottom: 10px; }
+.reveal ul li::before {
+  content: ''; position: absolute; left: 0; top: 0.6em;
+  width: 8px; height: 8px; background: var(--primary-color); border-radius: 50%;
+}
+.reveal ul ul li::before { background: var(--secondary-color); width: 6px; height: 6px; }
+
+/* SLIDE LAYOUT */
+.reveal .slides section {
+  height: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: var(--slide-padding-top) var(--slide-padding) var(--slide-padding) var(--slide-padding) !important;
+  box-sizing: border-box;
+  text-align: left;
+}
+.reveal .slides section.stack { padding: 0 !important; }
+.reveal .slides section > .content {
+  flex: 1; display: flex; flex-direction: column; justify-content: flex-start;
+  padding-top: var(--content-gap); text-align: left;
+}
+.reveal .slides section > .footnote {
+  position: absolute; bottom: 15px;
+  left: var(--slide-padding); right: var(--slide-padding);
+  font-size: var(--footnote-size); color: var(--muted-color);
+}
+
+/* SECTION DIVIDERS */
+.reveal .slides section.section-divider {
+  display: flex !important; flex-direction: column !important;
+  justify-content: center !important; align-items: center !important;
+  text-align: center;
+}
+.reveal .slides section.section-divider h1 { font-size: 52pt; text-align: center; color: #fff; }
+.reveal .slides section.section-divider p { font-size: 20pt; color: rgba(255,255,255,0.85); }
+.reveal .slides section.section-divider .act-label {
+  font-size: 11pt; text-transform: uppercase; letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.7); font-family: var(--mono-font);
+  margin-bottom: 16px; display: block;
+}
+
+/* TOP BAR ACCENT */
+.reveal .slides section:not(.section-divider)::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+/* CARDS */
+.card {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: var(--box-radius); padding: 18px 22px;
+}
+.card-emerald {
+  background: var(--emerald-dim); border: 1px solid var(--primary-color);
+  border-radius: var(--box-radius); padding: 18px 22px;
+}
+.card-amber {
+  background: var(--amber-dim); border: 1px solid var(--secondary-color);
+  border-radius: var(--box-radius); padding: 18px 22px;
+}
+.card-ghost {
+  border: 2px dashed var(--card-border);
+  border-radius: var(--box-radius); padding: 18px 22px; opacity: 0.65;
+}
+.card p, .card li, .card-emerald p, .card-emerald li,
+.card-amber p, .card-amber li, .card-ghost p { color: var(--text-color); }
+
+/* COLUMNS */
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.cols-60-40 { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; }
+
+/* COMPARISON TABLE */
+.compare-table { width: 100%; border-collapse: collapse; }
+.compare-table th {
+  background: var(--card-bg); color: var(--text-color);
+  padding: 9px 12px; border: 1px solid var(--card-border);
+  font-weight: 700; font-size: 13pt;
+}
+.compare-table th.col-emerald { background: var(--emerald-dim); color: #6ee7b7; border-color: var(--primary-color); }
+.compare-table th.col-amber { background: var(--amber-dim); color: #fcd34d; border-color: var(--secondary-color); }
+.compare-table td {
+  padding: 8px 12px; border: 1px solid var(--card-border);
+  font-size: 12pt; color: var(--text-color); vertical-align: top;
+}
+.compare-table tr:nth-child(odd) td { background: #1a2540; }
+.compare-table tr:nth-child(even) td { background: var(--card-bg); }
+.compare-table td:first-child {
+  font-family: var(--mono-font); font-weight: 600;
+  color: var(--muted-color); font-size: 11pt;
+}
+
+/* CODE BLOCKS */
+.reveal pre {
+  border-radius: var(--box-radius); font-size: 12pt;
+  background: #0d1117; border: 1px solid var(--card-border); box-shadow: none; width: 100%;
+}
+.reveal pre code { font-family: var(--mono-font); padding: 14px 18px; font-size: 11pt; line-height: 1.5; }
+
+/* BLOCKQUOTES */
+.reveal blockquote {
+  border-left: 4px solid var(--secondary-color); padding-left: 20px; margin: 14px 0;
+  font-style: italic; background: none; box-shadow: none; width: 100%; max-width: none;
+}
+.reveal blockquote cite { display: block; margin-top: 8px; font-style: normal; color: var(--muted-color); font-size: 13pt; }
+.reveal blockquote p { font-size: inherit; }
+
+/* CHIPS */
+.chip {
+  display: inline-block; padding: 3px 12px; border-radius: 99px;
+  font-size: 11pt; font-family: var(--mono-font); font-weight: 600; letter-spacing: 0.04em;
+}
+.chip-emerald { background: var(--emerald-dim); color: #6ee7b7; border: 1px solid var(--primary-color); }
+.chip-amber   { background: var(--amber-dim);   color: #fcd34d; border: 1px solid var(--secondary-color); }
+.chip-slate   { background: #1e293b; color: var(--muted-color); border: 1px solid #475569; }
+
+/* IMAGE PLACEHOLDERS */
+.img-placeholder {
+  background: #1e293b; border: 2px dashed #475569; border-radius: var(--box-radius);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; color: var(--muted-color); font-size: 12pt; font-family: var(--mono-font); min-height: 180px;
+}
+.img-placeholder i { font-size: 26pt; color: #475569; }
+
+/* FEATURE ROWS */
+.feature-row { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+.feature-row .icon-wrap {
+  width: 36px; height: 36px; border-radius: 8px; background: var(--emerald-dim);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+}
+.feature-row .icon-wrap i { color: var(--primary-color); font-size: 14pt; }
+.feature-row .icon-wrap.amber-icon { background: var(--amber-dim); }
+.feature-row .icon-wrap.amber-icon i { color: var(--secondary-color); }
+.feature-row p { margin: 0; font-size: 15pt; }
+
+/* STAT NUMBERS */
+.stat-number { font-size: 48pt; font-weight: 800; line-height: 1; color: var(--primary-color); }
+.stat-number.amber { color: var(--secondary-color); }
+
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; gap: 14px; }
+.timeline-item { display: flex; gap: 16px; align-items: flex-start; }
+.timeline-dot {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--primary-color);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 12pt; font-family: var(--mono-font); font-weight: 700; color: #fff; margin-top: 2px;
+}
+.timeline-dot.amber { background: var(--secondary-color); }
+.timeline-item p { margin: 0; font-size: 15pt; }
+
+/* CONNECT LINKS */
+.connect-links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+.connect-link {
+  display: flex; align-items: center; gap: 8px; font-size: 13pt;
+  font-family: var(--mono-font); color: var(--text-color);
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  padding: 8px 18px; border-radius: var(--box-radius);
+}
+.connect-link i { color: var(--primary-color); }
+
+/* TEXT UTILITIES */
+.text-lg  { font-size: 18pt !important; }
+.text-xl  { font-size: 20pt !important; }
+.text-2xl { font-size: 24pt !important; }
+.text-3xl { font-size: 28pt !important; }
+.text-4xl { font-size: 32pt !important; }
+.text-muted { color: var(--muted-color) !important; }
+.text-center { text-align: center !important; }
+.text-emerald { color: var(--primary-color) !important; }
+.text-amber { color: var(--secondary-color) !important; }
+.text-uppercase { text-transform: uppercase; letter-spacing: 0.1em; }
+.font-mono { font-family: var(--mono-font) !important; }
+.font-bold { font-weight: 700; }
+
+/* TITLE SLIDE */
+.title-eyebrow {
+  font-size: 11pt; text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--primary-color); font-family: var(--mono-font); font-weight: 600;
+  margin-bottom: 12px; display: block;
+}
+
+</style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+<section>
+  <div style="display:flex;flex-direction:column;height:100%;justify-content:center;">
+    <span class="title-eyebrow">Atlanta Cloud + AI Conf 2026</span>
+    <h1 style="font-size:40pt;line-height:1.1;margin-bottom:20px;">
+      Beyond SEO:<br>
+      <span class="text-emerald">Optimizing Your Web Content</span><br>
+      for the Age of AI
+    </h1>
+    <p class="text-muted" style="font-size:18pt;margin-bottom:24px;">A developer's guide to Generative Engine Optimization (GEO)</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;">
+      <span class="chip chip-emerald"><i class="fa-solid fa-magnifying-glass" style="margin-right:6px;"></i>SEO</span>
+      <span style="color:var(--muted-color);align-self:center;">&#x2192;</span>
+      <span class="chip chip-slate"><i class="fa-solid fa-comment-dots" style="margin-right:6px;"></i>AEO</span>
+      <span style="color:var(--muted-color);align-self:center;">&#x2192;</span>
+      <span class="chip chip-amber"><i class="fa-solid fa-robot" style="margin-right:6px;"></i>GEO</span>
+    </div>
+    <p style="font-size:14pt;color:var(--muted-color);font-family:var(--mono-font);">@nerajno &nbsp;&#xb7;&nbsp; developingdvlpr.com</p>
+  </div>
+  <aside class="notes">Welcome everyone. Quick show of hands: how many of you have asked an AI assistant something instead of Googling it this week? That shift is exactly what this talk is about.</aside>
+</section>
+
+<section>
+  <h2>Who I Am</h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fa-solid fa-code" style="color:var(--primary-color);"></i>
+          </div>
+          <p><strong>Jnr Frontend Engineer</strong> @ Hygiena<br><span class="text-muted">Vue 3 &bull; TypeScript &bull; Astro &bull; Nuxt</span></p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fa-solid fa-pen-nib" style="color:var(--primary-color);"></i>
+          </div>
+          <p><strong>Future Content Creator</strong><br><span class="text-muted"> Vue 3 Fundamentals</span></p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fa-solid fa-microphone" style="color:var(--secondary-color);"></i>
+          </div>
+          <p><strong>Conference/Lightning Talk Speaker</strong><br><span class="text-muted">DevNexus &bull; Connect.Tech &bull; Carolina Codes &bull; Nebraska.Code()</span></p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fa-solid fa-people-group" style="color:var(--primary-color);"></i>
+          </div>
+          <p><strong>former Organizer</strong> &mdash; Atlanta freeCodeCamp (600+ members and 5+ years of Meetups)</p>
+        </div>
+        <p style="margin-top:16px;font-size:14pt;font-style:italic;" class="text-muted font-mono">Progress over perfection. Let's go.</p>
+      </div>
+      <div>
+        <div class="img-placeholder" style="min-height:260px;">
+          <i class="fa-solid fa-user-circle"></i>
+            <img  src="/images/speaker-photo.jpg" alt="Speaker Photo" class="speaker-photo" />
+          <p>[ Speaker Photo ]</p>
+        </div>
+        <p style="font-size:12pt;text-align:center;margin-top:10px;" class="text-muted font-mono">@nerajno</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Let's Run an Experiment</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:18px;">Open your AI assistant &mdash; ChatGPT, Perplexity, Gemini &mdash; and ask:</p>
+    <div class="card-emerald" style="margin-bottom:16px;">
+      <p style="font-size:17pt;font-family:var(--mono-font);font-style:italic;margin:0;">"Who are the developers writing about Vue 3 in Atlanta?"</p>
+    </div>
+    <div class="card-amber" style="margin-bottom:16px;">
+      <p style="font-size:17pt;font-family:var(--mono-font);font-style:italic;margin:0;">"What's the best way to handle routing in a Vue 3 app?"</p>
+    </div>
+    <p style="font-size:17pt;margin-bottom:14px;">Did <strong>your name</strong> come up? Did <strong>your article</strong> get cited?</p>
+    <div class="img-placeholder" style="min-height:120px;">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <p>[ Screenshot: AI response with (or without) your citation ]</p>
+    </div>
+  </div>
+  <aside class="notes">Give the audience 30 seconds to actually try this. The silence when their names don't appear IS the talk. That moment of "wait, I write about this" is the problem we're solving today.</aside>
+</section>
+
+<section>
+  <h2>The Problem</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:18px;">
+      <div class="card-emerald">
+        <p style="margin:0 0 8px;font-size:12pt;font-family:var(--mono-font);color:#6ee7b7;">WHAT YOU BUILT</p>
+        <ul style="margin:0;">
+          <li>Well-coded &#x2713;</li>
+          <li>Fast (Core Web Vitals) &#x2713;</li>
+          <li>Accessible (WCAG 2.2) &#x2713;</li>
+          <li>SEO-optimized &#x2713;</li>
+        </ul>
+      </div>
+      <div class="card-amber">
+        <p style="margin:0 0 8px;font-size:12pt;font-family:var(--mono-font);color:#fcd34d;">WHAT AI SEES</p>
+        <ul style="margin:0;">
+          <li>Unstructured content</li>
+          <li>No entity clarity</li>
+          <li>Missing structured data</li>
+          <li>Vague, non-citable writing</li>
+        </ul>
+      </div>
+    </div>
+    <blockquote>
+      <p>Your content isn't invisible because it's bad. It's invisible because it's not structured for <strong>how AI engines ingest and cite information.</strong></p>
+    </blockquote>
+    <p class="text-muted" style="margin-top:14px;">Traditional SEO taught us to optimize for <strong class="text-emerald">keyword ranking</strong>. GEO is the next layer &mdash; and most developers don't know it exists yet.</p>
+  </div>
+  <aside class="notes">This is the core tension. We've done everything right by the playbook we learned. But the playbook now has a new layer on top or a new chapter.</aside>
+</section>
+
+<section>
+  <h2>Today's Roadmap</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:18px;">Two acts. Zero to implementation.</p>
+    <div class="cols-2">
+      <div class="card-emerald">
+        <p style="margin:0 0 8px;font-size:11pt;font-family:var(--mono-font);color:#6ee7b7;text-transform:uppercase;letter-spacing:0.1em;">Act 1 &mdash; ~20 min</p>
+        <p style="margin:0 0 8px;"><strong>GEO Explained</strong></p>
+        <ul>
+          <li>SEO &rarr; AEO &rarr; GEO evolution</li>
+          <li>How they differ (and overlap)</li>
+          <li>Why AI needs different signals</li>
+          <li>The career opportunity</li>
+        </ul>
+      </div>
+      <div class="card-amber">
+        <p style="margin:0 0 8px;font-size:11pt;font-family:var(--mono-font);color:#fcd34d;text-transform:uppercase;letter-spacing:0.1em;">Act 2 &mdash; ~25 min</p>
+        <p style="margin:0 0 8px;"><strong>GEO Applied</strong></p>
+        <ul>
+          <li>The 3 core pillars</li>
+          <li>Live Astro component walkthrough</li>
+          <li>JSON-LD schema patterns</li>
+          <li>How to measure it</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <p style="margin:0;font-size:15pt;"><i class="fa-solid fa-arrow-right text-emerald" style="margin-right:8px;"></i>You'll leave with <strong>copy-paste patterns</strong> you can implement this week.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-divider" data-state="is-section-divider" data-background-color="#059669">
+  <span class="act-label">Act 1</span>
+  <h1>GEO Explained</h1>
+  <p>Three eras. One fundamental goal.</p>
+  <aside class="notes">Let's understand how we got here — and what makes GEO genuinely different.</aside>
+</section>
+
+<section>
+  <h2>Three Eras of Search</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:16px;">Same fundamental goal &mdash; <strong>get your content found</strong> &mdash; different engines, different outputs.</p>
+    <div class="cols-3">
+      <div class="card">
+        <p style="font-size:11pt;font-family:var(--mono-font);color:var(--muted-color);margin:0 0 6px;">Era 1 &mdash; 1990s&ndash;now</p>
+        <p style="font-size:22pt;font-weight:800;color:var(--primary-color);margin:0 0 4px;">SEO</p>
+        <p style="margin:0;font-size:14pt;">Search Engine Optimization</p>
+        <p class="text-muted" style="font-size:12pt;margin:8px 0 0;">Google, Bing &bull; Blue links &bull; Rankings</p>
+      </div>
+      <div class="card" style="border-color:#7c3aed;background:#1e1b4b;">
+        <p style="font-size:11pt;font-family:var(--mono-font);color:#a78bfa;margin:0 0 6px;">Era 2 &mdash; 2015&ndash;now</p>
+        <p style="font-size:22pt;font-weight:800;color:#a78bfa;margin:0 0 4px;">AEO</p>
+        <p style="margin:0;font-size:14pt;">Answer Engine Optimization</p>
+        <p class="text-muted" style="font-size:12pt;margin:8px 0 0;">Featured snippets &bull; Voice &bull; Zero-click</p>
+      </div>
+      <div class="card-amber">
+        <p style="font-size:11pt;font-family:var(--mono-font);color:#fcd34d;margin:0 0 6px;">Era 3 &mdash; NOW</p>
+        <p style="font-size:22pt;font-weight:800;color:var(--secondary-color);margin:0 0 4px;">GEO</p>
+        <p style="margin:0;font-size:14pt;">Generative Engine Optimization</p>
+        <p style="font-size:12pt;margin:8px 0 0;color:rgba(255,255,255,0.7);">ChatGPT &bull; Perplexity &bull; AI Overviews &bull; Claude</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <p style="margin:0;font-size:15pt;"><i class="fa-solid fa-triangle-exclamation text-amber" style="margin-right:8px;"></i>A single query can hit <strong>all three simultaneously</strong>. Optimize for only one and you're invisible in the others.</p>
+    </div>
+  </div>
+  <aside class="notes">These are layers, not replacements. SEO didn't die when AEO emerged. They stack.</aside>
+</section>
+
+<section>
+  <h2>SEO &mdash; <span class="text-emerald">Ranking</span></h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:14px;font-size:16pt;">Targets traditional search engines. Output: a <strong>ranked list of blue links</strong>. User still has to click through.</p>
+        <p style="margin-bottom:10px;font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);">KEY LEVERS:</p>
+        <ul>
+          <li>Keyword density &amp; semantic relevance</li>
+          <li>Backlinks &amp; domain authority</li>
+          <li>Core Web Vitals (LCP, INP, CLS)</li>
+          <li>Crawlability &amp; site architecture</li>
+          <li>Meta tags, canonical URLs, sitemaps</li>
+        </ul>
+        <div class="card-emerald" style="margin-top:14px;">
+          <p style="margin:0;font-size:14pt;"><strong>You win when:</strong> your page appears at the top of results and the user clicks through.</p>
+        </div>
+      </div>
+      <div>
+        <div style="text-align:center;padding:20px 10px;">
+          <div class="stat-number" style="font-size:40pt;">92%</div>
+          <p class="text-muted" style="font-size:13pt;margin-top:4px;">of clicks go to<br>page one results</p>
+        </div>
+        <div class="img-placeholder" style="min-height:130px;margin-top:8px;">
+          <i class="fa-brands fa-google"></i>
+          <p>[ Google SERP screenshot ]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>AEO &mdash; <span style="color:#a78bfa;">Being the Answer</span></h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:14px;font-size:16pt;">Same search engines as SEO &mdash; but optimizes for the <strong>answer box</strong> that appears before any links.</p>
+        <p style="margin-bottom:10px;font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);">KEY LEVERS:</p>
+        <ul>
+          <li><strong>Schema markup:</strong> FAQPage, HowTo, Speakable</li>
+          <li>Concise question &rarr; answer formatting</li>
+          <li>Structured data &amp; rich results</li>
+          <li>Voice search optimization</li>
+        </ul>
+        <div class="card" style="margin-top:14px;border-color:#7c3aed;background:#1e1b4b;">
+          <p style="margin:0;font-size:14pt;"><strong>You win when:</strong> Google or Siri reads your content without the user ever visiting your site.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-color:#7c3aed;margin-bottom:10px;">
+          <p style="margin:0 0 4px;font-size:13pt;font-weight:700;color:#a78bfa;">Featured Snippet</p>
+          <p style="margin:0;font-size:13pt;">Pulled answer &mdash; no click required</p>
+        </div>
+        <div class="card" style="border-color:#7c3aed;margin-bottom:10px;">
+          <p style="margin:0 0 4px;font-size:13pt;font-weight:700;color:#a78bfa;">Zero-click Result</p>
+          <p style="margin:0;font-size:13pt;">User reads the box. You may not get the visit.</p>
+        </div>
+        <div class="img-placeholder" style="min-height:100px;margin-top:8px;">
+          <i class="fa-solid fa-quote-left"></i>
+          <p>[ Featured snippet screenshot ]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">AEO is the middle child most developers skip entirely. Schema markup is table stakes for modern search.</aside>
+</section>
+
+<section>
+  <h2>GEO &mdash; <span class="text-amber">Being Cited</span></h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:14px;font-size:16pt;">Built for AI-native tools. These engines don't return links &mdash; they <strong>synthesize a response</strong> across multiple sources.</p>
+        <p style="margin-bottom:10px;font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);">KEY LEVERS:</p>
+        <ul>
+          <li><strong>Entity authority</strong> &mdash; clearly defined person/brand</li>
+          <li>Content credibility signals</li>
+          <li>Structured data LLM crawlers can parse</li>
+          <li>Being referenced by sources AI trusts</li>
+          <li>Self-contained, citable paragraphs</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card-amber" style="margin-bottom:12px;">
+          <p style="margin:0 0 8px;font-size:12pt;font-family:var(--mono-font);color:#fcd34d;">AI TOOLS TARGETED:</p>
+          <ul style="margin:0;">
+            <li>ChatGPT Search</li>
+            <li>Perplexity AI</li>
+            <li>Google AI Overviews</li>
+            <li>Claude &bull; Gemini</li>
+          </ul>
+        </div>
+        <div class="card">
+          <p style="margin:0;font-size:14pt;"><strong class="text-amber">You win when:</strong> an AI mentions your name or cites your content <em>inside its synthesized answer.</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">The failure mode is brutal: the AI hallucinates your data, gets facts wrong, or ignores you entirely. The win is being the source it trusts.</aside>
+</section>
+
+<section>
+  <h2>SEO &middot; AEO &middot; GEO &mdash; Side by Side</h2>
+  <div class="content">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:15%;">Dimension</th>
+          <th>SEO</th>
+          <th>AEO</th>
+          <th class="col-amber">GEO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Targets</td><td>Search engine ranking algo</td><td>Featured snippet / voice</td><td>LLM answer synthesis</td></tr>
+        <tr><td>Output</td><td>Blue link on SERP</td><td>Direct pulled answer</td><td>Citation inside AI response</td></tr>
+        <tr><td>User action</td><td>Clicks your link</td><td>Reads the box (may not click)</td><td>Reads AI answer (may not see you)</td></tr>
+        <tr><td>Key tools</td><td>Keywords, backlinks, CWV</td><td>Schema, structured Q&amp;A</td><td>Entity clarity, JSON-LD, trust signals</td></tr>
+        <tr><td>Visibility</td><td>You own the click</td><td>You own the answer</td><td>You influence the synthesis</td></tr>
+        <tr><td>Failure mode</td><td>Low ranking</td><td>Competitor owns answer box</td><td>AI hallucinates or ignores you</td></tr>
+      </tbody>
+    </table>
+    <p class="text-muted" style="margin-top:12px;font-size:13pt;font-family:var(--mono-font);">Photo this slide &#x2014; you'll want it later.</p>
+  </div>
+  <aside class="notes">The key column: GEO. User action is "reads AI answer, may not see you." You're optimizing for influence, not clicks. That's a fundamentally different game.</aside>
+</section>
+
+<section>
+  <h2>The Triple Hit Scenario</h2>
+  <div class="content">
+    <div class="card-emerald" style="margin-bottom:16px;">
+      <p style="margin:0;font-family:var(--mono-font);font-size:16pt;font-style:italic;color:#d1fae5;">"Best Vue 3 router tutorials"</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">1</div>
+        <p><strong class="text-amber">Google AI Overview</strong> (GEO) &mdash; synthesized answer at the very top, sourcing 3&ndash;5 sites. Yours or theirs?</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">2</div>
+        <p><strong style="color:#a78bfa;">Featured Snippet</strong> (AEO) &mdash; pulled from a well-structured FAQ. Step-by-step preview. Click optional.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot amber">3</div>
+        <p><strong class="text-emerald">Blue Links</strong> (SEO) &mdash; ten ranked links below everything. The user may never scroll here.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px;">
+      <p style="margin:0;font-size:15pt;"><i class="fa-solid fa-triangle-exclamation text-amber" style="margin-right:8px;"></i>If you've only optimized for SEO, you're <strong>invisible in the first two results</strong> the user actually sees.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How AI Engines Actually Work</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:16px;">LLMs don't scroll like a human. They parse, chunk, and weight signals.</p>
+    <div class="cols-2">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">WHAT THEY LOOK FOR:</p>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-tag" style="color:var(--primary-color);"></i></div>
+          <p><strong>Semantic HTML</strong> &mdash; article, section, h1&ndash;h6 hierarchy signals content structure</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-database" style="color:var(--primary-color);"></i></div>
+          <p><strong>JSON-LD Schema</strong> &mdash; machine-readable metadata LLM crawlers prioritize</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-fingerprint" style="color:var(--secondary-color);"></i></div>
+          <p><strong>Entity clarity</strong> &mdash; consistent, cross-referenced author identity</p>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">WHAT KILLS CITABILITY:</p>
+        <ul>
+          <li>"As mentioned above&hellip;"</li>
+          <li>Vague pronoun references</li>
+          <li>Content requiring page context to parse</li>
+          <li>No author identity signals</li>
+          <li>Missing or invalid structured data</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-amber" style="margin-top:14px;">
+      <p style="margin:0;font-size:15pt;">AI needs content that is <strong>self-contained, explicit, and verifiable</strong> &mdash; each paragraph should make sense extracted from context.</p>
+    </div>
+  </div>
+  <aside class="notes">Think of an LLM crawler as a very fast, very literal reader who can't scroll back up. "As I mentioned above" is a broken citation.</aside>
+</section>
+
+<section>
+  <h2>The Career Opportunity</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:18px;">
+      <div style="text-align:center;padding:16px 10px;">
+        <div class="stat-number amber" style="font-size:44pt;">Low</div>
+        <p style="margin-top:4px;font-size:16pt;">Competition<br><span class="text-muted font-mono" style="font-size:12pt;">Most devs don't know GEO exists yet</span></p>
+      </div>
+      <div style="text-align:center;padding:16px 10px;">
+        <div class="stat-number" style="font-size:44pt;">High</div>
+        <p style="margin-top:4px;font-size:16pt;">Demand<br><span class="text-muted font-mono" style="font-size:12pt;">Every content team needs this in 12&ndash;18 months</span></p>
+      </div>
+    </div>
+    <blockquote>
+      <p>Developers who learn GEO now will be the ones <strong>defining team standards</strong> and consulting on content strategy in 12&ndash;18 months.</p>
+    </blockquote>
+    <div class="cols-3" style="margin-top:14px;">
+      <div class="card"><p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:var(--primary-color);">SHORT TERM</p><p style="margin:0;font-size:14pt;">Apply to your portfolio &amp; blog today</p></div>
+      <div class="card"><p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:var(--secondary-color);">MID TERM</p><p style="margin:0;font-size:14pt;">Become the GEO lead on your team</p></div>
+      <div class="card"><p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:#a78bfa;">LONG TERM</p><p style="margin:0;font-size:14pt;">Consulting, content strategy, conference talks</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-divider" data-state="is-section-divider" data-background-color="#059669">
+  <span class="act-label">Act 2</span>
+  <h1>GEO Applied</h1>
+  <p>From theory to implementation.</p>
+  <aside class="notes">Everything from here is something you can open your editor and implement today.</aside>
+</section>
+
+<section>
+  <h2>The 3 Core Pillars of GEO</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:16px;">Every GEO optimization traces back to one of these three.</p>
+    <div class="cols-3">
+      <div class="card-emerald" style="text-align:center;padding:22px 16px;">
+        <i class="fa-solid fa-code" style="font-size:26pt;color:#6ee7b7;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:16pt;font-weight:700;margin:0 0 6px;">Semantic HTML<br>Structure</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Proper heading hierarchy, landmark elements, meaningful markup</p>
+      </div>
+      <div class="card" style="text-align:center;padding:22px 16px;border-color:#7c3aed;background:#1e1b4b;">
+        <i class="fa-solid fa-align-left" style="font-size:26pt;color:#a78bfa;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:16pt;font-weight:700;margin:0 0 6px;">Explicit Content<br>Formatting</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Self-contained paragraphs, direct answers, citable writing</p>
+      </div>
+      <div class="card-amber" style="text-align:center;padding:22px 16px;">
+        <i class="fa-solid fa-database" style="font-size:26pt;color:#fcd34d;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:16pt;font-weight:700;margin:0 0 6px;">Structured Data<br>Markup</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">JSON-LD schema that LLM crawlers parse and trust</p>
+      </div>
+    </div>
+    <p class="text-muted" style="margin-top:18px;font-size:15pt;"><i class="fa-solid fa-circle-info text-emerald" style="margin-right:6px;"></i>These pillars also strengthen AEO and SEO &mdash; it's a rising tide that lifts all three.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Pillar 1 &mdash; Semantic HTML Structure</h2>
+  <div class="content">
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:8px;font-size:12pt;font-family:var(--mono-font);color:#ef4444;">&#x2717; GENERIC / AI-INVISIBLE</p>
+        <pre><code class="language-html">&lt;div class="blog-post"&gt;
+  &lt;div class="title"&gt;
+    My Tutorial
+  &lt;/div&gt;
+  &lt;div class="body"&gt;
+    &lt;div&gt;Step one...&lt;/div&gt;
+    &lt;div&gt;Step two...&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+      <div>
+        <p style="margin-bottom:8px;font-size:12pt;font-family:var(--mono-font);color:#6ee7b7;">&#x2713; SEMANTIC / GEO-READY</p>
+        <pre><code class="language-html">&lt;article&gt;
+  &lt;header&gt;
+    &lt;h1&gt;How to Handle State
+        in Vue 3&lt;/h1&gt;
+    &lt;time datetime="2026-01-15"&gt;
+      Jan 2026&lt;/time&gt;
+    &lt;address&gt;
+      By Nerando Johnson
+    &lt;/address&gt;
+  &lt;/header&gt;
+  &lt;section&gt;
+    &lt;h2&gt;Why Pinia Over Vuex&lt;/h2&gt;
+    &lt;p&gt;Pinia is the recommended...&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/article&gt;</code></pre>
+      </div>
+    </div>
+    <div class="card-emerald" style="margin-top:12px;">
+      <p style="margin:0;font-size:14pt;"><strong>Rule:</strong> Use article, section, header, address, time. Each signals <em>meaning</em>, not just layout. LLMs weight these heavily.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Pillar 2 &mdash; Explicit Content Formatting</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:14px;">
+      <div class="card" style="border-color:#ef4444;background:#1a0a0a;">
+        <p style="margin:0 0 8px;font-size:11pt;font-family:var(--mono-font);color:#ef4444;">&#x2717; KILLS AI DISCOVERABILITY</p>
+        <ul>
+          <li>"As mentioned above, this approach&hellip;"</li>
+          <li>"We looked at this earlier, but&hellip;"</li>
+          <li>"It depends on what you're building."</li>
+          <li>"See the next section for details."</li>
+        </ul>
+      </div>
+      <div class="card-emerald">
+        <p style="margin:0 0 8px;font-size:11pt;font-family:var(--mono-font);color:#6ee7b7;">&#x2713; CITABLE / SELF-CONTAINED</p>
+        <ul>
+          <li>Every paragraph answers a specific question</li>
+          <li>Subject always explicit &mdash; no dangling pronouns</li>
+          <li>Direct assertions: "Pinia is the official Vue 3 state manager"</li>
+          <li>Definitions included inline, not referenced elsewhere</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-amber">
+      <p style="margin:0 0 6px;font-size:14pt;"><strong>The Litmus Test:</strong></p>
+      <p style="margin:0;font-size:15pt;font-style:italic;">"If someone extracted just this paragraph and read it with no context, would it still make complete sense?"</p>
+      <p style="margin:8px 0 0;font-size:14pt;">If no &rarr; rewrite it. AI will skip it.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Pillar 3 &mdash; Structured Data Markup</h2>
+  <div class="content">
+    <div class="cols-60-40" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:14px;font-size:16pt;">JSON-LD is the language of structured data. It lives in your &lt;head&gt; and tells AI crawlers exactly what your content is.</p>
+        <p style="margin-bottom:10px;font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);">3 SCHEMA TYPES YOU NEED:</p>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-newspaper" style="color:var(--primary-color);"></i></div>
+          <p><strong>BlogPosting</strong> &mdash; for every article, tutorial, and blog entry</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-circle-question" style="color:var(--secondary-color);"></i></div>
+          <p><strong>FAQPage</strong> &mdash; maps directly to how users query AI platforms</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:#1e1b4b;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #7c3aed;"><i class="fa-solid fa-user" style="color:#a78bfa;"></i></div>
+          <p><strong>Person</strong> &mdash; establishes <em>you</em> as a known, citable entity</p>
+        </div>
+      </div>
+      <div>
+        <div class="card-amber">
+          <p style="margin:0 0 6px;font-size:12pt;font-family:var(--mono-font);color:#fcd34d;">WHY JSON-LD?</p>
+          <ul style="margin:0;">
+            <li>Doesn't pollute your HTML</li>
+            <li>Easy to add in Astro/Vue &lt;head&gt;</li>
+            <li>Google + LLM crawlers parse it</li>
+            <li>Validated by Rich Results Test</li>
+          </ul>
+        </div>
+        <div class="img-placeholder" style="min-height:110px;margin-top:12px;">
+          <i class="fa-solid fa-code"></i>
+          <p>[ JSON-LD in DevTools ]</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>JSON-LD &mdash; <span class="text-emerald">BlogPosting Schema</span></h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:10px;font-size:14pt;">Add this to your Astro layout or Vue &lt;head&gt; component:</p>
+    <pre><code class="language-json" data-line-numbers="1-3|4-11|12-18">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to Handle State Management in Vue 3 with Pinia",
+  "author": {
+    "@type": "Person",
+    "name": "Nerando Johnson",
+    "url": "https://developingdvlpr.com",
+    "sameAs": [
+      "https://linkedin.com/in/nerajno",
+      "https://bsky.app/profile/nerajno.bsky.social"
+    ]
+  },
+  "datePublished": "2026-01-15",
+  "dateModified": "2026-02-01",
+  "description": "A complete guide to Vue 3 state management using Pinia...",
+  "url": "https://developingdvlpr.com/blog/vue3-pinia-state",
+  "keywords": ["Vue 3", "Pinia", "state management", "frontend"]
+}</code></pre>
+    <div class="card-emerald" style="margin-top:10px;">
+      <p style="margin:0;font-size:14pt;"><strong>author.sameAs</strong> is your entity signal &mdash; it links your identity across platforms. Don't skip it.</p>
+    </div>
+  </div>
+  <aside class="notes">The sameAs array is the secret weapon. AI knowledge graphs see "Nerando Johnson on site X = Nerando Johnson on site Y" and build entity authority.</aside>
+</section>
+
+<section>
+  <h2>JSON-LD &mdash; <span class="text-amber">FAQPage Schema</span></h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:10px;font-size:14pt;">FAQs map directly to how users query AI tools. Make them explicit:</p>
+    <pre><code class="language-json">{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What is the difference between Pinia and Vuex in Vue 3?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Pinia is the official state management library for Vue 3,
+               replacing Vuex. Pinia offers a simpler API, better TypeScript
+               support, and native DevTools integration. Unlike Vuex,
+               Pinia uses a store-per-feature pattern with no mutations."
+    }
+  }]
+}</code></pre>
+    <div class="cols-2" style="margin-top:10px;">
+      <div class="card-amber"><p style="margin:0;font-size:13pt;"><strong>Each answer must be fully self-contained.</strong> Write it as a direct response to the AI query &mdash; no "see our full guide."</p></div>
+      <div class="card"><p style="margin:0;font-size:13pt;">Match your questions to <strong>real queries</strong> people ask ChatGPT, Perplexity, and Google AI.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>JSON-LD &mdash; <span style="color:#a78bfa;">Person Schema</span></h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:10px;font-size:14pt;">The most important schema for your portfolio &mdash; makes <em>you</em> a citable entity:</p>
+    <pre><code class="language-json">{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Nerando Johnson",
+  "alternateName": "Nerajno",
+  "url": "https://developingdvlpr.com",
+  "jobTitle": "Frontend Software Engineer",
+  "knowsAbout": ["Vue 3", "Astro", "TypeScript", "GEO", "Web Accessibility"],
+  "worksFor": { "@type": "Organization", "name": "Hygiena" },
+  "sameAs": [
+    "https://linkedin.com/in/nerajno",
+    "https://github.com/nerajno",
+    "https://bsky.app/profile/nerajno.bsky.social"
+  ],
+  "description": "Frontend engineer in Atlanta, GA specializing in Vue 3,
+                  Astro, and web accessibility."
+}</code></pre>
+    <div class="card-emerald" style="margin-top:10px;">
+      <p style="margin:0;font-size:14pt;"><strong>knowsAbout</strong> is your expertise signal. AI uses this to decide when to cite you on a given topic.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Astro Component &mdash; Before &amp; After</h2>
+  <div class="content">
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="margin-bottom:8px;font-size:12pt;font-family:var(--mono-font);color:#ef4444;">&#x2717; BEFORE (GEO-invisible)</p>
+        <pre><code class="language-html">---
+const { title, content, date }
+  = Astro.props
+---
+&lt;div class="post"&gt;
+  &lt;div class="post-header"&gt;
+    &lt;h1&gt;{ title }&lt;/h1&gt;
+    &lt;span&gt;{ date }&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="post-body"&gt;
+    &lt;Fragment set:html={content}/&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        <div class="cols-3" style="margin-top:8px;">
+          <div class="card-ghost"><p style="margin:0;font-size:11pt;">No semantic tags</p></div>
+          <div class="card-ghost"><p style="margin:0;font-size:11pt;">No author signal</p></div>
+          <div class="card-ghost"><p style="margin:0;font-size:11pt;">No schema</p></div>
+        </div>
+      </div>
+      <div>
+        <p style="margin-bottom:8px;font-size:12pt;font-family:var(--mono-font);color:#6ee7b7;">&#x2713; AFTER (GEO-optimized)</p>
+        <pre><code class="language-html">---
+const { title, content, date,
+        description, tags }
+  = Astro.props
+---
+&lt;script type="application/ld+json"&gt;
+  {JSON.stringify({
+    "@type": "BlogPosting",
+    "headline": title,
+    "author": {
+      "@type": "Person",
+      "name": "Nerando Johnson",
+      "url": "https://developingdvlpr.com"
+    },
+    "datePublished": date
+  })}
+&lt;/script&gt;
+&lt;article&gt;
+  &lt;header&gt;
+    &lt;h1&gt;{ title }&lt;/h1&gt;
+    &lt;time datetime={date}&gt;{ date }&lt;/time&gt;
+    &lt;address&gt;By Nerando Johnson&lt;/address&gt;
+  &lt;/header&gt;
+  &lt;section&gt;
+    &lt;Fragment set:html={content}/&gt;
+  &lt;/section&gt;
+&lt;/article&gt;</code></pre>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">The visible output barely changes. The machine-readable output changes dramatically. That's the GEO design principle: structure for machines, write for humans.</aside>
+</section>
+
+<section>
+  <h2>Building AI-Friendly FAQ Sections</h2>
+  <div class="content">
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:8px;">SEMANTIC FAQ HTML:</p>
+        <pre><code class="language-html">&lt;section aria-label="FAQ"&gt;
+  &lt;h2&gt;Frequently Asked Questions&lt;/h2&gt;
+
+  &lt;details&gt;
+    &lt;summary&gt;
+      What is Vue 3 Composition API?
+    &lt;/summary&gt;
+    &lt;p&gt;
+      The Vue 3 Composition API is a set of
+      additive, function-based APIs that
+      allow flexible composition of logic.
+      Unlike Options API, it organizes code
+      by feature rather than option type.
+    &lt;/p&gt;
+  &lt;/details&gt;
+&lt;/section&gt;</code></pre>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">QUESTION WRITING RULES:</p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot">1</div>
+            <p>Start with <strong>What, How, Why, When, Which</strong> &mdash; mirrors conversational AI queries</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">2</div>
+            <p>Write answers that work <strong>without reading the question first</strong></p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot amber">3</div>
+            <p>Aim for <strong>3&ndash;6 sentences per answer</strong> &mdash; citable but not skippable</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Advanced &mdash; Entity Optimization</h2>
+  <div class="content">
+    <p style="margin-bottom:14px;font-size:16pt;">An <strong>entity</strong> is an unambiguous, well-defined concept the AI knowledge graph recognizes and trusts.</p>
+    <div class="cols-2">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">BUILDING YOUR ENTITY:</p>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-link" style="color:var(--primary-color);"></i></div>
+          <p>Consistent name + handle across <strong>all platforms</strong> (@nerajno everywhere)</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-arrows-turn-right" style="color:var(--primary-color);"></i></div>
+          <p>Cross-referencing &mdash; your blog cites your talks; your talks mention your blog</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-star" style="color:var(--secondary-color);"></i></div>
+          <p>Citations from trusted sources &mdash; Sessionize, Vue Mastery, conference sites</p>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">TOPIC CLUSTER STRATEGY:</p>
+        <div class="card-emerald">
+          <ul style="margin:0;">
+            <li>5+ articles on Vue 3 routing &rarr; you become an <strong>authority</strong> on Vue routing to AI</li>
+            <li>Link articles within the cluster to each other</li>
+            <li>Add a hub/index page that collects them all</li>
+            <li>Reinforce with matching JSON-LD keywords</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Accessibility <span class="text-emerald">=</span> GEO Foundation</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:14px;">
+      <div>
+        <p style="font-size:13pt;" class="text-muted">WCAG 2.2 practices that double as GEO signals:</p>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-heading" style="color:var(--primary-color);"></i></div>
+          <p><strong>Logical heading hierarchy</strong> (1.3.1) &mdash; same signal AI uses to understand content structure</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-image" style="color:var(--primary-color);"></i></div>
+          <p><strong>Descriptive alt text</strong> (1.1.1) &mdash; image context for AI parsing</p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-list" style="color:var(--secondary-color);"></i></div>
+          <p><strong>Landmark regions</strong> (4.1.2) &mdash; main, nav, aside signal page architecture</p>
+        </div>
+      </div>
+      <div>
+        <blockquote>
+          <p>Accessible content is explicit content. Explicit content is citable content. The three are the same work.</p>
+        </blockquote>
+        <div class="card" style="margin-top:12px;">
+          <p style="margin:0;font-size:14pt;"><i class="fa-solid fa-gift text-emerald" style="margin-right:8px;"></i>Done a WCAG 2.2 AA audit recently? You're already 60% of the way to Pillars 1 &amp; 2.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">This is the moment a11y advocates lean forward. Everything we do for screen reader users is exactly what AI crawlers need too. Same work, double the return.</aside>
+</section>
+
+<section class="section-divider" data-state="is-section-divider" data-background-color="#059669">
+  <span class="act-label">Act 2 Continued</span>
+  <h1>Measuring GEO</h1>
+  <p>How to know it's working.</p>
+</section>
+
+<section>
+  <h2>How to Know It's Working</h2>
+  <div class="content">
+    <p class="text-muted" style="margin-bottom:16px;">GEO introduces a new metric most teams aren't tracking yet: <strong class="text-emerald">conversational reach</strong>.</p>
+    <div class="cols-3">
+      <div class="card-emerald" style="text-align:center;padding:20px 14px;">
+        <i class="fa-solid fa-robot" style="font-size:24pt;color:#6ee7b7;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:15pt;font-weight:700;margin:0 0 6px;">Direct AI Querying</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Ask ChatGPT, Perplexity, Gemini about your topics weekly. Screenshot citations.</p>
+      </div>
+      <div class="card" style="text-align:center;padding:20px 14px;">
+        <i class="fa-brands fa-google" style="font-size:24pt;color:var(--text-color);margin-bottom:10px;display:block;"></i>
+        <p style="font-size:15pt;font-weight:700;margin:0 0 6px;">Rich Results Test</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Google's tool validates your JSON-LD. Run after every schema change.</p>
+      </div>
+      <div class="card-amber" style="text-align:center;padding:20px 14px;">
+        <i class="fa-solid fa-chart-line" style="font-size:24pt;color:#fcd34d;margin-bottom:10px;display:block;"></i>
+        <p style="font-size:15pt;font-weight:700;margin:0 0 6px;">Conversational Reach</p>
+        <p style="font-size:12pt;color:rgba(255,255,255,0.75);margin:0;">Track how many unique AI queries return your name as a citation.</p>
+      </div>
+    </div>
+    <div class="img-placeholder" style="min-height:110px;margin-top:14px;">
+      <i class="fa-solid fa-chart-bar"></i>
+      <p>[ Screenshot: Perplexity citing your article / Citation tracking spreadsheet ]</p>
+    </div>
+  </div>
+  <aside class="notes">No Google Analytics equivalent for GEO yet. Start simple: spreadsheet, weekly query list, "cited / not cited" column. Build your baseline now.</aside>
+</section>
+
+<section>
+  <h2>Building Your Measurement System</h2>
+  <div class="content">
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">YOUR WEEKLY QUERY CHECKLIST:</p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot">1</div>
+            <p>Pick 5&ndash;10 queries your content should answer</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">2</div>
+            <p>Run them across ChatGPT, Perplexity, &amp; Gemini</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">3</div>
+            <p>Log: cited / not cited / competitor cited</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot amber">4</div>
+            <p>Track trend week-over-week as you add GEO optimizations</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">VALIDATION TOOLS:</p>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-check-circle" style="color:var(--primary-color);"></i></div>
+          <p><strong>Google Rich Results Test</strong><br><span class="text-muted font-mono" style="font-size:11pt;">search.google.com/test/rich-results</span></p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--emerald-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-code" style="color:var(--primary-color);"></i></div>
+          <p><strong>Schema.org Validator</strong><br><span class="text-muted font-mono" style="font-size:11pt;">validator.schema.org</span></p>
+        </div>
+        <div class="feature-row">
+          <div class="icon-wrap" style="width:36px;height:36px;border-radius:8px;background:var(--amber-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-eye" style="color:var(--secondary-color);"></i></div>
+          <p><strong>Perplexity.ai</strong> &mdash; shows sources for any query, great for citation testing</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-divider" data-state="is-section-divider" data-background-color="#059669">
+  <span class="act-label">The Big Picture</span>
+  <h1>The Window Is Open</h1>
+  <p>Generative search is already here.</p>
+</section>
+
+<section>
+  <h2>It's Already Happening</h2>
+  <div class="content">
+    <div class="cols-2" style="margin-bottom:16px;">
+      <div style="text-align:center;padding:14px 10px;">
+        <div class="stat-number" style="font-size:40pt;">1B+</div>
+        <p class="text-muted" style="font-size:14pt;margin-top:4px;">Google AI Overviews<br>shown per month (2025)</p>
+      </div>
+      <div style="text-align:center;padding:14px 10px;">
+        <div class="stat-number amber" style="font-size:40pt;">10M+</div>
+        <p class="text-muted" style="font-size:14pt;margin-top:4px;">Perplexity daily active users<br>and growing</p>
+      </div>
+    </div>
+    <div class="cols-3">
+      <div class="card">
+        <p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);">LIVE NOW</p>
+        <ul style="margin:0;">
+          <li>Google AI Overviews</li>
+          <li>ChatGPT Search</li>
+          <li>Perplexity AI</li>
+        </ul>
+      </div>
+      <div class="card">
+        <p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);">EXPANDING</p>
+        <ul style="margin:0;">
+          <li>Gemini in Google Search</li>
+          <li>Copilot in Bing</li>
+          <li>Claude web search</li>
+        </ul>
+      </div>
+      <div class="card-amber">
+        <p style="margin:0 0 4px;font-size:12pt;font-family:var(--mono-font);color:#fcd34d;">YOUR WINDOW</p>
+        <p style="margin:0;font-size:14pt;">Most developers haven't heard of GEO yet. That changes in 12&ndash;18 months.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">This is not speculative. This is the current reality for billions of search sessions per month. The only question is whether your content shows up in those synthesized answers.</aside>
+</section>
+
+<section class="section-divider" data-state="is-section-divider" data-background-color="#059669">
+  <span class="act-label">Let's Go</span>
+  <h1>Your Next Steps</h1>
+  <p>Progress over perfection.</p>
+</section>
+
+<section>
+  <h2>3 Things to Do This Week</h2>
+  <div class="content">
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">1</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Audit one page with Google Rich Results Test</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;">Pick your most-visited blog post or portfolio page. See what structured data (if any) exists today.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">2</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Add Person schema to your portfolio homepage</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;">Copy the pattern from this talk. Add sameAs links. Deploy. That's your entity established.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot amber">3</div>
+        <div>
+          <p style="margin:0 0 4px;"><strong>Query an AI with your name + your topic</strong></p>
+          <p class="text-muted" style="margin:0;font-size:14pt;">Screenshot the result tonight. That's your baseline. Repeat in 30 days after implementing GEO. Compare.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card-emerald" style="margin-top:18px;">
+      <p style="margin:0;font-size:16pt;font-style:italic;">"You don't need to be perfect to be citable. You need to be <strong>structured, explicit, and consistent.</strong>"</p>
+    </div>
+  </div>
+  <aside class="notes">Three actions. Not "rebuild your whole site." Three things. Rich Results audit. Person schema. Baseline query. That's it. Ship something small today.</aside>
+</section>
+
+<section>
+  <h2>Resources &amp; Further Reading</h2>
+  <div class="content">
+    <div class="cols-2" style="align-items:start;">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">MY ARTICLES ON THIS TOPIC:</p>
+        <div class="card-emerald" style="margin-bottom:10px;">
+          <p style="margin:0 0 4px;font-size:14pt;font-weight:700;">GEO Series &mdash; developingdvlpr.com</p>
+          <p style="margin:0;font-size:12pt;font-family:var(--mono-font);color:rgba(255,255,255,0.7);">Two-part article series that mirrors this talk</p>
+        </div>
+        <div class="card" style="margin-bottom:14px;">
+          <p style="margin:0 0 4px;font-size:14pt;font-weight:700;">Vue Router Series &mdash; Vue Mastery</p>
+          <p style="margin:0;font-size:12pt;font-family:var(--mono-font);" class="text-muted">Example of GEO-structured technical writing</p>
+        </div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:8px;">TOOLS:</p>
+        <ul style="margin:0;">
+          <li><strong>search.google.com/test/rich-results</strong></li>
+          <li><strong>validator.schema.org</strong></li>
+          <li><strong>schema.org/BlogPosting</strong></li>
+          <li><strong>perplexity.ai</strong> &mdash; citation testing</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">GET THE SLIDES + CODE PATTERNS:</p>
+        <div class="img-placeholder" style="min-height:200px;">
+          <i class="fa-solid fa-qrcode" style="font-size:40pt;"></i>
+          <p>[ QR Code ]</p>
+          <p style="font-size:11pt;">developingdvlpr.com/geo-talk</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-background-color="#0f172a">
+  <div style="display:flex;flex-direction:column;height:100%;justify-content:center;align-items:center;text-align:center;padding:60px;">
+    <div style="margin-bottom:18px;"><i class="fa-solid fa-comments" style="font-size:38pt;color:var(--primary-color);"></i></div>
+    <h1 style="font-size:52pt;color:var(--text-color);margin-bottom:10px;">Questions?</h1>
+    <p style="font-size:18pt;color:var(--muted-color);margin-bottom:24px;">No such thing as a bad one.</p>
+    <div class="img-placeholder" style="min-height:140px;width:100%;max-width:560px;margin-bottom:24px;">
+      <i class="fa-solid fa-hand-raised"></i>
+      <p>[ Audience Q&amp;A &mdash; 3&ndash;5 questions ]</p>
+    </div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:13pt;font-family:var(--mono-font);color:var(--text-color);background:var(--card-bg);border:1px solid var(--card-border);padding:8px 16px;border-radius:10px;"><i class="fa-brands fa-linkedin" style="color:var(--primary-color);"></i>linkedin.com/in/nerajno</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13pt;font-family:var(--mono-font);color:var(--text-color);background:var(--card-bg);border:1px solid var(--card-border);padding:8px 16px;border-radius:10px;"><i class="fa-brands fa-bluesky" style="color:var(--primary-color);"></i>@nerajno.bsky.social</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13pt;font-family:var(--mono-font);color:var(--text-color);background:var(--card-bg);border:1px solid var(--card-border);padding:8px 16px;border-radius:10px;"><i class="fa-solid fa-globe" style="color:var(--secondary-color);"></i>developingdvlpr.com</div>
+    </div>
+  </div>
+  <aside class="notes">Good prompt if room is quiet: "Has anyone tried asking an AI to describe them as an expert?" / "Anyone already using JSON-LD?"</aside>
+</section>
+
+<section data-background-gradient="linear-gradient(135deg, #0f172a 0%, #064e3b 100%)">
+  <div style="display:flex;flex-direction:column;height:100%;justify-content:center;padding:60px;">
+    <span style="font-size:11pt;text-transform:uppercase;letter-spacing:0.18em;color:var(--primary-color);font-family:var(--mono-font);font-weight:600;margin-bottom:16px;display:block;">Altanta Cloud and AI Conf 2026</span>
+    <h1 style="font-size:40pt;margin-bottom:14px;">Progress over perfection.<br><span class="text-emerald">Let's go.</span></h1>
+    <p style="font-size:17pt;color:var(--muted-color);margin-bottom:24px;">You now know something most developers don't. Use it.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+      <span class="chip chip-emerald">Semantic HTML &#x2713;</span>
+      <span class="chip chip-slate">Explicit Formatting &#x2713;</span>
+      <span class="chip chip-amber">JSON-LD Schema &#x2713;</span>
+      <span class="chip chip-emerald">Measure It &#x2713;</span>
+    </div>
+    <p style="font-size:14pt;color:var(--muted-color);font-family:var(--mono-font);">@nerajno on everything &nbsp;&middot;&nbsp; developingdvlpr.com</p>
+  </div>
+  <aside class="notes">End strong. Three actions tonight: Rich Results audit, Person schema, baseline query. Tag me on socials when you get your first AI citation.</aside>
+</section>
+
+<section data-visibility="hidden">
+  <h2>Bonus &mdash; If Time Allows</h2>
+  <div class="content">
+    <div class="cols-2">
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">EXTENDED TOPICS:</p>
+        <ul>
+          <li>GEO for client work &mdash; how to pitch it</li>
+          <li>The Speakable schema for voice/audio</li>
+          <li>How Perplexity cites vs ChatGPT (different strategies)</li>
+          <li>GEO for non-English content</li>
+          <li>Content decay &mdash; keeping GEO content fresh</li>
+        </ul>
+      </div>
+      <div>
+        <p style="font-size:12pt;font-family:var(--mono-font);color:var(--muted-color);margin-bottom:10px;">COMMON QUESTIONS:</p>
+        <ul>
+          <li>"Does this work for portfolio projects, not just articles?"</li>
+          <li>"What about paywalled content?"</li>
+          <li>"How long until you see results?"</li>
+          <li>"Is this relevant for backend/fullstack devs?"</li>
+          <li>"What if AI changes its citation behavior?"</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+<script>
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    center: false,
+    autoSlide: 0,
+    loop: false,
+    plugins: [ RevealNotes, RevealHighlight ],
+    keyboard: {
+      70: () => {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+      }
+    }
+  });
+
+</script>
+</body>
+</html>
