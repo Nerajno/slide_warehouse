@@ -2,7 +2,7 @@
 import type { DeckFrontmatter } from '~/types'
 
 const { data: decksData } = await useAsyncData('hero-decks',
-  () => queryCollection('decks').select('id', 'slideCount').all()
+  async () => (await queryCollection('decks').select('id', 'slideCount', 'displayedStatus', 'versions').all()).filter(isDisplayed)
 )
 const { data: speakerData } = await useAsyncData('hero-speaker',
   () => queryCollection('speaker').first()
@@ -10,7 +10,7 @@ const { data: speakerData } = await useAsyncData('hero-speaker',
 const { data: recentDeck } = await useAsyncData('hero-recent',
   async () => {
     const row = await queryCollection('decks').where('mostRecent', '=', true).first()
-    return row ? { ...row, id: deckSlug(row) } : null
+    return row && isDisplayed(row) ? { ...row, id: deckSlug(row) } : null
   }
 )
 

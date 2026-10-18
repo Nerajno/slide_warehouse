@@ -16,6 +16,8 @@ export interface DeckVersion {
   date: string;
   revealFile: string;
   changes?: string;
+  /** `false` leaves this version out of the version picker. Defaults to `true`. */
+  displayedStatus?: boolean;
 }
 
 export interface DeckFrontmatter {
@@ -31,6 +33,8 @@ export interface DeckFrontmatter {
   currentVersion: number;
   versions: DeckVersion[];
   featured?: boolean;
+  /** `false` hides the deck from every list and 404s its page. Defaults to `true`. */
+  displayedStatus?: boolean;
   mostRecent?: boolean;
   resources?: Resource[];
   events?: string[];

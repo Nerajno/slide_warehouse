@@ -11,7 +11,8 @@ const { data: deck } = await useAsyncData(
   `deck-${route.params.id}`,
   async () => {
     const row = await queryCollection('decks').where('path', '=', `/decks/${route.params.id}`).first()
-    return (row ? { ...row, id: deckSlug(row) } : null) as unknown as DeckFrontmatter | null
+    // A hidden deck 404s like a missing one; its hidden versions never reach the picker.
+    return (row && isDisplayed(row) ? forDisplay(row) : null) as unknown as DeckFrontmatter | null
   },
 )
 
