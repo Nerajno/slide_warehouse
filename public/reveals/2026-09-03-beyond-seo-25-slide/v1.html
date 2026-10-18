@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beyond SEO: Optimizing Your Web Content for the Age of AI</title>
+
+  <!-- Reveal.js core -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom styles (inlined) -->
+  <style>
+/* Beyond SEO — CYC26 deck
+   Unified system: shares its palette, type stack, and dark canvas with the
+   companion session-page mockup (beyond-seo-session-mockup.html) — same talk,
+   one visual identity across both artifacts. */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --background-color: #12151C;
+  --ink-2: #181C25;
+
+  --heading-font: "Fraunces", Georgia, serif;
+  --body-font: "Inter", Helvetica, sans-serif;
+  --mono-font: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --base-font-size: 32px;
+  --text-size: 16pt;
+  --h1-size: 46pt;
+  --h2-size: 32pt;
+  --h3-size: 20pt;
+  --footnote-size: 10.5pt;
+
+  --primary-color: #7CE8DE;   /* cyan — schema/tag accent, matches the page mockup */
+  --secondary-color: #FFD84D; /* amber — the citation highlighter, matches the page mockup */
+  --highlight-ink: #2A2107;
+  --text-color: #EDEAE0;
+  --muted-color: #8B92A5;
+  --line-color: rgba(237,234,224,0.18);
+
+  --divider-text: #EDEAE0;
+  --divider-muted: #8B92A5;
+
+  --slide-padding: 64px;
+  --slide-padding-top: 44px;
+  --content-gap: 26px;
+
+  --box-radius: 3px;
+}
+
+.reveal { font-family: var(--body-font); font-size: var(--base-font-size); }
+.reveal strong, .reveal b { font-weight: 700; color: inherit; }
+.reveal-viewport { background-color: var(--background-color); }
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: var(--heading-font);
+  text-transform: none;
+  color: var(--text-color);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.reveal h1 { font-size: var(--h1-size); }
+.reveal h2 { font-size: var(--h2-size); margin-bottom: 0; }
+.reveal h3 { font-size: var(--h3-size); }
+
+.reveal p, .reveal li, .reveal td, .reveal th, .reveal blockquote {
+  font-size: var(--text-size);
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+/* ---------- lists ---------- */
+.reveal ul { list-style: none; padding-left: 0; margin: 15px 0; }
+.reveal ul li { position: relative; padding-left: 26px; margin-bottom: 11px; }
+.reveal ul li::before {
+  content: '';
+  position: absolute; left: 0; top: 0.55em;
+  width: 7px; height: 7px;
+  background: var(--primary-color);
+  border-radius: 50%;
+}
+.reveal ul ul li::before { background: var(--muted-color); width: 5px; height: 5px; }
+.reveal blockquote p { font-size: inherit; }
+
+/* ---------- slide layout ---------- */
+.reveal .slides section {
+  height: 100%;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: var(--slide-padding-top) var(--slide-padding) var(--slide-padding) var(--slide-padding) !important;
+  box-sizing: border-box;
+  text-align: left;
+  position: relative;
+}
+.reveal .slides section.stack { padding: 0 !important; }
+.reveal .slides section > .content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: var(--content-gap);
+  text-align: left;
+  min-height: 0;
+}
+.reveal .slides section > .footnote {
+  position: absolute; bottom: 15px; left: var(--slide-padding); right: var(--slide-padding);
+  font-size: var(--footnote-size); color: var(--muted-color);
+  font-family: var(--mono-font);
+}
+
+/* ---------- dividers ---------- */
+.reveal .slides section.section-divider {
+  display: flex !important; flex-direction: column !important;
+  justify-content: center !important; align-items: center !important;
+  text-align: center;
+}
+.reveal .slides section.section-divider h1 { font-size: 52pt; text-align: center; color: var(--divider-text); }
+.reveal .slides section.section-divider p { font-size: 18pt; color: var(--divider-muted); }
+.reveal .slides section.section-divider .eyebrow { color: var(--primary-color); }
+
+/* ---------- text utilities ---------- */
+.text-lg { font-size: 18pt !important; }
+.text-xl { font-size: 20pt !important; }
+.text-2xl { font-size: 24pt !important; }
+.text-3xl { font-size: 28pt !important; }
+.text-4xl { font-size: 32pt !important; }
+.text-muted { color: var(--muted-color) !important; }
+.text-center { text-align: center !important; }
+.text-uppercase { text-transform: uppercase; letter-spacing: 0.1em; }
+.font-light { font-weight: 300; }
+.font-bold { font-weight: 700; }
+.font-mono { font-family: var(--mono-font) !important; }
+
+/* ---------- eyebrow / kicker ---------- */
+.eyebrow {
+  font-family: var(--mono-font);
+  font-size: 12pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ---------- pills / tags ---------- */
+.pill-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+.pill {
+  font-family: var(--mono-font);
+  font-size: 11pt;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line-color);
+  color: var(--muted-color);
+  display: inline-block;
+}
+.pill.amber { border-color: var(--secondary-color); color: var(--secondary-color); background: rgba(255,216,77,0.10); }
+.pill.cyan { border-color: var(--primary-color); color: var(--primary-color); background: rgba(124,232,222,0.10); }
+
+/* ---------- act label ---------- */
+.act-label {
+  font-family: var(--mono-font);
+  font-size: 12pt;
+  letter-spacing: 0.06em;
+  color: var(--primary-color);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ---------- cards ---------- */
+.card {
+  border: 1.5px solid var(--line-color);
+  border-radius: var(--box-radius);
+  padding: 22px 24px;
+  background: var(--ink-2);
+}
+.card h4 {
+  font-family: var(--body-font);
+  font-weight: 700;
+  font-size: 15pt;
+  margin: 0 0 8px;
+  color: var(--text-color);
+}
+.card p { font-size: 13.5pt; color: var(--muted-color); margin: 0; }
+.card .num {
+  font-family: var(--mono-font);
+  color: var(--secondary-color);
+  font-size: 12pt;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* ---------- code block ---------- */
+.code-block {
+  background: #0D1017;
+  border-radius: var(--box-radius);
+  border-left: 4px solid var(--secondary-color);
+  padding: 18px 22px;
+  overflow: auto;
+}
+.code-block pre, .code-block code {
+  font-family: var(--mono-font);
+  font-size: 13pt;
+  line-height: 1.6;
+  color: #D7DEE8;
+  white-space: pre;
+  margin: 0;
+}
+.code-block .k { color: var(--primary-color); }
+.code-block .s { color: var(--secondary-color); }
+.code-block .c { color: var(--muted-color); }
+
+/* ---------- citable / highlight — shared motif with the session page ---------- */
+.citable {
+  background: linear-gradient(transparent 62%, rgba(255,216,77,0.32) 62%);
+  padding: 0 2px;
+}
+.cite-tag {
+  font-family: var(--mono-font);
+  font-size: 9.5pt;
+  color: var(--highlight-ink);
+  background: var(--secondary-color);
+  padding: 1px 7px;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: 2px;
+  white-space: nowrap;
+}
+
+/* ---------- schema tag ghost — shared motif with the session page ---------- */
+.tag-ghost {
+  font-family: var(--mono-font);
+  font-size: 11pt;
+  color: var(--primary-color);
+  opacity: 0.85;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ---------- blockquote ---------- */
+.reveal blockquote {
+  border-left: 4px solid var(--primary-color);
+  padding-left: 22px;
+  margin: 20px 0;
+  font-style: italic;
+  font-family: var(--heading-font);
+  background: none;
+  box-shadow: none;
+  width: 100%;
+  max-width: none;
+  color: var(--text-color);
+}
+.reveal blockquote cite {
+  display: block;
+  margin-top: 10px;
+  font-style: normal;
+  font-family: var(--mono-font);
+  font-size: 11pt;
+  color: var(--muted-color);
+}
+
+/* ---------- compare rows ---------- */
+.compare-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 18px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line-color);
+  align-items: baseline;
+}
+.compare-row:first-child { border-top: none; }
+.compare-row .label {
+  font-family: var(--mono-font);
+  font-size: 12pt;
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+.compare-row p { margin: 0; }
+
+/* ---------- brand bar (persistent, per Nerajno convention) ---------- */
+.brand-bar {
+  position: fixed;
+  left: 28px;
+  bottom: 16px;
+  z-index: 40;
+  font-family: var(--mono-font);
+  font-size: 9.5pt;
+  letter-spacing: 0.04em;
+  color: var(--muted-color);
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.reveal .slide-number {
+  font-family: var(--mono-font) !important;
+  background: transparent !important;
+  color: var(--muted-color) !important;
+  opacity: 0.7;
+  font-size: 10pt !important;
+}
+
+/* ---------- disclaimer icon slide ---------- */
+.disclaimer-box {
+  border: 1.5px dashed var(--line-color);
+  border-radius: var(--box-radius);
+  padding: 26px 28px;
+  background: var(--ink-2);
+  color: var(--text-color);
+}
+
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section id="title" class="section-divider" data-state="is-section-divider">
+        <span class="tag-ghost">&lt;h1 itemprop="headline"&gt;</span>
+        <span class="eyebrow" style="color:var(--secondary-color);">CYC26 · Frontend · Sept 3, 4:00pm · Purple Room</span>
+        <h1>Beyond SEO</h1>
+        <p>Optimizing Your Web Content for the Age of AI</p>
+        <span class="tag-ghost" style="margin-top:14px;">&lt;/h1&gt;</span>
+        <p class="font-mono" style="font-size:12pt; margin-top: 10px; color: var(--divider-muted);">@Nerajno · #CYC26</p>
+        <aside class="notes">0:00–0:20 (0:20). Hold on this a beat before speaking — let the title land. The bracket tags are the same motif from the session-page mockup — the whole deck runs on that idea.</aside>
+      </section>
+
+      <section id="slide-2">
+        <span class="eyebrow">Made possible by</span>
+        <h2>Thank you to our sponsors</h2>
+        <div class="content" style="justify-content:center;">
+          <div class="pill-row" style="justify-content:center; gap:16px;">
+            <span class="pill text-lg" style="padding:14px 26px;">[ Sponsor logo ]</span>
+            <span class="pill text-lg" style="padding:14px 26px;">[ Sponsor logo ]</span>
+            <span class="pill text-lg" style="padding:14px 26px;">[ Sponsor logo ]</span>
+            <span class="pill text-lg" style="padding:14px 26px;">[ Sponsor logo ]</span>
+          </div>
+        </div>
+        <aside class="notes">0:20–0:35 (0:15). Swap the four pills for real CYC26 sponsor logos before showtime. Quick genuine thank-you, keep moving.</aside>
+      </section>
+
+      <section id="slide-3">
+        <h2>I am here because I lost a bet.</h2>
+        <div class="content">
+          <p class="text-lg">(Not really. But I did spend a year writing about GEO before most people had heard the term.)</p>
+          <div class="pill-row" style="margin-top:20px;">
+            <span class="pill cyan">Nerando Johnson</span>
+            <span class="pill">Software Developer · Hygiena</span>
+            <span class="pill">developingdvlpr.com</span>
+          </div>
+        </div>
+        <aside class="notes">0:35–1:05 (0:30). Deliver the bet line deadpan, beat of silence, then pivot straight to real identity. Don't over-explain the joke.</aside>
+      </section>
+
+      <section id="slide-4">
+        <span class="eyebrow">Content to cover</span>
+        <h2>Where we're headed</h2>
+        <div class="content">
+          <ul class="text-lg">
+            <li><strong>Act 1</strong> — GEO Explained</li>
+            <li><strong>Act 2</strong> — GEO Applied (live)</li>
+            <li>How to measure it</li>
+            <li>Questions</li>
+          </ul>
+        </div>
+        <aside class="notes">1:05–1:30 (0:25). Fast — this is a map, not a discussion.</aside>
+      </section>
+
+      <section id="slide-5">
+        <span class="eyebrow">Before we start</span>
+        <h2>The lens for today</h2>
+        <div class="content">
+          <div class="disclaimer-box text-lg">
+            This is field experience, not an industry standard — GEO is <strong>too new</strong> for one. What follows is what's worked on my own sites, tested against how AI platforms actually cite content today.
+          </div>
+        </div>
+        <aside class="notes">1:30–1:45 (0:15). One breath. Sets the frame, then straight into Act 1.</aside>
+      </section>
+
+      <section id="divider-1" class="section-divider" data-state="is-section-divider">
+        <span class="eyebrow" style="color:var(--secondary-color);">Act 1</span>
+        <h1>GEO Explained</h1>
+        <aside class="notes">1:45–1:55 (0:10). Anchor slide — pause, let it breathe, don't narrate the label.</aside>
+      </section>
+
+      <section id="slide-7">
+        <span class="act-label">Act 1 / GEO Explained</span>
+        <h2>What GEO actually is</h2>
+        <div class="content" style="display:grid; grid-template-columns:1fr 1fr; gap:28px;">
+          <div class="card" style="border-color:var(--primary-color); background:rgba(124,232,222,0.06);">
+            <h4>GEO is</h4>
+            <p>The practice of structuring content so AI engines can ingest, understand, and <strong>cite</strong> it in generated answers.</p>
+          </div>
+          <div class="card" style="border-color:var(--secondary-color); background:rgba(255,216,77,0.06);">
+            <h4>GEO isn't</h4>
+            <p>SEO with a new name. It's a different discovery mechanism with its own goals, metrics, and technical needs.</p>
+          </div>
+        </div>
+        <aside class="notes">1:55–2:55 (1:00). Land the "isn't" side hardest — that's the misconception most of the room walked in with.</aside>
+      </section>
+
+      <section id="slide-8">
+        <span class="act-label">Act 1 / GEO Explained</span>
+        <h2>SEO vs. GEO — the differences that matter</h2>
+        <div class="content">
+          <div class="compare-row">
+            <span class="label">Discovery</span>
+            <p>SEO: ranked links on a results page. GEO: synthesized into one generated answer.</p>
+          </div>
+          <div class="compare-row">
+            <span class="label">Content focus</span>
+            <p>SEO: keywords and backlinks. GEO: explicit, self-contained, structured statements.</p>
+          </div>
+          <div class="compare-row">
+            <span class="label">Metrics</span>
+            <p>SEO: rank position and clicks. GEO: citation frequency and conversational reach.</p>
+          </div>
+        </div>
+        <aside class="notes">2:55–4:25 (1:30). Full talk has five — cut to the three that land fastest for this room. If asked, the other two (goals, technical needs) are in backup.</aside>
+      </section>
+
+      <section id="slide-9">
+        <span class="act-label">Act 1 / GEO Explained</span>
+        <h2>GEO's cousins</h2>
+        <div class="content">
+          <div class="pill-row" style="margin-bottom:18px;">
+            <span class="pill amber text-lg" style="padding:10px 20px;"><strong>AEO</strong> — gets you selected as the direct answer</span>
+          </div>
+          <div class="pill-row" style="margin-bottom:22px;">
+            <span class="pill text-lg" style="padding:10px 20px;"><strong>AIO</strong> — usually means Google AI Overviews (term's contested)</span>
+          </div>
+          <blockquote>
+            Same underlying shift. GEO's just the piece that's about being cited — not just answered.
+          </blockquote>
+        </div>
+        <aside class="notes">4:25–5:10 (0:45). Quick acknowledgment, not a second topic. If someone in Q&A pushes on AEO/AIO, this line is your full answer — don't expand live.</aside>
+      </section>
+
+      <section id="slide-10">
+        <span class="act-label">Act 1 / GEO Explained</span>
+        <h2>Why AI needs structure to cite you</h2>
+        <div class="content">
+          <p class="text-lg"><span class="citable">Perplexity, ChatGPT Search, and AI Overviews don't read your page the way a person does — they extract discrete, self-contained claims they can lift out of context<span class="cite-tag">citable</span></span>.</p>
+          <p class="text-lg" style="margin-top:18px;">Vague, "as mentioned above" writing is invisible to a model that only sees one paragraph at a time.</p>
+        </div>
+        <aside class="notes">5:10–6:40 (1:30). This is the thesis slide — slow down here even though the clock is tight. The highlighted sentence is the one line you want the room to remember.</aside>
+      </section>
+
+      <section id="slide-11">
+        <span class="act-label">Act 1 / GEO Explained</span>
+        <h2>The real career opportunity</h2>
+        <div class="content" style="display:grid; grid-template-columns:1fr 1fr; gap:28px;">
+          <div class="card">
+            <span class="num">LOW</span>
+            <h4>Competition</h4>
+            <p>Most developers haven't heard of GEO yet — you're early.</p>
+          </div>
+          <div class="card">
+            <span class="num">HIGH</span>
+            <h4>Demand</h4>
+            <p>Every team publishing content will need this within 12–18 months.</p>
+          </div>
+        </div>
+        <aside class="notes">6:40–7:40 (1:00). End Act 1 on this — it's the "why should I care" payoff before the demo-heavy Act 2.</aside>
+      </section>
+
+      <section id="divider-2" class="section-divider" data-state="is-section-divider">
+        <span class="eyebrow" style="color:var(--secondary-color);">Act 2</span>
+        <h1>GEO Applied</h1>
+        <aside class="notes">7:40–7:50 (0:10). This is where the room needs to lean forward — energy shift going into the live portion.</aside>
+      </section>
+
+      <section id="slide-13">
+        <span class="act-label">Act 2 / GEO Applied</span>
+        <h2>Three pillars</h2>
+        <div class="content" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:22px;">
+          <div class="card">
+            <span class="num">01</span>
+            <h4>Semantic HTML</h4>
+            <p>Structure that tells a crawler what each piece of content is.</p>
+          </div>
+          <div class="card">
+            <span class="num">02</span>
+            <h4>Explicit formatting</h4>
+            <p>Self-contained statements, not "as mentioned above."</p>
+          </div>
+          <div class="card">
+            <span class="num">03</span>
+            <h4>Structured data</h4>
+            <p>JSON-LD schema markup — machine-readable ground truth.</p>
+          </div>
+        </div>
+        <aside class="notes">7:50–8:35 (0:45). Numbered because it's genuinely the three-part frame for everything left in Act 2 — name all three fast, you'll return to each.</aside>
+      </section>
+
+      <section id="slide-14">
+        <div class="content text-center" style="justify-content:center; align-items:center;">
+          <span class="eyebrow" style="color:var(--secondary-color);">Live demo</span>
+          <h2 style="color:var(--divider-text); font-size:38pt;">Generic page → GEO-optimized page</h2>
+          <p style="color:var(--divider-muted);" class="text-lg">Switching to the editor.</p>
+        </div>
+        <aside class="notes">8:35–12:35 (4:00 HARD CAP). Set a visible timer for this one. If the live edit stalls, cut to the pre-recorded 90s clip immediately rather than troubleshoot on stage — this is the single biggest risk to your Q&A time.</aside>
+      </section>
+
+      <section id="slide-15">
+        <span class="act-label">Act 2 / GEO Applied</span>
+        <h2>JSON-LD — copy, paste, adapt</h2>
+        <div class="content">
+          <div class="code-block">
+<pre><code>{
+  <span class="k">"@context"</span>: <span class="s">"https://schema.org"</span>,
+  <span class="k">"@type"</span>: <span class="s">"BlogPosting"</span>,
+  <span class="k">"headline"</span>: <span class="s">"Beyond SEO: Optimizing for AI"</span>,
+  <span class="k">"author"</span>: { <span class="k">"@type"</span>: <span class="s">"Person"</span>, <span class="k">"name"</span>: <span class="s">"Nerando Johnson"</span> },
+  <span class="k">"datePublished"</span>: <span class="s">"2026-06-01"</span> <span class="c">// same pattern for FAQPage, Person</span>
+}</code></pre>
+          </div>
+          <p class="text-lg" style="margin-top:16px;">Same pattern extends to <strong>FAQPage</strong> and <strong>Person</strong> — full snippets are in the slides link, not worth live-typing three times.</p>
+        </div>
+        <aside class="notes">12:35–15:05 (2:30). Live-type or paste this ONE type only. Say the FAQPage/Person line rather than demoing them — that's the time-saver from the original plan.</aside>
+      </section>
+
+      <section id="slide-16">
+        <span class="act-label">Act 2 / GEO Applied</span>
+        <h2>Write it so it survives being quoted alone</h2>
+        <div class="content" style="display:grid; grid-template-columns:1fr 1fr; gap:28px;">
+          <div class="card" style="border-color:var(--secondary-color);">
+            <h4>Vague</h4>
+            <p class="font-mono" style="font-size:12.5pt;">"As mentioned above, this approach works better."</p>
+          </div>
+          <div class="card" style="border-color:var(--primary-color);">
+            <h4>Self-contained</h4>
+            <p class="font-mono" style="font-size:12.5pt;">"Semantic HTML improves AI citation rates because it exposes content structure directly."</p>
+          </div>
+        </div>
+        <aside class="notes">15:05–16:05 (1:00). Read both out loud — the contrast lands better spoken than read silently.</aside>
+      </section>
+
+      <section id="slide-17">
+        <span class="act-label">Act 2 / GEO Applied</span>
+        <h2>FAQs that match how people ask AI</h2>
+        <div class="content">
+          <div class="compare-row">
+            <span class="label">Q</span>
+            <p>"What's the best way to handle state in Vue 3?"</p>
+          </div>
+          <div class="compare-row">
+            <span class="label">A</span>
+            <p>Direct answer first, in one self-contained sentence — not three paragraphs of setup.</p>
+          </div>
+        </div>
+        <aside class="notes">16:05–17:05 (1:00). Point out this is literally the FAQPage schema from two slides ago — the pillars connect, don't let them feel like a checklist.</aside>
+      </section>
+
+      <section id="slide-18">
+        <span class="act-label">Act 2 / GEO Applied</span>
+        <h2>Advanced, in one breath</h2>
+        <div class="content">
+          <ul class="text-lg">
+            <li>Entity optimization</li>
+            <li>Content hierarchy</li>
+            <li>Cross-referencing</li>
+            <li>Accessibility as GEO foundation</li>
+          </ul>
+        </div>
+        <aside class="notes">17:05–17:30 (0:25). Name them, don't explain them — each is worth its own talk. Move fast.</aside>
+      </section>
+
+      <section id="slide-19">
+        <span class="eyebrow">How to measure it</span>
+        <h2>Three signals, not vanity metrics</h2>
+        <div class="content" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:22px;">
+          <div class="card">
+            <span class="num">01</span>
+            <h4>Citation frequency</h4>
+            <p>Query ChatGPT, Perplexity, Gemini directly — track if and how they cite you.</p>
+          </div>
+          <div class="card">
+            <span class="num">02</span>
+            <h4>Rich Results Test</h4>
+            <p>Validate your structured data actually parses with Google's tool.</p>
+          </div>
+          <div class="card">
+            <span class="num">03</span>
+            <h4>Conversational reach</h4>
+            <p>A new metric — how often your content shapes an AI's answer.</p>
+          </div>
+        </div>
+        <aside class="notes">17:30–19:00 (1:30). Keep each card to one sentence spoken — this is a reference slide, not a deep dive.</aside>
+      </section>
+
+      <section id="slide-20">
+        <span class="eyebrow">Why now</span>
+        <h2>The window is open. It's closing.</h2>
+        <div class="content">
+          <blockquote>
+            Perplexity, ChatGPT Search, AI Overviews, and Gemini are already changing how people find information.
+          </blockquote>
+          <p class="text-lg" style="margin-top:12px;">Learn GEO in the next 12–18 months and you're setting the standard. Wait, and you're catching up to it.</p>
+        </div>
+        <aside class="notes">19:00–19:35 (0:35). This is your urgency beat right before the close — deliver with conviction, don't rush the blockquote.</aside>
+      </section>
+
+      <section id="slide-21">
+        <span class="eyebrow">Take this with you</span>
+        <h2>Resources</h2>
+        <div class="content">
+          <div class="compare-row">
+            <span class="label">Read</span>
+            <p class="font-mono" style="font-size:13pt;">developingdvlpr.com — the two-part GEO article series this talk is built from</p>
+          </div>
+          <div class="compare-row">
+            <span class="label">Slides</span>
+            <p class="font-mono" style="font-size:13pt;">slides.developingdvlpr.com</p>
+          </div>
+          <div class="compare-row">
+            <span class="label">Track it</span>
+            <p class="font-mono" style="font-size:13pt;">isnerandodoneyet.com — how I hold myself accountable to shipping this stuff</p>
+          </div>
+        </div>
+        <aside class="notes">19:35–20:35 (1:00). Say the URLs out loud even though they're on screen — some of the room is listening, not looking.</aside>
+      </section>
+
+      <section id="slide-22" class="section-divider" data-state="is-section-divider">
+        <span class="eyebrow" style="color:var(--secondary-color);">Thank you</span>
+        <h1>Questions?</h1>
+        <p class="font-mono" style="font-size:13pt;">@Nerajno · #CYC26 · developingdvlpr.com</p>
+        <aside class="notes">20:35–20:50 (0:15) transition line, then 3:00 for Q&A. If someone asks about AEO/AIO scope, your one-line answer is already loaded from slide 9. If time runs short, take questions after via the socials on screen.</aside>
+      </section>
+
+      <section>
+        <section id="slide-23-1">
+          <span class="eyebrow">Backup — Act 1, full comparison</span>
+          <h2 class="text-2xl">Cut for time — the full SEO vs. GEO 5</h2>
+          <div class="content">
+            <p class="text-lg"><strong>Goals:</strong> SEO optimizes for rank position; GEO optimizes for being the source an AI synthesizes into its answer. <strong>Technical needs:</strong> SEO leans on backlinks and page speed; GEO leans on semantic HTML and JSON-LD schema validity. Only use these two if a question in Q&amp;A calls for the deeper cut — otherwise Discovery / Content Focus / Metrics on slide 8 is the full live version. <strong>Who this is for:</strong> junior/mid-level devs, anyone maintaining a portfolio or client site — no prior GEO experience needed, basic HTML/CSS assumed. Say this verbally in the close if there's time; it was cut from its own slide to protect the demo budget.</p>
+          </div>
+        </section>
+        <section id="slide-23-2">
+          <span class="eyebrow">Backup — Act 2, full JSON-LD set</span>
+          <h2 class="text-2xl">FAQPage + Person schema, if asked live</h2>
+          <div class="content">
+            <p class="text-lg" style="font-family: var(--mono-font); font-size: 12.5pt; white-space: pre-wrap;">FAQPage: { "@type": "FAQPage", "mainEntity": [{ "@type": "Question", "name": "...", "acceptedAnswer": { "@type": "Answer", "text": "..." }}] }  —  Person: { "@type": "Person", "name": "...", "jobTitle": "...", "worksFor": "...", "sameAs": ["..."] }. These were cut from the live JSON-LD slide (15) to hold the 2:30 budget — pull this up only if someone asks to see the other two types during Q&amp;A.</p>
+          </div>
+        </section>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="brand-bar">@Nerajno · #CYC26</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script>
+    Reveal.initialize({
+      width: 1280,
+      height: 720,
+      margin: 0,
+      controls: true,
+      progress: true,
+      slideNumber: true,
+      hash: true,
+      transition: 'slide',
+      center: false,
+      plugins: [ RevealNotes ]
+    });
+  </script>
+</body>
+</html>

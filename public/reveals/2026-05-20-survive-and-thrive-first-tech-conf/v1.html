@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survive & Thrive: Your First Tech Conference</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reset.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    :root {
+      --background-color: #0B1120;
+      --heading-font: "Syne", "Arial Black", sans-serif;
+      --body-font: "DM Sans", Helvetica, sans-serif;
+      --base-font-size: 32px;
+      --text-size: 17pt;
+      --h1-size: 52pt;
+      --h2-size: 38pt;
+      --h3-size: 22pt;
+
+      --primary-color: #10B981;
+      --amber: #F59E0B;
+      --text-color: #F0FDF4;
+      --muted-color: #6EE7B7;
+      --surface: #131E30;
+      --surface-2: #1A2840;
+      --border: #1F3050;
+    }
+
+    /* ── Base ─────────────────────────── */
+    .reveal {
+      font-family: var(--body-font);
+      background-color: var(--background-color);
+    }
+
+    .reveal .slides {
+      text-align: left;
+    }
+
+    .reveal .slides section {
+      padding: 44px 64px;
+      text-align: left;
+    }
+
+    .reveal h1,
+    .reveal h2,
+    .reveal h3 {
+      font-family: var(--heading-font);
+      text-transform: none;
+      letter-spacing: -0.02em;
+      color: var(--text-color);
+      line-height: 1.1;
+      margin-bottom: 0.4em;
+    }
+
+    .reveal h1 {
+      font-size: var(--h1-size);
+      font-weight: 800;
+    }
+
+    .reveal h2 {
+      font-size: var(--h2-size);
+      font-weight: 700;
+    }
+
+    .reveal h3 {
+      font-size: var(--h3-size);
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .reveal p,
+    .reveal li {
+      font-size: var(--text-size);
+      color: var(--text-color);
+      line-height: 1.55;
+    }
+
+    .reveal ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .reveal ul li {
+      padding: 6px 0 6px 28px;
+      position: relative;
+    }
+
+    .reveal ul li::before {
+      content: "▸";
+      color: var(--primary-color);
+      position: absolute;
+      left: 0;
+      font-size: 14pt;
+      top: 8px;
+    }
+
+    /* ── Divider slides ───────────────── */
+    .reveal .slides section.divider {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+      background: var(--background-color);
+    }
+
+    .reveal .slides section.divider h2 {
+      font-size: 54pt;
+      font-weight: 800;
+      color: var(--primary-color);
+    }
+
+    /* ── Title slide ──────────────────── */
+    .title-slide {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .title-slide::before {
+      content: "";
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .title-slide::after {
+      content: "";
+      position: absolute;
+      bottom: -80px;
+      left: -40px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .title-eyebrow {
+      font-family: var(--body-font);
+      font-size: 12pt;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16px;
+    }
+
+    .title-slide h1 {
+      font-size: 58pt;
+      line-height: 1.0;
+      margin-bottom: 24px;
+    }
+
+    .title-slide h1 .em {
+      color: var(--primary-color);
+    }
+
+    .title-meta {
+      font-size: 13pt;
+      color: var(--muted-color);
+      margin-top: 8px;
+    }
+
+    .title-bar {
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--amber));
+      border-radius: 2px;
+      margin: 20px 0;
+    }
+
+    /* ── Cards ────────────────────────── */
+    .cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .cards.three {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+    }
+
+    .card .card-icon {
+      font-size: 22pt;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+
+    .card h4 {
+      font-family: var(--heading-font);
+      font-size: 14pt;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 8px;
+      text-transform: none;
+    }
+
+    .card p {
+      font-size: 13pt;
+      color: #C4D4CB;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    /* ── Big stat / callout ───────────── */
+    .big-stat {
+      background: var(--surface);
+      border-left: 5px solid var(--primary-color);
+      border-radius: 0 12px 12px 0;
+      padding: 24px 30px;
+      margin: 20px 0;
+    }
+
+    .big-stat .num {
+      font-family: var(--heading-font);
+      font-size: 52pt;
+      font-weight: 800;
+      color: var(--primary-color);
+      line-height: 1;
+    }
+
+    .big-stat .label {
+      font-size: 14pt;
+      color: var(--muted-color);
+      margin-top: 4px;
+    }
+
+    /* ── Two-col layout ───────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 16px;
+    }
+
+    .col-label {
+      font-family: var(--body-font);
+      font-size: 10pt;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* ── Pill tags ────────────────────── */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .tag {
+      background: var(--surface-2);
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+      font-family: var(--body-font);
+      font-size: 12pt;
+      font-weight: 500;
+      padding: 6px 16px;
+      border-radius: 999px;
+    }
+
+    .tag.amber {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    /* ── Quote ────────────────────────── */
+    .reveal blockquote {
+      background: var(--surface);
+      border: none;
+      border-left: 5px solid var(--amber);
+      border-radius: 0 12px 12px 0;
+      padding: 22px 28px;
+      margin: 20px 0;
+      box-shadow: none;
+      width: 100%;
+    }
+
+    .reveal blockquote p {
+      font-size: 17pt;
+      font-style: italic;
+      color: var(--text-color);
+      margin: 0;
+    }
+
+    .reveal blockquote cite {
+      display: block;
+      margin-top: 10px;
+      font-style: normal;
+      font-size: 12pt;
+      color: var(--amber);
+    }
+
+    /* ── Highlight box ────────────────── */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(245, 158, 11, 0.08));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-top: 20px;
+    }
+
+    .highlight-box p {
+      margin: 0;
+      font-size: 16pt;
+    }
+
+    /* ── Numbered list ────────────────── */
+    .numbered-list {
+      counter-reset: item;
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0 0;
+    }
+
+    .numbered-list li {
+      counter-increment: item;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .numbered-list li:last-child {
+      border-bottom: none;
+    }
+
+    .numbered-list li::before {
+      content: counter(item, decimal-leading-zero);
+      font-family: var(--heading-font);
+      font-size: 18pt;
+      font-weight: 800;
+      color: var(--primary-color);
+      min-width: 44px;
+      line-height: 1;
+      margin-top: 2px;
+      background: none;
+      position: static;
+    }
+
+    /* ── Footer / source credit ───────── */
+    .slide-footer {
+      position: absolute;
+      bottom: 18px;
+      right: 64px;
+      font-size: 9pt;
+      color: rgba(110, 231, 183, 0.4);
+      font-family: var(--body-font);
+    }
+
+    /* ── Thank you / outro ────────────── */
+    .outro {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      align-items: center;
+    }
+
+    .outro h2 {
+      font-size: 50pt;
+    }
+
+    .outro .links {
+      margin-top: 28px;
+    }
+
+    .outro .link-item {
+      font-size: 13pt;
+      color: var(--muted-color);
+      margin: 8px 0;
+    }
+
+    .outro .link-item a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    /* ── Accent line under h2 ─────────── */
+    .underline-em {
+      display: inline-block;
+      position: relative;
+    }
+
+    .underline-em::after {
+      content: "";
+      display: block;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--amber));
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+
+    /* ── Reveal overrides ─────────────── */
+    .reveal .progress {
+      background: rgba(16, 185, 129, 0.15);
+    }
+
+    .reveal .progress span {
+      background: var(--primary-color);
+    }
+
+    .reveal .controls {
+      color: var(--primary-color);
+    }
+
+    .reveal .slide-number {
+      color: var(--muted-color);
+      font-family: var(--body-font);
+      font-size: 11pt;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ─── SLIDE 1: TITLE ───────────────────────────────── -->
+      <section class="title-slide">
+        <p class="title-eyebrow">⚡ Lightning Talk</p>
+        <h1>Survive <span class="em">&</span> Thrive:<br>Your Tech Conf Experience</h1>
+        <div class="title-bar"></div>
+        <p class="title-meta">@Nerajno &nbsp;·&nbsp; #AttendeeEdition &nbsp;·&nbsp; 2025</p>
+      </section>
+
+      <!-- ─── SLIDE 2: WHO AM I ───────────────────────────── -->
+      <section>
+        <h3>Who Am I ?</h3>
+        <h2 class="underline-em">Nerando Johnson</h2>
+
+        <div class="two-col" style="margin-top: 24px;">
+          <div>
+            <ul>
+              <li><strong style="color:var(--amber);">Junior Frontend Engineer</strong> @ Hygiena <span
+                  style="color:var(--muted-color); font-size:13pt;">(life sciences SaaS)</span></li>
+              <li>Former Organizer, <strong style="color:var(--amber);"> Atlanta freeCodeCamp</strong> <span
+                  style="color:var(--muted-color); font-size:13pt;">(600+ members)</span></li>
+            </ul>
+          </div>
+          <div>
+            <div class="big-stat">
+              <p class="num">66+</p>
+              <p class="label">CFP abstracts submitted and counting</p>
+            </div>
+            <div class="tags" style="margin-top: 16px;">
+              <span class="tag">Vue 3</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">Nuxt 3</span>
+              <span class="tag">Astro</span>
+              <span class="tag amber">@Nerajno</span>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">developingdvlpr.com · @Nerajno</div>
+      </section>
+
+      <!-- ─── DIVIDER: BEFORE YOU ARRIVE ──────────────────── -->
+      <section class="divider">
+        <h2>Before<br>You Arrive</h2>
+        <p style="font-size:16pt; color: var(--muted-color); margin-top: 16px;">intention → plan → pack</p>
+      </section>
+
+      <!-- ─── SLIDE 3: SET YOUR GOALS ─────────────────────── -->
+      <section>
+        <h3>01 · Set Clear Goals</h3>
+        <h2 class="underline-em">Know Why You're There</h2>
+
+        <div class="cards three" style="margin-top: 28px;">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
+            <h4>Where Are You?</h4>
+            <p>Student, professional, career changer — context shapes your strategy</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+            <h4>What Do You Need?</h4>
+            <p>New skills, industry trends, tech discoveries — be specific</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-people-arrows"></i></div>
+            <h4>Who Do You Want to Meet?</h4>
+            <p>Speakers, peers, potential employers — set your targets</p>
+          </div>
+        </div>
+
+        <div class="slide-footer">dev.to/nerajno · AttendeeEdition</div>
+      </section>
+
+      <!-- ─── SLIDE 4: PLAN ────────────────────────────────── -->
+      <section>
+        <h3>02 · Make A Plan</h3>
+        <h2 class="underline-em">Schedule Like a Pro</h2>
+
+        <div class="two-col" style="margin-top: 24px;">
+          <div>
+            <span class="col-label">Do This</span>
+            <ul>
+              <li>Lock your primary sessions early</li>
+              <li>Have backup sessions ready (rooms fill up)</li>
+              <li>Block time for the <strong>hallway track</strong></li>
+              <li>Read the conference emails — all of them</li>
+              <li>Check for after-hours events (they fill fast)</li>
+            </ul>
+          </div>
+          <div>
+            <blockquote>
+              <p>"Leave time in your schedule to talk with people, visit booths, and decompress."</p>
+              <cite>— Abbey Perini</cite>
+            </blockquote>
+            <div class="highlight-box" style="margin-top: 16px;">
+              <p><i class="fa-solid fa-calendar-check" style="color:var(--amber); margin-right:8px;"></i>
+                The hallway <em>is</em> a session track.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">confs.tech/cfp · dev.to/abbeyperini</div>
+      </section>
+
+      <!-- ─── SLIDE 5: GEAR + COMFORT ─────────────────────── -->
+      <section>
+        <h3>03 · Pack Right</h3>
+        <h2 class="underline-em">The Gear Checklist</h2>
+
+        <div class="cards" style="margin-top: 24px;">
+          <div class="card">
+            <h4><i class="fa-solid fa-bag-shopping" style="margin-right:8px;"></i> Bring</h4>
+            <ul style="margin:0; padding:0;">
+              <li>Laptop / tablet + charger</li>
+              <li>Portable battery pack</li>
+              <li>Notebook + pens (backup always)</li>
+              <li>Conference app downloaded</li>
+              <li>Comfortable shoes</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4><i class="fa-solid fa-droplet" style="color:var(--amber); margin-right:8px;"></i> Don't Forget</h4>
+            <ul style="margin:0; padding:0;">
+              <li>Water bottle — hydration is non-negotiable</li>
+              <li>Snacks (best conf might still run out)</li>
+              <li>Semi-casual, comfortable clothes</li>
+              <li>QR code or stickers to share contact info</li>
+              <li>Business cards or digital equivalent</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="tags" style="margin-top: 18px;">
+          <span class="tag amber">Travel is hard</span>
+          <span class="tag amber">Plan like the venue won't feed you</span>
+          <span class="tag">Dress for YOU</span>
+        </div>
+        <div class="slide-footer">dev.to/nerajno · dev.to/abbeyperini</div>
+      </section>
+
+      <!-- ─── SLIDE 6: NETWORKING ──────────────────────────── -->
+      <section>
+        <h3>04 · Network</h3>
+        <h2 class="underline-em">Without the Cringe</h2>
+
+        <div class="two-col" style="margin-top: 20px;">
+          <div>
+            <ol class="numbered-list">
+              <li>
+                <p>Have your LinkedIn QR ready — one tap, connected</p>
+              </li>
+              <li>
+                <p>Collect stickers, pins, swag — instant conversation starters</p>
+              </li>
+              <li>
+                <p>It's a small world — be kind, you'll most likely see them again</p>
+              </li>
+              <li>
+                <p>Introduce yourself even if you've met — no pressure to remember</p>
+              </li>
+            </ol>
+          </div>
+          <div>
+            <div class="big-stat">
+              <p class="num">10</p>
+              <p class="label">conferences Abbey attended in 2024 — not in DevRel</p>
+            </div>
+            <div class="highlight-box" style="margin-top:16px;">
+              <p><i class="fa-solid fa-circle-nodes" style="color:var(--primary-color); margin-right:8px;"></i>
+                Networking = meetups, podcasts, online communities — not just business cards</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">dev.to/nerajno · dev.to/abbeyperini</div>
+      </section>
+
+      <!-- ─── SLIDE 7: NOTES ───────────────────────────────── -->
+      <section>
+        <h3>05 · Take Notes</h3>
+        <h2 class="underline-em">Capture Insights, Not Transcripts</h2>
+
+        <div class="cards" style="margin-top: 22px;">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-pen-to-square"></i></div>
+            <h4>What to Capture</h4>
+            <p>Key takeaways · actionable points · contacts mentioned · resources to look up · new tech to explore</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
+            <h4>How to Do It</h4>
+            <p>Cornell method · note-taking app · voice memos · main idea + 3 bullets per talk</p>
+          </div>
+        </div>
+
+        <blockquote style="margin-top: 20px;">
+          <p>Focus on <strong>summarizing the main ideas</strong> — not transcribing every word. Your notes should be
+            actionable, not a novel.</p>
+          <cite>— @Nerajno, AttendeeEdition</cite>
+        </blockquote>
+        <div class="slide-footer">dev.to/nerajno · AttendeeEdition</div>
+      </section>
+
+      <!-- ─── SLIDE 8: COMMUNITY ───────────────────────────── -->
+      <section>
+        <h3>06 · Community</h3>
+        <h2 class="underline-em">Show Up For Each Other</h2>
+
+        <div class="cards three" style="margin-top: 26px;">
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-heart"></i></div>
+            <h4>Support Organizers</h4>
+            <p>Community events are struggling. Go, share you're going, bring a friend, volunteer.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-earth-americas"></i></div>
+            <h4>Every Conf Is Different</h4>
+            <p>Not every event is your cup of tea — and that's okay. Find your people and places.</p>
+          </div>
+          <div class="card">
+            <div class="card-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+            <h4>Shoot Your Shot</h4>
+            <p>Submit that CFP. Seriously. You have more to say than you think. Start at confs.tech/cfp</p>
+          </div>
+        </div>
+
+        <div class="tags" style="margin-top: 18px;">
+          <span class="tag">Volunteer</span>
+          <span class="tag">Sponsor</span>
+          <span class="tag amber">Submit that CFP ⚡</span>
+        </div>
+        <div class="slide-footer">dev.to/abbeyperini · confs.tech/cfp</div>
+      </section>
+
+      <!-- ─── SLIDE 9: FOLLOW UP ───────────────────────────── -->
+      <section>
+        <h3>07 · After the Conference</h3>
+        <h2 class="underline-em">The Work Doesn't Stop Here</h2>
+
+        <div class="two-col" style="margin-top: 20px;">
+          <div>
+            <span class="col-label">This Week</span>
+            <ul>
+              <li>Reach out to people you met on LinkedIn</li>
+              <li>Engage with their content — not just a connect</li>
+              <li>Write the blog post on your experience</li>
+              <li>Share what you learned publicly</li>
+            </ul>
+          </div>
+          <div>
+            <span class="col-label">Next 30 Days</span>
+            <ul>
+              <li>Build something with a new tech you discovered</li>
+              <li>Try out that tool from the sponsor booths</li>
+              <li>Submit a CFP for the next conference</li>
+              <li>Join a local meetup you heard about there</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <p><i class="fa-solid fa-rocket" style="color:var(--primary-color); margin-right:8px;"></i>
+            <strong>Progress over perfection.</strong> Ship the blog post. Connect with the person. Submit the talk
+            idea.
+          </p>
+        </div>
+        <div class="slide-footer">dev.to/nerajno · @Nerajno</div>
+      </section>
+
+      <!-- ─── DIVIDER: RECAP ────────────────────────────────── -->
+      <section class="divider">
+        <h2>TL;DR</h2>
+        <p style="font-size:15pt; color: var(--muted-color); margin-top: 16px;">Seven moves. One conference. Infinite
+          returns.</p>
+      </section>
+
+      <!-- ─── SLIDE 11: OUTRO ──────────────────────────────── -->
+      <section class="outro">
+        <h2>Go Conquer<br><span style="color:var(--amber)">That Conference.</span></h2>
+        <div class="title-bar" style="margin: 20px auto;"></div>
+
+        <div class="cards" style="max-width: 680px; margin-top: 8px;">
+          <div class="card" style="text-align:left;">
+            <h4>01 · Set Goals</h4>
+            <h4>02 · Make a Plan</h4>
+            <h4>03 · Pack Right</h4>
+            <h4>04 · Network</h4>
+          </div>
+          <div class="card" style="text-align:left;">
+            <h4>05 · Take Notes</h4>
+            <h4>06 · Support Community</h4>
+            <h4>07 · Follow Up</h4>
+            <h4 style="color:var(--primary-color);">✚ Submit That CFP</h4>
+          </div>
+        </div>
+
+        <div class="links" style="margin-top:28px;">
+          <p class="link-item">📖 dev.to/<strong>nerajno</strong> · <em>AttendeeEdition</em></p>
+          <p class="link-item">📖 dev.to/<strong>abbeyperini</strong> · <em>10 Tips from 10 Conferences</em></p>
+          <p class="link-item" style="color:var(--muted-color); font-size:12pt; margin-top:8px;">@Nerajno ·
+            developingdvlpr.com</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script>
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      slideNumber: 'c/t',
+      hash: true,
+      transition: 'slide',
+      transitionSpeed: 'fast',
+      center: false,
+      autoSlide: 0,
+      loop: false,
+      width: 1280,
+      height: 720,
+    });
+  </script>
+</body>
+
+</html>

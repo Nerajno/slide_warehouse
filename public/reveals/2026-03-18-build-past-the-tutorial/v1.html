@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Build Past the Tutorial — Nerajno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css" />
+<style>
+  :root {
+    --bg:        #0D0C0A;
+    --bg2:       #141310;
+    --amber:     #E8A030;
+    --amber-dim: #9B6A20;
+    --cream:     #F0EAD6;
+    --muted:     #7A7060;
+    --green:     #5A8C6A;
+    --red:       #C05A4A;
+    --rule:      #2A2820;
+  }
+
+  .reveal-viewport { background: var(--bg); }
+  .reveal { font-family: 'Crimson Pro', Georgia, serif; color: var(--cream); }
+
+  /* ── GLOBAL SLIDE BASE ── */
+  .reveal .slides section {
+    text-align: left;
+    padding: 0 80px;
+    height: 100%;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  /* ── HEADINGS ── */
+  .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+    font-family: 'DM Serif Display', serif;
+    color: var(--cream);
+    text-transform: none;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.4em;
+    line-height: 1.05;
+    text-shadow: none;
+  }
+  .reveal h1 { font-size: 3.2em; }
+  .reveal h2 { font-size: 2.2em; }
+  .reveal h3 { font-size: 1.6em; }
+  .reveal h4 { font-size: 1.1em; color: var(--amber); font-family: 'JetBrains Mono', monospace; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.6em; }
+
+  .reveal p { font-size: 1.15em; line-height: 1.65; margin: 0 0 0.6em; font-weight: 300; }
+  .reveal ul { list-style: none; padding: 0; margin: 0; }
+  .reveal ul li { font-size: 1.1em; line-height: 1.6; padding: 0.35em 0 0.35em 1.6em; position: relative; font-weight: 300; }
+  .reveal ul li::before { content: '—'; position: absolute; left: 0; color: var(--amber); }
+  .reveal strong { font-weight: 600; color: var(--cream); }
+  .reveal em { font-style: italic; color: var(--amber); }
+
+  /* ── AMBER ACCENT TEXT ── */
+  .amber { color: var(--amber); }
+  .muted { color: var(--muted); font-size: 0.85em; }
+  .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+
+  /* ── RULE ── */
+  .rule { width: 60px; height: 3px; background: var(--amber); margin: 0 0 1.2em; border: none; }
+  .rule-full { width: 100%; height: 1px; background: var(--rule); margin: 1em 0; border: none; }
+
+  /* ── TITLE SLIDE ── */
+  .slide-title { background: var(--bg); position: relative; overflow: hidden; }
+  .slide-title::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 55%;
+    height: 140%;
+    background: radial-gradient(ellipse at 70% 50%, rgba(232,160,48,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .slide-title .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72em;
+    letter-spacing: 0.2em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1.2em;
+  }
+  .slide-title h1 { font-size: 3.6em; line-height: 1.0; max-width: 80%; }
+  .slide-title .subtitle {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.3em;
+    color: var(--muted);
+    font-weight: 300;
+    font-style: italic;
+    margin-top: 0.6em;
+  }
+  .slide-title .speaker {
+    position: absolute;
+    bottom: 60px;
+    left: 80px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75em;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .slide-title .speaker span { color: var(--amber); }
+
+  /* ── SECTION BREAK SLIDES ── */
+  .slide-break {
+    background: var(--bg2);
+    border-left: 4px solid var(--amber);
+  }
+  .slide-break h2 { font-size: 3em; }
+  .slide-break .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 5em;
+    color: var(--rule);
+    position: absolute;
+    right: 80px;
+    bottom: 60px;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  /* ── STATEMENT SLIDES ── */
+  .slide-statement { background: var(--bg); }
+  .slide-statement h2 { font-size: 2.8em; line-height: 1.1; max-width: 85%; }
+  .slide-statement .annotation {
+    font-size: 1em;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 1.2em;
+    border-left: 2px solid var(--amber-dim);
+    padding-left: 1em;
+  }
+
+  /* ── BLOOM LADDER ── */
+  .bloom-ladder {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 6px;
+    margin: 0;
+  }
+  .bloom-level {
+    padding: 0.55em 1.2em;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    transition: all 0.3s;
+  }
+  .bloom-level .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7em;
+    font-weight: 700;
+    min-width: 22px;
+    opacity: 0.6;
+  }
+  .bloom-level .label { font-family: 'DM Serif Display', serif; font-size: 1.05em; }
+  .bloom-level .desc { font-size: 0.8em; color: var(--muted); font-style: italic; margin-left: auto; }
+  .bloom-l6 { background: rgba(232,160,48,0.18); border-left: 3px solid var(--amber); }
+  .bloom-l5 { background: rgba(232,160,48,0.12); border-left: 3px solid var(--amber-dim); }
+  .bloom-l4 { background: rgba(232,160,48,0.07); border-left: 3px solid rgba(155,106,32,0.6); }
+  .bloom-l3 { background: rgba(122,112,96,0.12); border-left: 3px solid var(--muted); }
+  .bloom-l2 { background: rgba(122,112,96,0.08); border-left: 3px solid rgba(122,112,96,0.4); }
+  .bloom-l1 { background: rgba(122,112,96,0.05); border-left: 3px solid rgba(122,112,96,0.2); }
+  .bloom-level.dimmed { opacity: 0.2; }
+  .bloom-level.highlighted { outline: 1px solid var(--amber); }
+
+  /* ── TWO COLUMN ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3em; align-items: start; }
+  .two-col-wide { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3em; align-items: start; }
+
+  /* ── COMPARISON BOXES ── */
+  .compare-box {
+    border: 1px solid var(--rule);
+    padding: 1.4em;
+    border-radius: 2px;
+    position: relative;
+  }
+  .compare-box.good { border-color: rgba(90,140,106,0.4); }
+  .compare-box.bad  { border-color: rgba(192,90,74,0.3); }
+  .compare-box .box-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.8em;
+  }
+  .compare-box.good .box-label { color: var(--green); }
+  .compare-box.bad  .box-label { color: var(--red); }
+  .compare-box ul li { font-size: 0.95em; }
+
+  /* ── TABLE ── */
+  .slide-table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
+  .slide-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    text-align: left;
+    padding: 0.6em 1em;
+    border-bottom: 1px solid var(--amber-dim);
+    font-weight: 400;
+  }
+  .slide-table td {
+    padding: 0.65em 1em;
+    border-bottom: 1px solid var(--rule);
+    color: var(--cream);
+    font-size: 1em;
+    vertical-align: top;
+  }
+  .slide-table tr:last-child td { border-bottom: none; }
+  .slide-table td:first-child { color: var(--muted); }
+  .slide-table td.highlight { color: var(--amber); font-style: italic; }
+  .slide-table tr.featured { background: rgba(232,160,48,0.06); }
+
+  /* ── FRAMEWORK STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 0.5em; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2em;
+    padding: 0.8em 1.2em;
+    border-left: 2px solid var(--rule);
+    transition: all 0.3s;
+  }
+  .step.active { border-left-color: var(--amber); background: rgba(232,160,48,0.05); }
+  .step .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7em;
+    font-weight: 700;
+    color: var(--amber);
+    min-width: 24px;
+    padding-top: 0.15em;
+  }
+  .step .step-text { font-size: 1em; line-height: 1.5; }
+  .step .step-title { font-family: 'DM Serif Display', serif; font-size: 1.1em; display: block; margin-bottom: 0.15em; }
+  .step .step-sub { font-size: 0.85em; color: var(--muted); font-style: italic; }
+
+  /* ── CALLOUT / QUOTE ── */
+  .callout {
+    border-left: 3px solid var(--amber);
+    padding: 1em 1.4em;
+    background: rgba(232,160,48,0.05);
+    margin: 0.8em 0;
+    border-radius: 0 2px 2px 0;
+  }
+  .callout p { font-size: 1em; margin: 0; font-style: italic; }
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.4em;
+  }
+
+  /* ── BIG NUMBER ── */
+  .big-stat {
+    font-family: 'DM Serif Display', serif;
+    font-size: 6em;
+    line-height: 1;
+    color: var(--amber);
+    margin: 0;
+  }
+  .big-stat-label { font-size: 1.1em; color: var(--muted); font-style: italic; margin-top: 0.2em; }
+
+  /* ── OUTRO / SPEAKER ── */
+  .slide-outro { background: var(--bg2); }
+  .slide-outro h2 { font-size: 2.6em; }
+  .contact-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8em;
+    color: var(--muted);
+    margin: 0.2em 0;
+  }
+  .contact-line span { color: var(--amber); }
+
+  /* ── PROGRESS & NAV ── */
+  .reveal .progress { color: var(--amber); }
+  .reveal .controls { color: var(--amber); }
+  .reveal .slide-number { font-family: 'JetBrains Mono', monospace; font-size: 0.65em; color: var(--muted); background: transparent; }
+
+  /* ── FRAGMENT ANIMATIONS ── */
+  .reveal .fragment { opacity: 0; transition: opacity 0.4s; }
+  .reveal .fragment.visible { opacity: 1; }
+
+  /* ── GRAIN OVERLAY ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── AI SLIDE SPECIFIC ── */
+  .ai-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2em;
+    margin-top: 0.5em;
+  }
+  .ai-box {
+    padding: 1.2em;
+    border-radius: 2px;
+  }
+  .ai-box.dim { background: rgba(122,112,96,0.08); border: 1px solid var(--rule); }
+  .ai-box.bright { background: rgba(232,160,48,0.08); border: 1px solid rgba(232,160,48,0.3); }
+  .ai-box .ai-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.8em;
+  }
+  .ai-box.dim .ai-label { color: var(--muted); }
+  .ai-box.bright .ai-label { color: var(--amber); }
+  .ai-box ul li { font-size: 0.9em; }
+
+  /* ── PORTFOLIO STORY ── */
+  .story-block {
+    background: var(--bg2);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--amber);
+    padding: 1.4em 1.6em;
+    border-radius: 0 0 2px 2px;
+  }
+  .story-block p { font-size: 1em; margin: 0; }
+  .story-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 0.6em;
+  }
+
+  /* ── TAXONOMY ZONE LABELS ── */
+  .zone-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.3em 0.8em;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 0.5em;
+  }
+  .zone-top { background: rgba(232,160,48,0.15); color: var(--amber); }
+  .zone-bot { background: rgba(122,112,96,0.15); color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ══════════════════════════════════════════
+  SLIDE 1 — TITLE
+══════════════════════════════════════════ -->
+<section class="slide-title">
+  <div class="eyebrow">A Talk by Nerajno</div>
+  <hr class="rule" />
+  <h1>Build Past<br/>the Tutorial</h1>
+  <p class="subtitle">Why your side projects<br/>should scare you a little</p>
+  <div class="speaker">Nerando Johnson &nbsp;·&nbsp; <span>@Nerajno</span> &nbsp;·&nbsp; developingdvlpr.com</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 2 — WHO THIS IS FOR
+══════════════════════════════════════════ -->
+<section>
+  <h4>Who is this for?</h4>
+  <hr class="rule" />
+  <ul>
+    <li class="fragment">You've finished the courses. You build things. <em>Things work.</em></li>
+    <li class="fragment">And yet — something feels stuck.</li>
+    <li class="fragment">You're productive, but you're not sure you're <em>growing.</em></li>
+    <li class="fragment">You keep reaching for the patterns you already know.</li>
+  </ul>
+  <div class="callout fragment" style="margin-top:1.4em;">
+    <p>This talk is for you.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 3 — THE REAL STORY OPENING
+══════════════════════════════════════════ -->
+<section class="slide-statement">
+  <h4>How this talk started</h4>
+  <hr class="rule" />
+  <h2>I rebuilt my portfolio.<br/><em>Then I did one thing I'd never done before.</em></h2>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 4 — PORTFOLIO STORY DETAIL
+══════════════════════════════════════════ -->
+<section>
+  <h4>portfolio_v3 &nbsp;·&nbsp; Astro 5 + Supabase + Netlify</h4>
+  <hr class="rule" />
+  <div class="two-col-wide">
+    <div>
+      <p style="margin-bottom:1em;"><strong>The comfortable foundation:</strong></p>
+      <ul>
+        <li>Astro 5, TailwindCSS, MDX</li>
+        <li>Component architecture I knew</li>
+        <li>Blog setup I'd done before</li>
+        <li>Deploy pipeline: already familiar</li>
+      </ul>
+    </div>
+    <div class="fragment">
+      <p style="margin-bottom:1em;"><strong style="color:var(--amber)">The stretch goal:</strong></p>
+      <div class="story-block">
+        <div class="story-label">Never built before</div>
+        <p>A view counter with <em>device fingerprinting</em> and <em>bot detection</em> — built on Supabase edge functions. No plugin. No tutorial.</p>
+      </div>
+    </div>
+  </div>
+  <p class="fragment muted" style="margin-top:1.4em;">That one decision changed what the entire project taught me.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 5 — THE PLATEAU
+══════════════════════════════════════════ -->
+<section class="slide-statement">
+  <h4>The problem</h4>
+  <hr class="rule" />
+  <h2>There's a plateau nobody<br/>warns you about.</h2>
+  <p class="annotation fragment">It doesn't feel like a plateau. It feels like productivity.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 6 — BLOOM INTRO
+══════════════════════════════════════════ -->
+<section class="slide-break">
+  <h4>The framework</h4>
+  <hr class="rule" />
+  <h2>Bloom's Taxonomy</h2>
+  <p style="color:var(--muted); font-style:italic; margin-top:0.6em;">Benjamin Bloom, 1956 — a hierarchy of cognitive learning objectives</p>
+  <p class="fragment" style="margin-top:1em;">Designed for educators. <em>More useful for developers.</em></p>
+  <div class="section-num">01</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 7 — THE FULL LADDER
+══════════════════════════════════════════ -->
+<section>
+  <h4>Six levels of cognitive depth</h4>
+  <hr class="rule" />
+  <div class="bloom-ladder">
+    <div class="bloom-level bloom-l1"><span class="num">01</span><span class="label">Remember</span><span class="desc">Recall facts, syntax, definitions</span></div>
+    <div class="bloom-level bloom-l2"><span class="num">02</span><span class="label">Understand</span><span class="desc">Explain in your own words</span></div>
+    <div class="bloom-level bloom-l3"><span class="num">03</span><span class="label">Apply</span><span class="desc">Use knowledge in familiar situations</span></div>
+    <div class="bloom-level bloom-l4 fragment"><span class="num">04</span><span class="label">Analyze</span><span class="desc">Break things apart, see connections</span></div>
+    <div class="bloom-level bloom-l5 fragment"><span class="num">05</span><span class="label">Evaluate</span><span class="desc">Judge, compare, make tradeoffs</span></div>
+    <div class="bloom-level bloom-l6 fragment"><span class="num">06</span><span class="label">Create</span><span class="desc">Produce something new</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 8 — WHERE DEVS LIVE
+══════════════════════════════════════════ -->
+<section>
+  <h4>Honest question</h4>
+  <hr class="rule" />
+  <div class="two-col" style="align-items:center;">
+    <div>
+      <h2>Where do you<br/>actually live<br/>on this ladder?</h2>
+    </div>
+    <div class="bloom-ladder">
+      <div class="bloom-level bloom-l1 dimmed"><span class="num">01</span><span class="label">Remember</span></div>
+      <div class="bloom-level bloom-l2 dimmed"><span class="num">02</span><span class="label">Understand</span></div>
+      <div class="bloom-level bloom-l3 highlighted"><span class="num">03</span><span class="label">Apply</span><span class="desc fragment">← most of us</span></div>
+      <div class="bloom-level bloom-l4 dimmed fragment"><span class="num">04</span><span class="label">Analyze</span></div>
+      <div class="bloom-level bloom-l5 dimmed fragment"><span class="num">05</span><span class="label">Evaluate</span></div>
+      <div class="bloom-level bloom-l6 dimmed fragment"><span class="num">06</span><span class="label">Create</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 9 — WHY LEVEL 3 FEELS FINE
+══════════════════════════════════════════ -->
+<section class="slide-statement">
+  <h4>The trap</h4>
+  <hr class="rule" />
+  <h2>Level 3 <em>feels</em> productive.</h2>
+  <p class="fragment annotation">You're shipping. Things work. The feedback loop is fast and positive.</p>
+  <p class="fragment annotation" style="margin-top:0.5em;">That's exactly what makes it a trap.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 10 — UPPER TAXONOMY = REAL DEV SKILLS
+══════════════════════════════════════════ -->
+<section>
+  <h4>What the upper taxonomy actually looks like</h4>
+  <hr class="rule" />
+  <div class="bloom-ladder" style="gap:8px;">
+    <div class="bloom-level bloom-l4"><span class="num">04</span><span class="label">Analyze</span><span class="desc">Debugging an architecture you didn't write. Understanding tradeoffs.</span></div>
+    <div class="bloom-level bloom-l5"><span class="num">05</span><span class="label">Evaluate</span><span class="desc">Choosing between two patterns with real context. Writing code review.</span></div>
+    <div class="bloom-level bloom-l6"><span class="num">06</span><span class="label">Create</span><span class="desc">Composing tools into something that didn't exist. Mentoring someone.</span></div>
+  </div>
+  <div class="callout fragment" style="margin-top:1.2em;">
+    <div class="callout-label">Note</div>
+    <p>These aren't soft skills. This is the cognitive work of senior engineering.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 11 — SECTION BREAK: NOT ALL BUILDING
+══════════════════════════════════════════ -->
+<section class="slide-break">
+  <h4>The real issue</h4>
+  <hr class="rule" />
+  <h2>Not all building<br/>is equal.</h2>
+  <div class="section-num">02</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 12 — BUILDING AT LEVEL 3
+══════════════════════════════════════════ -->
+<section>
+  <h4>Building at level 3 — Apply</h4>
+  <hr class="rule" />
+  <div class="compare-box bad">
+    <div class="box-label">Consolidation work (not growth)</div>
+    <ul>
+      <li>Following a tutorial with different variable names</li>
+      <li>Copying a CRUD pattern into a new domain</li>
+      <li>Rebuilding something in a different framework</li>
+      <li>Adding a feature using a pattern you've done before</li>
+    </ul>
+  </div>
+  <p class="fragment muted" style="margin-top:1em;">This is the learning equivalent of running the same route every day and wondering why your pace isn't improving.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 13 — BUILDING AT 4-6
+══════════════════════════════════════════ -->
+<section>
+  <h4>Building at levels 4–6</h4>
+  <hr class="rule" />
+  <div class="compare-box good">
+    <div class="box-label">Growth work</div>
+    <ul>
+      <li>Implementing a feature you've never built, with a pattern you have to research</li>
+      <li>Making architecture decisions with no one telling you the "right" answer</li>
+      <li>Reviewing your own code after two weeks and knowing what you'd change</li>
+      <li>Composing multiple tools into something that didn't exist before</li>
+    </ul>
+  </div>
+  <div class="callout fragment" style="margin-top:1em;">
+    <div class="callout-label">The signal</div>
+    <p>How much of this build are you <em>inventing on the fly?</em></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 14 — PORTFOLIO AT LEVEL 3
+══════════════════════════════════════════ -->
+<section>
+  <h4>portfolio_v3 — honest breakdown</h4>
+  <hr class="rule" />
+  <div class="two-col">
+    <div>
+      <div class="zone-label zone-bot">Level 3 — Apply</div>
+      <ul style="margin-top:0.5em;">
+        <li>Astro component architecture</li>
+        <li>Tailwind layout patterns</li>
+        <li>MDX blog setup</li>
+        <li>Netlify deploy config</li>
+      </ul>
+      <p class="muted" style="margin-top:0.8em;">Comfortable. Fast. Consolidation.</p>
+    </div>
+    <div class="fragment">
+      <div class="zone-label zone-top">Level 4–6 — Growth</div>
+      <ul style="margin-top:0.5em;">
+        <li>Device fingerprinting logic</li>
+        <li>Bot detection heuristics</li>
+        <li>Supabase edge function design</li>
+        <li>Signal stability research</li>
+      </ul>
+      <p class="amber" style="margin-top:0.8em; font-style:italic;">Invented on the fly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 15 — SECTION BREAK: STRETCH GOAL
+══════════════════════════════════════════ -->
+<section class="slide-break">
+  <h4>The mechanism</h4>
+  <hr class="rule" />
+  <h2>The stretch goal.</h2>
+  <div class="section-num">03</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 16 — STRETCH GOAL DEFINED
+══════════════════════════════════════════ -->
+<section class="slide-statement">
+  <h4>Definition</h4>
+  <hr class="rule" />
+  <h2>One feature you don't<br/>yet know how to build.</h2>
+  <p class="annotation fragment">Not a project you can't finish. One deliberate element that requires you to figure something out.</p>
+  <p class="fragment" style="margin-top:1em; color:var(--amber); font-style:italic;">Build what you know — plus one thing you don't.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 17 — EXAMPLES TABLE
+══════════════════════════════════════════ -->
+<section>
+  <h4>What a stretch goal looks like</h4>
+  <hr class="rule" />
+  <table class="slide-table">
+    <thead>
+      <tr><th>Base Project</th><th>Stretch Goal</th></tr>
+    </thead>
+    <tbody>
+      <tr class="featured">
+        <td>Portfolio site</td>
+        <td class="highlight">View counter with device fingerprinting (no plugin)</td>
+      </tr>
+      <tr>
+        <td>Todo app with CRUD</td>
+        <td>Real-time sync — no tutorial</td>
+      </tr>
+      <tr>
+        <td>Weather dashboard</td>
+        <td>5-day trend visualization built from scratch</td>
+      </tr>
+      <tr>
+        <td>Personal blog</td>
+        <td>Notification system without an off-the-shelf library</td>
+      </tr>
+      <tr>
+        <td>Dev CRM / tracker</td>
+        <td>Graph visualization with Three.js</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted fragment" style="margin-top:0.8em;">One unknown. Scoped. Intentional.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 18 — HOW STRETCH MAPS TO BLOOM
+══════════════════════════════════════════ -->
+<section>
+  <h4>Why it works — the Bloom mapping</h4>
+  <hr class="rule" />
+  <p>When I built the fingerprinting feature, the taxonomy kicked in automatically:</p>
+  <div class="bloom-ladder" style="gap:8px; margin-top:0.8em;">
+    <div class="bloom-level bloom-l4 fragment"><span class="num">04</span><span class="label">Analyze</span><span class="desc">Which browser signals are stable vs volatile?</span></div>
+    <div class="bloom-level bloom-l5 fragment"><span class="num">05</span><span class="label">Evaluate</span><span class="desc">Which bot detection approach fits a portfolio context?</span></div>
+    <div class="bloom-level bloom-l6 fragment"><span class="num">06</span><span class="label">Create</span><span class="desc">An edge function that synthesized all of it.</span></div>
+  </div>
+  <div class="callout fragment" style="margin-top:1em;">
+    <p>The stretch goal is a <em>forcing function.</em> Without it, you drift toward comfort.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 19 — SECTION BREAK: COMFORT ZONE
+══════════════════════════════════════════ -->
+<section class="slide-break">
+  <h4>The hard part</h4>
+  <hr class="rule" />
+  <h2>Comfort zone<br/>is the enemy of<br/>the upper taxonomy.</h2>
+  <div class="section-num">04</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 20 — WHAT LEVELS 4-6 FEEL LIKE
+══════════════════════════════════════════ -->
+<section class="slide-statement">
+  <h4>What growth-level work actually feels like</h4>
+  <hr class="rule" />
+  <h2>Not enlightenment.<br/><em>Confusion with a deadline.</em></h2>
+  <p class="fragment annotation">One night deep in the fingerprinting logic — nothing worked. Couldn't tell if it was my hashing approach, my Supabase function, or my understanding of how the signals were collected.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 21 — THE SIGNAL
+══════════════════════════════════════════ -->
+<section class="slide-statement">
+  <h4>The reframe</h4>
+  <hr class="rule" />
+  <h2>That confusion <em>is</em> the signal.</h2>
+  <p class="fragment annotation">It's not a sign you're doing it wrong. It's a sign you're doing something that requires actual thinking.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 22 — LOW STAKES OF SIDE PROJECTS
+══════════════════════════════════════════ -->
+<section>
+  <h4>Why side projects are the right place</h4>
+  <hr class="rule" />
+  <ul>
+    <li class="fragment">You can <em>break things</em> without consequences</li>
+    <li class="fragment">You can take <strong>three approaches</strong> and throw two away</li>
+    <li class="fragment">You can build it the "wrong" way on purpose — to understand <em>why</em> it's wrong</li>
+    <li class="fragment">You have the freedom to be confused for a while</li>
+  </ul>
+  <div class="callout fragment" style="margin-top:1.2em;">
+    <div class="callout-label">Beginner tip</div>
+    <p>If your side project feels comfortable the whole time — that's a signal, not a reward. Add a stretch goal.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 23 — SECTION BREAK: FRAMEWORK
+══════════════════════════════════════════ -->
+<section class="slide-break">
+  <h4>The process</h4>
+  <hr class="rule" />
+  <h2>A five-step<br/>framework.</h2>
+  <div class="section-num">05</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 24 — FRAMEWORK OVERVIEW
+══════════════════════════════════════════ -->
+<section>
+  <h4>How to build a project that teaches you</h4>
+  <hr class="rule" />
+  <div class="steps">
+    <div class="step fragment"><span class="step-num">01</span><div class="step-text"><span class="step-title">Start with a known foundation</span></div></div>
+    <div class="step fragment"><span class="step-num">02</span><div class="step-text"><span class="step-title">Identify one uncomfortable feature</span></div></div>
+    <div class="step fragment"><span class="step-num">03</span><div class="step-text"><span class="step-title">Build the comfortable part first</span></div></div>
+    <div class="step fragment"><span class="step-num">04</span><div class="step-text"><span class="step-title">Enter the uncomfortable part intentionally</span></div></div>
+    <div class="step fragment"><span class="step-num">05</span><div class="step-text"><span class="step-title">Debrief after you ship</span></div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 25 — STEP 1
+══════════════════════════════════════════ -->
+<section>
+  <h4>Step 01</h4>
+  <hr class="rule" />
+  <h2>Start with a<br/>known foundation.</h2>
+  <div class="steps" style="margin-top:1.2em;">
+    <div class="step active"><span class="step-num">01</span><div class="step-text"><span class="step-title">Known foundation</span><span class="step-sub">Astro + Tailwind + MDX — I'd done variations of all of it. That comfort is the point.</span></div></div>
+  </div>
+  <p class="fragment muted" style="margin-top:1em;">The goal isn't to have everything be new. It's to have <em>one thing</em> be new.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 26 — STEP 2
+══════════════════════════════════════════ -->
+<section>
+  <h4>Step 02</h4>
+  <hr class="rule" />
+  <h2>Identify one<br/>uncomfortable feature.</h2>
+  <div class="steps" style="margin-top:1.2em;">
+    <div class="step active"><span class="step-num">02</span><div class="step-text"><span class="step-title">Before you write a line of code — write it down</span><span class="step-sub">"What's the one thing in this project I don't know how to build?"</span></div></div>
+  </div>
+  <div class="callout fragment" style="margin-top:1em;">
+    <p>If you can't think of one — if every feature feels familiar — you're building at level 3. <em>Add something that doesn't.</em></p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 27 — STEP 3
+══════════════════════════════════════════ -->
+<section>
+  <h4>Step 03</h4>
+  <hr class="rule" />
+  <h2>Build the comfortable<br/>part first.</h2>
+  <div class="steps" style="margin-top:1.2em;">
+    <div class="step active"><span class="step-num">03</span><div class="step-text"><span class="step-title">Ship the known stuff first</span><span class="step-sub">I built out the entire portfolio structure before touching the view counter.</span></div></div>
+  </div>
+  <p class="fragment muted" style="margin-top:1em;">Don't skip this. Arriving at your stretch goal with a broken base is just frustrating — not educational.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 28 — STEP 4
+══════════════════════════════════════════ -->
+<section>
+  <h4>Step 04</h4>
+  <hr class="rule" />
+  <h2>Enter the uncomfortable<br/>part <em>intentionally.</em></h2>
+  <div class="steps" style="margin-top:1.2em;">
+    <div class="step active"><span class="step-num">04</span><div class="step-text"><span class="step-title">Look for concepts, not solutions</span><span class="step-sub">I read about fingerprinting approaches, studied what browsers expose, then wrote my own implementation. Not a copy. A synthesis.</span></div></div>
+  </div>
+  <p class="fragment muted" style="margin-top:1em;">Resist the tutorial that solves the whole thing for you. That skips the growth.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 29 — STEP 5
+══════════════════════════════════════════ -->
+<section>
+  <h4>Step 05 — the one people skip</h4>
+  <hr class="rule" />
+  <h2>Debrief after<br/>you ship.</h2>
+  <div class="steps" style="margin-top:1.2em;">
+    <div class="step active"><span class="step-num">05</span><div class="step-text"><span class="step-title">Write it down — even briefly</span><span class="step-sub">After the view counter was live: abstract the fingerprinting logic earlier. Better logging from day one. Test the edge function locally first.</span></div></div>
+  </div>
+  <p class="fragment muted" style="margin-top:1em;">"I built a thing" → "I understand what building that thing <em>taught me.</em>"</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 30 — THE FULL FRAMEWORK RECAP
+══════════════════════════════════════════ -->
+<section>
+  <h4>The five steps — all together</h4>
+  <hr class="rule" />
+  <div class="steps">
+    <div class="step"><span class="step-num">01</span><div class="step-text"><span class="step-title">Start with a known foundation</span><span class="step-sub">Don't have everything be new — just one thing.</span></div></div>
+    <div class="step"><span class="step-num">02</span><div class="step-text"><span class="step-title">Identify one uncomfortable feature</span><span class="step-sub">Write it down before you write code.</span></div></div>
+    <div class="step"><span class="step-num">03</span><div class="step-text"><span class="step-title">Build the comfortable part first</span><span class="step-sub">Momentum. Foundation. Then the stretch.</span></div></div>
+    <div class="step"><span class="step-num">04</span><div class="step-text"><span class="step-title">Enter the uncomfortable part intentionally</span><span class="step-sub">Concepts, not solutions. Synthesize, don't copy.</span></div></div>
+    <div class="step"><span class="step-num">05</span><div class="step-text"><span class="step-title">Debrief after you ship</span><span class="step-sub">This is where the learning solidifies. Don't skip it.</span></div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 31 — SECTION BREAK: WHY IT MATTERS
+══════════════════════════════════════════ -->
+<section class="slide-break">
+  <h4>The bigger picture</h4>
+  <hr class="rule" />
+  <h2>Why this matters<br/>beyond you.</h2>
+  <div class="section-num">06</div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 32 — UPPER TAXONOMY CHANGES HOW YOU SHOW UP
+══════════════════════════════════════════ -->
+<section>
+  <h4>What consistent upper-taxonomy work builds</h4>
+  <hr class="rule" />
+  <ul>
+    <li class="fragment">Opinions <em>grounded in experience,</em> not just preference</li>
+    <li class="fragment">The ability to articulate <em>why</em> an architecture decision is better or worse</li>
+    <li class="fragment">The capacity to offer insight on someone else's code — not just critique</li>
+    <li class="fragment">The foundation to actually mentor someone</li>
+  </ul>
+  <p class="fragment muted" style="margin-top:1.2em;">Side projects with stretch goals are how you turn "I can code" into "I can <em>think</em> about code."</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 33 — THE AI ANGLE
+══════════════════════════════════════════ -->
+<section>
+  <h4>2026 context</h4>
+  <hr class="rule" />
+  <h2>AI handles<br/>levels 1–3.<br/><em>Reliably.</em></h2>
+  <p class="fragment" style="margin-top:0.8em;">Syntax. Scaffolding. Boilerplate. Pattern application.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 34 — AI SPLIT SLIDE
+══════════════════════════════════════════ -->
+<section>
+  <h4>Where the line is</h4>
+  <hr class="rule" />
+  <div class="ai-split">
+    <div class="ai-box dim">
+      <div class="ai-label">AI does this well</div>
+      <ul>
+        <li>Generate boilerplate</li>
+        <li>Apply known patterns</li>
+        <li>Recall syntax</li>
+        <li>Scaffold structure</li>
+      </ul>
+      <p class="muted" style="margin-top:0.8em; font-size:0.85em;">Levels 1–3</p>
+    </div>
+    <div class="ai-box bright fragment">
+      <div class="ai-label">You need to do this</div>
+      <ul>
+        <li>Analyze what was generated</li>
+        <li>Evaluate if it's actually right</li>
+        <li>Make judgment calls</li>
+        <li>Create something novel</li>
+      </ul>
+      <p class="amber" style="margin-top:0.8em; font-size:0.85em; font-style:italic;">Levels 4–6</p>
+    </div>
+  </div>
+  <div class="callout fragment" style="margin-top:1em;">
+    <p>The thinking is the differentiator. And you build it by practicing it — on purpose.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 35 — THE CALL TO ACTION
+══════════════════════════════════════════ -->
+<section class="slide-statement">
+  <h4>Before you leave this room</h4>
+  <hr class="rule" />
+  <h2>Pick one thing<br/>you've never built.</h2>
+  <p class="fragment annotation">Not the whole project. <em>One thing.</em></p>
+  <p class="fragment annotation">Write it down right now.</p>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 36 — THE RECAP
+══════════════════════════════════════════ -->
+<section>
+  <h4>What we covered</h4>
+  <hr class="rule" />
+  <div class="bloom-ladder" style="gap:6px;">
+    <div class="bloom-level bloom-l1"><span class="num">→</span><span class="label">Bloom's Taxonomy</span><span class="desc">A map of cognitive depth. Growth lives at 4–6.</span></div>
+    <div class="bloom-level bloom-l2"><span class="num">→</span><span class="label">Not all building is equal</span><span class="desc">Comfort = consolidation. Challenge = growth.</span></div>
+    <div class="bloom-level bloom-l3"><span class="num">→</span><span class="label">The stretch goal</span><span class="desc">One unknown. Scoped. Intentional. Required.</span></div>
+    <div class="bloom-level bloom-l4"><span class="num">→</span><span class="label">The 5-step framework</span><span class="desc">Replicable. Immediate. Yours to apply today.</span></div>
+    <div class="bloom-level bloom-l5"><span class="num">→</span><span class="label">Confusion is the signal</span><span class="desc">Discomfort isn't a bug. It's a feature.</span></div>
+    <div class="bloom-level bloom-l6"><span class="num">→</span><span class="label">The stakes are real</span><span class="desc">Levels 4–6 are the differentiator. Build them on purpose.</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+  SLIDE 37 — OUTRO
+══════════════════════════════════════════ -->
+<section class="slide-outro">
+  <h4>Thank you</h4>
+  <hr class="rule" />
+  <h2>Build something<br/>that scares you<br/><em>a little.</em></h2>
+  <hr class="rule-full" style="margin-top:1.4em;" />
+  <p class="contact-line">Website &nbsp;<span>developingdvlpr.com</span></p>
+  <p class="contact-line">Sessionize &nbsp;<span>sessionize.com/Nerajno</span></p>
+  <p class="contact-line">GitHub &nbsp;<span>@Nerajno</span></p>
+  <p class="muted" style="margin-top:1.2em; font-size:0.85em;">Slides built with Reveal.js &nbsp;·&nbsp; Questions welcome</p>
+</section>
+
+</div><!-- /.slides -->
+</div><!-- /.reveal -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    slideNumber: 'c/t',
+    progress: true,
+    controls: true,
+    center: false,
+    transition: 'fade',
+    transitionSpeed: 'slow',
+    backgroundTransition: 'fade',
+    width: 1280,
+    height: 720,
+    margin: 0,
+    fragments: true,
+  });
+</script>
+</body>
+</html>

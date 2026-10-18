@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Algorithms: How Computers Think</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;900&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;700&display=swap');
+
+:root {
+  --background-color: #080C1A;
+  --heading-font: "Exo 2", "Arial Black", sans-serif;
+  --body-font: "Nunito", Helvetica, sans-serif;
+  --code-font: "DM Mono", "Courier New", monospace;
+  --base-font-size: 32px;
+  --text-size: 17pt;
+  --h1-size: 52pt;
+  --h2-size: 34pt;
+  --h3-size: 22pt;
+  --small-text: 13pt;
+  --primary-color: #7BFF6A;
+  --secondary-color: #FFD166;
+  --accent-color: #FF6B9D;
+  --cyan-color: #00E5FF;
+  --text-color: #EEF0F8;
+  --muted-color: #8890B0;
+  --card-bg: rgba(255,255,255,0.05);
+  --card-border: rgba(123,255,106,0.18);
+}
+
+.reveal-viewport { background: var(--background-color); }
+.reveal { font-family: var(--body-font); font-size: var(--base-font-size); background: var(--background-color); }
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 48px 64px; box-sizing: border-box; height: 100%; background: transparent; }
+
+.reveal h1 { font-family: var(--heading-font); font-size: var(--h1-size); font-weight: 900; color: var(--primary-color); text-transform: none; letter-spacing: -0.5pt; line-height: 1.05; margin-bottom: 20px; text-shadow: 0 0 40px rgba(123,255,106,0.35); }
+.reveal h2 { font-family: var(--heading-font); font-size: var(--h2-size); font-weight: 700; color: var(--text-color); text-transform: none; letter-spacing: -0.3pt; line-height: 1.1; margin-bottom: 24px; }
+.reveal h2 em { color: var(--primary-color); font-style: normal; }
+.reveal h3 { font-family: var(--heading-font); font-size: var(--h3-size); font-weight: 700; color: var(--secondary-color); text-transform: none; margin-bottom: 12px; }
+.reveal p { font-size: var(--text-size); color: var(--text-color); line-height: 1.6; margin-bottom: 12px; }
+.reveal li { font-size: var(--text-size); color: var(--text-color); line-height: 1.6; margin-bottom: 10px; }
+.reveal ul { list-style: none; padding-left: 0; margin: 0; }
+.reveal ul li::before { content: "▶ "; color: var(--primary-color); font-size: 12pt; margin-right: 4px; }
+.reveal strong { color: var(--secondary-color); font-weight: 700; }
+.reveal code { font-family: var(--code-font); background: rgba(123,255,106,0.1); color: var(--primary-color); border-radius: 4px; padding: 2px 8px; font-size: 14pt; }
+
+.title-eyebrow { font-family: var(--code-font); font-size: 12pt; color: var(--cyan-color); letter-spacing: 3pt; text-transform: uppercase; margin-bottom: 16px; }
+.title-main { font-family: var(--heading-font); font-size: 58pt; font-weight: 900; color: var(--primary-color); line-height: 1.0; text-shadow: 0 0 60px rgba(123,255,106,0.4); margin-bottom: 8px; }
+.title-sub { font-family: var(--heading-font); font-size: 26pt; font-weight: 600; color: var(--text-color); margin-bottom: 36px; opacity: 0.85; }
+.title-meta { display: flex; gap: 32px; align-items: center; }
+.title-meta-item { font-family: var(--code-font); font-size: 11pt; color: var(--muted-color); display: flex; align-items: center; gap: 8px; }
+.title-meta-item i { color: var(--secondary-color); }
+
+.reveal .slides section.divider-slide { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; background: linear-gradient(135deg, #0D1225 0%, #080C1A 100%); border-left: 6px solid var(--primary-color); padding-left: 80px; }
+.divider-number { font-family: var(--code-font); font-size: 10pt; color: var(--primary-color); letter-spacing: 4pt; text-transform: uppercase; margin-bottom: 8px; opacity: 0.7; }
+.divider-slide h1 { font-size: 54pt; color: var(--text-color); text-shadow: none; margin-bottom: 16px; }
+.divider-slide h1 span { color: var(--primary-color); text-shadow: 0 0 40px rgba(123,255,106,0.4); }
+.divider-desc { font-family: var(--body-font); font-size: 16pt; color: var(--muted-color); max-width: 560px; line-height: 1.5; }
+
+.card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 20px 24px; margin-bottom: 14px; }
+.card h3 { font-size: 18pt; margin-bottom: 6px; }
+.card p { font-size: 15pt; color: var(--muted-color); margin: 0; }
+.card-green { border-color: rgba(123,255,106,0.3); background: rgba(123,255,106,0.06); }
+.card-gold { border-color: rgba(255,209,102,0.3); background: rgba(255,209,102,0.06); }
+.card-pink { border-color: rgba(255,107,157,0.3); background: rgba(255,107,157,0.06); }
+.card-cyan { border-color: rgba(0,229,255,0.3); background: rgba(0,229,255,0.06); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 8px; }
+.two-col-wide { display: grid; grid-template-columns: 1fr 1.5fr; gap: 32px; margin-top: 8px; }
+
+.code-block { background: rgba(0,0,0,0.5); border: 1px solid rgba(123,255,106,0.2); border-left: 4px solid var(--primary-color); border-radius: 8px; padding: 20px 24px; font-family: var(--code-font); font-size: 13pt; color: #C8D8B8; line-height: 1.65; white-space: pre; overflow: hidden; }
+.code-block .kw { color: var(--accent-color); }
+.code-block .fn { color: var(--cyan-color); }
+.code-block .cm { color: var(--muted-color); font-style: italic; }
+.code-block .st { color: var(--secondary-color); }
+.code-block .num { color: #B5A3FF; }
+
+.highlight-box { background: linear-gradient(135deg, rgba(123,255,106,0.12), rgba(0,229,255,0.06)); border: 1px solid rgba(123,255,106,0.25); border-radius: 12px; padding: 22px 28px; margin: 16px 0; }
+.highlight-box p { font-size: 16pt; color: var(--text-color); margin: 0; line-height: 1.55; }
+.highlight-box strong { color: var(--primary-color); }
+
+.big-stat { font-family: var(--heading-font); font-size: 64pt; font-weight: 900; color: var(--primary-color); line-height: 1; text-shadow: 0 0 40px rgba(123,255,106,0.4); margin-bottom: 4px; }
+.big-stat-label { font-size: 14pt; color: var(--muted-color); font-family: var(--code-font); letter-spacing: 1pt; }
+
+.step-list { list-style: none; padding: 0; margin: 0; counter-reset: step-counter; }
+.step-list li { counter-increment: step-counter; display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; font-size: var(--text-size); }
+.step-list li::before { content: counter(step-counter); min-width: 32px; height: 32px; background: var(--primary-color); color: #080C1A; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--heading-font); font-weight: 900; font-size: 13pt; flex-shrink: 0; margin-top: 2px; }
+
+.tag { display: inline-block; padding: 3px 12px; border-radius: 20px; font-family: var(--code-font); font-size: 11pt; font-weight: 500; margin-right: 8px; margin-bottom: 8px; }
+.tag-green { background: rgba(123,255,106,0.15); color: var(--primary-color); border: 1px solid rgba(123,255,106,0.3); }
+.tag-gold { background: rgba(255,209,102,0.15); color: var(--secondary-color); border: 1px solid rgba(255,209,102,0.3); }
+.tag-pink { background: rgba(255,107,157,0.15); color: var(--accent-color); border: 1px solid rgba(255,107,157,0.3); }
+.tag-cyan { background: rgba(0,229,255,0.15); color: var(--cyan-color); border: 1px solid rgba(0,229,255,0.3); }
+
+.reveal blockquote { background: rgba(255,209,102,0.06); border: none; border-left: 5px solid var(--secondary-color); padding: 18px 24px; border-radius: 0 8px 8px 0; font-style: italic; box-shadow: none; width: 100%; margin: 16px 0; }
+.reveal blockquote p { font-size: 18pt; color: var(--secondary-color); margin: 0 0 8px 0; line-height: 1.5; }
+.reveal blockquote cite { font-size: 12pt; color: var(--muted-color); font-style: normal; font-family: var(--code-font); display: block; }
+
+.compare-table { width: 100%; border-collapse: collapse; font-size: 14pt; margin-top: 8px; }
+.compare-table th { background: rgba(123,255,106,0.12); color: var(--primary-color); font-family: var(--heading-font); font-weight: 700; padding: 10px 16px; text-align: left; border-bottom: 2px solid rgba(123,255,106,0.3); }
+.compare-table td { padding: 10px 16px; color: var(--text-color); border-bottom: 1px solid rgba(255,255,255,0.06); line-height: 1.4; }
+.compare-table tr:last-child td { border-bottom: none; }
+
+.array-viz { display: flex; gap: 8px; margin: 16px 0; align-items: flex-end; }
+.array-bar { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.array-bar-block { width: 40px; background: rgba(123,255,106,0.25); border: 1px solid var(--primary-color); border-radius: 4px 4px 0 0; display: flex; align-items: center; justify-content: center; font-family: var(--code-font); font-size: 12pt; color: var(--primary-color); font-weight: 500; }
+.array-bar-block.active { background: rgba(123,255,106,0.6); color: #080C1A; border-color: var(--primary-color); box-shadow: 0 0 12px rgba(123,255,106,0.5); }
+.array-bar-block.found { background: var(--secondary-color); color: #080C1A; border-color: var(--secondary-color); }
+.array-bar-label { font-family: var(--code-font); font-size: 10pt; color: var(--muted-color); }
+
+.agenda-item { display: flex; align-items: center; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.agenda-num { font-family: var(--code-font); font-size: 11pt; color: var(--primary-color); min-width: 28px; }
+.agenda-text { font-size: 16pt; color: var(--text-color); }
+.agenda-time { margin-left: auto; font-family: var(--code-font); font-size: 11pt; color: var(--muted-color); }
+
+.slide-label { font-family: var(--code-font); font-size: 10pt; color: var(--muted-color); letter-spacing: 2pt; text-transform: uppercase; margin-bottom: 12px; display: block; }
+
+.reveal .progress { background: rgba(123,255,106,0.15); height: 3px; }
+.reveal .progress span { background: var(--primary-color); box-shadow: 0 0 8px rgba(123,255,106,0.6); }
+.reveal .controls button { color: var(--primary-color); }
+.reveal .slide-number { font-family: var(--code-font); font-size: 10pt; color: var(--muted-color); background: rgba(8,12,26,0.8); padding: 4px 8px; border-radius: 4px; }
+
+.o-notation { display: flex; gap: 16px; margin-top: 12px; }
+.o-badge { padding: 8px 18px; border-radius: 8px; font-family: var(--code-font); font-size: 14pt; font-weight: 500; text-align: center; }
+.o-badge .label { font-size: 10pt; color: var(--muted-color); display: block; margin-top: 2px; }
+
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+  <!-- ============================================
+       SLIDE 1 — TITLE
+       ============================================ -->
+  <section class="title-slide">
+    <p class="title-eyebrow"><i class="fa-solid fa-microchip"></i> &nbsp; Tech Conference for High Schoolers</p>
+    <p class="title-main">Algorithms</p>
+    <p class="title-sub">How Computers Think (And You Do Too)</p>
+    <div class="title-meta">
+      <span class="title-meta-item"><i class="fa-regular fa-clock"></i> 45 minutes</span>
+      <span class="title-meta-item"><i class="fa-solid fa-graduation-cap"></i> Beginner Friendly</span>
+      <span class="title-meta-item"><i class="fa-solid fa-code"></i> No Coding Required</span>
+    </div>
+    <aside class="notes">Welcome! Introduce yourself, ask how many people have heard the word "algorithm" before. Get the crowd energized early.</aside>
+  </section>
+
+  <!-- ============================================
+       DIVIDER 1 — WHO ARE WE
+       ============================================ -->
+  <section class="divider-slide">
+    <p class="divider-number">// Section 00</p>
+    <h1>Let's <span>Get Acquainted</span></h1>
+    <p class="divider-desc">A quick intro — because the best talks start with real connection, not slides full of bullet points.</p>
+    <aside class="notes">~2 min. This section breaks the ice.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 2a — SPEAKER BIO
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Who Am I</span>
+    <h2>Hey, I'm <em>Your Speaker</em> 👋</h2>
+    <div class="two-col">
+      <div>
+        <div class="card card-green">
+          <h3><i class="fa-solid fa-laptop-code"></i> &nbsp; What I Do</h3>
+          <p>I build things with code for a living — web apps, tools, and products people actually use every day.</p>
+        </div>
+        <div class="card card-gold">
+          <h3><i class="fa-solid fa-route"></i> &nbsp; How I Got Here</h3>
+          <p>I didn't always know what I wanted. I just started tinkering — and it snowballed into a career.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card card-cyan">
+          <h3><i class="fa-solid fa-heart"></i> &nbsp; Why I'm Here Today</h3>
+          <p>Someone showed me the ropes early on. I want to do the same for you. Algorithms are everywhere — and understanding them changes how you see the world.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Personalize this slide with your own details. Keep it warm and relatable. Mention something about high school, relatable hobbies, etc.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 2b — AGENDA
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Roadmap</span>
+    <h2>What We're Covering <em>Today</em></h2>
+    <div class="agenda-item"><span class="agenda-num">01</span><span class="agenda-text">What IS an Algorithm? (It's simpler than you think)</span><span class="agenda-time">~8 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">02</span><span class="agenda-text">Your Brain Already Runs Algorithms</span><span class="agenda-time">~8 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">03</span><span class="agenda-text">Searching: Finding Needles in Haystacks</span><span class="agenda-time">~8 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">04</span><span class="agenda-text">Sorting: Making Chaos Orderly</span><span class="agenda-time">~8 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">05</span><span class="agenda-text">Big O: Why Speed Actually Matters</span><span class="agenda-time">~7 min</span></div>
+    <div class="agenda-item"><span class="agenda-num">06</span><span class="agenda-text">Algorithms in YOUR World + Q&A</span><span class="agenda-time">~6 min</span></div>
+    <aside class="notes">This gives students a mental roadmap. Reassure them nothing requires coding knowledge.</aside>
+  </section>
+
+  <!-- ============================================
+       DIVIDER 2 — WHAT IS AN ALGORITHM
+       ============================================ -->
+  <section class="divider-slide">
+    <p class="divider-number">// Section 01</p>
+    <h1>What <span>IS</span> an Algorithm?</h1>
+    <p class="divider-desc">A word that sounds intimidating but describes something you already do every single morning.</p>
+    <aside class="notes">~8 min section. Start with definition, then analogies, then real examples.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 3a — DEFINITION
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Definition</span>
+    <h2>Algorithm = <em>Step-by-Step Recipe</em></h2>
+    <div class="highlight-box">
+      <p>An <strong>algorithm</strong> is a precise set of instructions for solving a problem — written so clearly that even a computer (or a very literal robot) can follow them.</p>
+    </div>
+    <div class="two-col" style="margin-top: 20px;">
+      <div>
+        <h3><i class="fa-solid fa-check-circle" style="color: var(--primary-color)"></i> &nbsp; It Must Be</h3>
+        <ul>
+          <li><strong>Finite</strong> — it ends eventually</li>
+          <li><strong>Unambiguous</strong> — no guesswork allowed</li>
+          <li><strong>Effective</strong> — actually solves the problem</li>
+        </ul>
+      </div>
+      <div>
+        <h3><i class="fa-solid fa-times-circle" style="color: var(--accent-color)"></i> &nbsp; NOT an Algorithm</h3>
+        <ul>
+          <li>"Make it work better" <span style="color:var(--muted-color)">— too vague</span></li>
+          <li>"Try your best" <span style="color:var(--muted-color)">— computers can't try</span></li>
+          <li>"Figure it out" <span style="color:var(--muted-color)">— not a set of steps</span></li>
+        </ul>
+      </div>
+    </div>
+    <aside class="notes">Emphasize "unambiguous" — this is the huge insight. Computers are incredibly literal. They only know exactly what you tell them.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 3b — RECIPE ANALOGY
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Analogy</span>
+    <h2>Think of It Like <em>Making a PB&J</em></h2>
+    <div class="two-col-wide">
+      <div>
+        <p style="color: var(--muted-color); font-size: 15pt;">You'd say:</p>
+        <blockquote>
+          <p>"Spread peanut butter on bread, then add jelly, then close it."</p>
+          <cite>— A normal human instruction</cite>
+        </blockquote>
+        <p style="color: var(--muted-color); font-size: 15pt; margin-top: 16px;">A computer needs:</p>
+        <ol class="step-list">
+          <li><p style="margin:0; font-size:15pt;">Pick up knife</p></li>
+          <li><p style="margin:0; font-size:15pt;">Open peanut butter jar</p></li>
+          <li><p style="margin:0; font-size:15pt;">Dip knife into peanut butter (exactly 2cm)</p></li>
+          <li><p style="margin:0; font-size:15pt;">Spread on top face of bread slice #1</p></li>
+        </ol>
+      </div>
+      <div>
+        <div class="card card-pink">
+          <h3><i class="fa-solid fa-lightbulb"></i> &nbsp; The Big Idea</h3>
+          <p>Computers are <strong>incredibly dumb</strong> — but also incredibly <strong>incredibly fast</strong>. Your job as a programmer is to give them smart instructions.</p>
+        </div>
+        <div class="card card-gold" style="margin-top: 14px;">
+          <h3><i class="fa-solid fa-bolt"></i> &nbsp; Why This Matters</h3>
+          <p>A <strong>good algorithm</strong> can solve in seconds what would take a human years. The instructions are everything.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Great place for audience interaction! Ask: "What step did I miss in the PB&J?" This usually gets laughs and drives home the point.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 3c — TYPES OF ALGORITHMS
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Types</span>
+    <h2>There Are <em>Many Kinds</em> of Algorithms</h2>
+    <div class="two-col">
+      <div>
+        <div class="card card-green">
+          <h3><i class="fa-solid fa-magnifying-glass"></i> &nbsp; Searching</h3>
+          <p>Find something specific in a pile of data. Used in Google, Spotify, your camera's face detection.</p>
+        </div>
+        <div class="card card-gold">
+          <h3><i class="fa-solid fa-sort"></i> &nbsp; Sorting</h3>
+          <p>Organize messy data into order. Used every time you scroll a list, view your photos, or rank results.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card card-cyan">
+          <h3><i class="fa-solid fa-diagram-project"></i> &nbsp; Pathfinding</h3>
+          <p>Find the shortest or best route. Used in Google Maps, video game AI, logistics routing.</p>
+        </div>
+        <div class="card card-pink">
+          <h3><i class="fa-solid fa-brain"></i> &nbsp; Machine Learning</h3>
+          <p>Algorithms that learn from data and improve on their own. Used in ChatGPT, image recognition, recommendations.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Don't go deep on ML here — just plant the seed. The first two (search/sort) are what we'll dig into today.</aside>
+  </section>
+
+  <!-- ============================================
+       DIVIDER 3 — YOUR BRAIN
+       ============================================ -->
+  <section class="divider-slide">
+    <p class="divider-number">// Section 02</p>
+    <h1>Your Brain <span>Already Does This</span></h1>
+    <p class="divider-desc">You've been running algorithms your entire life. You just never called them that.</p>
+    <aside class="notes">~8 min. Make the content personal and relatable before we get technical.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 4a — MORNING ROUTINE
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Relatable Algorithm</span>
+    <h2>Your <em>Morning Routine</em> = Algorithm</h2>
+    <div class="two-col">
+      <div>
+        <ol class="step-list">
+          <li><p style="margin:0; font-size:16pt;">Alarm goes off → wake up (or snooze?)</p></li>
+          <li><p style="margin:0; font-size:16pt;"><strong>IF</strong> late → skip breakfast, grab a bar</p></li>
+          <li><p style="margin:0; font-size:16pt;"><strong>ELSE</strong> → cereal or eggs?</p></li>
+          <li><p style="margin:0; font-size:16pt;">Check weather → pick outfit</p></li>
+          <li><p style="margin:0; font-size:16pt;">Grab bag, check for keys, leave</p></li>
+        </ol>
+      </div>
+      <div>
+        <div class="highlight-box">
+          <p>Notice the <strong>IF / ELSE</strong> decision? That's exactly how code works. Conditional logic is the foundation of all algorithms.</p>
+        </div>
+        <div class="card card-gold" style="margin-top: 14px;">
+          <h3><i class="fa-solid fa-code-branch"></i> &nbsp; In Code Terms</h3>
+          <p style="font-family: var(--code-font); font-size: 14pt; color: var(--primary-color);">if (late) { skipBreakfast() } <br>else { makeBreakfast() }</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Ask the room: "Who has a morning routine?" Then: "You just described an algorithm." Watch the light bulbs turn on.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 4b — DECISION TREES
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Decision Trees</span>
+    <h2>Decisions = <em>Branching Paths</em></h2>
+    <p style="color: var(--muted-color); font-size: 15pt; margin-bottom: 16px;">Every decision point creates branches — exactly like a tree (or a text adventure game).</p>
+    <div style="display: flex; justify-content: center; margin: 8px 0;">
+      <div style="text-align: center; font-family: var(--code-font); font-size: 13pt; line-height: 2; color: var(--text-color);">
+        <p style="color: var(--primary-color); font-size: 16pt; font-weight: 700; font-family: var(--heading-font); margin-bottom: 8px;">Is it raining? ☁️</p>
+        <div style="display: flex; gap: 80px; justify-content: center;">
+          <div style="text-align: center;">
+            <div style="color: var(--primary-color);">YES ↙</div>
+            <div class="card card-cyan" style="margin-top: 8px; padding: 12px 20px;">
+              <p style="margin: 0; font-size: 14pt; color: var(--cyan-color);">Grab umbrella</p>
+            </div>
+            <div style="color: var(--muted-color); margin-top: 8px;">↓</div>
+            <div class="card card-green" style="padding: 12px 20px;">
+              <p style="margin: 0; font-size: 14pt; color: var(--primary-color);">Is it cold? ❄️</p>
+            </div>
+            <div style="display: flex; gap: 24px; margin-top: 8px;">
+              <div class="card card-gold" style="padding: 8px 12px;"><p style="margin:0;font-size:12pt;color:var(--secondary-color);">Yes → Coat</p></div>
+              <div class="card" style="padding: 8px 12px;"><p style="margin:0;font-size:12pt;">No → Jacket</p></div>
+            </div>
+          </div>
+          <div style="text-align: center;">
+            <div style="color: var(--accent-color);">NO ↘</div>
+            <div class="card card-pink" style="margin-top: 8px; padding: 12px 20px;">
+              <p style="margin: 0; font-size: 14pt; color: var(--accent-color);">Leave it home</p>
+            </div>
+            <div style="color: var(--muted-color); margin-top: 8px;">↓</div>
+            <div class="card card-gold" style="padding: 12px 20px;">
+              <p style="margin: 0; font-size: 14pt; color: var(--secondary-color);">Shorts or jeans?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Draw this on a whiteboard if possible! Decision trees are intuitive once you see them drawn out.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 4c — LOOPS
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Loops</span>
+    <h2>Repetition = <em>Loops</em></h2>
+    <div class="two-col">
+      <div>
+        <div class="highlight-box">
+          <p>A <strong>loop</strong> is just: "Keep doing this until the condition is met." You do this all the time.</p>
+        </div>
+        <ul style="margin-top: 16px;">
+          <li>Scrolling Instagram until you get bored</li>
+          <li>Trying outfit after outfit until it "looks right"</li>
+          <li>Refreshing the game until you get the drop you want</li>
+        </ul>
+      </div>
+      <div>
+        <div class="code-block"><span class="cm">// Scroll until bored</span>
+<span class="kw">while</span> (!bored) {
+  <span class="fn">scrollFeed</span>();
+  <span class="fn">likePost</span>();
+  <span class="fn">checkBoredom</span>();
+}
+
+<span class="cm">// Try outfits</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="num">0</span>; i &lt; closet.length; i++) {
+  <span class="kw">if</span> (<span class="fn">looksGood</span>(closet[i])) {
+    <span class="kw">break</span>; <span class="cm">// found it!</span>
+  }
+}</div>
+      </div>
+    </div>
+    <aside class="notes">The "scroll until bored" example usually kills. Point out that TikTok's recommendation engine is literally a loop that runs thousands of times per second to figure out what video to show you next.</aside>
+  </section>
+
+  <!-- ============================================
+       DIVIDER 4 — SEARCHING
+       ============================================ -->
+  <section class="divider-slide">
+    <p class="divider-number">// Section 03</p>
+    <h1>Searching: Finding <span>the Needle</span></h1>
+    <p class="divider-desc">Two classic algorithms — and a dramatic difference in how fast they work.</p>
+    <aside class="notes">~8 min. This is the first section with "real" CS content — keep the energy high.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 5a — LINEAR SEARCH
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Algorithm 1</span>
+    <h2><em>Linear Search</em> — Check Every Single One</h2>
+    <p style="color: var(--muted-color); font-size: 15pt;">Looking for your AirPod case in your room = Linear Search.</p>
+    <div class="two-col">
+      <div>
+        <ol class="step-list">
+          <li><p style="margin:0;font-size:15pt;">Look at item #1. Is it what I need?</p></li>
+          <li><p style="margin:0;font-size:15pt;">No? Move to item #2.</p></li>
+          <li><p style="margin:0;font-size:15pt;">Keep going until found or exhausted.</p></li>
+        </ol>
+        <div class="card card-green" style="margin-top: 20px;">
+          <h3>✅ Good When...</h3>
+          <p>The list is small, OR it's not sorted, OR you're only searching once.</p>
+        </div>
+        <div class="card card-pink" style="margin-top: 8px;">
+          <h3>⚠️ Bad When...</h3>
+          <p>The list has millions of items — you could end up checking ALL of them.</p>
+        </div>
+      </div>
+      <div>
+        <p style="font-size: 13pt; color: var(--muted-color); margin-bottom: 8px;">Looking for <strong style="color: var(--secondary-color);">42</strong> in this list:</p>
+        <div class="array-viz">
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">7</div><div class="array-bar-label">0</div></div>
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">23</div><div class="array-bar-label">1</div></div>
+          <div class="array-bar"><div class="array-bar-block active" style="height:40px;">15</div><div class="array-bar-label">2</div></div>
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">88</div><div class="array-bar-label">3</div></div>
+          <div class="array-bar"><div class="array-bar-block found" style="height:40px;">42</div><div class="array-bar-label">4</div></div>
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">3</div><div class="array-bar-label">5</div></div>
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">61</div><div class="array-bar-label">6</div></div>
+        </div>
+        <p style="font-size: 13pt; color: var(--muted-color);">Checked 5 items before finding it. <br>Worst case: check <strong>all 7</strong>.</p>
+        <div class="tag tag-gold" style="margin-top: 12px;">O(n) — Linear Time</div>
+      </div>
+    </div>
+    <aside class="notes">Demo this physically! Have someone "search" for a person in a room by checking everyone one by one. It's slow but simple.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 5b — BINARY SEARCH
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Algorithm 2</span>
+    <h2><em>Binary Search</em> — Split the Problem in Half</h2>
+    <p style="color: var(--muted-color); font-size: 15pt;">Only works on <strong>sorted</strong> lists — but it's dramatically faster.</p>
+    <div class="two-col">
+      <div>
+        <ol class="step-list">
+          <li><p style="margin:0;font-size:15pt;">Look at the <strong>middle</strong> item</p></li>
+          <li><p style="margin:0;font-size:15pt;">Too high? Search the <strong>left</strong> half only</p></li>
+          <li><p style="margin:0;font-size:15pt;">Too low? Search the <strong>right</strong> half only</p></li>
+          <li><p style="margin:0;font-size:15pt;">Repeat until found</p></li>
+        </ol>
+        <div class="highlight-box" style="margin-top: 16px;">
+          <p>Like the "higher or lower" number guessing game — you always cut the options in half.</p>
+        </div>
+      </div>
+      <div>
+        <p style="font-size: 13pt; color: var(--muted-color); margin-bottom: 8px;">Sorted list. Find <strong style="color: var(--secondary-color);">42</strong>:</p>
+        <div class="array-viz">
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">3</div><div class="array-bar-label">0</div></div>
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">7</div><div class="array-bar-label">1</div></div>
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">15</div><div class="array-bar-label">2</div></div>
+          <div class="array-bar"><div class="array-bar-block active" style="height:40px;">23</div><div class="array-bar-label">mid</div></div>
+          <div class="array-bar"><div class="array-bar-block found" style="height:40px;">42</div><div class="array-bar-label">4</div></div>
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">61</div><div class="array-bar-label">5</div></div>
+          <div class="array-bar"><div class="array-bar-block" style="height:40px;">88</div><div class="array-bar-label">6</div></div>
+        </div>
+        <p style="font-size: 13pt; color: var(--muted-color);">23 &lt; 42 → search right half. Found in 2 checks!</p>
+        <div class="tag tag-green" style="margin-top: 12px;">O(log n) — Logarithmic Time</div>
+      </div>
+    </div>
+    <aside class="notes">Play the "I'm thinking of a number 1-100" game with the audience. They'll naturally use binary search and not realize it!</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 5c — SEARCH COMPARISON
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Comparison</span>
+    <h2>Linear vs Binary: <em>The Numbers</em></h2>
+    <p style="color: var(--muted-color); font-size: 14pt; margin-bottom: 16px;">Max number of checks to find something in a list of N items:</p>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>List Size</th>
+          <th>Linear Search (worst case)</th>
+          <th>Binary Search (worst case)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>10 items</strong></td>
+          <td>10 checks</td>
+          <td style="color: var(--primary-color);">4 checks</td>
+        </tr>
+        <tr>
+          <td><strong>100 items</strong></td>
+          <td>100 checks</td>
+          <td style="color: var(--primary-color);">7 checks</td>
+        </tr>
+        <tr>
+          <td><strong>1,000 items</strong></td>
+          <td>1,000 checks</td>
+          <td style="color: var(--primary-color);">10 checks</td>
+        </tr>
+        <tr>
+          <td><strong>1,000,000 items</strong></td>
+          <td style="color: var(--accent-color);">1,000,000 checks</td>
+          <td style="color: var(--primary-color); font-weight: 700;">20 checks</td>
+        </tr>
+        <tr>
+          <td><strong>1,000,000,000</strong></td>
+          <td style="color: var(--accent-color);">1 billion checks 😰</td>
+          <td style="color: var(--primary-color); font-weight: 700;">30 checks 🤯</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight-box" style="margin-top: 16px;">
+      <p><strong>1 billion items → only 30 checks.</strong> That's the power of a well-designed algorithm.</p>
+    </div>
+    <aside class="notes">This table always creates gasps. Really let the "1 billion → 30 checks" sink in. Ask: "How is that possible?" — the magic of logarithms (halving repeatedly).</aside>
+  </section>
+
+  <!-- ============================================
+       DIVIDER 5 — SORTING
+       ============================================ -->
+  <section class="divider-slide">
+    <p class="divider-number">// Section 04</p>
+    <h1>Sorting: <span>Order from Chaos</span></h1>
+    <p class="divider-desc">Before you can search fast, you usually need sorted data. How do you get there?</p>
+    <aside class="notes">~8 min. Sorting is intuitive and fun to demo physically.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 6a — WHY SORTING MATTERS
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Context</span>
+    <h2>Why <em>Sorting Matters</em> So Much</h2>
+    <div class="two-col">
+      <div>
+        <ul>
+          <li>Your contacts list — sorted alphabetically</li>
+          <li>Your music library — sorted by artist, album, date</li>
+          <li>Google results — sorted by relevance score</li>
+          <li>TikTok's feed — sorted by predicted engagement</li>
+          <li>E-commerce — sorted by price, rating, recency</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card card-cyan">
+          <h3><i class="fa-solid fa-chart-bar"></i> &nbsp; Scale of the Problem</h3>
+          <p>Google processes <strong>8.5 billion searches per day</strong>. Each one involves sorting results. Efficient sorting algorithms save millions of dollars in computing costs.</p>
+        </div>
+        <div class="card card-gold" style="margin-top: 12px;">
+          <h3><i class="fa-solid fa-lightbulb"></i> &nbsp; Fun Fact</h3>
+          <p>Sorting has been studied since the 1940s. Researchers still argue about the best approach for different situations.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Google/TikTok examples resonate immediately with high schoolers. Pause on those.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 6b — BUBBLE SORT
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Sorting Algorithm 1</span>
+    <h2><em>Bubble Sort</em> — Simple but Slow</h2>
+    <div class="two-col">
+      <div>
+        <p style="font-size: 15pt; color: var(--muted-color); margin-bottom: 12px;">Compare neighbors. Swap if out of order. Repeat.</p>
+        <div class="code-block"><span class="cm">// Round 1 pass:</span>
+[<span class="num">5</span>, <span class="num">3</span>, 8, 1, 4]
+  ↑ ↑ <span class="cm">// compare 5,3 → swap!</span>
+[<span class="num">3</span>, <span class="num">5</span>, 8, 1, 4]
+     ↑ ↑ <span class="cm">// 5,8 → ok</span>
+[3, 5, <span class="num">8</span>, <span class="num">1</span>, 4]
+        ↑ ↑ <span class="cm">// 8,1 → swap!</span>
+[3, 5, <span class="num">1</span>, <span class="num">8</span>, 4]
+           ↑ ↑ <span class="cm">// 8,4 → swap!</span>
+[3, 5, 1, <span class="num">4</span>, <span class="num">8</span>]  ← 8 bubbled up!</div>
+      </div>
+      <div>
+        <div class="card card-green">
+          <h3>✅ Pros</h3>
+          <p>Dead simple to understand and code. Great for learning. Works on tiny lists.</p>
+        </div>
+        <div class="card card-pink" style="margin-top: 12px;">
+          <h3>⚠️ Cons</h3>
+          <p>Terribly slow on large lists. For 1,000 items, it could need up to <strong>1,000,000</strong> comparisons.</p>
+        </div>
+        <div class="tag tag-pink" style="margin-top: 12px;">O(n²) — Quadratic Time</div>
+      </div>
+    </div>
+    <aside class="notes">Demo this with 5 volunteers holding numbered cards! Physical sorting demos are incredibly memorable.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 6c — MERGE SORT
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Sorting Algorithm 2</span>
+    <h2><em>Merge Sort</em> — Divide &amp; Conquer</h2>
+    <p style="color: var(--muted-color); font-size: 14pt; margin-bottom: 16px;">Split the list in half, sort each half, then merge them back together.</p>
+    <div style="text-align: center; font-family: var(--code-font); font-size: 13pt; color: var(--text-color); line-height: 2;">
+      <p style="color: var(--accent-color);">[38, 27, 43, 3]</p>
+      <p style="color: var(--muted-color);">↙ split ↘</p>
+      <div style="display: flex; justify-content: center; gap: 48px;">
+        <p style="color: var(--cyan-color);">[38, 27]</p>
+        <p style="color: var(--secondary-color);">[43, 3]</p>
+      </div>
+      <div style="display: flex; justify-content: center; gap: 24px; color: var(--muted-color);">
+        <p>↙ ↘</p><p>&nbsp;&nbsp;&nbsp;&nbsp;</p><p>↙ ↘</p>
+      </div>
+      <div style="display: flex; justify-content: center; gap: 24px;">
+        <p style="color: var(--cyan-color);">[38]</p>
+        <p style="color: var(--cyan-color);">[27]</p>
+        <p style="color: var(--secondary-color);">[43]</p>
+        <p style="color: var(--secondary-color);">[3]</p>
+      </div>
+      <p style="color: var(--muted-color);">↓ merge sorted pairs ↓</p>
+      <div style="display: flex; justify-content: center; gap: 48px;">
+        <p style="color: var(--cyan-color);">[27, 38]</p>
+        <p style="color: var(--secondary-color);">[3, 43]</p>
+      </div>
+      <p style="color: var(--muted-color);">↓ merge ↓</p>
+      <p style="color: var(--primary-color); font-weight: 700;">[3, 27, 38, 43] ✅</p>
+    </div>
+    <div class="tag tag-green" style="margin-top: 4px;">O(n log n) — Much faster than Bubble Sort!</div>
+    <aside class="notes">The key insight: sorting two small halves and merging is much easier than sorting the whole thing at once. This is "divide and conquer" thinking — a huge CS concept.</aside>
+  </section>
+
+  <!-- ============================================
+       DIVIDER 6 — BIG O
+       ============================================ -->
+  <section class="divider-slide">
+    <p class="divider-number">// Section 05</p>
+    <h1>Big O: <span>How Fast Is Fast?</span></h1>
+    <p class="divider-desc">The universal language for comparing how efficient algorithms are — regardless of computer speed.</p>
+    <aside class="notes">~7 min. Keep this conceptual, not mathematical. The goal is intuition, not formulas.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 7a — WHAT IS BIG O
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Big O Notation</span>
+    <h2>Big O = <em>Measuring Efficiency</em></h2>
+    <div class="highlight-box">
+      <p><strong>Big O Notation</strong> describes how much longer an algorithm takes as the input gets bigger. It's not about seconds — it's about <strong>growth rate</strong>.</p>
+    </div>
+    <div class="two-col" style="margin-top: 20px;">
+      <div>
+        <h3 style="color: var(--muted-color); font-size: 16pt; margin-bottom: 12px;">Think of it like this:</h3>
+        <ul>
+          <li>A <strong>tiny backpack</strong> takes 1 second to find anything</li>
+          <li>A <strong>wardrobe</strong> takes a bit longer</li>
+          <li>A <strong>warehouse</strong> takes much longer</li>
+        </ul>
+        <p style="font-size: 14pt; color: var(--muted-color); margin-top: 12px;">Big O tells you: <em>how much longer</em> as things scale up?</p>
+      </div>
+      <div>
+        <div class="card card-green">
+          <h3>O(1) — Constant</h3>
+          <p>Always the same time, no matter how big. Looking up your contact by phone number.</p>
+        </div>
+        <div class="card card-gold" style="margin-top: 12px;">
+          <h3>O(n) — Linear</h3>
+          <p>Doubles when input doubles. Scrolling through every message in your inbox.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Don't use the word "asymptotic" or any math terminology. Intuition only. The backpack/warehouse analogy works really well for grounding this.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 7b — BIG O EXAMPLES
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Complexity Classes</span>
+    <h2>The <em>Big O Lineup</em> — Fastest to Slowest</h2>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Notation</th>
+          <th>Name</th>
+          <th>Example</th>
+          <th>1000 items =</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-green">O(1)</span></td>
+          <td>Constant</td>
+          <td>Access array by index</td>
+          <td style="color: var(--primary-color);">1 operation</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-green">O(log n)</span></td>
+          <td>Logarithmic</td>
+          <td>Binary search</td>
+          <td style="color: var(--primary-color);">~10 operations</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-gold">O(n)</span></td>
+          <td>Linear</td>
+          <td>Linear search</td>
+          <td style="color: var(--secondary-color);">1,000 operations</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-gold">O(n log n)</span></td>
+          <td>Log-linear</td>
+          <td>Merge sort</td>
+          <td style="color: var(--secondary-color);">~10,000 operations</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-pink">O(n²)</span></td>
+          <td>Quadratic</td>
+          <td>Bubble sort</td>
+          <td style="color: var(--accent-color);">1,000,000 operations</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-pink">O(2ⁿ)</span></td>
+          <td>Exponential</td>
+          <td>Brute-force passwords</td>
+          <td style="color: var(--accent-color);">More than atoms in universe</td>
+        </tr>
+      </tbody>
+    </table>
+    <aside class="notes">The last row (O(2^n)) always makes people say "wait what?" — this is a great moment to mention that this is WHY passwords with more characters are exponentially harder to crack.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 7c — WHY IT MATTERS
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Real Impact</span>
+    <h2>This Isn't Just <em>Theory</em></h2>
+    <div class="two-col">
+      <div>
+        <div class="card card-cyan">
+          <h3><i class="fa-brands fa-spotify"></i> &nbsp; Music Recommendations</h3>
+          <p>Spotify compares your listening history to <strong>500 million+ users</strong>. A bad algorithm choice would mean your "Discover Weekly" takes hours to generate.</p>
+        </div>
+        <div class="card card-gold" style="margin-top: 14px;">
+          <h3><i class="fa-solid fa-map-location-dot"></i> &nbsp; GPS Navigation</h3>
+          <p>Google Maps uses <strong>Dijkstra's algorithm</strong> to find shortest paths in real time across road networks with millions of nodes.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card card-pink">
+          <h3><i class="fa-solid fa-lock"></i> &nbsp; Password Security</h3>
+          <p>Your 8-character password: 200 billion possible combinations. A computer tries all of them in <strong>seconds</strong>. That's why complexity matters — O(2ⁿ) saves us.</p>
+        </div>
+        <div class="highlight-box" style="margin-top: 14px;">
+          <p>Choosing the right algorithm can be the difference between a product that works and one that <strong>costs a company millions</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">The password example is the best one — it immediately connects to something they care about. Ask: "Who uses the same password for everything?" (hands usually go up) — then explain why Big O makes that dangerous.</aside>
+  </section>
+
+  <!-- ============================================
+       DIVIDER 7 — ALGORITHMS IN YOUR WORLD
+       ============================================ -->
+  <section class="divider-slide">
+    <p class="divider-number">// Section 06</p>
+    <h1>Algorithms <span>Shape Your World</span></h1>
+    <p class="divider-desc">Every swipe, every scroll, every recommendation — there's an algorithm making that decision.</p>
+    <aside class="notes">~5 min. Closing section — bring it back to relevance and inspiration.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 8a — ALGORITHMS AROUND YOU
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Everywhere</span>
+    <h2>You Interact with Algorithms <em>Hundreds of Times a Day</em></h2>
+    <div class="two-col">
+      <div>
+        <div class="card card-pink">
+          <h3><i class="fa-brands fa-tiktok"></i> &nbsp; TikTok / Instagram</h3>
+          <p>Watches how long you pause on each video. Runs a <strong>recommendation algorithm</strong> to predict what keeps you watching. Eerily accurate.</p>
+        </div>
+        <div class="card card-green" style="margin-top: 12px;">
+          <h3><i class="fa-brands fa-google"></i> &nbsp; Google Search</h3>
+          <p><strong>PageRank</strong> — Google's original algorithm. Ranks pages by how many other trusted pages link to them. Changed the internet.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card card-gold">
+          <h3><i class="fa-solid fa-car"></i> &nbsp; Uber / Lyft</h3>
+          <p>Matching algorithm pairs you with a driver in seconds. Dynamic pricing algorithm adjusts cost based on supply/demand in real time.</p>
+        </div>
+        <div class="card card-cyan" style="margin-top: 12px;">
+          <h3><i class="fa-solid fa-camera"></i> &nbsp; Face ID</h3>
+          <p>Your phone maps <strong>30,000+ infrared dots</strong> on your face and runs a face-matching algorithm every time you unlock it.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Ask: "Which of these surprised you the most?" The Face ID fact usually wins.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 8b — ETHICAL DIMENSION
+       ============================================ -->
+  <section>
+    <span class="slide-label">// The Other Side</span>
+    <h2>Algorithms Can Also <em>Go Wrong</em></h2>
+    <div class="two-col">
+      <div>
+        <ul>
+          <li><strong>Bias in hiring</strong> — AI trained on historical data that excluded certain groups, then recommended against them</li>
+          <li><strong>Filter bubbles</strong> — Social media shows you more of what you already believe, amplifying division</li>
+          <li><strong>Facial recognition errors</strong> — Early models had dramatically higher error rates on darker skin tones</li>
+        </ul>
+      </div>
+      <div>
+        <blockquote>
+          <p>"Algorithms are opinions embedded in code."</p>
+          <cite>— Cathy O'Neil, mathematician & author of Weapons of Math Destruction</cite>
+        </blockquote>
+        <div class="highlight-box" style="margin-top: 16px;">
+          <p>The people who <strong>design algorithms</strong> shape how society works. That could be <strong>you</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">This is a critical thinking moment — especially powerful for high schoolers who are about to enter a world shaped by these systems. Encourage them to question algorithmic decisions they encounter.</aside>
+  </section>
+
+  <!-- ============================================
+       DIVIDER 8 — NEXT STEPS
+       ============================================ -->
+  <section class="divider-slide">
+    <p class="divider-number">// Section 07</p>
+    <h1>Your <span>Next Move</span></h1>
+    <p class="divider-desc">You don't need to know everything to start. You just need to start.</p>
+    <aside class="notes">~3 min. Inspirational close. Leave them with actionable steps.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 9a — HOW TO START
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Getting Started</span>
+    <h2>How to <em>Start Learning</em> Algorithms</h2>
+    <div class="two-col">
+      <div>
+        <ol class="step-list">
+          <li><p style="margin:0;font-size:15pt;">Learn a language first — <strong>Python</strong> is easiest to start with</p></li>
+          <li><p style="margin:0;font-size:15pt;">Practice on <strong>freeCodeCamp</strong>, Khan Academy, or CS50 (free!)</p></li>
+          <li><p style="margin:0;font-size:15pt;">Visualize algorithms at <strong>visualgo.net</strong> — watch them animate in real time</p></li>
+          <li><p style="margin:0;font-size:15pt;">Try <strong>LeetCode Easy</strong> problems when you feel ready</p></li>
+          <li><p style="margin:0;font-size:15pt;">Build something — <em>anything</em>. The project teaches you faster than tutorials.</p></li>
+        </ol>
+      </div>
+      <div>
+        <div class="card card-cyan">
+          <h3><i class="fa-solid fa-graduation-cap"></i> &nbsp; Free Resources</h3>
+          <p><strong>CS50</strong> — Harvard's free intro CS course (YouTube / edX)</p>
+          <p style="margin-top: 6px;"><strong>freeCodeCamp</strong> — freecodecamp.org</p>
+          <p style="margin-top: 6px;"><strong>visualgo.net</strong> — Algorithm visualizations</p>
+          <p style="margin-top: 6px;"><strong>The Coding Train</strong> — YouTube</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">Mention that CS50 is genuinely world-class and 100% free. Point to visualgo.net specifically — it's mind-blowing to see binary search or merge sort animated live.</aside>
+  </section>
+
+  <!-- ============================================
+       SLIDE 9b — MINDSET
+       ============================================ -->
+  <section>
+    <span class="slide-label">// Mindset</span>
+    <h2>The Most Important <em>Thing I Can Tell You</em></h2>
+    <blockquote>
+      <p>"Every expert was once a beginner who refused to give up."</p>
+      <cite>— basically every person who got good at anything</cite>
+    </blockquote>
+    <div class="two-col" style="margin-top: 20px;">
+      <div>
+        <ul>
+          <li>You don't need to be a math genius</li>
+          <li>You don't need a computer at home (yet)</li>
+          <li>You don't need to "get it" immediately</li>
+          <li>You <strong>do</strong> need to be curious</li>
+          <li>You <strong>do</strong> need to be patient with yourself</li>
+        </ul>
+      </div>
+      <div>
+        <div class="card card-green">
+          <h3><i class="fa-solid fa-fire"></i> &nbsp; Progress > Perfection</h3>
+          <p>Write messy code. Break things. Look things up. That's the actual job — for everyone, at every level.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes">This is personal — share something you struggled with when you started. Vulnerability here builds huge trust with young audiences.</aside>
+  </section>
+
+  <!-- ============================================
+       CLOSING SLIDE
+       ============================================ -->
+  <section style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(123,255,106,0.1) 0%, transparent 70%); pointer-events: none;"></div>
+    <div style="position: absolute; bottom: -60px; left: -60px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(0,229,255,0.07) 0%, transparent 70%); pointer-events: none;"></div>
+    <p style="font-family: var(--code-font); font-size: 11pt; color: var(--muted-color); letter-spacing: 3pt; text-transform: uppercase; margin-bottom: 16px;">// Thanks for being here</p>
+    <h1 style="font-size: 62pt; margin-bottom: 8px; text-align: center;">You've Got This.</h1>
+    <p style="font-size: 18pt; color: var(--muted-color); max-width: 560px; text-align: center; margin-bottom: 36px;">The algorithm for success in tech: <br><strong style="color: var(--secondary-color);">start small, stay consistent, help others.</strong></p>
+    <div style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;">
+      <span class="tag tag-green"><i class="fa-solid fa-question-circle"></i> &nbsp; Questions?</span>
+      <span class="tag tag-cyan"><i class="fa-brands fa-github"></i> &nbsp; github.com/yourhandle</span>
+      <span class="tag tag-gold"><i class="fa-brands fa-twitter"></i> &nbsp; @yourhandle</span>
+    </div>
+    <aside class="notes">Open the floor for Q&A! Common questions: "What language should I learn first?" (Python), "How long does it take to get good?" (6-12 months of consistent practice), "What do developers make?" (be honest — it varies widely).</aside>
+  </section>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    slideNumber: true,
+    hash: true,
+    transition: 'slide',
+    center: false,
+    width: 1280,
+    height: 720,
+    margin: 0.04,
+  });
+</script>
+</body>
+</html>

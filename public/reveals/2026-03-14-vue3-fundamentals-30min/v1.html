@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vue 3 Fundamentals — 30 Min Talk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+<style>
+  :root {
+    --vue-green: #42b883;
+    --vue-dark: #35495e;
+    --amber: #f5a623;
+    --bg: #0a0a14;
+    --bg2: #111120;
+    --surface: #1a1a2e;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  .reveal-viewport { background: var(--bg); }
+  .reveal { font-family: var(--font-body); color: var(--text); }
+
+  /* ── Global slide base ── */
+  .reveal .slides section {
+    height: 100%;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  /* ── Typography ── */
+  .reveal h1, .reveal h2, .reveal h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-transform: none;
+    margin: 0 0 0.4em;
+    color: #fff;
+  }
+  .reveal h1 { font-size: 2.8em; }
+  .reveal h2 { font-size: 1.9em; }
+  .reveal h3 { font-size: 1.35em; color: var(--vue-green); }
+  .reveal p, .reveal li { font-size: 0.85em; line-height: 1.65; color: var(--text); font-family: var(--font-body); }
+  .reveal strong { color: var(--vue-green); font-weight: 600; }
+  .reveal em { color: var(--amber); font-style: normal; font-weight: 500; }
+
+  /* ── Code ── */
+  .reveal pre {
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px rgba(66,184,131,0.2), 0 20px 60px rgba(0,0,0,0.5);
+    margin: 0.6em 0;
+    width: 100%;
+  }
+  .reveal pre code {
+    font-family: var(--font-mono);
+    font-size: 0.72em;
+    line-height: 1.6;
+    padding: 1.2em 1.4em;
+    max-height: 360px;
+  }
+  .reveal code:not(pre code) {
+    font-family: var(--font-mono);
+    background: rgba(66,184,131,0.12);
+    color: var(--vue-green);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+
+  /* ── Accent bar ── */
+  .bar { display: block; width: 52px; height: 4px; background: var(--vue-green); border-radius: 2px; margin-bottom: 1em; }
+  .bar-amber { background: var(--amber); }
+
+  /* ── Slide number badge ── */
+  .slide-num {
+    font-family: var(--font-mono);
+    font-size: 0.6em;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.5em;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Two-col layout ── */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2em; align-items: start; }
+  .cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5em; }
+
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid rgba(66,184,131,0.15);
+    border-radius: 10px;
+    padding: 1.2em 1.4em;
+  }
+  .card h4 { font-family: var(--font-display); font-size: 1em; color: var(--vue-green); margin: 0 0 0.4em; font-weight: 400; }
+  .card p, .card li { font-size: 0.78em; color: #a0a0c0; margin: 0.2em 0; }
+
+  /* ── Tag/chip ── */
+  .tag {
+    display: inline-block;
+    background: rgba(66,184,131,0.15);
+    color: var(--vue-green);
+    border: 1px solid rgba(66,184,131,0.3);
+    border-radius: 20px;
+    padding: 0.2em 0.8em;
+    font-size: 0.65em;
+    font-family: var(--font-mono);
+    margin: 0.15em;
+  }
+  .tag-amber { background: rgba(245,166,35,0.12); color: var(--amber); border-color: rgba(245,166,35,0.3); }
+
+  /* ── Cover slide ── */
+  .cover-slide {
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2.5em !important;
+    min-height: 100%;
+  }
+  .cover-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 80% 20%, rgba(66,184,131,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(53,73,94,0.3) 0%, transparent 50%);
+    z-index: 0;
+  }
+  .cover-logo {
+    position: absolute;
+    top: 2em;
+    right: 2em;
+    font-size: 5em;
+    opacity: 0.08;
+    z-index: 0;
+    line-height: 1;
+    font-family: var(--font-display);
+  }
+  .cover-slide > * { position: relative; z-index: 1; }
+  .cover-meta { display: flex; gap: 0.5em; margin-bottom: 1.5em; flex-wrap: wrap; }
+  .cover-slide h1 { font-size: 3em; line-height: 1.05; margin-bottom: 0.3em; }
+  .cover-sub { font-size: 1em; color: var(--muted); margin-bottom: 1.5em; max-width: 560px; }
+  .cover-speaker { font-size: 0.75em; color: var(--muted); display: flex; gap: 1.5em; }
+  .cover-speaker strong { color: var(--vue-green); }
+
+  /* ── Section divider ── */
+  .section-slide {
+    background: var(--bg2);
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2.5em !important;
+    position: relative;
+    overflow: hidden;
+    min-height: 100%;
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 7em;
+    font-weight: 600;
+    color: rgba(66,184,131,0.08);
+    position: absolute;
+    right: -0.05em;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: 1;
+  }
+  .section-slide h2 { font-size: 2.8em; }
+
+  /* ── Content slide ── */
+  .content-slide {
+    padding: 2em 2.5em !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 100%;
+  }
+
+  /* ── Comparison row ── */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5em; margin-top: 0.8em; }
+  .compare-box { background: var(--surface); border-radius: 10px; padding: 1em 1.2em; border-top: 3px solid var(--vue-green); }
+  .compare-box.alt { border-top-color: var(--amber); }
+  .compare-box h4 { font-family: var(--font-mono); font-size: 0.72em; color: var(--muted); margin: 0 0 0.5em; letter-spacing: 0.05em; text-transform: uppercase; }
+  .compare-box pre { box-shadow: none; margin: 0; border-radius: 6px; }
+  .compare-box pre code { font-size: 0.62em; padding: 0.8em; }
+
+  /* ── Big statement ── */
+  .big-statement {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 2em !important;
+    min-height: 100%;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+  .big-statement::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(66,184,131,0.1) 0%, transparent 70%);
+  }
+  .big-statement h2 { font-size: 3em; text-align: center; position: relative; }
+  .big-statement p { font-size: 1em; color: var(--muted); position: relative; max-width: 600px; }
+
+  /* ── Progress indicator ── */
+  .reveal .progress { background: rgba(255,255,255,0.05); }
+  .reveal .progress span { background: var(--vue-green); }
+
+  /* ── Controls ── */
+  .reveal .controls { color: var(--vue-green); }
+
+  /* ── Lists ── */
+  .reveal ul { list-style: none; padding: 0; margin: 0; }
+  .reveal ul li { padding-left: 1.2em; position: relative; margin-bottom: 0.4em; }
+  .reveal ul li::before { content: '▸'; position: absolute; left: 0; color: var(--vue-green); }
+
+  /* ── Highlight text ── */
+  .hl { color: var(--vue-green); }
+  .hl-amber { color: var(--amber); }
+
+  /* ── Timeline ── */
+  .roadmap { display: flex; flex-direction: column; gap: 0.6em; margin-top: 0.8em; }
+  .roadmap-item { display: flex; align-items: center; gap: 1em; }
+  .roadmap-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--vue-green); flex-shrink: 0; }
+  .roadmap-dot.dim { background: var(--surface); border: 2px solid rgba(66,184,131,0.3); }
+  .roadmap-label { font-size: 0.82em; }
+  .roadmap-label span { color: var(--muted); font-size: 0.85em; margin-left: 0.5em; }
+
+  /* ── Closing slide ── */
+  .close-slide {
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2.5em !important;
+    min-height: 100%;
+  }
+  .close-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 0% 100%, rgba(66,184,131,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 100% 0%, rgba(53,73,94,0.2) 0%, transparent 50%);
+  }
+  .close-slide > * { position: relative; }
+  .social-links { display: flex; flex-direction: column; gap: 0.3em; margin-top: 1em; }
+  .social-links a { font-family: var(--font-mono); font-size: 0.72em; color: var(--vue-green); text-decoration: none; }
+
+  /* ── Duration badge ── */
+  .duration-badge {
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    background: rgba(66,184,131,0.15);
+    border: 1px solid rgba(66,184,131,0.3);
+    color: var(--vue-green);
+    font-family: var(--font-mono);
+    font-size: 0.6em;
+    padding: 0.3em 0.8em;
+    border-radius: 20px;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+<div class="duration-badge">⏱ 30 MIN TALK</div>
+<div class="reveal">
+<div class="slides">
+
+  <!-- ═══ SLIDE 1 — COVER ═══ -->
+  <section class="cover-slide">
+    <div class="cover-bg"></div>
+    <div class="cover-logo">Vue</div>
+    <div class="cover-meta">
+      <span class="tag">Introductory</span>
+      <span class="tag">⭐⭐ Effort</span>
+      <span class="tag-amber tag">30 Minutes</span>
+    </div>
+    <h1>Vue 3 Fundamentals</h1>
+    <p class="cover-sub">Modern JavaScript frameworks made simple — core concepts for absolute beginners.</p>
+    <div class="cover-speaker">
+      <span><strong>Nerando Johnson</strong></span>
+      <span>@nerajno</span>
+      <span>developingdvlpr.com</span>
+    </div>
+    <aside class="notes">
+      Welcome everyone! Quick housekeeping: 30 minutes, no live coding today, but everything I show you is in the companion article series at developingdvlpr.com. Let's keep it moving.
+    </aside>
+  </section>
+
+  <!-- ═══ SLIDE 2 — WHO IS THIS FOR ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">01 / 16</span>
+    <span class="bar"></span>
+    <h2>Who Is This Talk For?</h2>
+    <div class="cols-3" style="margin-top:1em">
+      <div class="card">
+        <h4>Complete Beginners</h4>
+        <p>You know HTML, CSS, and a little JS. You've heard of "frameworks" but haven't committed to one yet.</p>
+      </div>
+      <div class="card">
+        <h4>Evaluating Options</h4>
+        <p>You're comparing React, Angular, and Vue. You want an honest picture before you spend 40 hours learning the wrong one.</p>
+      </div>
+      <div class="card">
+        <h4>Returning Devs</h4>
+        <p>You touched Vue 2 or another framework years ago and want to see what Vue 3 changed.</p>
+      </div>
+    </div>
+    <p style="margin-top:1.2em">Prerequisites: <em>basic HTML, CSS, and JavaScript</em> — nothing more.</p>
+    <aside class="notes">
+      Raise your hand if you've never written a Vue component. Keep it up if you've never used any JS framework. Good — that's who I'm talking to.
+    </aside>
+  </section>
+
+  <!-- ═══ SLIDE 3 — WHAT IS VUE ═══ -->
+  <section class="section-slide">
+    <div class="section-num">01</div>
+    <span class="bar"></span>
+    <h2>What Is Vue 3?</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">A JavaScript framework for building user interfaces — that builds on top of HTML, CSS, and JavaScript you already know.</p>
+    <aside class="notes">Section 1 of 5. Keep it tight here — 2 minutes.
+    </aside>
+  </section>
+
+  <!-- ═══ SLIDE 4 — VUE IN ONE SLIDE ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">02 / 16</span>
+    <span class="bar"></span>
+    <h2>Vue in One Slide</h2>
+    <div class="cols" style="margin-top:0.8em; align-items:start">
+      <div>
+        <p><strong>Declarative Rendering</strong><br/>Describe <em>what</em> the UI should look like based on your data — not <em>how</em> to update it.</p>
+        <p style="margin-top:0.8em"><strong>Reactivity</strong><br/>When your data changes, Vue updates the DOM automatically. No <code>getElementById</code>. No manual re-renders.</p>
+        <p style="margin-top:0.8em"><strong>Component Model</strong><br/>Build UIs as reusable, self-contained pieces — each with its own logic, template, and styles.</p>
+      </div>
+      <pre><code class="language-vue" data-trim>
+&lt;script setup&gt;
+import { ref } from 'vue'
+const count = ref(0)
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click="count++"&gt;
+    Clicked {{ count }} times
+  &lt;/button&gt;
+&lt;/template&gt;</code></pre>
+    </div>
+    <aside class="notes">
+      This button example is the entire Vue pitch. No DOM manipulation. Change count, UI updates. That's it.
+    </aside>
+  </section>
+
+  <!-- ═══ SLIDE 5 — WHY VUE ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">03 / 16</span>
+    <span class="bar bar-amber"></span>
+    <h2>Why Vue? The Honest Answer.</h2>
+    <div class="cols-3" style="margin-top:1em">
+      <div class="card">
+        <h4>Readable from day one</h4>
+        <p>Template syntax looks like HTML you already know. The learning curve is a slope, not a cliff.</p>
+      </div>
+      <div class="card">
+        <h4>Progressive</h4>
+        <p>Start with a script tag. Scale to a full SPA with routing and state management. Vue grows with you.</p>
+      </div>
+      <div class="card">
+        <h4>Batteries included</h4>
+        <p>Vue Router, Pinia (state), Vite (tooling) — an official answer for every common need.</p>
+      </div>
+    </div>
+    <p style="margin-top:1.2em; font-size:0.8em; color:var(--muted)">Used in production by Alibaba, GitLab, Adobe, Grammarly, and thousands of startups.</p>
+    <aside class="notes">
+      The "progressive" pitch is real. I've literally added Vue with one script tag to a static marketing page. No build step. That's not possible with React or Angular.
+    </aside>
+  </section>
+
+  <!-- ═══ SLIDE 6 — SECTION: REACTIVITY ═══ -->
+  <section class="section-slide">
+    <div class="section-num">02</div>
+    <span class="bar"></span>
+    <h2>Reactivity</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">How Vue makes your UI feel alive — without you lifting a finger.</p>
+  </section>
+
+  <!-- ═══ SLIDE 7 — REF ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">04 / 16</span>
+    <span class="bar"></span>
+    <h2><code>ref</code> — Reactive State</h2>
+    <div class="compare">
+      <div class="compare-box">
+        <h4>Vanilla JS — manual</h4>
+        <pre><code class="language-javascript" data-trim>
+let count = 0
+document.getElementById('btn')
+  .addEventListener('click', () => {
+    count++
+    document.getElementById('num')
+      .textContent = count
+  })</code></pre>
+      </div>
+      <div class="compare-box alt">
+        <h4>Vue 3 — reactive</h4>
+        <pre><code class="language-vue" data-trim>
+&lt;script setup&gt;
+import { ref } from 'vue'
+const count = ref(0)
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click="count++"&gt;
+    {{ count }}
+  &lt;/button&gt;
+&lt;/template&gt;</code></pre>
+      </div>
+    </div>
+    <p style="margin-top:0.8em">One rule: use <code>.value</code> in script. Drop it in the template — Vue unwraps automatically.</p>
+    <aside class="notes">
+      The left side is the world we're escaping. The right side is what Vue gives you. Same result. A fraction of the code.
+    </aside>
+  </section>
+
+  <!-- ═══ SLIDE 8 — COMPUTED ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">05 / 16</span>
+    <span class="bar"></span>
+    <h2>Computed Properties</h2>
+    <p>Derive values from existing state — cached, efficient, always in sync.</p>
+    <pre><code class="language-vue" data-trim>
+&lt;script setup&gt;
+import { ref, computed } from 'vue'
+
+const firstName = ref('Nerando')
+const lastName  = ref('Johnson')
+
+// Only recalculates when firstName or lastName changes
+const fullName = computed(() => `${firstName.value} ${lastName.value}`)
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;p&gt;{{ fullName }}&lt;/p&gt;
+&lt;/template&gt;</code></pre>
+    <p style="margin-top:0.6em; font-size:0.8em">Think of it like a spreadsheet formula — cell A3 automatically reflects changes to A1 and A2.</p>
+    <aside class="notes">
+      Computed is one of the most underused tools by beginners. If you find yourself writing a function that just returns a transformed version of some state — that's a computed property.
+    </aside>
+  </section>
+
+  <!-- ═══ SLIDE 9 — SECTION: COMPONENTS ═══ -->
+  <section class="section-slide">
+    <div class="section-num">03</div>
+    <span class="bar"></span>
+    <h2>Components</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">The building blocks of every Vue application.</p>
+  </section>
+
+  <!-- ═══ SLIDE 10 — SFC ANATOMY ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">06 / 16</span>
+    <span class="bar"></span>
+    <h2>The Single-File Component</h2>
+    <div class="cols" style="align-items:start">
+      <pre><code class="language-vue" data-trim>
+&lt;!-- TaskCard.vue --&gt;
+
+&lt;script setup&gt;
+import { ref } from 'vue'
+const done = ref(false)
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;div :class="{ done }"&gt;
+    &lt;slot /&gt;
+    &lt;button @click="done = true"&gt;
+      Complete
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+.done { opacity: 0.5; }
+&lt;/style&gt;</code></pre>
+      <div style="display:flex;flex-direction:column;gap:1em;margin-top:0.5em">
+        <div class="card">
+          <h4>script setup</h4>
+          <p>Logic — reactive state, methods, imports. <code>&lt;script setup&gt;</code> is modern Vue 3 syntax.</p>
+        </div>
+        <div class="card">
+          <h4>template</h4>
+          <p>Your HTML + Vue directives. Everything here reacts to the script.</p>
+        </div>
+        <div class="card">
+          <h4>style scoped</h4>
+          <p>CSS that only applies to <em>this</em> component. No collisions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 11 — PROPS & EVENTS ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">07 / 16</span>
+    <span class="bar bar-amber"></span>
+    <h2>Props Down, Events Up</h2>
+    <div class="compare">
+      <div class="compare-box">
+        <h4>Parent passes data via props ↓</h4>
+        <pre><code class="language-vue" data-trim>
+&lt;!-- App.vue --&gt;
+&lt;TaskCard
+  :title="task.title"
+  @complete="markDone"
+/&gt;</code></pre>
+      </div>
+      <div class="compare-box alt">
+        <h4>Child emits events up ↑</h4>
+        <pre><code class="language-vue" data-trim>
+&lt;!-- TaskCard.vue --&gt;
+&lt;script setup&gt;
+defineProps({ title: String })
+const emit = defineEmits(['complete'])
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;button @click="emit('complete')"&gt;
+    {{ title }}
+  &lt;/button&gt;
+&lt;/template&gt;</code></pre>
+      </div>
+    </div>
+    <p style="margin-top:0.8em">This single pattern — <strong>props down, events up</strong> — governs all component communication.</p>
+  </section>
+
+  <!-- ═══ SLIDE 12 — SECTION: DIRECTIVES ═══ -->
+  <section class="section-slide">
+    <div class="section-num">04</div>
+    <span class="bar"></span>
+    <h2>Template Directives</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">The special attributes that give your templates superpowers.</p>
+  </section>
+
+  <!-- ═══ SLIDE 13 — DIRECTIVES CHEATSHEET ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">08 / 16</span>
+    <span class="bar"></span>
+    <h2>The Directives You'll Use Daily</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8em; margin-top:0.8em">
+      <div class="card">
+        <h4>v-bind / :</h4>
+        <p>Bind attribute to a reactive value<br/><code>:href="url"</code> &nbsp; <code>:class="{ active }"</code></p>
+      </div>
+      <div class="card">
+        <h4>v-on / @</h4>
+        <p>Listen for DOM events<br/><code>@click="fn"</code> &nbsp; <code>@submit.prevent="fn"</code></p>
+      </div>
+      <div class="card">
+        <h4>v-model</h4>
+        <p>Two-way binding on inputs<br/><code>v-model="searchQuery"</code></p>
+      </div>
+      <div class="card">
+        <h4>v-if / v-else</h4>
+        <p>Conditional rendering<br/><code>v-if="isLoggedIn"</code></p>
+      </div>
+      <div class="card" style="grid-column:1/-1">
+        <h4>v-for</h4>
+        <p>Loop over arrays and render a list — always pair with <code>:key</code><br/><code>v-for="item in items" :key="item.id"</code></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SLIDE 14 — V-FOR & V-MODEL DEMO ═══ -->
+  <section class="content-slide">
+    <span class="slide-num">09 / 16</span>
+    <span class="bar"></span>
+    <h2>Directives in Action</h2>
+    <pre><code class="language-vue" data-trim>
+&lt;script setup&gt;
+import { ref } from 'vue'
+const newSkill = ref('')
+const skills   = ref(['Vue 3', 'TypeScript', 'Nuxt'])
+
+function add() {
+  if (newSkill.value.trim()) {
+    skills.value.push(newSkill.value.trim())
+    newSkill.value = ''
+  }
+}
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;input v-model="newSkill" @keyup.enter="add" placeholder="Add a skill" /&gt;
+  &lt;button @click="add"&gt;Add&lt;/button&gt;
+
+  &lt;ul v-if="skills.length"&gt;
+    &lt;li v-for="skill in skills" :key="skill"&gt;{{ skill }}&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;p v-else&gt;No skills yet.&lt;/p&gt;
+&lt;/template&gt;</code></pre>
+    <aside class="notes">
+      v-model, @keyup.enter, @click, v-if, v-else, v-for :key — all five essential directives, one tiny component.
+    </aside>
+  </section>
+
+  <!-- ═══ SLIDE 15 — SECTION: WHAT'S NEXT ═══ -->
+  <section class="section-slide">
+    <div class="section-num">05</div>
+    <span class="bar bar-amber"></span>
+    <h2>Your Next Steps</h2>
+    <p style="max-width:520px; color:var(--muted); font-size:0.9em">Where to go after today's talk.</p>
+  </section>
+
+  <!-- ═══ SLIDE 16 — CLOSE ═══ -->
+  <section class="close-slide">
+    <span class="bar"></span>
+    <h2>Start Here. Keep Going.</h2>
+    <div class="roadmap" style="margin-top:1em">
+      <div class="roadmap-item"><div class="roadmap-dot"></div><div class="roadmap-label">Vue 3 Fundamentals series <span>6 articles @ developingdvlpr.com</span></div></div>
+      <div class="roadmap-item"><div class="roadmap-dot"></div><div class="roadmap-label">Vue Router <span>Multi-page navigation</span></div></div>
+      <div class="roadmap-item"><div class="roadmap-dot"></div><div class="roadmap-label">Pinia <span>State management done right</span></div></div>
+      <div class="roadmap-item"><div class="roadmap-dot dim"></div><div class="roadmap-label">Nuxt 3 <span>Production-grade meta-framework</span></div></div>
+      <div class="roadmap-item"><div class="roadmap-dot dim"></div><div class="roadmap-label">TypeScript + Vue <span>Add type safety</span></div></div>
+    </div>
+    <p style="margin-top:1.5em; font-size:0.8em; color:var(--muted); font-style:italic">"Progress over perfection — just build something."</p>
+    <div class="social-links" style="margin-top:1em">
+      <a>🌐 developingdvlpr.com</a>
+      <a>𝕏 @nerajno</a>
+      <a>📚 Vue Mastery courses at vuemastery.com</a>
+    </div>
+    <aside class="notes">
+      Thanks everyone. Questions? Slides and the full article series are at developingdvlpr.com. Come find me if you want to talk Vue, Nuxt, or Atlanta tech community stuff.
+    </aside>
+  </section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/notes/notes.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: false,
+  controls: true,
+  progress: true,
+  center: false,
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  plugins: [RevealNotes, RevealHighlight],
+  highlight: { highlightOnLoad: true }
+});
+</script>
+</body>
+</html>
