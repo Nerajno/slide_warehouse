@@ -172,9 +172,9 @@ slide-warehouse/
 
 ### Legacy Presentations
 
-1. Add presentation file to `public/legacy-files/` (PPTX, PDF, KEY, etc.)
-2. Create thumbnail image in `public/legacy-thumbnails/`
-3. Update `LegacyDeckGrid.vue` with presentation metadata
+1. Add presentation file to `public/legacy-files/` (PDF preferred: it opens anywhere and stays small)
+2. Add a 1280×720 JPG of the title slide to `public/legacy-thumbnails/`
+3. Create `content/legacy/{id}.md` with `id`, `title`, `description`, `tags`, `format`, `fileUrl`, `thumbnailUrl`, `conference`, `date`, `downloadable`
 4. Push to Git — Netlify rebuilds automatically
 
 ```yaml
@@ -204,7 +204,6 @@ displayedStatus: true       # optional; false hides the deck everywhere
 
 > **Adding a new version?** Increment `currentVersion`, add the new entry to `versions`, and drop `v2.html` into the same folder. The viewer picks it up automatically.
 
-> **Note:** Legacy deck metadata is hardcoded in the component for now. Moving it to Nuxt Content is on the roadmap — see [Known Issues](#known-issues--todo).
 
 ---
 
@@ -244,7 +243,7 @@ If you add analytics or a CMS integration later, document variables here:
 
 ## Known Issues / TODO
 
-- [ ] Legacy deck metadata is hardcoded in `LegacyDeckGrid.vue` — should move to Nuxt Content
+- [x] Legacy deck metadata lives in `content/legacy/*.md` (Nuxt Content)
 - [ ] No test suite yet (unit tests for the Pinia store and component smoke tests are the priority)
 - [ ] `slideCount` and `durationMinutes` in frontmatter are manually entered and not validated
 - [ ] No 404 page for unknown deck slugs

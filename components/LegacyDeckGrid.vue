@@ -22,12 +22,29 @@ const formatLabel = (format?: string) => {
       return format || 'File'
   }
 }
+
+// Some entries name a thumbnail that was never added; drop the frame rather than show a broken image.
+const hideBrokenThumb = (e: Event) => {
+  (e.target as HTMLImageElement).hidden = true
+}
 </script>
 
 <template>
   <!-- The page owns the heading and intro; repeating them here rendered both. -->
   <div v-if="legacyDecks?.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
     <article v-for="deck in legacyDecks" :key="deck.id" class="sw-deck-card">
+      <!-- Title slide exported with the deck; fixed size keeps the grid from shifting as images load. -->
+      <img
+        v-if="deck.thumbnailUrl"
+        :src="deck.thumbnailUrl"
+        :alt="`Title slide of ${deck.title}`"
+        width="1280"
+        height="720"
+        loading="lazy"
+        decoding="async"
+        class="w-full h-auto aspect-video object-cover rounded border border-[var(--sw-border)]"
+        @error="hideBrokenThumb"
+      >
       <div class="flex items-center justify-between gap-2">
         <span class="sw-deck-card__conference truncate">{{ deck.conference }}</span>
         <span class="sw-tag shrink-0">{{ formatLabel(deck.format) }}</span>
