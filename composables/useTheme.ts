@@ -1,6 +1,8 @@
 type Theme = 'light' | 'dark' | 'system'
 
-const STORAGE_KEY = 'sw-theme'
+// Shared with @nerajno/dialects' theme-init.js, which reads it before first
+// paint. It stores only 'light' or 'dark'; no key means follow the OS.
+export const STORAGE_KEY = 'theme'
 
 export function useTheme() {
   const preference = useState<Theme>('theme-preference', () => 'system')
@@ -15,14 +17,15 @@ export function useTheme() {
       if (preference.value === 'system') updateClass('system')
     })
     // Hydrate preference from storage on mount
-    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null
-    if (stored) preference.value = stored
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (stored === 'light' || stored === 'dark') preference.value = stored
   }
 
   function apply(pref: Theme) {
     preference.value = pref
     if (import.meta.client) {
-      localStorage.setItem(STORAGE_KEY, pref)
+      if (pref === 'system') localStorage.removeItem(STORAGE_KEY)
+      else localStorage.setItem(STORAGE_KEY, pref)
       updateClass(pref)
     }
   }
@@ -45,5 +48,9 @@ export function updateClass(pref: Theme) {
   const dark =
     pref === 'dark' ||
     (pref === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  document.documentElement.classList.toggle('dark', dark)
+  // Same contract as theme-init.js: one of .light/.dark, plus data-theme.
+  const html = document.documentElement
+  html.classList.toggle('dark', dark)
+  html.classList.toggle('light', !dark)
+  html.setAttribute('data-theme', dark ? 'dark' : 'light')
 }

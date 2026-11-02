@@ -1,5 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { readFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
+
 const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'https://slides.developingdvlpr.com'
+
+// Dialects' theme script, inlined before first paint. It sets .light/.dark,
+// data-theme and data-surface on <html> from the saved choice or the OS.
+const themeInit = readFileSync(createRequire(import.meta.url).resolve('@nerajno/dialects/theme-init.js'), 'utf8')
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-01-01',
@@ -69,7 +76,9 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: { lang: 'en' },
+      // teach surface (Dialects): server-rendered too, so the first paint is right
+      // before theme-init.js runs.
+      htmlAttrs: { lang: 'en', 'data-surface': 'teach' },
       title: 'Slide Warehouse',
       meta: [
         { name: 'description', content: 'Browse, search, and share Reveal.js presentations by @Nerajno' },
@@ -82,22 +91,8 @@ export default defineNuxtConfig({
         {
           // `innerHTML`, not `children` — the latter is not part of the head
           // script schema and was the source of a long-standing TS2353.
-          innerHTML: `(function(){try{var t=localStorage.getItem('sw-theme')||'dark';var d=t==='dark'||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){document.documentElement.classList.add('dark')}})()`,
-        },
-      ],
-      link: [
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.googleapis.com',
-        },
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.gstatic.com',
-          crossorigin: '',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap',
+          innerHTML: themeInit,
+          'data-surface': 'teach',
         },
       ],
     },

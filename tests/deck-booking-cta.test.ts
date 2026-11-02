@@ -5,6 +5,7 @@ import { mountSuspended, mockNuxtImport } from '@nuxt/test-utils/runtime'
 import DeckPage from '../pages/decks/[id].vue'
 import SiteNav from '../components/SiteNav.vue'
 import { CONTACT_EMAIL } from '../utils/constants'
+import { resolveColours } from './helpers/resolve-tokens'
 
 // nuxt-og-image is off in the test env (no SSR), so its auto-import is missing.
 vi.hoisted(() => vi.stubGlobal('defineOgImage', () => {}))
@@ -23,10 +24,8 @@ mockNuxtImport('queryCollection', () => () => {
 const lin = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
 const lum = (h: string) => { const [r, g, b] = [1, 3, 5].map(i => lin(parseInt(h.slice(i, i + 2), 16) / 255)); return 0.2126 * r + 0.7152 * g + 0.0722 * b }
 const contrast = (a: string, b: string) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05) }
-const tokens = readFileSync(resolve(__dirname, '../assets/css/tokens.css'), 'utf8')
-const theme = (sel: string) => Object.fromEntries([...tokens.matchAll(new RegExp(`${sel}\\s*\\{([^}]*)\\}`, 'g'))]
-  .flatMap(b => [...b[1].matchAll(/(--sw-[\w-]+):\s*(#[0-9a-fA-F]{6})/g)].map(m => [m[1], m[2]])))
-const hex = (v: Record<string, string>, name: string) => { expect(v[name], `${name} must be a 6-digit hex`).toMatch(/^#[0-9a-f]{6}$/i); return v[name] }
+// Resolved through the Dialects spine on the teach surface (see helper).
+const theme = (mode: 'light' | 'dark') => resolveColours(mode)
 
 describe('#63 booking CTA on deck pages', () => {
   it('renders one ink CTA that emails a prefilled, encoded subject', async () => {
@@ -58,10 +57,10 @@ describe('#63 booking CTA on deck pages', () => {
     expect(decodeURIComponent(raw)).toBe(`Booking request: ${title}`)
   })
 
-  it.each([[':root'], ['\\.dark']])('CTA text and hover meet 4.5:1 (%s)', (sel) => {
-    const v = theme(sel)
-    expect(contrast(hex(v, '--sw-cta'), hex(v, '--sw-on-cta'))).toBeGreaterThanOrEqual(4.5)
-    expect(contrast(hex(v, '--sw-cta-hover'), hex(v, '--sw-on-cta'))).toBeGreaterThanOrEqual(4.5)
+  it.each([['light'], ['dark']] as const)('CTA text and hover meet 4.5:1 (%s)', (mode) => {
+    const c = theme(mode)
+    expect(contrast(c('--sw-cta'), c('--sw-on-cta'))).toBeGreaterThanOrEqual(4.5)
+    expect(contrast(c('--sw-cta-hover'), c('--sw-on-cta'))).toBeGreaterThanOrEqual(4.5)
   })
 
   it('.sw-btn-cta is wired to the CTA tokens', () => {

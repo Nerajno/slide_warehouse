@@ -1,3 +1,7 @@
+/* Dialects token spine (teach surface): fonts, then the spine, then the
+   site's --sw-* aliases on top. */
+@import '@nerajno/dialects/fonts.css';
+@import '@nerajno/dialects/tokens.css';
 @import './tokens.css';
 @import './component.css';
 @tailwind base;

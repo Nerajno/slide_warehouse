@@ -1,8 +1,17 @@
-import { updateClass } from '~/composables/useTheme'
+import { STORAGE_KEY, updateClass } from '~/composables/useTheme'
 
 export default defineNuxtPlugin(() => {
-  const stored = (localStorage.getItem('sw-theme') ?? 'system') as 'light' | 'dark' | 'system'
+  // One-time move from the pre-Dialects key, so a saved choice survives.
+  const legacy = localStorage.getItem('sw-theme')
+  if (legacy !== null) {
+    if ((legacy === 'light' || legacy === 'dark') && localStorage.getItem(STORAGE_KEY) === null) {
+      localStorage.setItem(STORAGE_KEY, legacy)
+      updateClass(legacy)
+    }
+    localStorage.removeItem('sw-theme')
+  }
+
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    if (stored === 'system') updateClass('system')
+    if (localStorage.getItem(STORAGE_KEY) === null) updateClass('system')
   })
 })

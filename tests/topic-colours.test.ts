@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, it, expect } from 'vitest'
 import { TAG_LIST, tagClass } from '../types'
+import { resolveColours } from './helpers/resolve-tokens'
 
 // #71: topic colours must not read as brand or status colours, and chips on
 // cards are neutral. Colour maths: WCAG contrast and OKLab ΔE (×100).
@@ -9,18 +10,9 @@ const root = resolve(__dirname, '..')
 const tokens = readFileSync(resolve(root, 'assets/css/tokens.css'), 'utf8')
 const component = readFileSync(resolve(root, 'assets/css/component.css'), 'utf8')
 
-const blocks = [...tokens.matchAll(/(:root|\.dark)\s*\{([^}]*)\}/g)]
-const vars = (theme: ':root' | '.dark') => Object.fromEntries(
-  blocks.filter(b => b[1] === theme).flatMap(b => [...b[2].matchAll(/(--[\w-]+):\s*([^;]+);/g)].map(m => [m[1], m[2].trim()])),
-)
-const light = vars(':root'), dark = { ...light, ...vars('.dark') }
-const resolveVar = (v: Record<string, string>, value: string, depth = 0): string => {
-  const m = value.match(/^var\((--[\w-]+)\)$/)
-  if (!m) return value
-  if (depth > 10) throw new Error(`var() cycle at ${m[1]}`)
-  if (!(m[1] in v)) throw new Error(`undefined token ${m[1]}`)
-  return resolveVar(v, v[m[1]], depth + 1)
-}
+// Tag swatches are hex in tokens.css; brand/status tokens resolve through the
+// Dialects spine on the teach surface (see helper).
+const light = resolveColours('light'), dark = resolveColours('dark')
 
 const lin = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
 const rgb = (h: string) => [1, 3, 5].map(i => lin(parseInt(h.slice(i, i + 2), 16) / 255))
@@ -38,7 +30,7 @@ const dE = (a: string, b: string) => { const x = oklab(a), y = oklab(b); return 
 const RESERVED = ['primary', 'primary-text', 'accent', 'accent-text', 'success', 'success-text', 'warning', 'warning-text', 'danger', 'danger-text']
 const SWATCHES = ['blue', 'cyan', 'violet', 'slate', 'magenta']
 const themes = [['light', light], ['dark', dark]] as const
-const c = (v: Record<string, string>, name: string) => resolveVar(v, v[name] ?? '')
+const c = (v: (name: string) => string, name: string) => v(name)
 
 describe('#71 topic colours', () => {
   it.each(themes)('each swatch is a full colour triple with text ≥ 5.5:1 on its bg (%s)', (_, v) => {

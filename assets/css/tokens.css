@@ -11,172 +11,118 @@
  *   Dark:  .dark  (toggled via JS / localStorage)
  */
 
-/* ─── Font Imports ──────────────────────────────────────────────────
-   Already declared in nuxt.config.ts head.link.
-   Keeping this comment as a reminder — do not add @import here.
+/* ─── Source of truth: @nerajno/dialects, teach surface ────────────
+   The spine (node_modules/@nerajno/dialects/tokens.css, imported first in
+   main.css) defines every colour from five --dial-* variables. This site runs
+   on the `teach` surface (chalkboard teal, Fraunces headings), set on <html>
+   by theme-init.js and htmlAttrs in nuxt.config.ts.
+
+   The --sw-* names below are kept as aliases so components did not have to
+   change. Every value reads a spine token; where the spine has no direct
+   equivalent the value is a color-mix() of spine tokens. Contrast and ΔE are
+   checked against the resolved colours in tests (tests/helpers/resolve-tokens.ts).
    ────────────────────────────────────────────────────────────────── */
 
-/* ─── Light Mode (default) ──────────────────────────────────────── */
+/* ─── Shared (both modes; the spine tokens flip underneath) ───────── */
 :root {
   /* Backgrounds */
-  --sw-bg:          #fafafa;  /* zinc-50  — page canvas       */
-  --sw-surface:     #ffffff;  /* white    — cards, nav        */
-  --sw-surface-2:   #f4f4f5;  /* zinc-100 — stats, inputs     */
-  --sw-surface-3:   #e4e4e7;  /* zinc-200 — hover states      */
+  --sw-bg:             var(--bg);
+  --sw-surface:        var(--bg-card);
+  --sw-surface-2:      var(--bg-alt);
+  --sw-surface-3:      var(--border);        /* hover fills */
 
   /* Borders */
-  --sw-border:      #e4e4e7;  /* zinc-200 — card borders      */
-  --sw-border-2:    #d4d4d8;  /* zinc-300 — dividers, inputs  */
+  --sw-border:         var(--border);        /* decorative hairline */
+  --sw-border-2:       var(--border-strong); /* dividers, inputs — ≥3:1 */
 
   /* Text */
-  --sw-text-1:      #18181b;  /* zinc-900 — headings, primary */
-  --sw-text-2:      #52525b;  /* zinc-600 — body, descriptions*/
-  /* Darkened from zinc-500 #71717a, which measured 4.4:1 on --sw-surface-2
-     and so failed SC 1.4.3 for the meta text that uses it. */
-  --sw-text-3:      #66666e;  /* meta, timestamps — 5.1:1 on surface-2 */
+  --sw-text-1:         var(--text-strong);
+  --sw-text-2:         var(--text-body);
+  --sw-text-3:         var(--text-muted);
 
-  /* Primary — Emerald.
-     emerald-700, not -600: this token is used as TEXT (links, "Open deck",
-     conference labels) on white, where #059669 measures 3.77:1 and fails
-     SC 1.4.3. #047857 measures 5.5:1 and is still fine as a border. */
-  --sw-primary:        #047857;  /* emerald-700 */
-  --sw-primary-hover:  #065f46;  /* emerald-800 */
-  --sw-primary-active: #064e3b;  /* emerald-900 */
-  --sw-primary-bg:     #d1fae5;  /* emerald-100 */
-  --sw-primary-bg-2:   #a7f3d0;  /* emerald-200 */
-  --sw-primary-text:   #065f46;  /* emerald-800 — text on primary-bg */
+  /* Primary — the teach accent */
+  --sw-primary:        var(--accent);
+  --sw-primary-hover:  var(--accent-hover);
+  --sw-primary-active: var(--accent-hover);
+  --sw-primary-text:   color-mix(in oklch, var(--accent) 70%, var(--text-strong));
 
-  /* Filled-button pairs. The display hues (--sw-primary / --sw-accent) are
-     tuned for borders, icons and text ON a surface; used AS a background
-     behind white they measure 3.4:1 and 3.1:1, below SC 1.4.3. These are the
-     darker variants reserved for filled controls. */
-  --sw-primary-solid:  #047857;  /* emerald-700 — 4.6:1 with white */
-  --sw-on-primary:     #ffffff;
-  --sw-accent-solid:   #b45309;  /* amber-700   — 5.0:1 with white */
-  --sw-on-accent:      #ffffff;
+  /* Booking CTA — ink, outside the accent pair so the one conversion action
+     on a page reads as its own thing (#63). */
+  --sw-cta:            var(--text-strong);
+  --sw-cta-hover:      var(--text-body);
+  --sw-on-cta:         var(--bg-card);
 
-  /* Booking CTA — ink, outside the emerald/amber pair so the one
-     conversion action on a page reads as its own thing (#63). */
-  --sw-cta:            #18181b;  /* zinc-900 — 17.7:1 with on-cta */
-  --sw-cta-hover:      #3f3f46;  /* zinc-700 — 10.4:1 with on-cta */
-  --sw-on-cta:         #ffffff;
+  /* Upcoming / "now" — the learn ochre, pinned by the spine as a
+     cross-surface accent. Chosen over --dial-build, which sits ΔE 6 from
+     --danger and would read as an error. */
+  --sw-accent:         var(--dial-learn);
+  --sw-accent-text:    color-mix(in oklch, var(--dial-learn) 70%, var(--text-strong));
+  --sw-accent-bg:      color-mix(in oklch, var(--dial-learn) 14%, var(--bg-card));
+  --sw-accent-bg-2:    color-mix(in oklch, var(--dial-learn) 26%, var(--bg-card));
 
-  /* Accent — Amber */
-  --sw-accent:         #d97706;  /* amber-600  */
-  --sw-accent-hover:   #b45309;  /* amber-700  */
-  --sw-accent-bg:      #fef3c7;  /* amber-100  */
-  --sw-accent-bg-2:    #fde68a;  /* amber-200  */
-  --sw-accent-text:    #92400e;  /* amber-800  — text on accent-bg */
+  /* Semantic states — pair with an icon or label, never colour alone. */
+  --sw-danger:         var(--danger);
+  --sw-danger-bg:      color-mix(in oklch, var(--danger) 14%, var(--bg-card));
+  --sw-danger-text:    color-mix(in oklch, var(--danger) 70%, var(--text-strong));
 
-  /* Semantic states */
-  --sw-danger:         #dc2626;  /* red-600    */
-  --sw-danger-bg:      #fee2e2;  /* red-100    */
-  --sw-danger-text:    #991b1b;  /* red-800    */
+  --sw-success:        var(--success);
+  --sw-success-bg:     color-mix(in oklch, var(--success) 14%, var(--bg-card));
+  --sw-success-text:   color-mix(in oklch, var(--success) 60%, var(--text-strong));
 
-  /* Success / warning are their own hues, not the brand pair: success is a
-   * leaf green (OKLCH h≈136, emerald is 163), warning an ochre (h≈88, amber
-   * is 46–58). Each sits ΔE_ok ≥ 7 from its brand neighbour; pair them with
-   * an icon or label, never colour alone. */
-  --sw-success:        #489601;  /* icons/borders — 3.7:1 on white          */
-  --sw-success-solid:  #3e7303;  /* fills — 5.7:1 with white                */
-  --sw-on-success:     #ffffff;
-  --sw-success-bg:     #e3fdd8;
-  --sw-success-text:   #305301;  /* 8.2:1 on success-bg                    */
-
-  --sw-warning:        #b28d04;  /* icons/borders — 3.1:1 on white          */
-  --sw-warning-bg:     #fff7d8;
-  --sw-warning-text:   #6a4d01;  /* 7.3:1 on warning-bg                    */
+  --sw-warning-bg:     color-mix(in oklch, var(--warning) 16%, var(--bg-card));
+  --sw-warning-text:   color-mix(in oklch, var(--warning) 50%, var(--text-strong));
 
   /* Focus */
-  --sw-focus-ring:     rgba(5, 150, 105, 0.35);
+  --sw-focus-ring:     color-mix(in oklch, var(--focus) 40%, transparent);
 
-  /* Elevation — offset + soft blur. Declare elevation once: border OR shadow. */
-  --sw-card-hover:     0 8px 24px -6px rgba(5, 150, 105, 0.22);
-  --sw-lift:           0 6px 20px -8px rgba(24, 24, 27, 0.28);
+  /* Elevation — the spine's hue-tinted shadows */
+  --sw-card-hover:     var(--shadow-md);
+  --sw-lift:           var(--shadow-lg);
 
   /* Rail — the structural axis. 1px hairline, never a stripe on a card edge. */
-  --sw-rail:           #e4e4e7;
-  --sw-rail-live:      var(--sw-accent);  /* "now" is brand emphasis, not a warning */
+  --sw-rail:           var(--border);
+  --sw-rail-live:      var(--sw-accent);  /* "now" is emphasis, not a warning */
 
   /* Nav */
   --sw-nav-height:     60px;
-  --sw-nav-bg:         #ffffff;
-  --sw-nav-border:     #e4e4e7;
+  --sw-nav-bg:         var(--bg-card);
+  --sw-nav-border:     var(--border);
 }
 
-/* ─── Dark Mode ─────────────────────────────────────────────────── */
+/* ─── Light: filled controls and tints ────────────────────────────── */
+:root {
+  /* Tint behind --sw-primary-text. The spine's own --accent-soft. */
+  --sw-primary-bg:     var(--accent-soft);
+  --sw-primary-bg-2:   color-mix(in oklch, var(--accent-soft) 70%, var(--accent));
+
+  /* Filled buttons: white text on the accent (6.2:1). */
+  --sw-primary-solid:  var(--accent);
+  --sw-on-primary:     #ffffff;
+  --sw-accent-solid:   var(--dial-learn);
+  --sw-on-accent:      #ffffff;
+  --sw-success-solid:  color-mix(in oklch, var(--success) 75%, black);
+  --sw-on-success:     #ffffff;
+
+  /* The spine's light --warning is 2.3:1 on cards, below the 3:1 icons and
+     borders need (SC 1.4.11). Darkened here until the spine is fixed. */
+  --sw-warning:        color-mix(in oklch, var(--warning) 70%, var(--text-strong));
+}
+
+/* ─── Dark: the brand hues are light, so fills take dark text ─────── */
 .dark {
-  /* Backgrounds */
-  --sw-bg:          #09090b;  /* zinc-950 — page canvas       */
-  --sw-surface:     #18181b;  /* zinc-900 — cards, nav        */
-  --sw-surface-2:   #27272a;  /* zinc-800 — stats, inputs     */
-  --sw-surface-3:   #3f3f46;  /* zinc-700 — hover states      */
+  /* The spine notes dark --accent-soft cannot hold body text (≈3.8:1), so
+     text-bearing tints are mixed from the accent into the card instead. */
+  --sw-primary-bg:     color-mix(in oklch, var(--accent) 18%, var(--bg-card));
+  --sw-primary-bg-2:   color-mix(in oklch, var(--accent) 30%, var(--bg-card));
 
-  /* Borders */
-  --sw-border:      #3f3f46;  /* zinc-700 — card borders      */
-  --sw-border-2:    #52525b;  /* zinc-600 — dividers, inputs  */
+  --sw-primary-solid:  var(--accent);
+  --sw-on-primary:     var(--bg);
+  --sw-accent-solid:   var(--dial-learn);
+  --sw-on-accent:      var(--bg);
+  --sw-success-solid:  var(--success);
+  --sw-on-success:     var(--bg);
 
-  /* Text */
-  --sw-text-1:      #fafafa;  /* zinc-50  — headings, primary */
-  --sw-text-2:      #a1a1aa;  /* zinc-400 — body, descriptions*/
-  /* Lightened from zinc-500 #71717a, which measured 3.1:1 on --sw-surface-2. */
-  --sw-text-3:      #8f8f99;  /* meta, timestamps — 5.5:1 on surface-2 */
-
-  /* Primary — Emerald (lighter for dark backgrounds) */
-  --sw-primary:        #10b981;  /* emerald-500 */
-  --sw-primary-hover:  #34d399;  /* emerald-400 */
-  --sw-primary-active: #6ee7b7;  /* emerald-300 */
-  --sw-primary-bg:     #064e3b;  /* emerald-900 */
-  --sw-primary-bg-2:   #065f46;  /* emerald-800 */
-  --sw-primary-text:   #6ee7b7;  /* emerald-300 — text on primary-bg dark */
-
-  /* Filled-button pairs. In dark the brand hues are light, so the readable
-     pairing inverts: near-black text on the bright hue. */
-  --sw-primary-solid:  #10b981;
-  --sw-on-primary:     #052e16;  /* 8.5:1 on emerald-500 */
-  --sw-accent-solid:   #f59e0b;
-  --sw-on-accent:      #431407;  /* 8.1:1 on amber-500  */
-
-  --sw-cta:            #fafafa;  /* zinc-50  — 17.0:1 with on-cta */
-  --sw-cta-hover:      #d4d4d8;  /* zinc-300 — 12.0:1 with on-cta */
-  --sw-on-cta:         #18181b;
-
-  /* Accent — Amber */
-  --sw-accent:         #f59e0b;  /* amber-500  */
-  --sw-accent-hover:   #fbbf24;  /* amber-400  */
-  --sw-accent-bg:      #451a03;  /* amber-950  */
-  --sw-accent-bg-2:    #78350f;  /* amber-900  */
-  --sw-accent-text:    #fde68a;  /* amber-200  — text on accent-bg dark */
-
-  /* Semantic states */
-  --sw-danger:         #f87171;  /* red-400    */
-  --sw-danger-bg:      #450a0a;  /* red-950    */
-  --sw-danger-text:    #fca5a5;  /* red-300    */
-
-  --sw-success:        #77d33f;  /* 9.4:1 on zinc-900                       */
-  --sw-success-solid:  #77d33f;
-  --sw-on-success:     #0d2603;  /* 8.6:1 on success-solid                 */
-  --sw-success-bg:     #152e06;
-  --sw-success-text:   #a5ec73;  /* 10.4:1 on success-bg                   */
-
-  --sw-warning:        #ebd229;  /* 11.6:1 on zinc-900                      */
-  --sw-warning-bg:     #312900;
-  --sw-warning-text:   #edee31;  /* 11.7:1 on warning-bg                   */
-
-  /* Focus */
-  --sw-focus-ring:     rgba(16, 185, 129, 0.4);
-
-  /* Elevation */
-  --sw-card-hover:     0 8px 24px -6px rgba(16, 185, 129, 0.28);
-  --sw-lift:           0 6px 20px -8px rgba(0, 0, 0, 0.6);
-
-  /* Rail */
-  --sw-rail:           #3f3f46;
-  --sw-rail-live:      var(--sw-accent);
-
-  /* Nav */
-  --sw-nav-bg:         #18181b;
-  --sw-nav-border:     #3f3f46;
+  --sw-warning:        var(--warning);
 }
 
 /* ─── Topic Colours ───────────────────────────────────────────────── */
@@ -201,7 +147,7 @@
   --tag-blue-border:    #b6d3fe;
 
   --tag-cyan-bg:        #e4f7ff;
-  --tag-cyan-text:      #014456;  /* 9.71:1 on bg — h≈222 */
+  --tag-cyan-text:      #003c55;  /* 10.72:1 on bg — h≈233; nudged from h≈222 to clear the teach teal by ΔE 10 */
   --tag-cyan-border:    #86e0fe;
 
   --tag-violet-bg:      #f6f1fe;
@@ -268,11 +214,16 @@ html {
 body {
   background-color: var(--sw-bg);
   color: var(--sw-text-1);
-  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* teach sets --font-heading to Fraunces (the spine's base heading rule). */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
 }
 
 /* Fraunces ships a variable optical-size axis (opsz 9..144) that was loaded
