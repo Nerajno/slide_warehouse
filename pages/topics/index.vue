@@ -47,7 +47,7 @@ useSeoMeta({
         v-for="{ tag, label, count, swatch } in tags"
         :key="tag"
         :to="`/topics/${tag}`"
-        class="group rounded-card border p-5 flex flex-col justify-between min-h-[7rem]
+        class="group rounded-card border p-4 sm:p-5 flex flex-col justify-between min-h-[7rem]
                transition-[box-shadow,transform] duration-base ease-out-smooth
                hover:shadow-lift focus:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--sw-focus-ring)]"
         :style="{
@@ -56,7 +56,7 @@ useSeoMeta({
           color: `var(--tag-${swatch}-text)`,
         }"
       >
-        <span class="font-display text-xl font-semibold leading-tight text-pretty">{{ label }}</span>
+        <span class="font-display text-lg sm:text-xl font-semibold leading-tight text-pretty">{{ label }}</span>
         <span class="font-sans text-sm tabular-nums">{{ count }} deck{{ count === 1 ? '' : 's' }}</span>
       </NuxtLink>
     </div>
