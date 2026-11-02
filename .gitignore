@@ -31,3 +31,6 @@ Thumbs.db
 # Claude
 .claude
 CLAUDE.local.md
+
+# Local Impeccable critique snapshots and live-server state
+.impeccable/
