@@ -4,52 +4,44 @@ This project uses privacy-respecting analytics with Supabase to track deck views
 
 ## Setup Steps
 
-### 1. Create Supabase Project
+### 1. Supabase Project
 
-1. Go to [supabase.com](https://supabase.com) and create a new project
-2. Note your **Project URL** and **Anon Key** (found in Settings > API)
+- Project already exists: `Slide_warehouse` (ref `zcxfztxhjxxegvuhsdjf`, region eu-west-1), URL `https://zcxfztxhjxxegvuhsdjf.supabase.co`.
+- Note: free-tier projects auto-pause after ~1 week of inactivity. While paused the edge function returns 503. Restore from the Supabase dashboard (or the Supabase MCP `restore_project` tool).
 
-### 2. Create Database Table
+### 2. Database Schema
 
-In Supabase SQL Editor, run:
+The schema lives in `supabase/migrations/` and is the source of truth — do not paste ad-hoc SQL.
 
-```sql
-CREATE TABLE deck_views (
-  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  deck_id TEXT NOT NULL,
-  timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
-  user_agent TEXT,
-  referrer TEXT,
-  country TEXT,
-  city TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
+- `20261028233500_create_deck_views.sql` — `deck_views` table, indexes, RLS, insert policy.
+- `20261028235000_revoke_rls_auto_enable_execute.sql` — stops API roles calling the `rls_auto_enable()` event-trigger function (clears the Supabase security advisor warning).
 
--- Create index for efficient querying
-CREATE INDEX idx_deck_views_deck_id ON deck_views(deck_id);
-CREATE INDEX idx_deck_views_timestamp ON deck_views(timestamp);
+Apply new migrations in order with the Supabase MCP `apply_migration` tool or by pasting them into the SQL Editor.
 
--- Enable RLS if desired (optional for privacy)
-ALTER TABLE deck_views ENABLE ROW LEVEL SECURITY;
+Access rules:
 
--- Allow anonymous inserts
-CREATE POLICY "Allow anonymous inserts" ON deck_views
-  FOR INSERT WITH CHECK (true);
-```
+- `anon` role can INSERT only, and only when `deck_id` is non-empty.
+- No SELECT policy, so the anon key cannot read views back.
+- Query data via the dashboard / SQL Editor (service role).
+- RLS is enabled; the project's `ensure_rls` event trigger also auto-enables RLS on new tables.
+
+After any schema change, run the Supabase security advisor (dashboard → Advisors, or MCP `get_advisors`).
 
 ### 3. Configure Environment Variables
+
+Use the **legacy anon key** (JWT, starts with `eyJ`) from Settings > API, not the newer `sb_publishable_...` key. The edge function sends it as `Authorization: Bearer`, which requires a JWT.
 
 Set these in Netlify:
 
 ```
-SUPABASE_URL = https://your-project.supabase.co
+SUPABASE_URL = https://zcxfztxhjxxegvuhsdjf.supabase.co
 SUPABASE_ANON_KEY = your-anon-key-here
 ```
 
 Or in `.env.local` for local development:
 
 ```bash
-SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_URL=https://zcxfztxhjxxegvuhsdjf.supabase.co
 SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
