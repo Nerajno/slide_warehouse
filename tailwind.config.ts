@@ -1,6 +1,11 @@
 import type { Config } from 'tailwindcss'
+import dialects from '@nerajno/dialects/tailwind-preset'
 
 export default {
+  // Dialects classes (bg-surface, text-strong, border-surface-strong, …) read
+  // the spine tokens directly; the sw.* aliases below stay for existing code.
+  presets: [dialects],
+
   content: [
     './components/**/*.{vue,js,ts}',
     './layouts/**/*.vue',
@@ -88,9 +93,10 @@ export default {
 
       // ─── Typography ─────────────────────────────────────────────────
       fontFamily: {
-        display: ['Fraunces', 'Georgia', 'serif'],
-        sans:    ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
-        mono:    ['JetBrains Mono', 'Menlo', 'monospace'],
+        // Self-hosted by @nerajno/dialects/fonts.css; stacks live in the spine.
+        display: 'var(--font-display)',
+        sans:    'var(--font-sans)',
+        mono:    'var(--font-mono)',
       },
 
       fontSize: {
@@ -149,12 +155,12 @@ export default {
 
       // ─── Box Shadows ─────────────────────────────────────────────────
       boxShadow: {
-        'card-sm':    '0 1px 3px 0 rgba(0,0,0,0.08)',
-        'card-md':    '0 4px 12px 0 rgba(0,0,0,0.08)',
+        'card-sm':    'var(--shadow-sm)',
+        'card-md':    'var(--shadow-md)',
         'card-hover': 'var(--sw-card-hover)',
         'lift':       'var(--sw-lift)',
-        'focus':      '0 0 0 3px rgba(5,150,105,0.35)',
-        'focus-amber':'0 0 0 3px rgba(217,119,6,0.35)',
+        'focus':      '0 0 0 3px var(--sw-focus-ring)',
+        'focus-amber':'0 0 0 3px color-mix(in oklch, var(--sw-accent) 35%, transparent)',
         none:         'none',
       },
 
