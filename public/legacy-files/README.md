@@ -1,40 +1,33 @@
 # Legacy Presentations
 
-This directory contains older presentation files in various formats from before the Reveal.js era.
+Older presentations from before the Reveal.js era, served as downloads on `/legacy`.
 
 ## File Structure
 
-- `legacy-files/` - Contains the actual presentation files (PPTX, PDF, KEY, etc.)
-- `legacy-thumbnails/` - Contains thumbnail images for each presentation
+- `public/legacy-files/` - The presentation files (PDF preferred; PPTX, KEY, etc. also work)
+- `public/legacy-thumbnails/` - A 1280×720 JPG of each deck's title slide
+- `content/legacy/` - One Markdown file of metadata per presentation
 
-## Adding Legacy Presentations
+## Adding a Legacy Presentation
 
-1. Place the presentation file in `public/legacy-files/`
-2. Create a thumbnail image (16:9 aspect ratio recommended) in `public/legacy-thumbnails/`
-3. Update the `legacyDecks` array in `components/LegacyDeckGrid.vue` with the new presentation metadata
+1. Export the deck to PDF (Google Slides: File → Download → PDF) and place it here as `{id}.pdf`
+2. Save the title slide as `public/legacy-thumbnails/{id}.jpg` (1280×720)
+3. Create `content/legacy/{id}.md`:
 
-## Supported Formats
-
-- PowerPoint (.pptx, .ppt)
-- PDF (.pdf)
-- Keynote (.key, .keynote)
-- Other presentation formats
-
-## Metadata Fields
-
-Each legacy presentation should include:
-
-```typescript
-{
-  id: string,           // Unique identifier
-  title: string,        // Presentation title
-  description: string,  // Brief description
-  format: string,       // File format (PowerPoint, PDF, Keynote, etc.)
-  fileSize: string,     // Human-readable file size
-  year: number,         // Presentation year
-  event: string,        // Event/conference name
-  tags: string[],       // Relevant tags
-  downloadUrl: string,  // Path to the file in /legacy-files/
-  thumbnailUrl: string  // Path to thumbnail in /legacy-thumbnails/
-}
+```yaml
+---
+id: "my-talk-2025"
+title: "My Talk"
+description: "One sentence description."
+tags: ["career", "community"]
+format: "PDF"
+fileUrl: "/legacy-files/my-talk-2025.pdf"
+thumbnailUrl: "/legacy-thumbnails/my-talk-2025.jpg"
+conference: "Some Conf 2025"
+date: "2025-03-01"
+downloadable: true
+---
 ```
+
+`tests/legacy-decks.test.ts` checks that every `fileUrl` and `thumbnailUrl` exists and stays under 25 MB.
+A thumbnail that fails to load is hidden rather than shown broken.
